@@ -2,7 +2,7 @@ const express = require("express");
 const cors = require("cors");
 const bodyParser = require("body-parser");
 const { errors } = require("celebrate");
-const routes = require("./app/routes");
+const routes = require("./src/app/routes");
 
 //inicia o express
 const app = express();

@@ -134,7 +134,7 @@
         return User;
     };
 
-11 - criar server.js na pasta src, conteudo:
+11 - criar server.js na pasta backend, conteudo:
     const express = require("express");
     const cors = require("cors");
     const bodyParser = require("body-parser");

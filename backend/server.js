@@ -1,7 +1,13 @@
 const express = require("express");
+
+const db = require("./src/app/models");
+
 const cors = require("cors");
+
 const bodyParser = require("body-parser");
+
 const { errors } = require("celebrate");
+
 const routes = require("./src/app/routes");
 
 //inicia o express
@@ -15,6 +21,8 @@ app.use(cors());
 app.use("/api", routes);
 app.use(errors());
 
-app.listen(process.env.PORT || 3001);
-
-console.log("Server is running...");
+db.sequelize.sync().then(() => {
+  app.listen(process.env.PORT || 3001, () => {
+    console.log("Server is running. Lintening on port 3001.");
+  });
+});

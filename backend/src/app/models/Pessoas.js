@@ -1,6 +1,6 @@
 module.exports = (sequelize, DataTypes) => {
-  const Pessoa = sequelize.define(
-    "Pessoa",
+  const Pessoas = sequelize.define(
+    "Pessoas",
     {
       nome: DataTypes.STRING,
       cpf: DataTypes.BIGINT,
@@ -13,5 +13,5 @@ module.exports = (sequelize, DataTypes) => {
       timestamps: false,
     }
   );
-  return Pessoa;
+  return Pessoas;
 };

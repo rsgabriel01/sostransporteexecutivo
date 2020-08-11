@@ -13,8 +13,5 @@ module.exports = (sequelize, DataTypes) => {
       timestamps: false,
     }
   );
-  Pessoa.associate = function (models) {
-    Pessoa.hasMany(models.UsuarioEmpresa, { foreignKey: "id_pessoa" });
-  };
   return Pessoa;
 };

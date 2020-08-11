@@ -1,14 +1,16 @@
 const express = require("express");
 
-const { celebrate, Segments, Joi } = require("celebrate");
+const { validatorTest } = require("./validators/routeTest");
 
 const routes = express.Router();
 
-// const InterventionController = require("./controllers/InterventionController");
+const TestController = require("./controllers/TestController");
 
 routes.get("/", (req, res) => {
   return res.json("Server is running...");
 });
+
+routes.post("/test", validatorTest, TestController.index);
 
 //Interventions --------------------------------------------
 

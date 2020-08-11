@@ -2,6 +2,6 @@
 DB_PORT=5432
 DB_HOST=localhost
 DB_SCHEMA=public
-DB_NAME=intervencaoBalancas
+DB_NAME=sostransporteexecutivo
 DB_USERNAME=
 DB_PASSWORD=

@@ -11,6 +11,15 @@ module.exports = {
           primaryKey: true,
           type: DataTypes.BIGINT,
         },
+        id_usuario_empresa: {
+          allowNull: false,
+          type: DataTypes.BIGINT,
+          references: {
+            // user hasmany 1:n
+            model: "Usuarios_empresa",
+            key: "id",
+          },
+        },
         token: {
           allowNull: false,
           type: DataTypes.STRING,

@@ -8,12 +8,21 @@ const TestController = require("./controllers/TestController");
 const PessoasController = require("./controllers/PessoasController");
 const Usuarios_empresaController = require("./controllers/Usuarios_empresaController");
 const Tipos_usuariosController = require("./controllers/Tipos_usuariosController");
+const LoginController = require("./controllers/LoginController");
 
 routes.get("/", (req, res) => {
   return res.json("Server is running...");
 });
 
 routes.post("/test", validatorTest, TestController.index);
+
+//Acessos ----------------------------------------------
+
+routes.post("/acesso/login", LoginController.create);
+
+// routes.post("/acesso/logout", InterventionController.store);
+
+// routes.post("/acesso/sessoes", InterventionController.store);
 
 //Pessoas --------------------------------------------
 

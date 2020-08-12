@@ -25,10 +25,6 @@ module.exports = {
 
       const expirationDate = moment.utc(expiration).local().format();
 
-      console.log(expirationDate);
-
-      console.log(moment(expirationDate).isSameOrAfter(moment()));
-
       if (!moment(expirationDate).isSameOrAfter(moment())) {
         return res.status(401).json({ message: "Token informado expirado." });
       }
@@ -102,6 +98,22 @@ module.exports = {
       });
 
       return res.json({ id_usuario: id, token });
+    } catch (error) {
+      console.log(error);
+    }
+  },
+
+  async destroy(req, res) {
+    try {
+      const { token } = req.headers;
+
+      await Sessoes.destroy({
+        where: {
+          token,
+        },
+      });
+
+      res.json({ message: "Sessão inativada com sucesso." });
     } catch (error) {
       console.log(error);
     }

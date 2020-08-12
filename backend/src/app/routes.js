@@ -18,11 +18,11 @@ routes.post("/test", validatorTest, TestController.index);
 
 //Acessos ----------------------------------------------
 
-routes.post("/acesso/login", SessoesController.store);
+routes.post("/acess/login", SessoesController.store);
 
-routes.get("/acesso/sessao", SessoesController.show);
+routes.get("/acess/session", SessoesController.show);
 
-// routes.post("/acesso/sessoes", InterventionController.store);
+routes.get("/acess/logout", SessoesController.destroy);
 
 //Pessoas --------------------------------------------
 

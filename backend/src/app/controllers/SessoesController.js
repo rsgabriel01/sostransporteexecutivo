@@ -7,7 +7,39 @@ const crypto = require("crypto");
 const moment = require("moment");
 
 module.exports = {
-  async create(req, res) {
+  async show(req, res) {
+    try {
+      const { token } = req.headers;
+
+      const sessionFinded = await Sessoes.findAll({
+        where: {
+          token,
+        },
+      });
+
+      if (sessionFinded.length == 0) {
+        return res.status(401).json({ message: "Token informado inválido." });
+      }
+
+      const [{ expiration }] = sessionFinded;
+
+      const expirationDate = moment.utc(expiration).local().format();
+
+      console.log(expirationDate);
+
+      console.log(moment(expirationDate).isSameOrAfter(moment()));
+
+      if (!moment(expirationDate).isSameOrAfter(moment())) {
+        return res.status(401).json({ message: "Token informado expirado." });
+      }
+
+      return res.json({ message: "Token válido." });
+    } catch (error) {
+      console.log(error);
+    }
+  },
+
+  async store(req, res) {
     try {
       let tokenUnavailable = false;
       let token;
@@ -28,12 +60,10 @@ module.exports = {
           .json({ message: "Usuário ou senha incorretos." });
       }
 
-      const [{ id, id_tipo_usuario }] = dadosUsuario;
-
-      console.log(token);
+      const [{ id }] = dadosUsuario;
 
       while (tokenUnavailable === false) {
-        token = `${id}!${crypto.randomBytes(6).toString("HEX")}`;
+        token = `${id}!${crypto.randomBytes(64).toString("HEX")}`;
 
         const foundTokens = await Sessoes.findAll({
           where: {
@@ -64,8 +94,6 @@ module.exports = {
 
       const first_acess = moment().format();
 
-      console.log(expiration, first_acess);
-
       await Sessoes.create({
         id_usuario_empresa: id,
         token,
@@ -73,7 +101,7 @@ module.exports = {
         expiration,
       });
 
-      return res.json({ id_usuario: id, id_tipo_usuario, token });
+      return res.json({ id_usuario: id, token });
     } catch (error) {
       console.log(error);
     }

@@ -1,28 +1,29 @@
 const express = require("express");
 
-const { validatorTest } = require("./validators/routeTest");
-
 const routes = express.Router();
 
-const TestController = require("./controllers/TestController");
 const PessoasController = require("./controllers/PessoasController");
 const Usuarios_empresaController = require("./controllers/Usuarios_empresaController");
 const Tipos_usuariosController = require("./controllers/Tipos_usuariosController");
 const SessoesController = require("./controllers/SessoesController");
 
+const {
+  validatorLogin,
+  validatorSession,
+  validatorLogout,
+} = require("./validators/routesAcess");
+
 routes.get("/", (req, res) => {
   return res.json("Server is running...");
 });
 
-routes.post("/test", validatorTest, TestController.index);
+//Acess ----------------------------------------------
 
-//Acessos ----------------------------------------------
+routes.get("/acess/session", validatorSession, SessoesController.show);
 
-routes.post("/acess/login", SessoesController.store);
+routes.post("/acess/login", validatorLogin, SessoesController.store);
 
-routes.get("/acess/session", SessoesController.show);
-
-routes.get("/acess/logout", SessoesController.destroy);
+routes.get("/acess/logout", validatorLogout, SessoesController.destroy);
 
 //Pessoas --------------------------------------------
 

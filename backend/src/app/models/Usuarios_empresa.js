@@ -13,6 +13,7 @@ module.exports = (sequelize, DataTypes) => {
       timestamps: false,
     }
   );
+
   Usuarios_empresa.associate = (models) => {
     Usuarios_empresa.belongsTo(models.Pessoas, {
       foreignKey: "id",
@@ -22,6 +23,12 @@ module.exports = (sequelize, DataTypes) => {
       foreignKey: "id",
       as: "Tipos_usuarios",
     });
+
+    Usuarios_empresa.prototype.toJSON = function () {
+      const values = { ...this.get() };
+      delete values.senha;
+      return values;
+    };
   };
 
   return Usuarios_empresa;

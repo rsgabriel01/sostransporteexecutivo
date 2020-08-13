@@ -4,6 +4,8 @@ const { Op, fn, col, literal, QueryTypes, Sequelize } = require("sequelize");
 
 const crypto = require("crypto");
 
+const bcrypt = require("bcrypt");
+
 const moment = require("moment");
 
 module.exports = {
@@ -39,24 +41,37 @@ module.exports = {
     try {
       let tokenUnavailable = false;
       let token;
+      const salt = "$2b$10$wNl974FKsMsDaFQsciWdaO";
 
       const { usuario, senha } = req.body;
 
-      const dadosUsuario = await Usuarios_empresa.findAll({
+      const dadosUsuario = await Usuarios_empresa.findOne({
         where: {
           usuario,
-          senha,
         },
         include: ["Pessoas", "Tipos_usuarios"],
       });
 
-      if (dadosUsuario.length == 0) {
+      // console.log(dadosUsuario);
+
+      if (!dadosUsuario) {
         return res
           .status(400)
           .json({ message: "Usuário ou senha incorretos." });
       }
 
-      const [{ id }] = dadosUsuario;
+      // console.log(`senha banco: ${dadosUsuario.senha}`);
+
+      const passwordMatch = bcrypt.compareSync(senha, dadosUsuario.senha);
+      // console.log(passwordMatch);
+
+      if (!passwordMatch) {
+        return res
+          .status(400)
+          .json({ message: "Usuário ou senha incorretos." });
+      }
+
+      const { id } = dadosUsuario;
 
       while (tokenUnavailable === false) {
         token = `${id}!${crypto.randomBytes(64).toString("HEX")}`;
@@ -98,6 +113,7 @@ module.exports = {
       });
 
       return res.json({ id_usuario: id, token });
+      // return res.json(dadosUsuario);
     } catch (error) {
       console.log(error);
     }

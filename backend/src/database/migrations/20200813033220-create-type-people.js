@@ -3,7 +3,7 @@
 module.exports = {
   up: (queryInterface, DataTypes) => {
     return queryInterface.createTable(
-      "Pessoas",
+      "Type_people",
       {
         id: {
           allowNull: false,
@@ -11,29 +11,23 @@ module.exports = {
           primaryKey: true,
           type: DataTypes.BIGINT,
         },
-        nome: {
-          allowNull: false,
-          type: DataTypes.STRING,
-        },
-        cpf: {
+        id_people: {
           allowNull: false,
           type: DataTypes.BIGINT,
+          references: {
+            // user hasmany 1:n
+            model: "People",
+            key: "id",
+          },
         },
-        rg: {
+        id_type: {
           allowNull: false,
           type: DataTypes.BIGINT,
-        },
-        telefone: {
-          allowNull: false,
-          type: DataTypes.BIGINT,
-        },
-        email: {
-          allowNull: false,
-          type: DataTypes.STRING,
-        },
-        ativo: {
-          allowNull: false,
-          type: DataTypes.BOOLEAN,
+          references: {
+            // user hasmany 1:n
+            model: "Types",
+            key: "id",
+          },
         },
       },
       {
@@ -43,6 +37,6 @@ module.exports = {
   },
 
   down: (queryInterface) => {
-    return queryInterface.dropTable("Pessoas");
+    return queryInterface.dropTable("Type_people");
   },
 };

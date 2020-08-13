@@ -5,3 +5,7 @@ DB_SCHEMA=public
 DB_NAME=sostransporteexecutivo
 DB_USERNAME=
 DB_PASSWORD=
+
+# Encrypted Password
+
+DB_SALT_HASH_PASSWORD=$2b$10$wNl974FKsMsDaFQsciWdaO

@@ -1,3 +1,5 @@
+require("dotenv/config");
+
 const { Sessoes, Usuarios_empresa } = require("../models");
 
 const { Op, fn, col, literal, QueryTypes, Sequelize } = require("sequelize");
@@ -41,7 +43,6 @@ module.exports = {
     try {
       let tokenUnavailable = false;
       let token;
-      const salt = "$2b$10$wNl974FKsMsDaFQsciWdaO";
 
       const { usuario, senha } = req.body;
 

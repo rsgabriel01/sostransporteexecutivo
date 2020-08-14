@@ -11,7 +11,7 @@ module.exports = {
           primaryKey: true,
           type: DataTypes.BIGINT,
         },
-        nome: {
+        name: {
           allowNull: true,
           type: DataTypes.STRING,
         },
@@ -23,11 +23,11 @@ module.exports = {
           allowNull: true,
           type: DataTypes.BIGINT,
         },
-        razao_social: {
+        company_name: {
           allowNull: true,
           type: DataTypes.STRING,
         },
-        nome_fantasia: {
+        name_fantasy: {
           allowNull: true,
           type: DataTypes.STRING,
         },
@@ -35,15 +35,15 @@ module.exports = {
           allowNull: true,
           type: DataTypes.BIGINT,
         },
-        num_alvara: {
+        num_permit: {
           allowNull: true,
           type: DataTypes.BIGINT,
         },
-        telefone: {
+        phone: {
           allowNull: true,
           type: DataTypes.BIGINT,
         },
-        telefone_empresarial: {
+        business_phone: {
           allowNull: true,
           type: DataTypes.BIGINT,
         },
@@ -51,12 +51,13 @@ module.exports = {
           allowNull: true,
           type: DataTypes.STRING,
         },
-        ativo: {
+        active: {
           allowNull: false,
           type: DataTypes.BOOLEAN,
         },
       },
       {
+        tableName: "People",
         timestamps: false,
       }
     );

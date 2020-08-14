@@ -3,43 +3,42 @@
 module.exports = {
   up: (queryInterface, DataTypes) => {
     return queryInterface.createTable(
-      "Sessions",
+      "Citys",
       {
         id: {
-          allowNull: false,
-          autoIncrement: true,
+          allowNull: true,
           primaryKey: true,
           type: DataTypes.BIGINT,
         },
-        id_login: {
+        id_state: {
           allowNull: false,
           type: DataTypes.BIGINT,
           references: {
-            // user hasmany 1:n
-            model: "Logins",
+            model: "States",
             key: "id",
           },
         },
-        token: {
-          allowNull: false,
+        name: {
+          allowNull: true,
           type: DataTypes.STRING,
         },
-        first_acess: {
-          allowNull: false,
-          type: DataTypes.DATE,
+        ddd: {
+          allowNull: true,
+          type: DataTypes.INTEGER,
         },
-        expiration: {
-          allowNull: false,
-          type: DataTypes.DATE,
+        ibge: {
+          allowNull: true,
+          type: DataTypes.BIGINT,
         },
       },
       {
+        tableName: "Citys",
         timestamps: false,
       }
     );
   },
 
   down: (queryInterface) => {
-    return queryInterface.dropTable("Sessions");
+    return queryInterface.dropTable("Citys");
   },
 };

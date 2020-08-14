@@ -3,40 +3,38 @@
 module.exports = {
   up: (queryInterface, DataTypes) => {
     return queryInterface.createTable(
-      "Type_people",
+      "Neighborhoods",
       {
         id: {
-          allowNull: false,
-          autoIncrement: true,
+          allowNull: true,
           primaryKey: true,
           type: DataTypes.BIGINT,
         },
-        id_people: {
+        id_city: {
           allowNull: false,
           type: DataTypes.BIGINT,
           references: {
-            // user hasmany 1:n
-            model: "People",
+            model: "Citys",
             key: "id",
           },
         },
-        id_type: {
-          allowNull: false,
-          type: DataTypes.BIGINT,
-          references: {
-            // user hasmany 1:n
-            model: "Types",
-            key: "id",
-          },
+        situation: {
+          allowNull: true,
+          type: DataTypes.STRING,
+        },
+        name: {
+          allowNull: true,
+          type: DataTypes.STRING,
         },
       },
       {
+        tableName: "Neighborhoods",
         timestamps: false,
       }
     );
   },
 
   down: (queryInterface) => {
-    return queryInterface.dropTable("Type_people");
+    return queryInterface.dropTable("Neighborhoods");
   },
 };

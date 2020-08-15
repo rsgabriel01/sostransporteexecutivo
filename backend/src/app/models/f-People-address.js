@@ -1,8 +1,8 @@
 "use strict";
 
 module.exports = (sequelize, DataTypes) => {
-  const People_adress = sequelize.define(
-    "People_adress",
+  const People_address = sequelize.define(
+    "People_address",
     {
       id_people: DataTypes.BIGINT,
       id_neighborhood: DataTypes.BIGINT,
@@ -10,9 +10,9 @@ module.exports = (sequelize, DataTypes) => {
       street_number: DataTypes.BIGINT,
     },
     {
-      tableName: "People_adress",
+      tableName: "People_address",
       timestamps: false,
     }
   );
-  return People_adress;
+  return People_address;
 };

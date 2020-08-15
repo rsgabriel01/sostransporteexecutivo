@@ -3,7 +3,7 @@
 module.exports = {
   up: (queryInterface, DataTypes) => {
     return queryInterface.createTable(
-      "People_adress",
+      "People_address",
       {
         id: {
           allowNull: false,
@@ -37,13 +37,13 @@ module.exports = {
         },
       },
       {
-        tableName: "People_adress",
+        tableName: "People_address",
         timestamps: false,
       }
     );
   },
 
   down: (queryInterface) => {
-    return queryInterface.dropTable("People_adress");
+    return queryInterface.dropTable("People_address");
   },
 };

@@ -11,7 +11,7 @@ module.exports = {
           primaryKey: true,
           type: DataTypes.BIGINT,
         },
-        id_cliente: {
+        id_client: {
           allowNull: false,
           type: DataTypes.BIGINT,
           references: {
@@ -27,7 +27,7 @@ module.exports = {
             key: "id",
           },
         },
-        id_motorista: {
+        id_driver: {
           allowNull: true,
           type: DataTypes.BIGINT,
           references: {

@@ -4,9 +4,9 @@ module.exports = (sequelize, DataTypes) => {
   const Service_orders = sequelize.define(
     "Service_orders",
     {
-      id_cliente: DataTypes.BIGINT,
+      id_client: DataTypes.BIGINT,
       id_user_attendance: DataTypes.BIGINT,
-      id_motorista: DataTypes.BIGINT,
+      id_driver: DataTypes.BIGINT,
       id_status: DataTypes.BIGINT,
       date_time_attendance: DataTypes.DATE,
       id_neighborhood_origin: DataTypes.BIGINT,

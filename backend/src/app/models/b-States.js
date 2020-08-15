@@ -12,5 +12,13 @@ module.exports = (sequelize, DataTypes) => {
       timestamps: false,
     }
   );
+
+  States.associate = (models) => {
+    States.hasMany(models.Citys, {
+      foreignKey: "id_state",
+      as: "States-Citys",
+    });
+  };
+
   return States;
 };

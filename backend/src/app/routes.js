@@ -3,7 +3,7 @@ const express = require("express");
 const routes = express.Router();
 
 const CitysController = require("./controllers/CitysController");
-const LoginsController = require("./controllers/LoginsController");
+const UsersController = require("./controllers/UsersController");
 const NeighborhoodsController = require("./controllers/NeighborhoodsController");
 const PeopleAddressController = require("./controllers/PeopleAddressController");
 const PeopleController = require("./controllers/PeopleController");
@@ -22,11 +22,11 @@ const VehiclesController = require("./controllers/VehiclesController");
 // const Tipos_usuariosController = require("./controllers/Tipos_usuariosController");
 // const SessoesController = require("./controllers/SessoesController");
 
-// const {
-//   validatorLogin,
-//   validatorSession,
-//   validatorLogout,
-// } = require("./validators/routesAcess");
+const {
+  validatorLogin,
+  validatorSession,
+  validatorLogout,
+} = require("./validators/routesAcess");
 
 routes.get("/", (req, res) => {
   return res.json("Server is running...");
@@ -34,21 +34,21 @@ routes.get("/", (req, res) => {
 
 //Acess ----------------------------------------------
 
-// routes.get("/acess/session", validatorSession, SessoesController.show);
+routes.get("/acess/session", validatorSession, SessionsController.show);
 
-// routes.post("/acess/login", validatorLogin, SessoesController.store);
+routes.post("/acess/login", validatorLogin, SessionsController.store);
 
 // routes.get("/acess/logout", validatorLogout, SessoesController.destroy);
 
 //Pessoas --------------------------------------------
 
 routes.get("/citys", CitysController.index);
-routes.get("/logins", LoginsController.index);
+routes.get("/users", UsersController.index);
 routes.get("/neighborhoods", NeighborhoodsController.index);
 routes.get("/peopleAdress", PeopleAddressController.index);
 routes.get("/people", PeopleController.index);
 routes.get("/serviceOrders", ServiceOrdersController.index);
-routes.get("/sessions", SessionsController.index);
+// routes.get("/sessions", SessionsController.index);
 routes.get("/states", StatesController.index);
 routes.get("/status", StatusController.index);
 routes.get("/travelFee", TravelFeeController.index);

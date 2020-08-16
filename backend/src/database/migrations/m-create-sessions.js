@@ -11,11 +11,11 @@ module.exports = {
           primaryKey: true,
           type: DataTypes.BIGINT,
         },
-        id_login: {
+        id_user: {
           allowNull: false,
           type: DataTypes.BIGINT,
           references: {
-            model: "Logins",
+            model: "Users",
             key: "id",
           },
         },

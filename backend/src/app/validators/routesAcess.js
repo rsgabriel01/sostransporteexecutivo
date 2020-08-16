@@ -9,8 +9,8 @@ const validatorSession = celebrate({
 
 const validatorLogin = celebrate({
   [Segments.BODY]: Joi.object().keys({
-    usuario: Joi.string().required(),
-    senha: Joi.string().required().min(8).max(16),
+    user: Joi.string().required(),
+    password: Joi.string().required().min(8).max(16),
   }),
 });
 

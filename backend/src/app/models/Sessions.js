@@ -4,7 +4,7 @@ module.exports = (sequelize, DataTypes) => {
   const Sessions = sequelize.define(
     "Sessions",
     {
-      id_login: DataTypes.BIGINT,
+      id_user: DataTypes.BIGINT,
       token: DataTypes.STRING,
       first_acess: DataTypes.DATE,
       expiration: DataTypes.DATE,
@@ -16,9 +16,9 @@ module.exports = (sequelize, DataTypes) => {
   );
 
   Sessions.associate = (models) => {
-    Sessions.belongsTo(models.Logins, {
-      foreignKey: "id_login",
-      as: "Login",
+    Sessions.belongsTo(models.Users, {
+      foreignKey: "id_user",
+      as: "User",
     });
   };
 

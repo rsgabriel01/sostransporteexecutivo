@@ -1,8 +1,8 @@
 "use strict";
 
 module.exports = (sequelize, DataTypes) => {
-  const Logins = sequelize.define(
-    "Logins",
+  const Users = sequelize.define(
+    "Users",
     {
       id_people: DataTypes.BIGINT,
       user: DataTypes.STRING,
@@ -10,21 +10,21 @@ module.exports = (sequelize, DataTypes) => {
       active: DataTypes.BOOLEAN,
     },
     {
-      tableName: "Logins",
+      tableName: "Users",
       timestamps: false,
     }
   );
 
-  Logins.associate = (models) => {
-    Logins.belongsTo(models.People, {
+  Users.associate = (models) => {
+    Users.belongsTo(models.People, {
       foreignKey: "id_people",
       as: "People",
     });
-    Logins.hasOne(models.Sessions, {
-      foreignKey: "id_login",
+    Users.hasOne(models.Sessions, {
+      foreignKey: "id_user",
       as: "Sessions",
     });
   };
 
-  return Logins;
+  return Users;
 };

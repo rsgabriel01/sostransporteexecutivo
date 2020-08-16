@@ -20,9 +20,9 @@ module.exports = (sequelize, DataTypes) => {
   );
 
   People.associate = (models) => {
-    People.hasOne(models.Logins, {
+    People.hasOne(models.Users, {
       foreignKey: "id_people",
-      as: "Logins",
+      as: "Users",
     });
     People.hasOne(models.Vehicles, {
       foreignKey: "id_people",

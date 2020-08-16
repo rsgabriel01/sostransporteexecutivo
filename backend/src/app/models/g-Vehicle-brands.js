@@ -12,5 +12,13 @@ module.exports = (sequelize, DataTypes) => {
       timestamps: false,
     }
   );
+
+  Vehicle_brands.associate = (models) => {
+    Vehicle_brands.hasMany(models.Vehicle_models, {
+      foreignKey: "id_brand",
+      as: "Vehicle_models",
+    });
+  };
+
   return Vehicle_brands;
 };

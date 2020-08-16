@@ -12,5 +12,13 @@ module.exports = (sequelize, DataTypes) => {
       timestamps: false,
     }
   );
+
+  Travel_fee.associate = (models) => {
+    Travel_fee.belongsTo(models.Neighborhoods, {
+      foreignKey: "id_neighborhood",
+      as: "Neighborhood",
+    });
+  };
+
   return Travel_fee;
 };

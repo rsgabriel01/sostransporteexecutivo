@@ -11,5 +11,13 @@ module.exports = (sequelize, DataTypes) => {
       timestamps: false,
     }
   );
+
+  Status.associate = (models) => {
+    Status.hasMany(models.Service_orders, {
+      foreignKey: "id_status",
+      as: "Service_orders",
+    });
+  };
+
   return Status;
 };

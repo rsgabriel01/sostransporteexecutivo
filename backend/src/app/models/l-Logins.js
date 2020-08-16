@@ -14,5 +14,17 @@ module.exports = (sequelize, DataTypes) => {
       timestamps: false,
     }
   );
+
+  Logins.associate = (models) => {
+    Logins.belongsTo(models.People, {
+      foreignKey: "id_people",
+      as: "People",
+    });
+    Logins.hasOne(models.Sessions, {
+      foreignKey: "id_login",
+      as: "Sessions",
+    });
+  };
+
   return Logins;
 };

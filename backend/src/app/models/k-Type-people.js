@@ -12,5 +12,17 @@ module.exports = (sequelize, DataTypes) => {
       timestamps: false,
     }
   );
+
+  Type_people.associate = function (models) {
+    Type_people.belongsTo(models.People, {
+      foreignKey: "id_people",
+      as: "Type_people_People",
+    });
+    Type_people.belongsTo(models.Type_people, {
+      foreignKey: "id_type",
+      as: "Type_people_Type",
+    });
+  };
+
   return Type_people;
 };

@@ -12,5 +12,14 @@ module.exports = (sequelize, DataTypes) => {
       timestamps: false,
     }
   );
+
+  Types.associate = (models) => {
+    Types.belongsToMany(models.People, {
+      through: "Type_people",
+      foreignKey: "id_type",
+      as: "Type_People",
+    });
+  };
+
   return Types;
 };

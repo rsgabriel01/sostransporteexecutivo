@@ -24,5 +24,37 @@ module.exports = (sequelize, DataTypes) => {
       timestamps: false,
     }
   );
+
+  Service_orders.associate = (models) => {
+    Service_orders.belongsTo(models.People, {
+      foreignKey: "id_client",
+      as: "Client",
+    });
+    Service_orders.belongsTo(models.People, {
+      foreignKey: "id_user_attendance",
+      as: "User_attendance",
+    });
+    Service_orders.belongsTo(models.People, {
+      foreignKey: "id_driver",
+      as: "Driver",
+    });
+    Service_orders.belongsTo(models.Status, {
+      foreignKey: "id_status",
+      as: "Status",
+    });
+    Service_orders.belongsTo(models.Neighborhoods, {
+      foreignKey: "id_neighborhood_origin",
+      as: "Neighborhood_origin",
+    });
+    Service_orders.belongsTo(models.Neighborhoods, {
+      foreignKey: "id_neighborhood_destiny",
+      as: "Neighborhood_destiny",
+    });
+    Service_orders.belongsTo(models.People, {
+      foreignKey: "id_user_completion",
+      as: "User_completion",
+    });
+  };
+
   return Service_orders;
 };

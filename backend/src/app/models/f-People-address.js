@@ -14,5 +14,17 @@ module.exports = (sequelize, DataTypes) => {
       timestamps: false,
     }
   );
+
+  People_address.associate = (models) => {
+    People_address.belongsTo(models.People, {
+      foreignKey: "id_people",
+      as: "People",
+    });
+    People_address.belongsTo(models.Neighborhoods, {
+      foreignKey: "id_neighborhood",
+      as: "Neighborhood",
+    });
+  };
+
   return People_address;
 };

@@ -15,5 +15,17 @@ module.exports = (sequelize, DataTypes) => {
       timestamps: false,
     }
   );
+
+  Vehicles.associate = (models) => {
+    Vehicles.belongsTo(models.Vehicle_models, {
+      foreignKey: "id_model",
+      as: "Vehicle_model",
+    });
+    Vehicles.belongsTo(models.People, {
+      foreignKey: "id_people",
+      as: "People",
+    });
+  };
+
   return Vehicles;
 };

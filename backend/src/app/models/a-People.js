@@ -22,35 +22,36 @@ module.exports = (sequelize, DataTypes) => {
   People.associate = (models) => {
     People.hasOne(models.Logins, {
       foreignKey: "id_people",
-      as: "People-Login",
+      as: "Logins",
     });
     People.hasOne(models.Vehicles, {
       foreignKey: "id_people",
-      as: "People-Vehicles",
+      as: "Vehicles",
     });
     People.hasOne(models.People_address, {
       foreignKey: "id_people",
-      as: "People-People_address",
+      as: "People_address",
     });
-    People.hasMany(models.Type_people, {
+    People.belongsToMany(models.Types, {
+      through: "Types_people",
       foreignKey: "id_people",
-      as: "People-Type_people",
+      as: "People_Type",
     });
     People.hasMany(models.Service_orders, {
       foreignKey: "id_client",
-      as: "People-client-Service_orders",
+      as: "Service_orders_clients",
     });
     People.hasMany(models.Service_orders, {
       foreignKey: "id_user_attendance",
-      as: "People-user_attendance-Service_orders",
+      as: "Service_orders_users_attendance",
     });
     People.hasMany(models.Service_orders, {
       foreignKey: "id_driver",
-      as: "People-driver-Service_orders",
+      as: "Service_orders_drivers",
     });
     People.hasMany(models.Service_orders, {
       foreignKey: "id_user_completion",
-      as: "People-user_completion-Service_orders",
+      as: "Service_orders_users_completion",
     });
   };
 

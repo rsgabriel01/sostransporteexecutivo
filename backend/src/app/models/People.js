@@ -33,7 +33,7 @@ module.exports = (sequelize, DataTypes) => {
       as: "People_address",
     });
     People.belongsToMany(models.Types, {
-      through: "Types_people",
+      through: "Type_people",
       foreignKey: "id_people",
       as: "People_Type",
     });

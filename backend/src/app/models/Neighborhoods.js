@@ -21,7 +21,7 @@ module.exports = (sequelize, DataTypes) => {
     });
     Neighborhoods.hasMany(models.Service_orders, {
       foreignKey: "id_neighborhood_origin",
-      as: "Service_orders_neighborhoods-origin",
+      as: "Service_orders_neighborhoods_origin",
     });
     Neighborhoods.hasMany(models.Service_orders, {
       foreignKey: "id_neighborhood_destiny",

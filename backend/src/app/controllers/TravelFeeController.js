@@ -1,12 +1,14 @@
-const { Tipos_usuarios } = require("../models");
+const { Travel_fee } = require("../models");
 const { Op, fn, col, literal, QueryTypes, Sequelize } = require("sequelize");
 
 module.exports = {
   async index(req, res) {
     try {
-      const tipos_usuarios = await Tipos_usuarios.findAll();
+      const travelFees = await Travel_fee.findAll({
+        include: ["Neighborhood"],
+      });
 
-      return res.json(tipos_usuarios);
+      return res.json(travelFees);
     } catch (error) {
       console.log(error);
     }

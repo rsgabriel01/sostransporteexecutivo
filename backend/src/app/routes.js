@@ -2,16 +2,31 @@ const express = require("express");
 
 const routes = express.Router();
 
-const PessoasController = require("./controllers/PessoasController");
-const Usuarios_empresaController = require("./controllers/Usuarios_empresaController");
-const Tipos_usuariosController = require("./controllers/Tipos_usuariosController");
-const SessoesController = require("./controllers/SessoesController");
+const CitysController = require("./controllers/CitysController");
+const LoginsController = require("./controllers/LoginsController");
+const NeighborhoodsController = require("./controllers/NeighborhoodsController");
+const PeopleAddressController = require("./controllers/PeopleAddressController");
+const PeopleController = require("./controllers/PeopleController");
+const ServiceOrdersController = require("./controllers/ServiceOrdersController");
+const SessionsController = require("./controllers/SessionsController");
+const StatesController = require("./controllers/StatesController");
+const StatusController = require("./controllers/StatusController");
+const TravelFeeController = require("./controllers/TravelFeeController");
+const TypePeopleController = require("./controllers/TypePeopleController");
+const TypesController = require("./controllers/TypesController");
+const VehicleBrandsController = require("./controllers/VehicleBrandsController");
+const VehicleModelsController = require("./controllers/VehicleModelsController");
+const VehiclesController = require("./controllers/VehiclesController");
 
-const {
-  validatorLogin,
-  validatorSession,
-  validatorLogout,
-} = require("./validators/routesAcess");
+// const Usuarios_empresaController = require("./controllers/Usuarios_empresaController");
+// const Tipos_usuariosController = require("./controllers/Tipos_usuariosController");
+// const SessoesController = require("./controllers/SessoesController");
+
+// const {
+//   validatorLogin,
+//   validatorSession,
+//   validatorLogout,
+// } = require("./validators/routesAcess");
 
 routes.get("/", (req, res) => {
   return res.json("Server is running...");
@@ -19,34 +34,28 @@ routes.get("/", (req, res) => {
 
 //Acess ----------------------------------------------
 
-routes.get("/acess/session", validatorSession, SessoesController.show);
+// routes.get("/acess/session", validatorSession, SessoesController.show);
 
-routes.post("/acess/login", validatorLogin, SessoesController.store);
+// routes.post("/acess/login", validatorLogin, SessoesController.store);
 
-routes.get("/acess/logout", validatorLogout, SessoesController.destroy);
+// routes.get("/acess/logout", validatorLogout, SessoesController.destroy);
 
 //Pessoas --------------------------------------------
 
-routes.get("/pessoas", PessoasController.index);
-
-// routes.post("/interventions/create", InterventionController.store);
-
-// routes.get("/interventions/last/:scaleId", InterventionController.show);
-
-//Usuarios Empresa --------------------------------------------
-
-routes.get("/usuarios", Usuarios_empresaController.index);
-
-// routes.post("/interventions/create", InterventionController.store);
-
-// routes.get("/interventions/last/:scaleId", InterventionController.show);
-
-//Tipos Usuarios --------------------------------------------
-
-routes.get("/tiposUsuarios", Tipos_usuariosController.index);
-
-// routes.post("/interventions/create", InterventionController.store);
-
-// routes.get("/interventions/last/:scaleId", InterventionController.show);
+routes.get("/citys", CitysController.index);
+routes.get("/logins", LoginsController.index);
+routes.get("/neighborhoods", NeighborhoodsController.index);
+routes.get("/peopleAdress", PeopleAddressController.index);
+routes.get("/people", PeopleController.index);
+routes.get("/serviceOrders", ServiceOrdersController.index);
+routes.get("/sessions", SessionsController.index);
+routes.get("/states", StatesController.index);
+routes.get("/status", StatusController.index);
+routes.get("/travelFee", TravelFeeController.index);
+routes.get("/typePeople", TypePeopleController.index);
+routes.get("/types", TypesController.index);
+routes.get("/vehicleBrands", VehicleBrandsController.index);
+routes.get("/vehicleModels", VehicleModelsController.index);
+routes.get("/vehicles", VehiclesController.index);
 
 module.exports = routes;

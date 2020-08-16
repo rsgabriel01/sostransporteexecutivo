@@ -38,7 +38,7 @@ routes.get("/acess/session", validatorSession, SessionsController.show);
 
 routes.post("/acess/login", validatorLogin, SessionsController.store);
 
-// routes.get("/acess/logout", validatorLogout, SessoesController.destroy);
+routes.get("/acess/logout", validatorLogout, SessionsController.destroy);
 
 //Pessoas --------------------------------------------
 

@@ -6,7 +6,7 @@ module.exports = (sequelize, DataTypes) => {
     {
       id_people: DataTypes.BIGINT,
       id_model: DataTypes.BIGINT,
-      registration_number: DataTypes.BIGINT,
+      registration_number: DataTypes.STRING,
       color: DataTypes.STRING,
       active: DataTypes.BOOLEAN,
     },

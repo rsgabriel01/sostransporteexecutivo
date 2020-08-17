@@ -30,6 +30,8 @@ const {
 const { validatorPersonCreate } = require("./validators/routesPerson");
 
 const { validatorAddressCreate } = require("./validators/routesPeopleAddress");
+
+const { validatorTypePeopleCreate } = require("./validators/routesTypePeople");
 //#endregion
 
 routes.get("/", (req, res) => {
@@ -59,6 +61,15 @@ routes.post(
 
 //#endregion
 
+//#region Type People
+routes.post(
+  "/typepeople/create",
+  validatorTypePeopleCreate,
+  TypePeopleController.store
+);
+
+//#endregion
+
 routes.get("/citys", CitysController.index);
 routes.get("/users", UsersController.index);
 routes.get("/neighborhoods", NeighborhoodsController.index);
@@ -67,7 +78,6 @@ routes.get("/serviceOrders", ServiceOrdersController.index);
 routes.get("/states", StatesController.index);
 routes.get("/status", StatusController.index);
 routes.get("/travelFee", TravelFeeController.index);
-routes.get("/typePeople", TypePeopleController.index);
 routes.get("/types", TypesController.index);
 routes.get("/vehicleBrands", VehicleBrandsController.index);
 routes.get("/vehicleModels", VehicleModelsController.index);

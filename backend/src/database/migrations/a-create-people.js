@@ -17,11 +17,11 @@ module.exports = {
         },
         cpf_cnpj: {
           allowNull: true,
-          type: DataTypes.BIGINT,
+          type: DataTypes.STRING,
         },
         rg: {
           allowNull: true,
-          type: DataTypes.BIGINT,
+          type: DataTypes.STRING,
         },
         company_name: {
           allowNull: true,
@@ -33,19 +33,19 @@ module.exports = {
         },
         cnh: {
           allowNull: true,
-          type: DataTypes.BIGINT,
+          type: DataTypes.STRING,
         },
         num_permit: {
           allowNull: true,
-          type: DataTypes.BIGINT,
+          type: DataTypes.STRING,
         },
         phone: {
           allowNull: true,
-          type: DataTypes.BIGINT,
+          type: DataTypes.STRING,
         },
         business_phone: {
           allowNull: true,
-          type: DataTypes.BIGINT,
+          type: DataTypes.STRING,
         },
         email: {
           allowNull: true,

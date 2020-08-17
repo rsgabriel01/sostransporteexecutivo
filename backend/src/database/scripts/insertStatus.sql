@@ -1,0 +1,1 @@
+insert into "Status"(description) values ('');

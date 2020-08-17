@@ -1,6 +1,6 @@
 require("dotenv/config");
 
-const { Sessions, Users } = require("../models");
+const { Sessions, Users, People } = require("../models");
 
 const { Op, fn, col, literal, QueryTypes, Sequelize } = require("sequelize");
 
@@ -110,7 +110,7 @@ module.exports = {
         expiration,
       });
 
-      return res.json({ userId: id, personId: id_people, session: { token } });
+      return res.json({ userId: id, id_person: id_people, session: { token } });
     } catch (error) {
       console.log(error);
     }

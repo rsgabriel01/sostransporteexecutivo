@@ -2,11 +2,12 @@ const express = require("express");
 
 const routes = express.Router();
 
+//#region Controllers
 const CitysController = require("./controllers/CitysController");
 const UsersController = require("./controllers/UsersController");
 const NeighborhoodsController = require("./controllers/NeighborhoodsController");
 const PeopleAddressController = require("./controllers/PeopleAddressController");
-const PeopleController = require("./controllers/PeopleController");
+const PersonController = require("./controllers/PersonController");
 const ServiceOrdersController = require("./controllers/ServiceOrdersController");
 const SessionsController = require("./controllers/SessionsController");
 const StatesController = require("./controllers/StatesController");
@@ -17,36 +18,40 @@ const TypesController = require("./controllers/TypesController");
 const VehicleBrandsController = require("./controllers/VehicleBrandsController");
 const VehicleModelsController = require("./controllers/VehicleModelsController");
 const VehiclesController = require("./controllers/VehiclesController");
+//#endregion
 
-// const Usuarios_empresaController = require("./controllers/Usuarios_empresaController");
-// const Tipos_usuariosController = require("./controllers/Tipos_usuariosController");
-// const SessoesController = require("./controllers/SessoesController");
-
+//#region Validators
 const {
   validatorLogin,
   validatorSession,
   validatorLogout,
 } = require("./validators/routesAcess");
 
+const { validatorPersonCreate } = require("./validators/routesPerson");
+//#endregion
+
 routes.get("/", (req, res) => {
   return res.json("Server is running...");
 });
 
-//Acess ----------------------------------------------
-
+//#region Routes Acess
 routes.get("/acess/session", validatorSession, SessionsController.show);
 
 routes.post("/acess/login", validatorLogin, SessionsController.store);
 
 routes.get("/acess/logout", validatorLogout, SessionsController.destroy);
+//#endregion
 
-//Pessoas --------------------------------------------
+//#region Routes Person/People
+routes.get("/people", PersonController.index);
+
+routes.post("/person/create", validatorPersonCreate, PersonController.store);
+//#endregion
 
 routes.get("/citys", CitysController.index);
 routes.get("/users", UsersController.index);
 routes.get("/neighborhoods", NeighborhoodsController.index);
 routes.get("/peopleAdress", PeopleAddressController.index);
-routes.get("/people", PeopleController.index);
 routes.get("/serviceOrders", ServiceOrdersController.index);
 // routes.get("/sessions", SessionsController.index);
 routes.get("/states", StatesController.index);

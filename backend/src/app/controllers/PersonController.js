@@ -26,21 +26,21 @@ module.exports = {
 
   async store(req, res) {
     try {
-      let typePersonIdAllowed = false;
+      // let typeExecutingPersonIdAllowed = false;
       let typeIds = [];
 
       const { name, cpf_cnpj, rg, phone, email } = req.body;
-      const { id_person } = req.headers;
+      const { id_executingperson } = req.headers;
 
-      const personData = await People.findOne({
+      const executingPersonData = await People.findOne({
         where: {
-          id: id_person,
+          id: id_executingperson,
         },
         include: ["People_Type"],
       });
 
-      if (personData) {
-        typeIds = personData.People_Type.map(function (index) {
+      if (executingPersonData) {
+        typeIds = executingPersonData.People_Type.map(function (index) {
           return index.id;
         });
       } else {
@@ -50,11 +50,7 @@ module.exports = {
         });
       }
 
-      console.log(typeIds);
-
-      if (typeIds.includes("1") || typeIds.includes("2")) {
-        typePersonIdAllowed = true;
-      } else {
+      if (!(typeIds.includes("1") || typeIds.includes("2"))) {
         return res.status(401).json({
           message:
             "Esse usuário não tem permissao para realizar essa operação.",
@@ -62,9 +58,9 @@ module.exports = {
       }
 
       if (CpfValidation(cpf_cnpj) === false) {
-        return res
-          .status(400)
-          .json({ message: "Por favor, informe um CPF válido." });
+        return res.status(400).json({
+          message: "O CPF informado é inválido, por favor verifique.",
+        });
       }
 
       const cpfFinded = await People.findOne({
@@ -74,9 +70,9 @@ module.exports = {
       });
 
       if (cpfFinded) {
-        return res
-          .status(400)
-          .json({ message: "O CPF informado já foi cadastrado." });
+        return res.status(400).json({
+          message: "O CPF informado já foi cadastrado, por favor verifique.",
+        });
       }
 
       const emailFinded = await People.findOne({
@@ -86,9 +82,9 @@ module.exports = {
       });
 
       if (emailFinded) {
-        return res
-          .status(400)
-          .json({ message: "O email informado já foi cadastrado." });
+        return res.status(400).json({
+          message: "O email informado já foi cadastrado, por favor verifique.",
+        });
       }
 
       const createdPerson = await People.create({
@@ -106,6 +102,7 @@ module.exports = {
       });
     } catch (error) {
       console.log(error);
+      return res.status(500);
     }
   },
 };

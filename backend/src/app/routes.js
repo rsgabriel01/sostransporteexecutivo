@@ -28,6 +28,8 @@ const {
 } = require("./validators/routesAcess");
 
 const { validatorPersonCreate } = require("./validators/routesPerson");
+
+const { validatorAddressCreate } = require("./validators/routesPeopleAddress");
 //#endregion
 
 routes.get("/", (req, res) => {
@@ -48,10 +50,18 @@ routes.get("/people", PersonController.index);
 routes.post("/person/create", validatorPersonCreate, PersonController.store);
 //#endregion
 
+//#region People Address
+routes.post(
+  "/address/create",
+  validatorAddressCreate,
+  PeopleAddressController.store
+);
+
+//#endregion
+
 routes.get("/citys", CitysController.index);
 routes.get("/users", UsersController.index);
 routes.get("/neighborhoods", NeighborhoodsController.index);
-routes.get("/peopleAdress", PeopleAddressController.index);
 routes.get("/serviceOrders", ServiceOrdersController.index);
 // routes.get("/sessions", SessionsController.index);
 routes.get("/states", StatesController.index);

@@ -46,8 +46,6 @@ module.exports = {
 
       const { user, password } = req.body;
 
-      const salt = process.env.DB_SALT_HASH_PASSWORD;
-
       const dataUser = await Users.findOne({
         where: {
           user,

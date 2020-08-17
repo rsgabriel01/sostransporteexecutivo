@@ -1,16 +1,15 @@
 // const express = require("express");
 const { celebrate, Segments, Joi } = require("celebrate");
 
-const validatorPersonCreate = celebrate({
+const validatorAddressCreate = celebrate({
   [Segments.HEADERS]: Joi.object({
     id_executingperson: Joi.number().positive().integer().required(),
   }).unknown(),
   [Segments.BODY]: Joi.object().keys({
-    name: Joi.string().required(),
-    cpf_cnpj: Joi.string().regex(/^\d+$/).required().min(9).max(11),
-    rg: Joi.string().regex(/^\d+$/).required().min(7).max(11),
-    phone: Joi.string().regex(/^\d+$/).required().min(10).max(11),
-    email: Joi.string().required().email(),
+    id_people: Joi.number().positive().integer().required(),
+    id_neighborhood: Joi.number().positive().integer().required(),
+    street: Joi.string().required(),
+    street_number: Joi.number().positive().integer().required(),
   }),
 });
 
@@ -28,5 +27,5 @@ const validatorPersonCreate = celebrate({
 // });
 
 module.exports = {
-  validatorPersonCreate,
+  validatorAddressCreate,
 };

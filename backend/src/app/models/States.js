@@ -5,7 +5,7 @@ module.exports = (sequelize, DataTypes) => {
     "States",
     {
       name: DataTypes.STRING,
-      uf: DataTypes.BIGINT,
+      uf: DataTypes.STRING,
     },
     {
       tableName: "States",

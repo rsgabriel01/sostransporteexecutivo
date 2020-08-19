@@ -33,16 +33,13 @@ module.exports = {
           return index.id;
         });
       } else {
-        console.log("aqui1");
         return res.status(401).json({
           message:
             "Esse usuário não tem permissao para realizar essa operação.",
         });
       }
 
-      console.log(typeIds);
       if (!(typeIds.includes("1") || typeIds.includes("2"))) {
-        console.log("aqui2");
         return res.status(401).json({
           message:
             "Esse usuário não tem permissao para realizar essa operação.",

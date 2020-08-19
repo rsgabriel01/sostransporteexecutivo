@@ -32,6 +32,8 @@ const { validatorPersonCreate } = require("./validators/routesPerson");
 const { validatorAddressCreate } = require("./validators/routesPeopleAddress");
 
 const { validatorTypePeopleCreate } = require("./validators/routesTypePeople");
+
+const { validatorUsersCreate } = require("./validators/routesUsers");
 //#endregion
 
 routes.get("/", (req, res) => {
@@ -70,7 +72,7 @@ routes.post(
 
 //#endregion
 
-routes.get("/citys", CitysController.index);
+//#region Users
 routes.get("/users", UsersController.index);
 
 routes.post("/users/create", validatorUsersCreate, UsersController.store);

@@ -30,6 +30,9 @@ const {
 const { validatorPersonCreate } = require("./validators/routesPerson");
 
 const { validatorAddressCreate } = require("./validators/routesPeopleAddress");
+
+const { validatorUsersCreate } = require("./validators/routesUsers");
+
 //#endregion
 
 routes.get("/", (req, res) => {
@@ -59,8 +62,14 @@ routes.post(
 
 //#endregion
 
-routes.get("/citys", CitysController.index);
+//#region Users
 routes.get("/users", UsersController.index);
+
+routes.post("/users/create", validatorUsersCreate, UsersController.store);
+
+//#endregion
+
+routes.get("/citys", CitysController.index);
 routes.get("/neighborhoods", NeighborhoodsController.index);
 routes.get("/serviceOrders", ServiceOrdersController.index);
 // routes.get("/sessions", SessionsController.index);

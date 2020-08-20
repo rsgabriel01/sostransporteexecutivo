@@ -81,7 +81,7 @@ module.exports = {
       if (!personFinded) {
         return res.status(400).json({
           message:
-            "O pessoa informada não foi encontrado em nosso banco de dados, por favor verifique.",
+            "A pessoa informada não foi encontrado em nosso banco de dados, por favor verifique.",
         });
       }
 

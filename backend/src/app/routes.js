@@ -7,6 +7,7 @@ const CitysController = require("./controllers/CitysController");
 const UsersController = require("./controllers/UsersController");
 const NeighborhoodsController = require("./controllers/NeighborhoodsController");
 const PeopleAddressController = require("./controllers/PeopleAddressController");
+const DriversController = require("./controllers/DriversController");
 const PersonController = require("./controllers/PersonController");
 const ServiceOrdersController = require("./controllers/ServiceOrdersController");
 const SessionsController = require("./controllers/SessionsController");
@@ -34,6 +35,8 @@ const { validatorAddressCreate } = require("./validators/routesPeopleAddress");
 const { validatorTypePeopleCreate } = require("./validators/routesTypePeople");
 
 const { validatorUsersCreate } = require("./validators/routesUsers");
+
+const { validatorDriversCreate } = require("./validators/routesDrivers");
 //#endregion
 
 routes.get("/", (req, res) => {
@@ -77,7 +80,7 @@ routes.post("/users/create", validatorUsersCreate, UsersController.store);
 //#endregion
 
 //#region Drivers
-routes.post("/driver/create", validatorPersonCreate, PersonController.store);
+routes.post("/drivers/create", validatorDriversCreate, DriversController.store);
 //#endregion
 
 //#region Clients

@@ -8,8 +8,8 @@ const validatorDriversCreate = celebrate({
   }).unknown(),
   [Segments.BODY]: Joi.object().keys({
     id_people: Joi.string().required(),
-    cnh: Joi.string().regex(/^\d+$/).required().min(9).max(11),
-    num_permit: Joi.string().regex(/^\d+$/).required().min(7).max(11),
+    cnh: Joi.string().regex(/^\d+$/).required().min(8).max(12),
+    num_permit: Joi.string().regex(/^\d+$/).required().min(7).max(15),
     business_phone: Joi.string().regex(/^\d+$/).required().min(10).max(11),
   }),
 });
@@ -28,5 +28,5 @@ const validatorDriversCreate = celebrate({
 // });
 
 module.exports = {
-  validatorPersonCreate,
+  validatorDriversCreate,
 };

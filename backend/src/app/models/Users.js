@@ -15,6 +15,12 @@ module.exports = (sequelize, DataTypes) => {
     }
   );
 
+  Users.prototype.toJSON = function () {
+    const values = { ...this.get() };
+    delete values.password;
+    return values;
+  };
+
   Users.associate = (models) => {
     Users.belongsTo(models.People, {
       foreignKey: "id_people",

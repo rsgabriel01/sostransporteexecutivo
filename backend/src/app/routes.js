@@ -60,7 +60,6 @@ routes.post(
   validatorAddressCreate,
   PeopleAddressController.store
 );
-
 //#endregion
 
 //#region Type People
@@ -69,13 +68,19 @@ routes.post(
   validatorTypePeopleCreate,
   TypePeopleController.store
 );
-
 //#endregion
 
 //#region Users
 routes.get("/users", UsersController.index);
 
 routes.post("/users/create", validatorUsersCreate, UsersController.store);
+//#endregion
+
+//#region Drivers
+routes.post("/driver/create", validatorPersonCreate, PersonController.store);
+//#endregion
+
+//#region Clients
 
 //#endregion
 

@@ -3,6 +3,7 @@ const { celebrate, Segments, Joi } = require("celebrate");
 
 const validatorPersonCreate = celebrate({
   [Segments.HEADERS]: Joi.object({
+    authorization: Joi.string().required(),
     id_executingperson: Joi.number().positive().integer().required(),
   }).unknown(),
   [Segments.BODY]: Joi.object().keys({

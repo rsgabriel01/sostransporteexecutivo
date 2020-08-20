@@ -1,5 +1,7 @@
-const { People } = require("../models");
+const { People, Sessions } = require("../models");
 const { Op, fn, col, literal, QueryTypes, Sequelize } = require("sequelize");
+
+const moment = require("moment");
 
 var CpfValidation = require("../helpers/CpfValidation");
 
@@ -30,7 +32,25 @@ module.exports = {
       let typeIds = [];
 
       const { name, cpf_cnpj, rg, phone, email } = req.body;
-      const { id_executingperson } = req.headers;
+      const { id_executingperson, authorization } = req.headers;
+
+      const sessionFinded = await Sessions.findAll({
+        where: {
+          token: authorization,
+        },
+      });
+
+      if (sessionFinded.length == 0) {
+        return res.status(401).json({ message: "Token de sessão inválido." });
+      }
+
+      const [{ expiration }] = sessionFinded;
+
+      const expirationDate = moment.utc(expiration).local().format();
+
+      if (!moment(expirationDate).isSameOrAfter(moment())) {
+        return res.status(401).json({ message: "Token de sessão expirado." });
+      }
 
       const executingPersonData = await People.findOne({
         where: {

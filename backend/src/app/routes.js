@@ -37,6 +37,8 @@ const { validatorTypePeopleCreate } = require("./validators/routesTypePeople");
 const { validatorUsersCreate } = require("./validators/routesUsers");
 
 const { validatorDriversCreate } = require("./validators/routesDrivers");
+
+const { validatorVehiclesCreate } = require("./validators/routesVehicles");
 //#endregion
 
 routes.get("/", (req, res) => {
@@ -83,6 +85,17 @@ routes.post("/users/create", validatorUsersCreate, UsersController.store);
 routes.post("/drivers/create", validatorDriversCreate, DriversController.store);
 //#endregion
 
+//#region Vehicles
+routes.get("/vehicles", VehiclesController.index);
+
+routes.post(
+  "/vehicles/create",
+  validatorVehiclesCreate,
+  VehiclesController.store
+);
+
+//#endregion
+
 //#region Clients
 
 //#endregion
@@ -97,6 +110,5 @@ routes.get("/travelFee", TravelFeeController.index);
 routes.get("/types", TypesController.index);
 routes.get("/vehicleBrands", VehicleBrandsController.index);
 routes.get("/vehicleModels", VehicleModelsController.index);
-routes.get("/vehicles", VehiclesController.index);
 
 module.exports = routes;

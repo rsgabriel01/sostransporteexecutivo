@@ -12,7 +12,7 @@ module.exports = {
           type: DataTypes.BIGINT,
         },
         id_people: {
-          allowNull: false,
+          allowNull: true,
           type: DataTypes.BIGINT,
           references: {
             model: "People",

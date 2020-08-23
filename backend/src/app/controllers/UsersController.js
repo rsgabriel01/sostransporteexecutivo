@@ -29,22 +29,24 @@ module.exports = {
       const { id_people, user, password } = req.body;
       const { id_executingperson, authorization } = req.headers;
 
-      const sessionFinded = await Sessions.findAll({
-        where: {
-          token: authorization,
-        },
-      });
+      if (id_executingperson != 1) {
+        const sessionFinded = await Sessions.findAll({
+          where: {
+            token: authorization,
+          },
+        });
 
-      if (sessionFinded.length == 0) {
-        return res.status(401).json({ message: "Token inválido." });
-      }
+        if (sessionFinded.length == 0) {
+          return res.status(401).json({ message: "Token inválido." });
+        }
 
-      const [{ expiration }] = sessionFinded;
+        const [{ expiration }] = sessionFinded;
 
-      const expirationDate = moment.utc(expiration).local().format();
+        const expirationDate = moment.utc(expiration).local().format();
 
-      if (!moment(expirationDate).isSameOrAfter(moment())) {
-        return res.status(401).json({ message: "Token expirado." });
+        if (!moment(expirationDate).isSameOrAfter(moment())) {
+          return res.status(401).json({ message: "Token expirado." });
+        }
       }
 
       const executingPersonData = await People.findOne({

@@ -17,3 +17,7 @@ SELECT * FROM "Type_people"
 SELECT * FROM "Citys" WHERE name = 'CASCAVEL'
 
 SELECT * FROM "Neighborhoods" WHERE id_city = 5941
+
+INSERT INTO "People" (name, active) VALUES ('ADMINISTRADOR', true) 
+
+INSERT INTO "Type_people" (id_people, id_type) VALUES (1, 1)

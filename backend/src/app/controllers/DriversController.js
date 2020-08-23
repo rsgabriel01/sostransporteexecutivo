@@ -137,19 +137,6 @@ module.exports = {
         });
       }
 
-      const createdDriver = await People.update(
-        { cnh, num_permit, business_phone },
-        {
-          where: {
-            id: id_people,
-          },
-        }
-      );
-
-      if (!createdDriver) {
-        return res.status(500);
-      }
-
       const createdTypeDriver = await Type_people.create({
         id_people,
         id_type: 3,
@@ -158,6 +145,15 @@ module.exports = {
       if (!createdTypeDriver) {
         return res.status(500);
       }
+
+      const createdDriver = await People.update(
+        { cnh, num_permit, business_phone },
+        {
+          where: {
+            id: id_people,
+          },
+        }
+      );
 
       return res.json({
         createdDriver,

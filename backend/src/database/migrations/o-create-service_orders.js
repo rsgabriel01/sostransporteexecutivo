@@ -19,6 +19,14 @@ module.exports = {
             key: "id",
           },
         },
+        id_user_solicitation: {
+          allowNull: false,
+          type: DataTypes.BIGINT,
+          references: {
+            model: "People",
+            key: "id",
+          },
+        },
         id_user_attendance: {
           allowNull: false,
           type: DataTypes.BIGINT,
@@ -43,6 +51,10 @@ module.exports = {
             key: "id",
           },
         },
+        date_time_solicitation: {
+          allowNull: true,
+          type: DataTypes.DATE,
+        },
         date_time_attendance: {
           allowNull: true,
           type: DataTypes.DATE,
@@ -51,7 +63,7 @@ module.exports = {
           allowNull: false,
           type: DataTypes.BIGINT,
           references: {
-            model: "Status",
+            model: "Neighborhoods",
             key: "id",
           },
         },
@@ -67,7 +79,7 @@ module.exports = {
           allowNull: false,
           type: DataTypes.BIGINT,
           references: {
-            model: "Status",
+            model: "Neighborhoods",
             key: "id",
           },
         },

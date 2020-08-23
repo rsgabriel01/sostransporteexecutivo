@@ -5,9 +5,11 @@ module.exports = (sequelize, DataTypes) => {
     "Service_orders",
     {
       id_client: DataTypes.BIGINT,
+      id_user_solicitation: DataTypes.BIGINT,
       id_user_attendance: DataTypes.BIGINT,
       id_driver: DataTypes.BIGINT,
       id_status: DataTypes.BIGINT,
+      date_time_solicitation: DataTypes.DATE,
       date_time_attendance: DataTypes.DATE,
       id_neighborhood_origin: DataTypes.BIGINT,
       street_origin: DataTypes.STRING,
@@ -29,6 +31,10 @@ module.exports = (sequelize, DataTypes) => {
     Service_orders.belongsTo(models.People, {
       foreignKey: "id_client",
       as: "Client",
+    });
+    Service_orders.belongsTo(models.People, {
+      foreignKey: "id_user_solicitation",
+      as: "User_solicitation",
     });
     Service_orders.belongsTo(models.People, {
       foreignKey: "id_user_attendance",

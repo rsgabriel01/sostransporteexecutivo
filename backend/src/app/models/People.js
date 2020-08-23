@@ -43,6 +43,10 @@ module.exports = (sequelize, DataTypes) => {
       as: "Service_orders_clients",
     });
     People.hasMany(models.Service_orders, {
+      foreignKey: "id_user_solicitation",
+      as: "Service_orders_users_solicitation",
+    });
+    People.hasMany(models.Service_orders, {
       foreignKey: "id_user_attendance",
       as: "Service_orders_users_attendance",
     });

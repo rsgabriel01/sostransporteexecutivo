@@ -19,6 +19,7 @@ const TypesController = require("./controllers/TypesController");
 const VehicleBrandsController = require("./controllers/VehicleBrandsController");
 const VehicleModelsController = require("./controllers/VehicleModelsController");
 const VehiclesController = require("./controllers/VehiclesController");
+const ClientsController = require("./controllers/ClientsController");
 //#endregion
 
 //#region Validators
@@ -39,6 +40,8 @@ const { validatorUsersCreate } = require("./validators/routesUsers");
 const { validatorDriversCreate } = require("./validators/routesDrivers");
 
 const { validatorVehiclesCreate } = require("./validators/routesVehicles");
+
+const { validatorClientsCreate } = require("./validators/routesClients");
 //#endregion
 
 routes.get("/", (req, res) => {
@@ -93,11 +96,10 @@ routes.post(
   validatorVehiclesCreate,
   VehiclesController.store
 );
-
 //#endregion
 
 //#region Clients
-
+routes.post("/clients/create", validatorClientsCreate, ClientsController.store);
 //#endregion
 
 routes.get("/citys", CitysController.index);

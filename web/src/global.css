@@ -1,0 +1,67 @@
+@import url("https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap");
+
+* {
+  margin: 0;
+  padding: 0;
+  outline: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font: 400 14px Roboto, sans-serif;
+  background: #e6e6e6;
+  -webkit-font-smoothing: antialiased;
+}
+
+input,
+button,
+textarea {
+  font: 400 18px Roboto, sans-serif;
+}
+
+button {
+  cursor: pointer;
+}
+
+form input {
+  width: 100%;
+  height: 45px;
+  color: #333;
+  background: #e6e6e6;
+  border: 1px solid #dcdce6;
+  border-radius: 8px;
+  padding: 0 24px;
+}
+
+.button {
+  width: 100%;
+  height: 60px;
+  border: 0;
+  border-radius: 8px;
+  color: #fff;
+  font-weight: 700;
+  margin-top: 16px;
+  display: inline-block;
+  text-align: center;
+  text-decoration: none;
+  font-size: 18px;
+  line-height: 60px;
+  transition: filter 0.2s;
+  letter-spacing: 1px;
+}
+
+.btnSuccess {
+  background: #0f8228 !important;
+}
+
+.btnReturn {
+  background: #80820f !important;
+}
+
+.btnCancel {
+  background: #820f0f !important;
+}
+
+.button:hover {
+  filter: brightness(90%);
+}

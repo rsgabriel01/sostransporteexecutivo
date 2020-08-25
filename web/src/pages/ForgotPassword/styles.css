@@ -15,16 +15,16 @@ body {
 
 .remember-container img {
   width: 100%;
-  max-width: 700px;
+  max-width: 550px;
 }
 .remember-container section.form {
   width: 100%;
-  max-width: 580px;
+  max-width: 480px;
 
   margin-left: 100px;
 
   height: 100%;
-  max-height: 590px;
+  max-height: 490px;
 
   background: #e6e6e6;
 
@@ -38,7 +38,7 @@ body {
 
 .remember-container section.form form {
   width: 100%;
-  padding: 80px;
+  padding: 60px;
 
   display: flex;
   flex-direction: column;

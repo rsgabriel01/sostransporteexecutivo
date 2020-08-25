@@ -84,12 +84,13 @@ form .input-group:focus-within svg {
 
 form .input-group input {
   width: 100%;
-  height: 65px;
+  height: 53px;
   color: #3f3d56;
   background: #ffffff;
   border: 0;
   border-radius: none;
-  padding: 0 15px;
+  padding: 0 15;
+  margin: 0 !important;
 }
 
 form a {

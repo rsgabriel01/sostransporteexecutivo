@@ -4,6 +4,7 @@ import {
   RiEyeLine,
   RiEyeOffLine,
   RiLock2Line,
+  RiLoginBoxLine,
 } from "react-icons/ri";
 
 import { Link } from "react-router-dom";
@@ -21,19 +22,20 @@ export default function Logon() {
           <h1>ACESSAR A PLATAFORMA</h1>
 
           <div className="input-group">
-            <RiUserLine size={35} color="#3F3D56" />
+            <RiUserLine size={30} color="#3F3D56" />
             <input type="text" placeholder="Usuário" />
           </div>
 
           <div className="input-group">
-            <RiLock2Line size={35} color="#3F3D56" />
+            <RiLock2Line size={30} color="#3F3D56" />
             <input type="password" placeholder="Senha" />
-            <RiEyeLine size={35} color="#3F3D56" className="eye" />
+            <RiEyeLine size={30} color="#3F3D56" className="eye" />
           </div>
 
           <Link to="/remember">Esqueci minha senha</Link>
 
           <button type="submit" className="button">
+            <RiLoginBoxLine size={30} />
             Entrar
           </button>
         </form>

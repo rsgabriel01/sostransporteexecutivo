@@ -1,5 +1,10 @@
 import React from "react";
-import { RiUserLine, RiMailSendLine, RiArrowGoBackLine } from "react-icons/ri";
+import {
+  RiUserLine,
+  RiMailLine,
+  RiMailSendLine,
+  RiArrowLeftLine,
+} from "react-icons/ri";
 
 import { Link } from "react-router-dom";
 
@@ -16,14 +21,16 @@ export default function Remember() {
           <h1>RECUPERAR SENHA</h1>
 
           <div className="input-group">
-            <RiMailSendLine size={35} color="#3F3D56" />
+            <RiMailLine size={30} color="#3F3D56" />
             <input type="email" placeholder="E-mail" />
           </div>
           <button type="submit" className="button">
+            <RiMailSendLine size={25} />
             Lembrar
           </button>
           <Link to="/">
             <button type="submit" className="button btnReturn">
+              <RiArrowLeftLine size={30} />
               Voltar
             </button>
           </Link>

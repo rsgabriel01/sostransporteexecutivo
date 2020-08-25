@@ -1,6 +1,6 @@
 import React from "react";
 
-import LateralMenu from "../components/LateralMenu";
+import LateralMenu from "../components/LateralMenu/LateralMenu";
 
 import {} from "react-icons/ri";
 

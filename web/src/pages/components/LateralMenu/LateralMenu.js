@@ -23,7 +23,8 @@ import {
   RiArrowDropLeftLine,
 } from "react-icons/ri";
 
-import "react-pro-sidebar/dist/css/styles.css";
+import "./custom.scss";
+// import "react-pro-sidebar/dist/css/styles.css";
 
 export default function LateralMenu() {
   const [collapsedMenu, setCollapsedMenu] = useState(true);

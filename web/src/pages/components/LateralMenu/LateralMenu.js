@@ -26,6 +26,8 @@ import {
 import "./custom.scss";
 // import "react-pro-sidebar/dist/css/styles.css";
 
+import api from "../../../services/api";
+
 export default function LateralMenu() {
   const [collapsedMenu, setCollapsedMenu] = useState(true);
 
@@ -54,10 +56,21 @@ export default function LateralMenu() {
   }
 
   function handleLogout() {
-    localStorage.removeItem("id_executingperson");
-    localStorage.removeItem("authorization");
+    const authorization = localStorage.getItem("authorization");
 
-    history.push("/");
+    api
+      .get("/acess/logout", {
+        headers: {
+          token: authorization,
+        },
+      })
+      .then((response) => {
+        if (response.status == 200) {
+          localStorage.removeItem("id_executingperson");
+          localStorage.removeItem("authorization");
+          history.push("/");
+        }
+      });
   }
 
   return (

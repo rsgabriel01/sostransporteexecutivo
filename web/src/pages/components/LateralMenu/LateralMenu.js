@@ -63,10 +63,7 @@ export default function LateralMenu() {
         <Menu>
           <MenuItem
             icon={<RiUserLine size={35} />}
-            suffix={
-              <RiLogoutBoxLine size={20} onClick={handleLogout} />
-              // <Link to="/" />
-            }
+            suffix={<RiLogoutBoxLine size={20} onClick={handleLogout} />}
           >
             Gabriel Souza
           </MenuItem>

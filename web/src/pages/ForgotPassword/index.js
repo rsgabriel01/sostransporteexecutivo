@@ -21,7 +21,7 @@ export default function Remember() {
           <h1>RECUPERAR SENHA</h1>
 
           <div className="input-group">
-            <RiMailLine size={30} color="#3F3D56" />
+            <RiMailLine size={28} color="#3F3D56" />
             <input type="email" placeholder="E-mail" />
           </div>
           <button type="submit" className="button">

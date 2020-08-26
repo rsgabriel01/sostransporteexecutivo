@@ -103,3 +103,10 @@ form .button {
   background: #0f4c82;
   margin-top: 10px;
 }
+
+.input-icons {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+}

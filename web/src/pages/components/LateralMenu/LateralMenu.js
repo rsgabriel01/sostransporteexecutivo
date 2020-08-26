@@ -54,11 +54,14 @@ export default function LateralMenu() {
   }
 
   function handleLogout() {
+    localStorage.removeItem("id_executingperson");
+    localStorage.removeItem("authorization");
+
     history.push("/");
   }
 
   return (
-    <ProSidebar collapsed={collapsedMenu} popperArrow={true}>
+    <ProSidebar collapsed={collapsedMenu}>
       <SidebarHeader>
         <Menu>
           <MenuItem

@@ -6,4 +6,6 @@
 
 .content-container {
   width: 100%;
+
+  border: 3px solid green;
 }

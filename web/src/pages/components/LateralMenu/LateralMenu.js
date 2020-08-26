@@ -79,25 +79,49 @@ export default function LateralMenu() {
         <Menu>
           <MenuItem
             icon={<RiUserLine size={35} />}
-            suffix={<RiLogoutBoxLine size={20} onClick={handleLogout} />}
+            suffix={
+              <MenuItem onClick={handleLogout}>
+                <RiLogoutBoxLine size={20} />
+              </MenuItem>
+            }
           >
             Gabriel Souza
+            <Link to="/user" />
           </MenuItem>
         </Menu>
       </SidebarHeader>
+
       <SidebarContent>
         <Menu>
-          <MenuItem icon={<RiHome4Line size={25} />}>Início</MenuItem>
-          <MenuItem icon={<RiFileListLine size={25} />}>Solicitações</MenuItem>
+          <MenuItem icon={<RiHome4Line size={25} />} active={false}>
+            Início
+            <Link to="/main" />
+          </MenuItem>
+
+          <MenuItem icon={<RiFileListLine size={25} />} active={false}>
+            Solicitações
+            <Link to="/solicitation" />
+          </MenuItem>
+
           <SubMenu title="Pessoas" icon={<RiUserStarLine size={25} />}>
-            <MenuItem prefix={<RiUserLine size={20} />}>Física</MenuItem>
-            <MenuItem prefix={<RiUser2Line size={20} />}>Cliente</MenuItem>
+            <MenuItem prefix={<RiUserLine size={20} />} active={true}>
+              Física
+              <Link to="/people/person" />
+            </MenuItem>
+
+            <MenuItem prefix={<RiUser2Line size={20} />}>
+              Cliente
+              <Link to="/people/client" />
+            </MenuItem>
+
             <MenuItem prefix={<RiUserLocationLine size={20} />}>
               Motorista
+              <Link to="/people/driver" />
             </MenuItem>
           </SubMenu>
         </Menu>
       </SidebarContent>
+
       <SidebarFooter>
         <Menu>
           <MenuItem icon={collapseIcon} onClick={handleCollapsedChange}>

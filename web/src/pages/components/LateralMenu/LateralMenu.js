@@ -16,6 +16,7 @@ import {
   RiFileListLine,
   RiUserStarLine,
   RiUserLocationLine,
+  RiAccountCircleLine,
   RiUser2Line,
   RiUserLine,
   RiLogoutBoxLine,
@@ -80,7 +81,7 @@ export default function LateralMenu() {
       <SidebarHeader>
         <Menu>
           <MenuItem
-            icon={<RiUserLine size={35} />}
+            icon={<RiAccountCircleLine size={50} />}
             suffix={
               <MenuItem onClick={handleLogout}>
                 <RiLogoutBoxLine size={20} />

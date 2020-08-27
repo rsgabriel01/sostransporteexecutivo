@@ -21,6 +21,8 @@ import {
   RiLogoutBoxLine,
   RiArrowDropRightLine,
   RiArrowDropLeftLine,
+  RiFileTextLine,
+  RiTaxiLine,
 } from "react-icons/ri";
 
 import "./custom.scss";
@@ -84,6 +86,7 @@ export default function LateralMenu() {
                 <RiLogoutBoxLine size={20} />
               </MenuItem>
             }
+            active={false}
           >
             Gabriel Souza
             <Link to="/user" />
@@ -104,7 +107,7 @@ export default function LateralMenu() {
           </MenuItem>
 
           <SubMenu title="Pessoas" icon={<RiUserStarLine size={25} />}>
-            <MenuItem prefix={<RiUserLine size={20} />} active={true}>
+            <MenuItem prefix={<RiUserLine size={20} />} active={false}>
               Física
               <Link to="/people/person" />
             </MenuItem>
@@ -119,6 +122,14 @@ export default function LateralMenu() {
               <Link to="/people/driver" />
             </MenuItem>
           </SubMenu>
+          <MenuItem icon={<RiTaxiLine size={25} />} active={false}>
+            Veiculos
+            <Link to="/main" />
+          </MenuItem>
+          <MenuItem icon={<RiFileTextLine size={25} />} active={false}>
+            Relatorios
+            <Link to="/main" />
+          </MenuItem>
         </Menu>
       </SidebarContent>
 

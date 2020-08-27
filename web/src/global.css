@@ -54,15 +54,26 @@ form input {
 }
 
 .btnSuccess {
-  background: #0f8228 !important;
+  background: #006800 !important;
+  /* #00991C */
 }
 
 .btnReturn {
-  background: #80820f !important;
+  background: #dca500 !important;
+  /* #8F7E00 */
 }
 
 .btnCancel {
-  background: #820f0f !important;
+  background: #ba0000 !important;
+  /* #8F2200 */
+}
+
+.btnDefault {
+  background: #0f4c82 !important;
+}
+
+.btnOther {
+  background: #4f4f4f !important;
 }
 
 .button:hover {

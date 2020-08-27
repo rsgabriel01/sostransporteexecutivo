@@ -146,7 +146,7 @@ export default function Logon() {
 
           <Link to="/remember">Esqueci minha senha</Link>
 
-          <button type="submit" className="button">
+          <button type="submit" className="button btnDefault">
             <RiLoginBoxLine size={30} />
             Entrar
           </button>

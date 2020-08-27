@@ -124,12 +124,14 @@ export default function LateralMenu() {
           </SubMenu>
           <MenuItem icon={<RiTaxiLine size={25} />} active={false}>
             Veiculos
-            <Link to="/main" />
+            <Link to="/vehicles" />
           </MenuItem>
-          <MenuItem icon={<RiFileTextLine size={25} />} active={false}>
-            Relatorios
-            <Link to="/main" />
-          </MenuItem>
+          <SubMenu title="Relatorios" icon={<RiFileTextLine size={25} />}>
+            <MenuItem icon={<RiFileTextLine size={20} />} active={false}>
+              OS Finalizadas
+              <Link to="/reports/os/finished" />
+            </MenuItem>
+          </SubMenu>
         </Menu>
       </SidebarContent>
 

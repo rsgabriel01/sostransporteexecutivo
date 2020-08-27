@@ -5,6 +5,7 @@ import Logon from "./pages/Logon";
 import Main from "./pages/Main";
 import Remember from "./pages/ForgotPassword";
 import User from "./pages/User";
+import Loading from "./pages/components/Loading/Loading";
 
 export default function Routes() {
   return (
@@ -14,6 +15,7 @@ export default function Routes() {
         <Route path="/main" component={Main} />
         <Route path="/remember" component={Remember} />
         <Route path="/User" component={User} />
+        <Route path="/loading" component={Loading} />
       </Switch>
     </BrowserRouter>
   );

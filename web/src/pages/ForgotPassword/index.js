@@ -1,10 +1,5 @@
 import React from "react";
-import {
-  RiUserLine,
-  RiMailLine,
-  RiMailSendLine,
-  RiArrowLeftLine,
-} from "react-icons/ri";
+import { RiMailLine, RiMailSendLine, RiArrowLeftLine } from "react-icons/ri";
 
 import { Link } from "react-router-dom";
 

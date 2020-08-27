@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from "react";
-import { Link, useParams } from "react-router-dom";
+import React, { useState } from "react";
+// import { Link, useParams } from "react-router-dom";
 import LateralMenu from "../components/LateralMenu/LateralMenu";
 import Header from "../components/Header/Header";
 
@@ -23,22 +23,22 @@ export default function Main() {
   //#region handleAlterTab
   function handleAlterTab(text) {
     setAlterTab(text);
-    if (text == "Solicitações") {
+    if (text === "Solicitações") {
       setTabActive1("tab-active");
       setTabActive2("");
       setTabActive3("");
       setTabActive4("");
-    } else if (text == "Atendidas") {
+    } else if (text === "Atendidas") {
       setTabActive1("");
       setTabActive2("tab-active");
       setTabActive3("");
       setTabActive4("");
-    } else if (text == "Execução") {
+    } else if (text === "Execução") {
       setTabActive1("");
       setTabActive2("");
       setTabActive3("tab-active");
       setTabActive4("");
-    } else if (text == "Finalizadas") {
+    } else if (text === "Finalizadas") {
       setTabActive1("");
       setTabActive2("");
       setTabActive3("");

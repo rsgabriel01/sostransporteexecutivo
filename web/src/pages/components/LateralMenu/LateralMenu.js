@@ -38,7 +38,7 @@ export default function LateralMenu() {
   let history = useHistory();
 
   function handleCollapsedChange() {
-    if (collapsedMenu == true) {
+    if (collapsedMenu === true) {
       setCollapsedMenu(false);
       handleCollapseIcon(false);
     } else {
@@ -48,7 +48,7 @@ export default function LateralMenu() {
   }
 
   function handleCollapseIcon(boolean) {
-    if (boolean == true) {
+    if (boolean === true) {
       setCollapseIcon(<RiArrowDropRightLine size={35} />);
     } else {
       setCollapseIcon(<RiArrowDropLeftLine size={35} />);
@@ -65,7 +65,7 @@ export default function LateralMenu() {
         },
       })
       .then((response) => {
-        if (response.status == 200) {
+        if (response.status === 200) {
           localStorage.removeItem("id_executingperson");
           localStorage.removeItem("authorization");
           history.push("/");

@@ -5,7 +5,124 @@
 }
 
 .content-container {
+  display: flex;
+  flex-direction: column;
+
   width: 100%;
 
   border: 3px solid green;
+}
+
+.solicitations-container {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  border: 3px solid red;
+
+  padding: 0 50px;
+}
+
+.status-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 50px;
+
+  /* border: 3px solid yellow; */
+
+  margin: 5px 0;
+}
+
+.solicitations-container .status-bar h1 {
+  padding: 0;
+}
+
+.solicitations-container .status-bar .group-tabs {
+  display: flex;
+  flex-direction: row;
+
+  width: 50%;
+
+  /* border: 3px solid gray; */
+}
+
+.solicitations-container .status-bar .group-tabs a {
+  text-decoration: none;
+}
+.solicitations-container .status-bar .group-tabs button {
+  height: 30px;
+
+  line-height: 30px;
+  font-size: 14px;
+  color: #000000;
+
+  border-radius: 0px;
+
+  background: #ffffff !important;
+
+  margin: 0;
+}
+
+.solicitations-container .status-bar .group-tabs button:hover {
+  color: #0f4c82;
+
+  border-radius: 5px 5px 0px 0px !important;
+  border-top: 2px solid #0f4c82;
+  border-left: 2px solid #0f4c82;
+  border-right: 2px solid #0f4c82;
+  filter: unset;
+
+  background: #ffffff !important;
+
+  margin: 0;
+}
+
+.solicitations-container .status-bar .group-tabs button.tab-active {
+  color: #0f4c82;
+
+  box-sizing: border-box;
+  border-radius: 5px 5px 0px 0px !important;
+  border-top: 2px solid #0f4c82;
+  border-left: 2px solid #0f4c82;
+  border-right: 2px solid #0f4c82;
+  filter: unset;
+
+  background: #ffffff !important;
+
+  margin: 0;
+}
+
+.solicitations-container .status-bar .group-dates {
+  display: flex;
+  flex-direction: row;
+  border: 3px solid gray;
+}
+
+.solicitation-table {
+  height: 100%;
+  /* border: 3px solid yellowgreen; */
+  margin: 5px 0;
+}
+
+.solicitations-container .solicitation-table h1 {
+  padding: 0;
+}
+
+.solicitation-table table tr th {
+  padding: 0 0 0 10px;
+}
+
+.solicitation-table table tr td {
+  padding: 10px 0 10px 10px;
+  vertical-align: middle;
+  min-height: 30px;
+  border-radius: 3px;
+}
+
+/* .solicitation-table table tr td:last-child {
+  text-align: right;
+} */
+
+.solicitation-table table tr td button {
+  border-radius: 4px;
 }

@@ -1,6 +1,12 @@
 import React, { useState, useEffect } from "react";
 
-import { Link, useHistory } from "react-router-dom";
+import { Link, useHistory, withRouter } from "react-router-dom";
+
+import api from "../../services/api";
+
+import { login } from "../../services/auth";
+
+import Loading from "../components/Loading/Loading";
 
 import {
   RiUserLine,
@@ -12,11 +18,7 @@ import {
 
 import loginIllustrator from "../../assets/loginIllustrator.svg";
 
-import Loading from "../components/Loading/Loading";
-
 import "./styles.css";
-
-import api from "../../services/api";
 
 export default function Logon() {
   //#region Definitions
@@ -30,31 +32,6 @@ export default function Logon() {
   const [user, setUser] = useState("");
   const [password, setPassword] = useState("");
   const [visiblePassword, setVisiblePassword] = useState("password");
-  //#endregion
-
-  //#region Verify Session
-  useEffect(() => {
-    async function virifyAuthorization() {
-      await api
-        .get("/acess/session", {
-          headers: {
-            token: authorization,
-          },
-        })
-        .then((response) => {
-          if (
-            response.status === 200 &&
-            response.data.message === "Token de sessão válido."
-          ) {
-            history.push("/main");
-          }
-        })
-        .catch(() => {
-          setLoading(false);
-        });
-    }
-    virifyAuthorization();
-  }, [authorization]);
   //#endregion
 
   //#region Alter Icon Visible Password
@@ -108,8 +85,10 @@ export default function Logon() {
 
       console.log(response.data);
 
-      localStorage.setItem("id_executingperson", response.data.id_person);
-      localStorage.setItem("authorization", response.data.session.token);
+      login(response.data.session.token, response.data.id_person);
+
+      // localStorage.setItem("id_executingperson", response.data.id_person);
+      // localStorage.setItem("authorization", response.data.session.token);
 
       history.push("/main");
     } catch (error) {
@@ -136,49 +115,43 @@ export default function Logon() {
   //#endregion
 
   return (
-    <>
-      {loading ? (
-        <Loading type="bars" color="#0f4c82" />
-      ) : (
-        <div className="logon-container">
-          <img src={loginIllustrator} alt="Solicitação de viagem" />
-          <section className="form">
-            <form onSubmit={handleLogin}>
-              <h1>ACESSAR A PLATAFORMA</h1>
+    <div className="logon-container">
+      <img src={loginIllustrator} alt="Solicitação de viagem" />
+      <section className="form">
+        <form onSubmit={handleLogin}>
+          <h1>ACESSAR A PLATAFORMA</h1>
 
-              <div className="input-group">
-                <RiUserLine size={30} color="#3F3D56" />
-                <input
-                  type="text"
-                  placeholder="Usuário"
-                  value={user}
-                  onChange={(e) => setUser(e.target.value)}
-                  required
-                />
-              </div>
+          <div className="input-group">
+            <RiUserLine size={30} color="#3F3D56" />
+            <input
+              type="text"
+              placeholder="Usuário"
+              value={user}
+              onChange={(e) => setUser(e.target.value)}
+              required
+            />
+          </div>
 
-              <div className="input-group">
-                <RiLock2Line size={30} color="#3F3D56" />
-                <input
-                  type={visiblePassword}
-                  placeholder="Senha"
-                  value={password}
-                  onChange={(e) => setPassword(e.target.value)}
-                  required
-                />
-                {visibleIcon}
-              </div>
+          <div className="input-group">
+            <RiLock2Line size={30} color="#3F3D56" />
+            <input
+              type={visiblePassword}
+              placeholder="Senha"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              required
+            />
+            {visibleIcon}
+          </div>
 
-              <Link to="/remember">Esqueci minha senha</Link>
+          <Link to="/remember">Esqueci minha senha</Link>
 
-              <button type="submit" className="button btnDefault">
-                <RiLoginBoxLine size={30} />
-                Entrar
-              </button>
-            </form>
-          </section>
-        </div>
-      )}
-    </>
+          <button type="submit" className="button btnDefault">
+            <RiLoginBoxLine size={30} />
+            Entrar
+          </button>
+        </form>
+      </section>
+    </div>
   );
 }

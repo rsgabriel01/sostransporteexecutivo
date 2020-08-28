@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { Link, useHistory } from "react-router-dom";
+import { getToken, logout } from "../../../services/auth";
 
 import {
   ProSidebar,
@@ -66,13 +67,12 @@ export default function LateralMenu() {
     api
       .get("/acess/logout", {
         headers: {
-          token: authorization,
+          token: getToken(),
         },
       })
       .then((response) => {
         if (response.status === 200) {
-          localStorage.removeItem("id_executingperson");
-          localStorage.removeItem("authorization");
+          logout();
           history.push("/");
         }
       });

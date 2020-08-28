@@ -1,8 +1,9 @@
 import React from "react";
 
 import LateralMenu from "../components/LateralMenu/LateralMenu";
+import Header from "../components/Header/Header";
 
-import {} from "react-icons/ri";
+import { RiUser2Line } from "react-icons/ri";
 
 import "./styles.css";
 
@@ -11,7 +12,7 @@ export default function Client() {
     <div className="main-container">
       <LateralMenu></LateralMenu>
       <div className="content-container">
-        <h1>CLIENT</h1>
+        <Header title={"Cliente"} icon={<RiUser2Line size={40} />}></Header>
       </div>
     </div>
   );

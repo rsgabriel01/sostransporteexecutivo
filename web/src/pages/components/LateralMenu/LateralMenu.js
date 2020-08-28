@@ -24,6 +24,8 @@ import {
   RiArrowDropLeftLine,
   RiFileTextLine,
   RiTaxiLine,
+  RiAccountBoxLine,
+  RiFileList2Line,
 } from "react-icons/ri";
 
 import "./custom.scss";
@@ -80,35 +82,38 @@ export default function LateralMenu() {
     <ProSidebar collapsed={collapsedMenu}>
       <SidebarHeader>
         <Menu>
-          <MenuItem
+          <SubMenu
+            title="Gabriel Souza"
             icon={<RiAccountCircleLine size={50} />}
-            suffix={
-              <MenuItem onClick={handleLogout}>
-                <RiLogoutBoxLine size={20} />
-              </MenuItem>
-            }
-            active={false}
           >
-            Gabriel Souza
-            <Link to="/user" />
-          </MenuItem>
+            <MenuItem prefix={<RiAccountBoxLine size={20} />}>
+              Minha Conta
+              <Link to="/user" />
+            </MenuItem>
+            <MenuItem
+              prefix={<RiLogoutBoxLine size={20} />}
+              onClick={handleLogout}
+            >
+              Sair
+            </MenuItem>
+          </SubMenu>
         </Menu>
       </SidebarHeader>
 
       <SidebarContent>
-        <Menu>
-          <MenuItem icon={<RiHome4Line size={25} />} active={false}>
+        <Menu popperArrow={false}>
+          <MenuItem icon={<RiHome4Line size={25} />}>
             Início
             <Link to="/main" />
           </MenuItem>
 
-          <MenuItem icon={<RiFileListLine size={25} />} active={false}>
-            Solicitações
-            <Link to="/solicitation" />
+          <MenuItem icon={<RiFileListLine size={25} />}>
+            Ordens de Serviço
+            <Link to="/orderservices" />
           </MenuItem>
 
           <SubMenu title="Pessoas" icon={<RiUserStarLine size={25} />}>
-            <MenuItem prefix={<RiUserLine size={20} />} active={false}>
+            <MenuItem prefix={<RiUserLine size={20} />}>
               Física
               <Link to="/people/person" />
             </MenuItem>
@@ -123,12 +128,12 @@ export default function LateralMenu() {
               <Link to="/people/driver" />
             </MenuItem>
           </SubMenu>
-          <MenuItem icon={<RiTaxiLine size={25} />} active={false}>
+          <MenuItem icon={<RiTaxiLine size={25} />}>
             Veiculos
             <Link to="/vehicles" />
           </MenuItem>
           <SubMenu title="Relatorios" icon={<RiFileTextLine size={25} />}>
-            <MenuItem icon={<RiFileTextLine size={20} />} active={false}>
+            <MenuItem prefix={<RiFileList2Line size={20} />}>
               OS Finalizadas
               <Link to="/reports/os/finished" />
             </MenuItem>

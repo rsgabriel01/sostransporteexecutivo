@@ -1,8 +1,9 @@
 import React from "react";
 
 import LateralMenu from "../components/LateralMenu/LateralMenu";
+import Header from "../components/Header/Header";
 
-import {} from "react-icons/ri";
+import { RiFileList2Line } from "react-icons/ri";
 
 import "./styles.css";
 
@@ -11,7 +12,10 @@ export default function ReportsOsFinished() {
     <div className="main-container">
       <LateralMenu></LateralMenu>
       <div className="content-container">
-        <h1>REPORTS OF OS FINISHED</h1>
+        <Header
+          title={"Relatório de Ordens de Serviço Finalizadas"}
+          icon={<RiFileList2Line size={40} />}
+        ></Header>
       </div>
     </div>
   );

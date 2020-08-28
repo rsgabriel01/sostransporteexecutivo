@@ -1,8 +1,9 @@
 import React from "react";
 
 import LateralMenu from "../components/LateralMenu/LateralMenu";
+import Header from "../components/Header/Header";
 
-import {} from "react-icons/ri";
+import { RiUserStarLine } from "react-icons/ri";
 
 import "./styles.css";
 
@@ -11,7 +12,10 @@ export default function Person() {
     <div className="main-container">
       <LateralMenu></LateralMenu>
       <div className="content-container">
-        <h1>PERSON</h1>
+        <Header
+          title={"PeSSOA Física"}
+          icon={<RiUserStarLine size={40} />}
+        ></Header>
       </div>
     </div>
   );

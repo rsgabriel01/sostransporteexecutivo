@@ -5,7 +5,7 @@ import Logon from "./pages/Logon";
 import Main from "./pages/Main";
 import Remember from "./pages/ForgotPassword";
 import User from "./pages/User";
-import Solicitation from "./pages/Solicitation";
+import OrderServices from "./pages/OrderServices";
 import Person from "./pages/Person";
 import Client from "./pages/Client";
 import Driver from "./pages/Driver";
@@ -22,7 +22,7 @@ export default function Routes() {
         <Route path="/main" component={Main} />
         <Route path="/remember" component={Remember} />
         <Route path="/user" component={User} />
-        <Route path="/solicitation" component={Solicitation} />
+        <Route path="/orderservices" component={OrderServices} />
         <Route path="/people/person" component={Person} />
         <Route path="/people/client" component={Client} />
         <Route path="/people/driver" component={Driver} />

@@ -1,8 +1,9 @@
 import React from "react";
 
 import LateralMenu from "../components/LateralMenu/LateralMenu";
+import Header from "../components/Header/Header";
 
-import {} from "react-icons/ri";
+import { RiUserLocationLine } from "react-icons/ri";
 
 import "./styles.css";
 
@@ -11,7 +12,12 @@ export default function Driver() {
     <div className="main-container">
       <LateralMenu></LateralMenu>
       <div className="content-container">
-        <h1>DRIVER</h1>
+        <div className="content-container">
+          <Header
+            title={"Motorista"}
+            icon={<RiUserLocationLine size={40} />}
+          ></Header>
+        </div>
       </div>
     </div>
   );

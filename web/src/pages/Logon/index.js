@@ -4,7 +4,7 @@ import { Link, useHistory, withRouter } from "react-router-dom";
 
 import api from "../../services/api";
 
-import { login } from "../../services/auth";
+import { login, isAuthenticated } from "../../services/auth";
 
 import Loading from "../components/Loading/Loading";
 
@@ -32,6 +32,21 @@ export default function Logon() {
   const [user, setUser] = useState("");
   const [password, setPassword] = useState("");
   const [visiblePassword, setVisiblePassword] = useState("password");
+  //#endregion
+
+  //#region Verify Session
+  useEffect(() => {
+    async function virifyAuthorization() {
+      const response = await isAuthenticated();
+      if (response) {
+        console.log("response" + response);
+        history.push("/main");
+      } else {
+        setLoading(false);
+      }
+    }
+    virifyAuthorization();
+  }, []);
   //#endregion
 
   //#region Alter Icon Visible Password
@@ -115,43 +130,49 @@ export default function Logon() {
   //#endregion
 
   return (
-    <div className="logon-container">
-      <img src={loginIllustrator} alt="Solicitação de viagem" />
-      <section className="form">
-        <form onSubmit={handleLogin}>
-          <h1>ACESSAR A PLATAFORMA</h1>
+    <>
+      {loading ? (
+        <Loading type="bars" color="#0f4c82" />
+      ) : (
+        <div className="logon-container">
+          <img src={loginIllustrator} alt="Solicitação de viagem" />
+          <section className="form">
+            <form onSubmit={handleLogin}>
+              <h1>ACESSAR A PLATAFORMA</h1>
 
-          <div className="input-group">
-            <RiUserLine size={30} color="#3F3D56" />
-            <input
-              type="text"
-              placeholder="Usuário"
-              value={user}
-              onChange={(e) => setUser(e.target.value)}
-              required
-            />
-          </div>
+              <div className="input-group">
+                <RiUserLine size={30} color="#3F3D56" />
+                <input
+                  type="text"
+                  placeholder="Usuário"
+                  value={user}
+                  onChange={(e) => setUser(e.target.value)}
+                  required
+                />
+              </div>
 
-          <div className="input-group">
-            <RiLock2Line size={30} color="#3F3D56" />
-            <input
-              type={visiblePassword}
-              placeholder="Senha"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              required
-            />
-            {visibleIcon}
-          </div>
+              <div className="input-group">
+                <RiLock2Line size={30} color="#3F3D56" />
+                <input
+                  type={visiblePassword}
+                  placeholder="Senha"
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  required
+                />
+                {visibleIcon}
+              </div>
 
-          <Link to="/remember">Esqueci minha senha</Link>
+              <Link to="/remember">Esqueci minha senha</Link>
 
-          <button type="submit" className="button btnDefault">
-            <RiLoginBoxLine size={30} />
-            Entrar
-          </button>
-        </form>
-      </section>
-    </div>
+              <button type="submit" className="button btnDefault">
+                <RiLoginBoxLine size={30} />
+                Entrar
+              </button>
+            </form>
+          </section>
+        </div>
+      )}
+    </>
   );
 }

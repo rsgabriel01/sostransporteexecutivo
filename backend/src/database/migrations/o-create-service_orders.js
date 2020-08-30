@@ -75,6 +75,10 @@ module.exports = {
           allowNull: false,
           type: DataTypes.BIGINT,
         },
+        complement_origin: {
+          allowNull: true,
+          type: DataTypes.STRING,
+        },
         id_neighborhood_destiny: {
           allowNull: false,
           type: DataTypes.BIGINT,
@@ -90,6 +94,10 @@ module.exports = {
         street_number_destiny: {
           allowNull: false,
           type: DataTypes.BIGINT,
+        },
+        complement_destiny: {
+          allowNull: true,
+          type: DataTypes.STRING,
         },
         date_time_completion: {
           allowNull: true,

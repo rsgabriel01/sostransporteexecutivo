@@ -35,6 +35,10 @@ module.exports = {
           allowNull: false,
           type: DataTypes.BIGINT,
         },
+        complement: {
+          allowNull: true,
+          type: DataTypes.STRING,
+        },
       },
       {
         tableName: "People_address",

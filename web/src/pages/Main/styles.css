@@ -1,18 +1,3 @@
-.main-container {
-  display: flex;
-  flex-direction: row;
-  height: 100vh;
-}
-
-.content-container {
-  display: flex;
-  flex-direction: column;
-
-  width: 100%;
-
-  /* border: 3px solid green; */
-}
-
 .solicitations-container {
   display: flex;
   flex-direction: column;
@@ -58,7 +43,7 @@
 
   border-radius: 0px;
 
-  background: #ffffff !important;
+  /* background: #ffffff !important; */
 
   margin: 0;
 }
@@ -72,7 +57,7 @@
   border-right: 2px solid #0f4c82;
   filter: unset;
 
-  background: #ffffff !important;
+  /* background: #ffffff !important; */
 
   margin: 0;
 }
@@ -87,7 +72,7 @@
   border-right: 2px solid #0f4c82;
   filter: unset;
 
-  background: #ffffff !important;
+  /* background: #ffffff !important; */
 
   margin: 0;
 }
@@ -152,7 +137,7 @@
 }
 
 .div-responsive-table table.table-content tr {
-  border-bottom: 1px solid #ddd;
+  border-bottom: 1px solid gray;
 }
 
 .div-responsive-table table.table-content tr td {

@@ -11,6 +11,7 @@ import Client from "./pages/Client";
 import Driver from "./pages/Driver";
 import Vehicles from "./pages/Vehicles";
 import ReportsOsFinished from "./pages/ReportsOsFinished";
+import NotFound from "./pages/NotFound";
 
 import Loading from "./pages/components/Loading/Loading";
 
@@ -29,6 +30,7 @@ export default function Routes() {
         <Route path="/Vehicles" component={Vehicles} />
         <Route path="/reports/os/finished" component={ReportsOsFinished} />
         <Route path="/loading" component={Loading} />
+        <Route component={NotFound} />
       </Switch>
     </BrowserRouter>
   );

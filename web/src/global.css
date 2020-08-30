@@ -9,7 +9,7 @@
 
 body {
   font: 400 14px Roboto, sans-serif;
-  background: #ffffff;
+  background: #efefef !important;
   -webkit-font-smoothing: antialiased;
 }
 
@@ -78,4 +78,22 @@ form input {
 
 .button:hover {
   filter: brightness(90%);
+}
+
+.main-container {
+  display: flex;
+  flex-direction: row;
+  height: 100vh;
+}
+
+.content-container {
+  display: flex;
+  flex-direction: column;
+
+  width: 100%;
+  height: 100%;
+
+  background: #efefef;
+
+  /* border: 3px solid green; */
 }

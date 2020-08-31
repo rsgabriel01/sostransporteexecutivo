@@ -109,7 +109,7 @@ export default function LateralMenu() {
 
           <MenuItem icon={<RiFileListLine size={25} />}>
             Ordens de Serviço
-            <Link to="/orderservices" />
+            <Link to="/serviceorders" />
           </MenuItem>
 
           <SubMenu title="Pessoas" icon={<RiUserStarLine size={25} />}>

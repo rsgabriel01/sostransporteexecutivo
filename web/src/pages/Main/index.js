@@ -4,7 +4,7 @@ import LateralMenu from "../components/LateralMenu/LateralMenu";
 import Header from "../components/Header/Header";
 import Loading from "../components/Loading/Loading";
 
-import { login, isAuthenticated } from "../../services/auth";
+import { isAuthenticated } from "../../services/auth";
 
 import {
   RiPhoneLine,
@@ -12,6 +12,7 @@ import {
   RiArrowRightLine,
   RiTaxiWifiLine,
   RiCheckLine,
+  RiFileList2Line,
 } from "react-icons/ri";
 
 import "./styles.css";
@@ -26,8 +27,8 @@ export default function Main() {
   const [tabActive4, setTabActive4] = useState("");
   const [loading, setLoading] = useState(true);
 
+  //#region Verify Session
   useEffect(() => {
-    console.log("carregou antes do response api");
     async function virifyAuthorization() {
       const response = await isAuthenticated();
       if (!response) {
@@ -39,7 +40,7 @@ export default function Main() {
     }
     virifyAuthorization();
   }, []);
-  //#endreg
+  //#endregion
 
   useEffect(() => {
     console.log("carregou antes da promise");
@@ -72,17 +73,17 @@ export default function Main() {
   //#endregion
 
   return (
-    <>
-      {loading ? (
-        <Loading type="bars" color="#0f4c82" />
-      ) : (
-        <div className="main-container">
-          <LateralMenu></LateralMenu>
-          <div className="content-container">
-            <Header
-              title={"Solicitações"}
-              icon={<RiPhoneLine size={40} />}
-            ></Header>
+    <div className="main-container">
+      <LateralMenu></LateralMenu>
+      <div className="content-container">
+        <Header
+          title={"Solicitações"}
+          icon={<RiFileList2Line size={40} />}
+        ></Header>
+        <>
+          {loading ? (
+            <Loading type="bars" color="#0f4c82" />
+          ) : (
             <div className="solicitations-container">
               <div className="status-bar">
                 <div className="group-tabs">
@@ -131,7 +132,7 @@ export default function Main() {
                 </div>
                 {/* <div className="group-dates">
               <h1>group-dates</h1>
-            </div> */}
+             </div> */}
               </div>
 
               <div className="solicitation-table">
@@ -173,9 +174,9 @@ export default function Main() {
                 </div>
               </div>
             </div>
-          </div>
-        </div>
-      )}
-    </>
+          )}
+        </>
+      </div>
+    </div>
   );
 }

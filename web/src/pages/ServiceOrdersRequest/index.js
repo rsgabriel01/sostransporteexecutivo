@@ -27,8 +27,16 @@ export default function ServiceOrdersRequest() {
   let history = useHistory();
   const [loading, setLoading] = useState(true);
 
-  const [user, setUser] = useState("");
-  const [password, setPassword] = useState("");
+  const [idClient, setIdClient] = useState("");
+  const [client, setClient] = useState("");
+  const [neighborhoodOrigin, setNeighborhoodOrigin] = useState("");
+  const [streetOrigin, setStreetOrigin] = useState("");
+  const [streetNumberOrigin, setStreetNumberOrigin] = useState("");
+  const [complementOrigin, setComplementOrigin] = useState("");
+  const [neighborhoodDestiny, setNeighborhoodDestiny] = useState("");
+  const [streetDestiny, setStreetDestiny] = useState("");
+  const [streetNumberDestiny, setStreetNumberDestiny] = useState("");
+  const [complementDestiny, setComplementDestiny] = useState("");
 
   const [AlterTab, setAlterTab] = useState("Solicitar");
 
@@ -55,34 +63,34 @@ export default function ServiceOrdersRequest() {
   async function handleRequestOs(e) {
     e.preventDefault();
 
-    const data = {
-      user,
-      password,
-    };
+    // const data = {
+    //   user,
+    //   password,
+    // };
 
-    try {
-      const response = await api.post("/acess/login", data);
+    // try {
+    //   const response = await api.post("/acess/login", data);
 
-      console.log(response.data);
+    //   console.log(response.data);
 
-      history.push("/main");
-    } catch (error) {
-      if (error.response) {
-        const dataError = error.response.data;
-        const statusError = error.response.status;
+    //   history.push("/main");
+    // } catch (error) {
+    //   if (error.response) {
+    //     const dataError = error.response.data;
+    //     const statusError = error.response.status;
 
-        if (statusError === 400 && dataError.message) {
-          alert(dataError.message);
-        }
-        console.log(error.response);
-        console.log(error.response.data);
-        console.log(statusError);
-      } else if (error.request) {
-        console.log(error.request);
-      } else {
-        console.log("Error", error.message);
-      }
-    }
+    //     if (statusError === 400 && dataError.message) {
+    //       alert(dataError.message);
+    //     }
+    //     console.log(error.response);
+    //     console.log(error.response.data);
+    //     console.log(statusError);
+    //   } else if (error.request) {
+    //     console.log(error.request);
+    //   } else {
+    //     console.log("Error", error.message);
+    //   }
+    // }
   }
   //#endregion
 
@@ -98,7 +106,7 @@ export default function ServiceOrdersRequest() {
               title={"Ordens de Serviço"}
               icon={<RiFileListLine size={40} />}
             ></Header>
-            <div className="os-container">
+            <div className="os-request-container">
               <div className="tab-bar">
                 <div className="group-tabs">
                   <Link to="/serviceorders">
@@ -129,13 +137,20 @@ export default function ServiceOrdersRequest() {
                       <RiUser2Line size={30} />
                       Cliente
                     </h1>
+                    <input
+                      type="hidden"
+                      value={idClient}
+                      onChange={(e) => setIdClient(e.target.value)}
+                      id="id_client"
+                      required
+                    />
                     <div className="input-block">
                       <input
                         type="text"
-                        placeholder="Nome do cliente"
-                        value={user}
-                        onChange={(e) => setUser(e.target.value)}
+                        value={client}
+                        onChange={(e) => setClient(e.target.value)}
                         id="client"
+                        readonly="true"
                         required
                       />
                       <button type="button" className="button btnDefault">
@@ -169,9 +184,11 @@ export default function ServiceOrdersRequest() {
                         <div className="neighborhood-block">
                           <input
                             type="text"
-                            placeholder="Bairro"
-                            value={password}
-                            onChange={(e) => setPassword(e.target.value)}
+                            value={neighborhoodOrigin}
+                            onChange={(e) =>
+                              setNeighborhoodOrigin(e.target.value)
+                            }
+                            readonly="true"
                             required
                           />
                           <button type="button" className="button btnDefault">
@@ -184,9 +201,8 @@ export default function ServiceOrdersRequest() {
                           <label htmlFor="street">Rua:</label>
                           <input
                             type="text"
-                            placeholder="Rua"
-                            value={password}
-                            onChange={(e) => setPassword(e.target.value)}
+                            value={streetOrigin}
+                            onChange={(e) => setStreetOrigin(e.target.value)}
                             required
                           />
                         </div>
@@ -195,10 +211,12 @@ export default function ServiceOrdersRequest() {
                           <label htmlFor="street_number">Número:</label>
                           <input
                             className="input-number"
-                            type="text"
-                            placeholder="Número"
-                            value={password}
-                            onChange={(e) => setPassword(e.target.value)}
+                            type="number"
+                            min="0"
+                            value={streetNumberOrigin}
+                            onChange={(e) =>
+                              setStreetNumberOrigin(e.target.value)
+                            }
                             required
                           />
                         </div>
@@ -207,9 +225,8 @@ export default function ServiceOrdersRequest() {
                         <label htmlFor="complement">Complemento:</label>
                         <input
                           type="text"
-                          placeholder="Complemento"
-                          value={password}
-                          onChange={(e) => setPassword(e.target.value)}
+                          value={complementOrigin}
+                          onChange={(e) => setComplementOrigin(e.target.value)}
                           required
                         />
                       </div>
@@ -236,9 +253,11 @@ export default function ServiceOrdersRequest() {
                         <div className="neighborhood-block">
                           <input
                             type="text"
-                            placeholder="Bairro"
-                            value={password}
-                            onChange={(e) => setPassword(e.target.value)}
+                            value={neighborhoodDestiny}
+                            onChange={(e) =>
+                              setNeighborhoodDestiny(e.target.value)
+                            }
+                            readonly="true"
                             required
                           />
                           <button type="button" className="button btnDefault">
@@ -251,19 +270,20 @@ export default function ServiceOrdersRequest() {
                           <label htmlFor="street">Rua:</label>
                           <input
                             type="text"
-                            placeholder="Rua"
-                            value={password}
-                            onChange={(e) => setPassword(e.target.value)}
+                            value={streetDestiny}
+                            onChange={(e) => setStreetDestiny(e.target.value)}
                             required
                           />
                         </div>
                         <div className="input-block">
                           <label htmlFor="street_number">Número:</label>
                           <input
-                            type="text"
-                            placeholder="Número"
-                            value={password}
-                            onChange={(e) => setPassword(e.target.value)}
+                            type="number"
+                            min="0"
+                            value={streetNumberDestiny}
+                            onChange={(e) =>
+                              setStreetNumberDestiny(e.target.value)
+                            }
                             required
                           />
                         </div>
@@ -273,9 +293,8 @@ export default function ServiceOrdersRequest() {
                         <label htmlFor="complement">Complemento:</label>
                         <input
                           type="text"
-                          placeholder="Complemento"
-                          value={password}
-                          onChange={(e) => setPassword(e.target.value)}
+                          value={complementDestiny}
+                          onChange={(e) => setComplementDestiny(e.target.value)}
                           required
                         />
                       </div>

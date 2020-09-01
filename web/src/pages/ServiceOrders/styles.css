@@ -1,4 +1,4 @@
-.os-container {
+.os-consult-container {
   display: flex;
   flex-direction: column;
   height: 100%;
@@ -18,23 +18,21 @@
   margin: 5px 0;
 }
 
-.os-container .tab-bar h1 {
+.os-consult-container .tab-bar h1 {
   padding: 0;
 }
 
-.os-container .tab-bar .group-tabs {
+.os-consult-container .tab-bar .group-tabs {
   display: flex;
   flex-direction: row;
 
   width: 50%;
-
-  /* border: 3px solid gray; */
 }
 
-.os-container .tab-bar .group-tabs a {
+.os-consult-container .tab-bar .group-tabs a {
   text-decoration: none;
 }
-.os-container .tab-bar .group-tabs button {
+.os-consult-container .tab-bar .group-tabs button {
   height: 30px;
 
   line-height: 30px;
@@ -45,10 +43,11 @@
 
   /* background: #ffffff !important; */
 
-  margin: 0;
+  /* margin: 0; */
+  padding: 0px 5px 0px 5px;
 }
 
-.os-container .tab-bar .group-tabs button:hover {
+.os-consult-container .tab-bar .group-tabs button:hover {
   color: #0f4c82;
 
   border-radius: 5px 5px 0px 0px !important;
@@ -62,7 +61,7 @@
   margin: 0;
 }
 
-.os-container .tab-bar .group-tabs button.tab-active {
+.os-consult-container .tab-bar .group-tabs button.tab-active {
   color: #0f4c82;
 
   box-sizing: border-box;
@@ -75,4 +74,268 @@
   /* background: #ffffff !important; */
 
   margin: 0;
+}
+
+.os-consult-container section.form {
+  width: 100%;
+  height: 87%;
+
+  background: #ffffff;
+
+  border-radius: 9px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.os-consult-container section.form form {
+  width: 100%;
+  height: 100%;
+  padding: 20px 60px;
+
+  display: flex;
+  flex-direction: column;
+}
+
+.os-consult-container section.form h1 {
+  display: inline-flex;
+
+  padding: 0;
+}
+
+.os-consult-container section.form form .form-title {
+  display: inline-flex;
+
+  justify-content: center;
+
+  padding-bottom: 10px;
+}
+
+.os-consult-container section.form form .form-title h1 {
+  padding-left: 5px;
+}
+
+.os-consult-container section.form form input {
+  border: 0;
+  padding: 0px 10px;
+}
+
+.os-consult-container section.form form input:hover {
+  border: 2px solid #0f4c82;
+}
+
+.os-consult-container section.form form input:focus {
+  border: 2px solid #0f4c82;
+}
+
+.os-consult-container section.form form .input-group-client {
+  width: 100%;
+
+  display: flex;
+  flex-direction: column;
+  padding-bottom: 25px;
+}
+
+.os-consult-container section.form form .input-group-client h1 {
+  padding-bottom: 10px;
+}
+
+.os-consult-container
+  section.form
+  form
+  .input-group-client
+  .input-block-cod-client {
+  display: flex;
+  flex-direction: column;
+  padding-right: 10px;
+}
+
+.os-consult-container
+  section.form
+  form
+  .input-group-client
+  .input-block-cod-client
+  .input-block-client {
+  width: 100%;
+
+  display: flex;
+  flex-direction: row;
+}
+
+.os-consult-container
+  section.form
+  form
+  .input-group-client
+  .input-block-name-company {
+  width: 100%;
+
+  display: flex;
+  flex-direction: column;
+}
+
+.os-consult-container section.form form .input-group-client .input-block {
+  width: 100%;
+
+  display: flex;
+  flex-direction: row;
+}
+
+.os-consult-container section.form form .input-group-client .input-block input {
+  margin-right: 10px;
+}
+
+.street-number-block {
+  width: 100%;
+
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  padding: 10px 0px 10px 0px;
+}
+
+.street-number-block .input-block {
+  padding-top: 0px !important;
+}
+
+.street-number-block .input-block + .input-block {
+  width: 125px;
+}
+
+.street-number-block > :first-child {
+  padding-right: 10px;
+}
+
+.os-consult-container
+  section.form
+  form
+  .input-group-client
+  .input-block
+  button {
+  height: 35px;
+  width: 40px;
+  padding: 0px;
+  margin: 0;
+}
+
+form .input-block {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+
+form .input-block + .input-block {
+  padding-top: 10px;
+}
+
+.os-consult-container section.form form .group-address {
+  width: 100%;
+
+  display: flex;
+  flex-direction: row;
+}
+
+.os-consult-container
+  section.form
+  form
+  .group-address
+  #input-group-address-origin {
+  padding-right: 20px;
+}
+
+.os-consult-container
+  section.form
+  form
+  .group-address
+  #input-group-address-destiny {
+  padding-left: 20px;
+}
+
+.os-consult-container section.form form .group-address .input-group-address {
+  width: 50%;
+
+  display: flex;
+  flex-direction: column;
+}
+
+.label-address {
+  width: 100%;
+
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  padding-bottom: 10px;
+}
+
+.address-title {
+  display: inline-flex;
+
+  align-items: center;
+}
+
+.checkbox-block {
+  display: inline-flex;
+
+  align-items: center;
+  cursor: pointer;
+}
+
+.checkbox-block label {
+  cursor: pointer;
+}
+
+.checkbox-block input {
+  cursor: pointer;
+}
+
+.label-address input {
+  height: 19px;
+  width: 19px;
+}
+
+label {
+  color: #828282;
+  font-size: 15px;
+}
+
+.input-block label {
+  padding-bottom: 5px;
+}
+
+.label-address label {
+  padding-left: 5px;
+}
+
+.button-group {
+  display: flex;
+  flex-direction: row;
+
+  justify-content: flex-end !important;
+
+  padding-top: 50px;
+}
+
+.button-group button {
+  height: 45px;
+  width: 150px;
+}
+
+.neighborhood-block {
+  display: flex;
+
+  flex-direction: row;
+
+  align-items: center;
+}
+
+.neighborhood-block input {
+  margin-right: 10px;
+}
+
+.neighborhood-block button {
+  height: 35px;
+  width: 40px;
+
+  margin: 0px;
 }

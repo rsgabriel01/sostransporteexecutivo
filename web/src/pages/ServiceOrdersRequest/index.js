@@ -38,10 +38,6 @@ export default function ServiceOrdersRequest() {
   const [streetNumberDestiny, setStreetNumberDestiny] = useState("");
   const [complementDestiny, setComplementDestiny] = useState("");
 
-  const [AlterTab, setAlterTab] = useState("Solicitar");
-
-  const [tabActive1, setTabActive1] = useState("tab-active");
-  const [tabActive2, setTabActive2] = useState("");
   //#endregion
 
   //#region Verify Session
@@ -227,7 +223,6 @@ export default function ServiceOrdersRequest() {
                           type="text"
                           value={complementOrigin}
                           onChange={(e) => setComplementOrigin(e.target.value)}
-                          required
                         />
                       </div>
                     </div>
@@ -295,7 +290,6 @@ export default function ServiceOrdersRequest() {
                           type="text"
                           value={complementDestiny}
                           onChange={(e) => setComplementDestiny(e.target.value)}
-                          required
                         />
                       </div>
                     </div>

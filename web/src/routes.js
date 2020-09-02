@@ -38,7 +38,11 @@ export default function Routes() {
         <Route path="/people/client" exact component={Client} />
         <Route path="/people/driver" exact component={Driver} />
         <Route path="/Vehicles" component={Vehicles} />
-        <Route path="/reports/os/finished" component={ReportsOsFinished} />
+        <Route
+          path="/reports/os/finished"
+          exact
+          component={ReportsOsFinished}
+        />
         <Route path="/loading" component={Loading} />
         <Route component={NotFound} />
       </Switch>

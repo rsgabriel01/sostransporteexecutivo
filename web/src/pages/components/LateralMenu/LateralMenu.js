@@ -88,7 +88,7 @@ export default function LateralMenu() {
           >
             <MenuItem prefix={<RiAccountBoxLine size={20} />}>
               Minha Conta
-              <Link to="/user" />
+              <Link to="/myaccount" />
             </MenuItem>
             <MenuItem
               prefix={<RiLogoutBoxLine size={20} />}

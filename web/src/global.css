@@ -80,6 +80,11 @@ form input {
   filter: brightness(80%);
 }
 
+.btnInactive {
+  filter: brightness(50%) !important;
+  cursor: default;
+}
+
 .main-container {
   display: flex;
   flex-direction: row;

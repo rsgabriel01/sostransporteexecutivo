@@ -7,13 +7,13 @@ import { RiUserFollowLine, RiAccountBoxLine } from "react-icons/ri";
 
 import "./styles.css";
 
-export default function User() {
+export default function PersonUser() {
   return (
     <div className="main-container">
       <LateralMenu></LateralMenu>
       <div className="content-container">
         <Header
-          title={"Minha conta"}
+          title={"Pessoa Física"}
           icon={<RiAccountBoxLine size={40} />}
         ></Header>
       </div>

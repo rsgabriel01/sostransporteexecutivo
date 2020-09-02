@@ -190,17 +190,15 @@ export default function ServiceOrdersRequest() {
                       <div className="input-block">
                         <label htmlFor="neighborhood">Bairro:</label>
 
-                        <div className="neighborhood-block">
-                          <input
-                            type="text"
-                            value={neighborhoodOrigin}
-                            onChange={(e) =>
-                              setNeighborhoodOrigin(e.target.value)
-                            }
-                            readonly="true"
-                            required
-                          />
-                        </div>
+                        <input
+                          type="text"
+                          value={neighborhoodOrigin}
+                          onChange={(e) =>
+                            setNeighborhoodOrigin(e.target.value)
+                          }
+                          readonly="true"
+                          required
+                        />
                       </div>
                       <div className="street-number-block">
                         <div className="input-block">
@@ -263,17 +261,15 @@ export default function ServiceOrdersRequest() {
 
                       <div className="input-block">
                         <label htmlFor="neighborhood">Bairro:</label>
-                        <div className="neighborhood-block">
-                          <input
-                            type="text"
-                            value={neighborhoodDestiny}
-                            onChange={(e) =>
-                              setNeighborhoodDestiny(e.target.value)
-                            }
-                            readonly="true"
-                            required
-                          />
-                        </div>
+                        <input
+                          type="text"
+                          value={neighborhoodDestiny}
+                          onChange={(e) =>
+                            setNeighborhoodDestiny(e.target.value)
+                          }
+                          readonly="true"
+                          required
+                        />
                       </div>
                       <div className="street-number-block">
                         <div className="input-block">
@@ -317,7 +313,7 @@ export default function ServiceOrdersRequest() {
                   <div className="button-group">
                     <button
                       type="button"
-                      className="button btnCancel"
+                      className="button btnCancel btnInactive"
                       disabled="true"
                     >
                       <RiCloseLine size={30} />
@@ -325,7 +321,7 @@ export default function ServiceOrdersRequest() {
                     </button>
                     <button
                       type="submit"
-                      className="button btnSuccess"
+                      className="button btnSuccess btnInactive"
                       disabled="true"
                     >
                       <RiCheckLine size={30} />

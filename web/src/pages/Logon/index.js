@@ -2,11 +2,17 @@ import React, { useState, useEffect } from "react";
 
 import { Link, useHistory, withRouter } from "react-router-dom";
 
+import { ToastContainer } from "react-toastify";
+
 import api from "../../services/api";
 
 import { login, isAuthenticated } from "../../services/auth";
 
 import Loading from "../components/Loading/Loading";
+
+import loginIllustrator from "../../assets/loginIllustrator.svg";
+
+import notify from "../../helpers/notifys";
 
 import {
   RiUserLine,
@@ -15,10 +21,11 @@ import {
   RiLock2Line,
   RiLoginBoxLine,
 } from "react-icons/ri";
-
-import loginIllustrator from "../../assets/loginIllustrator.svg";
+import { CgSpinnerTwoAlt } from "react-icons/cg";
 
 import "./styles.css";
+
+import "react-toastify/dist/ReactToastify.css";
 
 export default function Logon() {
   //#region Definitions
@@ -28,7 +35,8 @@ export default function Logon() {
   //#endregion
 
   //#region States
-  const [loading, setLoading] = useState(true);
+  const [loadingPage, setLoadingPage] = useState(true);
+  const [loadingButton, setLoadingButton] = useState(false);
   const [user, setUser] = useState("");
   const [password, setPassword] = useState("");
   const [visiblePassword, setVisiblePassword] = useState("password");
@@ -42,7 +50,7 @@ export default function Logon() {
         console.log("response" + response);
         history.push("/main");
       } else {
-        setLoading(false);
+        setLoadingPage(false);
       }
     }
     virifyAuthorization();
@@ -90,6 +98,8 @@ export default function Logon() {
   async function handleLogin(e) {
     e.preventDefault();
 
+    setLoadingButton(true);
+
     const data = {
       user,
       password,
@@ -102,27 +112,48 @@ export default function Logon() {
 
       login(response.data.session.token, response.data.id_person);
 
-      // localStorage.setItem("id_executingperson", response.data.id_person);
-      // localStorage.setItem("authorization", response.data.session.token);
-
       history.push("/main");
     } catch (error) {
+      setLoadingButton(false);
+
       if (error.response) {
         const dataError = error.response.data;
         const statusError = error.response.status;
+        console.error(dataError);
+        console.error(statusError);
 
         if (statusError === 400 && dataError.message) {
-          alert(dataError.message);
+          console.log(dataError.message);
+          switch (dataError.message) {
+            case '"password" length must be at least 8 characters long':
+              notify("warning", "A senha deve conter no mínimo 8 caracteres.");
+              break;
+            case '"password" length must be at least 8 characters long':
+              notify("warning", "A senha deve conter no mínimo 8 caracteres.");
+              break;
+            case '"password" length must be less than or equal to 16 characters long':
+              notify("warning", "A senha deve conter no máximo 16 caracteres.");
+
+              break;
+            case "error":
+              notify("warning", "teste3");
+
+              break;
+            default:
+              notify("warning", dataError.message);
+          }
         }
-        // Request made and server responded
-        console.log(error.response);
-        console.log(error.response.data);
-        console.log(statusError);
       } else if (error.request) {
-        // The request was made but no response was received
+        notify(
+          "error",
+          `Oops, algo deu errado, entre em contato com o suporte de TI. ${error}`
+        );
         console.log(error.request);
       } else {
-        // Something happened in setting up the request that triggered an Error
+        notify(
+          "error",
+          `Oops, algo deu errado, entre em contato com o suporte de TI. ${error}`
+        );
         console.log("Error", error.message);
       }
     }
@@ -131,10 +162,11 @@ export default function Logon() {
 
   return (
     <>
-      {loading ? (
+      {loadingPage ? (
         <Loading type="bars" color="#0f4c82" />
       ) : (
         <div className="logon-container">
+          <ToastContainer />
           <img src={loginIllustrator} alt="Solicitação de viagem" />
           <section className="form">
             <form onSubmit={handleLogin}>
@@ -158,6 +190,8 @@ export default function Logon() {
                   placeholder="Senha"
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
+                  minLength="8"
+                  maxLength="16"
                   required
                 />
                 {visibleIcon}
@@ -165,8 +199,16 @@ export default function Logon() {
 
               <Link to="/remember">Esqueci minha senha</Link>
 
-              <button type="submit" className="button btnDefault">
-                <RiLoginBoxLine size={30} />
+              <button
+                type="submit"
+                className="button btnDefault"
+                disabled={loadingButton}
+              >
+                {!loadingButton ? (
+                  <RiLoginBoxLine size={30} />
+                ) : (
+                  <CgSpinnerTwoAlt size={30} />
+                )}
                 Entrar
               </button>
             </form>

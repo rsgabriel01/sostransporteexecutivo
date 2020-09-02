@@ -9,6 +9,7 @@ import ServiceOrdersRequest from "./pages/ServiceOrdersRequest";
 import ServiceOrders from "./pages/ServiceOrders";
 import Person from "./pages/Person";
 import PersonUser from "./pages/PersonUser";
+import PersonNew from "./pages/PersonNew";
 import Client from "./pages/Client";
 import Driver from "./pages/Driver";
 import Vehicles from "./pages/Vehicles";
@@ -25,12 +26,17 @@ export default function Routes() {
         <Route path="/main" component={Main} />
         <Route path="/remember" component={Remember} />
         <Route path="/myaccount" component={MyAccount} />
-        <Route path="/serviceorders/request" component={ServiceOrdersRequest} />
-        <Route path="/serviceorders" component={ServiceOrders} />
-        <Route path="/people/person" component={Person} />
-        <Route path="/people/person/user/id/:id" component={PersonUser} />
-        <Route path="/people/client" component={Client} />
-        <Route path="/people/driver" component={Driver} />
+        <Route
+          path="/serviceorders/request"
+          exact
+          component={ServiceOrdersRequest}
+        />
+        <Route path="/serviceorders" exact component={ServiceOrders} />
+        <Route path="/people/person" exact component={Person} />
+        <Route path="/people/person/user/:id" component={PersonUser} />
+        <Route path="/people/person/new" exact component={PersonNew} />
+        <Route path="/people/client" exact component={Client} />
+        <Route path="/people/driver" exact component={Driver} />
         <Route path="/Vehicles" component={Vehicles} />
         <Route path="/reports/os/finished" component={ReportsOsFinished} />
         <Route path="/loading" component={Loading} />

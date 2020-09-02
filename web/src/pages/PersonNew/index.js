@@ -9,11 +9,7 @@ import api from "../../services/api";
 import { isAuthenticated } from "../../services/auth";
 
 import {
-  RiFileListLine,
-  RiPhoneLine,
-  RiFileList2Line,
   RiUser2Line,
-  RiDraftLine,
   RiSearchLine,
   RiMapPinLine,
   RiCheckLine,
@@ -22,7 +18,7 @@ import {
   RiBookLine,
   RiUserSharedLine,
   RiUserFollowLine,
-  RiAddLine,
+  RiUserAddLine,
 } from "react-icons/ri";
 
 import "./styles.css";
@@ -107,26 +103,13 @@ export default function ServiceOrdersRequest() {
               title={"Pessoa Física"}
               icon={<RiUserStarLine size={40} />}
             ></Header>
-            <div className="person-user-container">
+            <div className="person-new-container">
               <div className="tab-bar">
                 <div className="group-tabs">
-                  <Link to="/people/person">
-                    <button type="button" className={`button `}>
+                  <Link to="/people/person/new">
+                    <button type="button" className={`button tab-active`}>
                       <RiBookLine size={24} />
                       Dados
-                    </button>
-                  </Link>
-
-                  <Link to="/people/person/user/1">
-                    <button type="button" className={`button tab-active`}>
-                      <RiUserSharedLine size={24} />
-                      Usuário
-                    </button>
-                  </Link>
-
-                  <Link to="/people/person/new">
-                    <button type="button" className={`button `}>
-                      <RiAddLine size={24} />
                     </button>
                   </Link>
                 </div>
@@ -135,8 +118,8 @@ export default function ServiceOrdersRequest() {
               <section className="form">
                 <form onSubmit={handleRequestOs}>
                   <div className="form-title">
-                    <RiUserSharedLine size={30} />
-                    <h1>USUÁRIO DA PLATAFORMA</h1>
+                    <RiUserAddLine size={30} />
+                    <h1>NOVA PESSOA FÍSICA</h1>
                   </div>
 
                   {/* <div className="input-group-client">
@@ -170,7 +153,6 @@ export default function ServiceOrdersRequest() {
                           value={client}
                           onChange={(e) => setClient(e.target.value)}
                           id="client"
-                          readonly="true"
                           required
                         />
                       </div>

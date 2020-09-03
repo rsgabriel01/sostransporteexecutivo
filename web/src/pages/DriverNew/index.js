@@ -23,12 +23,11 @@ import {
   RiUser3Line,
   RiCheckDoubleLine,
   RiUserLocationLine,
-  RiTaxiLine,
 } from "react-icons/ri";
 
 import "./styles.css";
 
-export default function Vehicles() {
+export default function DriverNew() {
   //#region Definitions
   let history = useHistory();
   const [loading, setLoading] = useState(true);
@@ -104,20 +103,17 @@ export default function Vehicles() {
           <Loading type="bars" color="#0f4c82" />
         ) : (
           <div className="content-container">
-            <Header title={"Veículos"} icon={<RiTaxiLine size={40} />}></Header>
-            <div className="vehicles-container">
+            <Header
+              title={"Motorista"}
+              icon={<RiUserLocationLine size={40} />}
+            ></Header>
+            <div className="driver-new-container">
               <div className="tab-bar">
                 <div className="group-tabs">
-                  <Link to="/vehicles">
+                  <Link to="/people/driver/new">
                     <button type="button" className={`button tab-active`}>
                       <RiBookLine size={24} />
                       Dados
-                    </button>
-                  </Link>
-
-                  <Link to="/vehicles/new">
-                    <button type="button" className={`button `}>
-                      <RiAddLine size={24} />
                     </button>
                   </Link>
                 </div>
@@ -126,8 +122,8 @@ export default function Vehicles() {
               <section className="form">
                 <form onSubmit={handleRequestOs}>
                   <div className="form-title">
-                    <RiCheckDoubleLine size={30} />
-                    <h1>DADOS CADASTRADOS</h1>
+                    <RiUserLocationLine size={30} />
+                    <h1>NOVO MOTORISTA</h1>
                   </div>
 
                   {/* <div className="input-group-client">
@@ -315,7 +311,7 @@ export default function Vehicles() {
                   <div className="button-group">
                     <button
                       type="button"
-                      className="button btnCancel btnInactive"
+                      className="button btnCancel"
                       disabled="true"
                     >
                       <RiCloseLine size={30} />
@@ -323,11 +319,11 @@ export default function Vehicles() {
                     </button>
                     <button
                       type="submit"
-                      className="button btnSuccess btnInactive"
+                      className="button btnSuccess"
                       disabled="true"
                     >
                       <RiCheckLine size={30} />
-                      Alterar
+                      Salvar
                     </button>
                   </div>
                 </form>

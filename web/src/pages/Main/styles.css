@@ -115,6 +115,8 @@
 
 .solicitation-table table tr#table-header :last-child {
   border-radius: 0px 3px 3px 0px;
+  text-align: right;
+  padding-right: 10px;
 }
 /* .solicitation-table table tr#table-header th:last-child {
   text-align: right;

@@ -24,6 +24,7 @@ import {
   RiCheckDoubleLine,
   RiUserLocationLine,
   RiTaxiLine,
+  RiPencilLine,
 } from "react-icons/ri";
 
 import "./styles.css";
@@ -317,20 +318,20 @@ export default function Vehicles() {
                   </div> */}
 
                   <div className="button-group">
-                    <button
+                    {/* <button
                       type="button"
                       className="button btnCancel btnInactive"
                       disabled="true"
                     >
                       <RiCloseLine size={30} />
                       Cancelar
-                    </button>
+                    </button> */}
                     <button
                       type="submit"
-                      className="button btnSuccess btnInactive"
+                      className="button btnDefault btnInactive"
                       disabled="true"
                     >
-                      <RiCheckLine size={30} />
+                      <RiPencilLine size={30} />
                       Alterar
                     </button>
                   </div>

@@ -23,6 +23,7 @@ import {
   RiUserSharedLine,
   RiUserFollowLine,
   RiAddLine,
+  RiUserLine,
 } from "react-icons/ri";
 
 import "./styles.css";
@@ -105,7 +106,7 @@ export default function ServiceOrdersRequest() {
           <div className="content-container">
             <Header
               title={"Pessoa Física"}
-              icon={<RiUserStarLine size={40} />}
+              icon={<RiUserLine size={40} />}
             ></Header>
             <div className="person-user-container">
               <div className="tab-bar">
@@ -336,7 +337,7 @@ export default function ServiceOrdersRequest() {
                       disabled="true"
                     >
                       <RiCheckLine size={30} />
-                      Alterar
+                      Salvar
                     </button>
                   </div>
                 </form>

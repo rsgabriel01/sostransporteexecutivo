@@ -72,7 +72,8 @@
 
 .person-user-container section.form {
   width: 100%;
-  height: 87%;
+  height: 78vh;
+  overflow: auto;
 
   background: #ffffff;
 

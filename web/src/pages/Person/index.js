@@ -20,6 +20,8 @@ import {
   RiUserFollowLine,
   RiUserAddLine,
   RiAddLine,
+  RiUserLine,
+  RiCheckDoubleLine,
 } from "react-icons/ri";
 
 import "./styles.css";
@@ -102,7 +104,7 @@ export default function ServiceOrdersRequest() {
           <div className="content-container">
             <Header
               title={"Pessoa Física"}
-              icon={<RiUserStarLine size={40} />}
+              icon={<RiUserLine size={40} />}
             ></Header>
             <div className="person-container">
               <div className="tab-bar">
@@ -132,8 +134,8 @@ export default function ServiceOrdersRequest() {
               <section className="form">
                 <form onSubmit={handleRequestOs}>
                   <div className="form-title">
-                    <RiUserFollowLine size={30} />
-                    <h1>PESSOA FÍSICA</h1>
+                    <RiCheckDoubleLine size={30} />
+                    <h1>DADOS CADASTRADOS</h1>
                   </div>
 
                   {/* <div className="input-group-client">

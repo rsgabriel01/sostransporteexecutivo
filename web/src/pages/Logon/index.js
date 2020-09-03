@@ -20,6 +20,9 @@ import {
   RiEyeOffLine,
   RiLock2Line,
   RiLoginBoxLine,
+  RiLoader3Line,
+  RiLoader4Line,
+  RiLoader5Line,
 } from "react-icons/ri";
 import { CgSpinnerTwoAlt } from "react-icons/cg";
 
@@ -37,6 +40,9 @@ export default function Logon() {
   //#region States
   const [loadingPage, setLoadingPage] = useState(true);
   const [loadingButton, setLoadingButton] = useState(false);
+  const [textButtonLogin, setTextButtonLogin] = useState("Entrar");
+  const [btnInactive, setBtnInactive] = useState("");
+
   const [user, setUser] = useState("");
   const [password, setPassword] = useState("");
   const [visiblePassword, setVisiblePassword] = useState("password");
@@ -98,7 +104,9 @@ export default function Logon() {
   async function handleLogin(e) {
     e.preventDefault();
 
+    setTextButtonLogin("Aguarde...");
     setLoadingButton(true);
+    setBtnInactive("btnInactive");
 
     const data = {
       user,
@@ -114,7 +122,9 @@ export default function Logon() {
 
       history.push("/main");
     } catch (error) {
+      setTextButtonLogin("Entrar");
       setLoadingButton(false);
+      setBtnInactive("");
 
       if (error.response) {
         const dataError = error.response.data;
@@ -201,15 +211,15 @@ export default function Logon() {
 
               <button
                 type="submit"
-                className="button btnDefault"
+                className={`button btnDefault ${btnInactive}`}
                 disabled={loadingButton}
               >
                 {!loadingButton ? (
                   <RiLoginBoxLine size={30} />
                 ) : (
-                  <CgSpinnerTwoAlt size={30} />
+                  <RiLoader4Line size={30} className="load-spinner-button" />
                 )}
-                Entrar
+                {textButtonLogin}
               </button>
             </form>
           </section>

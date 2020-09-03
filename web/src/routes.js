@@ -11,6 +11,7 @@ import Person from "./pages/Person";
 import PersonUser from "./pages/PersonUser";
 import PersonNew from "./pages/PersonNew";
 import Client from "./pages/Client";
+import ClientNew from "./pages/ClientNew";
 import Driver from "./pages/Driver";
 import Vehicles from "./pages/Vehicles";
 import ReportsOsFinished from "./pages/ReportsOsFinished";
@@ -36,6 +37,7 @@ export default function Routes() {
         <Route path="/people/person/user/:id" component={PersonUser} />
         <Route path="/people/person/new" exact component={PersonNew} />
         <Route path="/people/client" exact component={Client} />
+        <Route path="/people/client/new" exact component={ClientNew} />
         <Route path="/people/driver" exact component={Driver} />
         <Route path="/Vehicles" component={Vehicles} />
         <Route

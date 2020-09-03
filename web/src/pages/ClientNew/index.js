@@ -19,12 +19,13 @@ import {
   RiUserSharedLine,
   RiUserFollowLine,
   RiUserAddLine,
-  RiUserLine,
+  RiAddLine,
+  RiUser3Line,
 } from "react-icons/ri";
 
 import "./styles.css";
 
-export default function ServiceOrdersRequest() {
+export default function ClientNew() {
   //#region Definitions
   let history = useHistory();
   const [loading, setLoading] = useState(true);
@@ -100,14 +101,11 @@ export default function ServiceOrdersRequest() {
           <Loading type="bars" color="#0f4c82" />
         ) : (
           <div className="content-container">
-            <Header
-              title={"Pessoa Física"}
-              icon={<RiUserLine size={40} />}
-            ></Header>
-            <div className="person-new-container">
+            <Header title={"Cliente"} icon={<RiUser2Line size={40} />}></Header>
+            <div className="client-new-container">
               <div className="tab-bar">
                 <div className="group-tabs">
-                  <Link to="/people/person/new">
+                  <Link to="/people/client">
                     <button type="button" className={`button tab-active`}>
                       <RiBookLine size={24} />
                       Dados
@@ -119,8 +117,8 @@ export default function ServiceOrdersRequest() {
               <section className="form">
                 <form onSubmit={handleRequestOs}>
                   <div className="form-title">
-                    <RiUserLine size={30} />
-                    <h1>NOVA PESSOA FÍSICA</h1>
+                    <RiUser2Line size={30} />
+                    <h1>NOVO CLIENTE</h1>
                   </div>
 
                   {/* <div className="input-group-client">
@@ -154,6 +152,7 @@ export default function ServiceOrdersRequest() {
                           value={client}
                           onChange={(e) => setClient(e.target.value)}
                           id="client"
+                          readonly="true"
                           required
                         />
                       </div>

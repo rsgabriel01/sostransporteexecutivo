@@ -57,6 +57,19 @@
   margin: 0;
 }
 
+.person-user-container .tab-bar .group-tabs button#add-person:hover {
+  color: #0f4c82;
+
+  border-top: none;
+  border-left: none;
+  border-right: none;
+  border-bottom: 2px solid #0f4c82;
+
+  filter: unset;
+
+  margin: 0;
+}
+
 .person-user-container .tab-bar .group-tabs button.tab-active {
   color: #0f4c82;
 

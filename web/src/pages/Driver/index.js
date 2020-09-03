@@ -118,7 +118,7 @@ export default function Driver() {
                   </Link>
 
                   <Link to="/people/driver/new">
-                    <button type="button" className={`button `}>
+                    <button type="button" className={`button `} id="add-driver">
                       <RiAddLine size={24} />
                     </button>
                   </Link>

@@ -56,6 +56,18 @@
   margin: 0;
 }
 
+.driver-container .tab-bar .group-tabs button#add-driver:hover {
+  color: #0f4c82;
+
+  border-top: none;
+  border-left: none;
+  border-right: none;
+  border-bottom: 2px solid #0f4c82;
+  filter: unset;
+
+  margin: 0;
+}
+
 .driver-container .tab-bar .group-tabs button.tab-active {
   color: #0f4c82;
 

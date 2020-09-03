@@ -114,7 +114,7 @@ export default function Client() {
                   </Link>
 
                   <Link to="/people/client/new">
-                    <button type="button" className={`button `}>
+                    <button type="button" className={`button `} id="add-client">
                       <RiAddLine size={24} />
                     </button>
                   </Link>

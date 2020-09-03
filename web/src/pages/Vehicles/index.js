@@ -116,7 +116,11 @@ export default function Vehicles() {
                   </Link>
 
                   <Link to="/vehicles/new">
-                    <button type="button" className={`button `}>
+                    <button
+                      type="button"
+                      className={`button `}
+                      id="add-vehicle"
+                    >
                       <RiAddLine size={24} />
                     </button>
                   </Link>

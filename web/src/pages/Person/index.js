@@ -124,7 +124,7 @@ export default function ServiceOrdersRequest() {
                   </Link>
 
                   <Link to="/people/person/new">
-                    <button type="button" className={`button `}>
+                    <button type="button" className={`button `} id="add-person">
                       <RiAddLine size={24} />
                     </button>
                   </Link>

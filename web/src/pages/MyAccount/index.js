@@ -3,7 +3,7 @@ import React from "react";
 import LateralMenu from "../components/LateralMenu/LateralMenu";
 import Header from "../components/Header/Header";
 
-import { RiUserFollowLine, RiAccountBoxLine } from "react-icons/ri";
+import { RiAccountBoxLine } from "react-icons/ri";
 
 // import "./styles.css";
 

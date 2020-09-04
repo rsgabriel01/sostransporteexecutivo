@@ -13,11 +13,8 @@ import {
   RiPhoneLine,
   RiFileList2Line,
   RiUser2Line,
-  RiDraftLine,
   RiSearchLine,
   RiMapPinLine,
-  RiCheckLine,
-  RiCloseLine,
   RiPencilLine,
 } from "react-icons/ri";
 
@@ -59,35 +56,6 @@ export default function ServiceOrdersRequest() {
   //#region Request Service Order
   async function handleRequestOs(e) {
     e.preventDefault();
-
-    // const data = {
-    //   user,
-    //   password,
-    // };
-
-    // try {
-    //   const response = await api.post("/acess/login", data);
-
-    //   console.log(response.data);
-
-    //   history.push("/main");
-    // } catch (error) {
-    //   if (error.response) {
-    //     const dataError = error.response.data;
-    //     const statusError = error.response.status;
-
-    //     if (statusError === 400 && dataError.message) {
-    //       alert(dataError.message);
-    //     }
-    //     console.log(error.response);
-    //     console.log(error.response.data);
-    //     console.log(statusError);
-    //   } else if (error.request) {
-    //     console.log(error.request);
-    //   } else {
-    //     console.log("Error", error.message);
-    //   }
-    // }
   }
   //#endregion
 

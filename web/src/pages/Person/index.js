@@ -16,7 +16,6 @@ import {
 
 import {
   RiSearchLine,
-  RiMapPinLine,
   RiBookLine,
   RiUserSharedLine,
   RiAddLine,

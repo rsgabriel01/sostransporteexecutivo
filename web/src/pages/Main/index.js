@@ -7,7 +7,6 @@ import Loading from "../components/Loading/Loading";
 import { isAuthenticated } from "../../services/auth";
 
 import {
-  RiPhoneLine,
   RiFileCopy2Line,
   RiArrowRightLine,
   RiTaxiWifiLine,

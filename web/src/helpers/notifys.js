@@ -2,10 +2,15 @@ import React from "react";
 
 import { toast } from "react-toastify";
 
-import { RiErrorWarningLine } from "react-icons/ri";
+import {
+  RiErrorWarningLine,
+  RiCheckLine,
+  RiAlertLine,
+  RiInformationLine,
+} from "react-icons/ri";
 
 export default function notify(type, message) {
-  const Foo = ({ textMessage }) => {
+  const Foo = ({ textMessage, icon }) => {
     return (
       <div
         style={{
@@ -14,9 +19,7 @@ export default function notify(type, message) {
           alignItems: "center",
         }}
       >
-        <h1>
-          <RiErrorWarningLine size={50} />
-        </h1>
+        <h1>{icon}</h1>
         <span
           style={{
             paddingLeft: "10px",
@@ -32,19 +35,27 @@ export default function notify(type, message) {
 
   switch (type) {
     case "success":
-      toast.success(<Foo textMessage={message} />);
+      toast.success(
+        <Foo textMessage={message} icon={<RiCheckLine size={50} />} />
+      );
       break;
 
     case "warning":
-      toast.warn(<Foo textMessage={message} />);
+      toast.warn(
+        <Foo textMessage={message} icon={<RiErrorWarningLine size={50} />} />
+      );
 
       break;
 
     case "error":
-      toast.error(<Foo textMessage={message} />);
+      toast.error(
+        <Foo textMessage={message} icon={<RiAlertLine size={50} />} />
+      );
       break;
 
     default:
-      toast.info(<Foo textMessage={message} />);
+      toast.info(
+        <Foo textMessage={message} icon={<RiInformationLine size={50} />} />
+      );
   }
 }

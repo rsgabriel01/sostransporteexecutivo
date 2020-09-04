@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 
-import { Link, useHistory, withRouter } from "react-router-dom";
+import { Link, useHistory } from "react-router-dom";
 
 import { ToastContainer } from "react-toastify";
 
@@ -20,11 +20,8 @@ import {
   RiEyeOffLine,
   RiLock2Line,
   RiLoginBoxLine,
-  RiLoader3Line,
   RiLoader4Line,
-  RiLoader5Line,
 } from "react-icons/ri";
-import { CgSpinnerTwoAlt } from "react-icons/cg";
 
 import "./styles.css";
 

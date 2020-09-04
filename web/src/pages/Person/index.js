@@ -250,6 +250,7 @@ export default function ServiceOrdersRequest() {
 
   //#region Cancel Update
   function handleCancelUpdate() {
+    setPersonFinded(false);
     clearFields(true);
     setTitleUpdate("");
     setUpdateRegister(false);
@@ -259,10 +260,22 @@ export default function ServiceOrdersRequest() {
 
   //#region Update Register
   function handleUpdateRegister() {
-    setTitleUpdate("ALTERAR ");
+    if (personFinded) {
+      setTitleUpdate("ALTERAR ");
 
-    setUpdateRegister(true);
-    setIsReadonly(false);
+      setUpdateRegister(true);
+      setIsReadonly(false);
+    } else if (id_people.length === 0) {
+      notify(
+        "warning",
+        "Para acessar a alteração de dados primeiro selecione a pessoa desejada."
+      );
+    } else {
+      notify(
+        "warning",
+        "Não foi possível acessar a alteração de dados, pois nenhuma pessoa foi encontrada."
+      );
+    }
   }
   //#endregion
 

@@ -5,7 +5,7 @@ import Header from "../components/Header/Header";
 
 import { RiUserFollowLine, RiAccountBoxLine } from "react-icons/ri";
 
-import "./styles.css";
+// import "./styles.css";
 
 export default function PersonUser() {
   return (

@@ -228,7 +228,7 @@ form .input-block + .input-block {
   flex-direction: column;
 }
 
-.label-address {
+.os-request-container .label-address {
   width: 100%;
 
   display: flex;
@@ -238,28 +238,28 @@ form .input-block + .input-block {
   padding-bottom: 10px;
 }
 
-.address-title {
+.os-request-container .address-title {
   display: inline-flex;
 
   align-items: center;
 }
 
-.checkbox-block {
+.os-request-container .checkbox-block {
   display: inline-flex;
 
   align-items: center;
   cursor: pointer;
 }
 
-.checkbox-block label {
+.os-request-container .checkbox-block label {
   cursor: pointer;
 }
 
-.checkbox-block input {
+.os-request-container .checkbox-block input {
   cursor: pointer;
 }
 
-.label-address input {
+.os-request-container .label-address input {
   height: 19px;
   width: 19px;
 }
@@ -269,15 +269,15 @@ label {
   font-size: 15px;
 }
 
-.input-block label {
+.os-request-container .input-block label {
   padding-bottom: 5px;
 }
 
-.label-address label {
+.os-request-container .label-address label {
   padding-left: 5px;
 }
 
-.button-group {
+.os-request-container .button-group {
   display: flex;
   flex-direction: row;
 
@@ -286,12 +286,12 @@ label {
   padding-top: 50px;
 }
 
-.button-group button {
+.os-request-container .button-group button {
   height: 45px;
   width: 150px;
 }
 
-.neighborhood-block {
+.os-request-container .neighborhood-block {
   display: flex;
 
   flex-direction: row;
@@ -299,11 +299,11 @@ label {
   align-items: center;
 }
 
-.neighborhood-block input {
+.os-request-container .neighborhood-block input {
   margin-right: 10px;
 }
 
-.neighborhood-block button {
+.os-request-container .neighborhood-block button {
   height: 35px;
   width: 40px;
 

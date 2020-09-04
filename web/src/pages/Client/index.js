@@ -25,7 +25,7 @@ import {
   RiPencilLine,
 } from "react-icons/ri";
 
-import "./styles.css";
+// import "./styles.css";
 
 export default function Client() {
   //#region Definitions

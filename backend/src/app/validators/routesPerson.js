@@ -15,6 +15,16 @@ const validatorPersonCreate = celebrate({
   }),
 });
 
+const validatorPersonShow = celebrate({
+  [Segments.HEADERS]: Joi.object({
+    authorization: Joi.string().required(),
+    id_executingperson: Joi.number().positive().integer().required(),
+  }).unknown(),
+  [Segments.PARAMS]: Joi.object().keys({
+    idPerson: Joi.number().positive().integer().required(),
+  }),
+});
+
 // const validatorLogin = celebrate({
 //   [Segments.BODY]: Joi.object().keys({
 //     user: Joi.string().required(),
@@ -30,4 +40,5 @@ const validatorPersonCreate = celebrate({
 
 module.exports = {
   validatorPersonCreate,
+  validatorPersonShow,
 };

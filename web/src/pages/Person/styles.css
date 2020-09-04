@@ -1,3 +1,8 @@
+label {
+  color: #828282;
+  font-size: 15px;
+}
+
 .person-container {
   display: flex;
   flex-direction: column;
@@ -94,6 +99,8 @@
   display: flex;
   align-items: center;
   justify-content: center;
+
+  border: 1px solid red;
 }
 
 .person-container section.form form {
@@ -136,204 +143,116 @@
   border: 2px solid #0f4c82;
 }
 
-.person-container section.form form .input-group-client {
+.person-container section.form form .input-group-person {
   width: 100%;
 
   display: flex;
   flex-direction: column;
-  padding-bottom: 25px;
 }
 
-.person-container section.form form .input-group-client h1 {
+.person-container section.form form .input-group-person + .input-group-person {
+  margin-top: 25px;
+}
+
+.person-container section.form form .input-group-person h1 {
   padding-bottom: 10px;
 }
 
-.person-container
-  section.form
-  form
-  .input-group-client
-  .input-block-cod-client {
-  display: flex;
-  flex-direction: column;
-  padding-right: 10px;
-}
-
-.person-container
-  section.form
-  form
-  .input-group-client
-  .input-block-cod-client
-  .input-block-client {
-  width: 100%;
-
-  display: flex;
-  flex-direction: row;
-}
-
-.person-container
-  section.form
-  form
-  .input-group-client
-  .input-block-name-company {
-  width: 100%;
-
-  display: flex;
-  flex-direction: column;
-}
-
-.person-container section.form form .input-group-client .input-block {
-  width: 100%;
-
-  display: flex;
-  flex-direction: row;
-}
-
-.person-container section.form form .input-group-client .input-block input {
-  margin-right: 10px;
-}
-
-.street-number-block {
-  width: 100%;
-
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-  padding: 10px 0px 10px 0px;
-}
-
-.street-number-block .input-block {
-  padding-top: 0px !important;
-}
-
-.street-number-block .input-block + .input-block {
-  width: 125px;
-}
-
-.street-number-block > :first-child {
-  padding-right: 10px;
-}
-
-.person-container section.form form .input-group-client .input-block button {
-  height: 35px;
-  width: 40px;
-  padding: 0px;
-  margin: 0;
-}
-
-form .input-block {
-  display: flex;
-  flex-direction: column;
-  width: 100%;
-}
-
-form .input-block + .input-block {
-  padding-top: 10px;
-}
-
-.person-container section.form form .group-address {
-  width: 100%;
-
-  display: flex;
-  flex-direction: row;
-}
-
-.person-container section.form form .group-address #input-group-address-origin {
-  padding-right: 20px;
-}
-
-.person-container
-  section.form
-  form
-  .group-address
-  #input-group-address-destiny {
-  padding-left: 20px;
-}
-
-.person-container section.form form .group-address .input-group-address {
-  width: 50%;
-
-  display: flex;
-  flex-direction: column;
-}
-
-.label-address {
-  width: 100%;
-
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  justify-content: space-between;
-  padding-bottom: 10px;
-}
-
-.address-title {
-  display: inline-flex;
-
-  align-items: center;
-}
-
-.checkbox-block {
-  display: inline-flex;
-
-  align-items: center;
-  cursor: pointer;
-}
-
-.checkbox-block label {
-  cursor: pointer;
-}
-
-.checkbox-block input {
-  cursor: pointer;
-}
-
-.label-address input {
-  height: 19px;
-  width: 19px;
-}
-
-label {
-  color: #828282;
-  font-size: 15px;
-}
-
-.input-block label {
+.person-container section.form form .input-group-person label {
   padding-bottom: 5px;
 }
 
-.label-address label {
-  padding-left: 5px;
-}
+.person-container section.form form .input-label-group-row {
+  width: 100%;
 
-.button-group {
   display: flex;
   flex-direction: row;
-
-  justify-content: flex-end !important;
-
-  padding-top: 50px;
 }
 
-.button-group button {
-  height: 45px;
-  width: 150px;
+.person-container
+  section.form
+  form
+  .input-label-group-row
+  + .input-label-group-row {
+  margin-top: 10px;
 }
 
-.neighborhood-block {
+.person-container section.form form .input-label-block-column {
+  width: 100%;
+
   display: flex;
+  flex-direction: column;
+}
 
+.person-container
+  section.form
+  form
+  .input-label-block-column
+  + .input-label-block-column {
+  margin-left: 10px;
+}
+
+.person-container section.form form #input-label-block-column-cod {
+  width: 32%;
+}
+
+.person-container section.form form #input-label-block-column-cpf-rg {
+  width: 25%;
+}
+
+.person-container section.form form #input-label-block-column-phone {
+  width: 14.8%;
+}
+
+.person-container section.form form .input-button-block-row {
+  /* width: 100%; */
+
+  display: flex;
   flex-direction: row;
+}
+
+.person-container section.form form .input-button-block-row input {
+  margin-right: 10px;
+  width: 74%;
+}
+
+.person-container section.form form .input-button-block-row button {
+  height: 35px;
+  width: 40px !important;
+
+  margin: 0;
+}
+
+.person-container .input-group-person .input-label-group-row .checkbox-block {
+  display: inline-flex;
 
   align-items: center;
+  cursor: pointer;
 }
 
-/* .neighborhood-block input {
-  margin-right: 10px;
-} */
+.person-container
+  .input-group-person
+  .input-label-group-row
+  .checkbox-block
+  + .checkbox-block {
+  margin-left: 10px;
+}
 
-/* .neighborhood-block button {
-  height: 35px;
-  width: 40px;
+.person-container
+  .input-group-person
+  .input-label-group-row
+  .checkbox-block
+  label {
+  cursor: pointer;
+  padding: 0px 0px 0px 5px;
+}
 
-  margin: 0px;
-} */
+.person-container
+  .input-group-person
+  .input-label-group-row
+  .checkbox-block
+  input {
+  cursor: pointer;
+  height: 19px;
+  width: 19px;
+}

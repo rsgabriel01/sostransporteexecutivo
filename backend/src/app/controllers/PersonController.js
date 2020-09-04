@@ -125,4 +125,44 @@ module.exports = {
       return res.status(500);
     }
   },
+
+  async show(req, res) {
+    try {
+      const { idPerson } = req.params;
+      console.log(idPerson);
+
+      const person = await People.findByPk(idPerson, {
+        include: ["Users", "People_Type"],
+      });
+
+      if (!person) {
+        return res.status(400).json({
+          message: "Nenhuma pessoa foi encontrada com o código fornecido.",
+        });
+      }
+
+      const {
+        id,
+        name,
+        cpf_cnpj,
+        phone,
+        email,
+        active,
+        Users,
+        People_Type,
+      } = person;
+
+      // const { id, name, cpf_cnpj, phone, email, active , Users} = person;
+
+      const responseData = {
+        person: { id, name, cpf_cnpj, phone, email, active },
+        user: Users,
+        peopleType: People_Type,
+      };
+
+      return res.json(responseData);
+    } catch (error) {
+      console.log(error);
+    }
+  },
 };

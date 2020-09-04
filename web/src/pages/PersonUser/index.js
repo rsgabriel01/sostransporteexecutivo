@@ -26,7 +26,7 @@ import {
   RiUserLine,
 } from "react-icons/ri";
 
-import "./styles.css";
+// import "./styles.css";
 
 export default function ServiceOrdersRequest() {
   //#region Definitions

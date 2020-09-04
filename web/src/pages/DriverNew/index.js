@@ -25,7 +25,7 @@ import {
   RiUserLocationLine,
 } from "react-icons/ri";
 
-import "./styles.css";
+// import "./styles.css";
 
 export default function DriverNew() {
   //#region Definitions

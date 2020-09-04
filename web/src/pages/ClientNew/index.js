@@ -23,7 +23,7 @@ import {
   RiUser3Line,
 } from "react-icons/ri";
 
-import "./styles.css";
+// import "./styles.css";
 
 export default function ClientNew() {
   //#region Definitions

@@ -29,7 +29,10 @@ const {
   validatorLogout,
 } = require("./validators/routesAcess");
 
-const { validatorPersonCreate } = require("./validators/routesPerson");
+const {
+  validatorPersonCreate,
+  validatorPersonShow,
+} = require("./validators/routesPerson");
 
 const { validatorAddressCreate } = require("./validators/routesPeopleAddress");
 
@@ -60,6 +63,8 @@ routes.get("/acess/logout", validatorLogout, SessionsController.destroy);
 routes.get("/people", PersonController.index);
 
 routes.post("/person/create", validatorPersonCreate, PersonController.store);
+
+routes.get("/person/:idPerson", validatorPersonShow, PersonController.show);
 //#endregion
 
 //#region People Address

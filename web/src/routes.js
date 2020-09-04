@@ -36,7 +36,7 @@ export default function Routes() {
         />
         <Route path="/serviceorders" exact component={ServiceOrders} />
         <Route path="/people/person" exact component={Person} />
-        <Route path="/people/person/user/:id" exact component={PersonUser} />
+        <Route path="/people/person/user/:id" component={PersonUser} />
         <Route path="/people/person/new" exact component={PersonNew} />
         <Route path="/people/client" exact component={Client} />
         <Route path="/people/client/new" exact component={ClientNew} />

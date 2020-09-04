@@ -275,18 +275,18 @@ form .input-block + .input-block {
   align-items: center;
 }
 
-.checkbox-block {
+.os-consult-container .group-address .checkbox-block {
   display: inline-flex;
 
   align-items: center;
   cursor: pointer;
 }
 
-.checkbox-block label {
+.os-consult-container .group-address .checkbox-block label {
   cursor: pointer;
 }
 
-.checkbox-block input {
+.os-consult-container .group-address .checkbox-block input {
   cursor: pointer;
 }
 
@@ -333,14 +333,3 @@ label {
 section.form form::-webkit-scrollbar {
   display: none;
 }
-
-/* .neighborhood-block input {
-  margin-right: 10px;
-} */
-
-/* .neighborhood-block button {
-  height: 35px;
-  width: 40px;
-
-  margin: 0px;
-} */

@@ -85,6 +85,17 @@ form input {
   cursor: default;
 }
 
+.btn-tab-inactive {
+  color: #828282 !important;
+}
+
+.btn-tab-inactive:hover {
+  color: #828282 !important;
+  border-radius: none !important;
+  border: none !important;
+  cursor: default !important;
+}
+
 .main-container {
   display: flex;
   flex-direction: row;

@@ -119,6 +119,99 @@ form input {
   display: inline-block;
 }
 
+div.custom-ui {
+  width: 35vw;
+  height: 30vh;
+
+  display: grid;
+  grid-template-rows: 1fr 1fr;
+
+  padding: 30px;
+  background: #fff;
+  border-radius: 10px;
+  box-shadow: 0 20px 75px rgba(0, 0, 0, 0.3);
+  color: #666;
+}
+
+div.custom-ui .content {
+  width: 100%;
+
+  display: flex;
+  /* align-items: center; */
+
+  flex-direction: column;
+}
+
+div.custom-ui .content p {
+  margin-top: 10px;
+
+  font-size: 20px;
+}
+
+div.custom-ui .content .header {
+  width: 100%;
+
+  display: flex;
+  align-items: center;
+
+  flex-direction: row;
+}
+
+div.custom-ui .content .header h1 {
+  /* color: #dca500; */
+
+  font-size: 35px;
+}
+
+div.custom-ui .alert-button-group-column {
+  width: 100%;
+
+  display: flex;
+  flex-direction: column;
+
+  justify-content: flex-end;
+}
+
+div.custom-ui .alert-button-group-column .alert-button-group-row {
+  width: 100%;
+
+  display: flex;
+  flex-direction: row;
+
+  justify-content: flex-end;
+}
+
+div.custom-ui
+  .alert-button-group-column
+  .alert-button-group-row
+  .alert-button-block {
+  width: 50%;
+
+  display: flex;
+  flex-direction: row;
+
+  justify-content: flex-end;
+}
+
+div.custom-ui
+  .alert-button-group-column
+  .alert-button-group-row
+  .alert-button-block
+  button {
+  height: 45px;
+}
+
+div.custom-ui
+  .alert-button-group-column
+  .alert-button-group-row
+  .alert-button-block
+  button
+  + button {
+  margin-left: 10px;
+}
+
+/* Animation Loading */
+
 @keyframes spin-animation {
   0% {
     transform: rotate(0deg);

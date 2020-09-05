@@ -5,6 +5,7 @@ import Header from "../components/Header/Header";
 import Loading from "../components/Loading/Loading";
 import notify from "../../helpers/notifys";
 import { ToastContainer } from "react-toastify";
+import { confirmAlert } from "react-confirm-alert";
 
 import api from "../../services/api";
 
@@ -26,10 +27,13 @@ import {
   RiCloseLine,
   RiCheckLine,
   RiBrushLine,
+  RiInformationLine,
+  RiQuestionLine,
 } from "react-icons/ri";
 
 import "./styles.css";
 import "react-toastify/dist/ReactToastify.css";
+import "react-confirm-alert/src/react-confirm-alert.css";
 
 export default function ServiceOrdersRequest() {
   //#region Definitions
@@ -44,15 +48,14 @@ export default function ServiceOrdersRequest() {
 
   const [personFinded, setPersonFinded] = useState(false);
 
-  const [id_people, setIdPeople] = useState("");
+  const [alertConfirmed, setAlertConfirmed] = useState(false);
+
+  const [idPeople, setIdPeople] = useState("");
   const [name, setName] = useState("");
   const [cpf_cnpj, setCpf_cnpj] = useState("");
   const [rg, setRg] = useState("");
   const [phone, setPhone] = useState("");
   const [email, setEmail] = useState("");
-  const [typePersonAdmin, setTypePersonAdmin] = useState("");
-  const [typePersonAttendance, setTypePersonAttendance] = useState("");
-  const [typePersonDriver, setTypePersonDriver] = useState("");
 
   const [checkedTypeAdmin, setCheckedTypeAdmin] = useState(false);
   const [checkedTypeAttendance, setCheckedTypeAttendance] = useState(false);
@@ -78,6 +81,58 @@ export default function ServiceOrdersRequest() {
     }
   }
 
+  //#endregion
+
+  //#region Alert confirmation
+  function confirmationAlert(title, message, functionExecute) {
+    confirmAlert({
+      customUI: ({ onClose }) => {
+        return (
+          <div className="custom-ui">
+            <div className="content">
+              <div className="header">
+                <RiQuestionLine size={70} />
+                <h1>{title}</h1>
+              </div>
+
+              <p>{message}</p>
+            </div>
+
+            <div className="alert-button-group-column">
+              <div className="alert-button-group-row">
+                <div className="alert-button-block">
+                  <button onClick={onClose} className="button btnCancel">
+                    <RiCloseLine size={25} />
+                    Não
+                  </button>
+                  <button
+                    className="button btnSuccess"
+                    onClick={() => {
+                      switch (functionExecute) {
+                        case "cancelUpdate":
+                          cancelUpdate();
+                          break;
+                        case "updatePerson":
+                          updatePerson();
+                          break;
+
+                        default:
+                          break;
+                      }
+                      onClose();
+                    }}
+                  >
+                    <RiCheckLine size={25} />
+                    Sim
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        );
+      },
+    });
+  }
   //#endregion
 
   //#region Load Data Person
@@ -147,12 +202,7 @@ export default function ServiceOrdersRequest() {
 
   //#endregion
 
-  //#region Request Service Order
-  async function handleRequestOs(e) {
-    e.preventDefault();
-  }
-  //#endregion
-
+  //#region Fill Fields
   function fillFields(response) {
     const { name, cpf_cnpj, rg, phone, email, active } = response.person;
 
@@ -186,48 +236,6 @@ export default function ServiceOrdersRequest() {
       ? setCheckedTypeDriver(true)
       : setCheckedTypeDriver(false);
   }
-
-  //#region On Check Checkbox
-  function handleCheckBox(checkbox) {
-    switch (checkbox) {
-      case "cbAdmin":
-        console.log("type admin anterior " + checkedTypeAdmin);
-
-        checkedTypeAdmin ? setTypePersonAdmin("") : setTypePersonAdmin(1);
-        setCheckedTypeAdmin(!checkedTypeAdmin);
-
-        console.log("type admin novo " + checkedTypeAdmin);
-
-        break;
-      case "cbAttendance":
-        console.log("type attendance anterior " + checkedTypeAttendance);
-        checkedTypeAttendance
-          ? setTypePersonAttendance("")
-          : setTypePersonAttendance(2);
-        console.log("type attendance novo " + checkedTypeAttendance);
-        break;
-      case "cbDriver":
-        console.log("type Driver anterior" + checkedTypeDriver);
-        checkedTypeDriver ? setTypePersonDriver("") : setTypePersonDriver(3);
-        console.log("type Driver novo" + checkedTypeDriver);
-        break;
-
-      default:
-        break;
-    }
-  }
-  //#endregion
-
-  //#region Search Person
-  function handleSearchPerson(idPerson) {
-    if (idPerson) {
-      loadDataPerson(idPerson);
-      setUpdateRegister(false);
-      setTitleUpdate("");
-    } else {
-      clearFields();
-    }
-  }
   //#endregion
 
   //#region Clear Fields
@@ -245,10 +253,85 @@ export default function ServiceOrdersRequest() {
     setCheckedTypeAttendance(false);
     setCheckedTypeDriver(false);
   }
-  //#region
+  //#endregion
 
-  //#region Cancel Update
-  function handleCancelUpdate() {
+  //#region Handle Check Checkbox
+  function handleCheckBox(checkbox) {
+    switch (checkbox) {
+      case "cbAdmin":
+        console.log("type admin anterior " + checkedTypeAdmin);
+        setCheckedTypeAdmin(!checkedTypeAdmin);
+
+        break;
+      case "cbAttendance":
+        console.log("type attendance anterior " + checkedTypeAttendance);
+        setCheckedTypeAttendance(!checkedTypeAttendance);
+
+        break;
+      case "cbDriver":
+        console.log("type Driver anterior " + checkedTypeDriver);
+        setCheckedTypeDriver(!checkedTypeDriver);
+
+        break;
+
+      default:
+        break;
+    }
+  }
+  //#endregion
+
+  //#region Handle Search Person
+  function handleSearchPerson(idPerson) {
+    if (idPerson) {
+      loadDataPerson(idPerson);
+      setUpdateRegister(false);
+      setTitleUpdate("");
+    } else {
+      clearFields();
+    }
+  }
+  //#endregion
+
+  //#region Handle Submit Update
+  function handleSubmitUpdate(e) {
+    e.preventDefault();
+
+    confirmationAlert(
+      "Atençao!",
+      "Deseja realmente SALVAR essa alteração?",
+      "updatePerson"
+    );
+  }
+  //#endregion
+
+  //#region Update Person
+  async function updatePerson() {
+    let dataPerson = {
+      idPeople,
+      name,
+      cpf_cnpj,
+      rg,
+      phone,
+      email,
+      typeAdmin: checkedTypeAdmin,
+      typeAttendance: checkedTypeAttendance,
+      typeDriver: checkedTypeDriver,
+    };
+
+    console.log(dataPerson);
+  }
+  //#endregion
+
+  //#region Handle Cancel Update
+  async function handleCancelUpdate() {
+    confirmationAlert(
+      "Atençao!",
+      "Deseja realmente CANCELAR essa alteração?",
+      "cancelUpdate"
+    );
+  }
+
+  function cancelUpdate() {
     setPersonFinded(false);
     clearFields(true);
     setTitleUpdate("");
@@ -257,14 +340,14 @@ export default function ServiceOrdersRequest() {
   }
   //#endregion
 
-  //#region Update Register
+  //#region Handle Update Register
   function handleUpdateRegister() {
     if (personFinded) {
       setTitleUpdate("ALTERAR ");
 
       setUpdateRegister(true);
       setIsReadonly(false);
-    } else if (id_people.length === 0) {
+    } else if (idPeople.length === 0) {
       notify(
         "warning",
         "Para acessar a alteração de dados primeiro selecione a pessoa desejada."
@@ -302,7 +385,7 @@ export default function ServiceOrdersRequest() {
                     </button>
                   </Link>
 
-                  <Link to={`/people/person/user/${id_people}`}>
+                  <Link to={`/people/person/user/${idPeople}`}>
                     <button
                       type="button"
                       className={
@@ -324,7 +407,7 @@ export default function ServiceOrdersRequest() {
               </div>
 
               <section className="form">
-                <form onSubmit={handleRequestOs}>
+                <form onSubmit={handleSubmitUpdate}>
                   <div className="form-title">
                     <RiCheckDoubleLine size={30} />
                     <h1>{titleUpdate}DADOS CADASTRADOS</h1>
@@ -349,14 +432,14 @@ export default function ServiceOrdersRequest() {
                             type="number"
                             min="1"
                             required
-                            value={id_people}
+                            value={idPeople}
                             onChange={(e) => setIdPeople(e.target.value)}
                             onBlur={() => {
-                              handleSearchPerson(id_people);
+                              handleSearchPerson(idPeople);
                             }}
                             onKeyUp={(e) => {
-                              console.log(id_people.length);
-                              if (id_people.length === 0) {
+                              console.log(idPeople.length);
+                              if (idPeople.length === 0) {
                                 clearFields();
                                 clearFields();
                               }
@@ -437,10 +520,10 @@ export default function ServiceOrdersRequest() {
                           minLength="10"
                           maxLength="11"
                           readOnly={isReadonly}
-                          required
                           type="text"
                           value={phone}
                           onChange={(e) => setPhone(e.target.value)}
+                          required
                         />
                       </div>
 
@@ -453,7 +536,6 @@ export default function ServiceOrdersRequest() {
                           onChange={(e) => setEmail(e.target.value)}
                           id="client"
                           readOnly={isReadonly}
-                          required
                         />
                       </div>
                     </div>

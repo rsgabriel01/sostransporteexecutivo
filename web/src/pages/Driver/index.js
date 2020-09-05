@@ -23,17 +23,6 @@ export default function Driver() {
   let history = useHistory();
   const [loading, setLoading] = useState(true);
 
-  const [idClient, setIdClient] = useState("");
-  const [client, setClient] = useState("");
-  const [neighborhoodOrigin, setNeighborhoodOrigin] = useState("");
-  const [streetOrigin, setStreetOrigin] = useState("");
-  const [streetNumberOrigin, setStreetNumberOrigin] = useState("");
-  const [complementOrigin, setComplementOrigin] = useState("");
-  const [neighborhoodDestiny, setNeighborhoodDestiny] = useState("");
-  const [streetDestiny, setStreetDestiny] = useState("");
-  const [streetNumberDestiny, setStreetNumberDestiny] = useState("");
-  const [complementDestiny, setComplementDestiny] = useState("");
-
   //#endregion
 
   //#region Verify Session

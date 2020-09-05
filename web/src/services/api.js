@@ -1,6 +1,6 @@
 import axios from "axios";
 
-import { getToken } from "./auth";
+import { getToken, getIdExecutingPerson } from "./auth";
 
 const api = axios.create({
   baseURL: "http://localhost:3001/api",
@@ -8,8 +8,10 @@ const api = axios.create({
 
 api.interceptors.request.use(async (config) => {
   const token = getToken();
+  const executingperson = getIdExecutingPerson();
   if (token) {
     config.headers.authorization = `${token}`;
+    config.headers.id_executingperson = `${executingperson}`;
   }
   return config;
 });

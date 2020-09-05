@@ -29,6 +29,7 @@ import {
   RiBrushLine,
   RiInformationLine,
   RiQuestionLine,
+  RiLoader4Line,
 } from "react-icons/ri";
 
 import "./styles.css";
@@ -48,7 +49,9 @@ export default function ServiceOrdersRequest() {
 
   const [personFinded, setPersonFinded] = useState(false);
 
-  const [alertConfirmed, setAlertConfirmed] = useState(false);
+  const [loadingButton, setLoadingButton] = useState(false);
+  const [textButtonSaveUpdate, setTextButtonSaveUpdate] = useState("Salvar");
+  const [btnInactive, setBtnInactive] = useState("");
 
   const [idPeople, setIdPeople] = useState("");
   const [name, setName] = useState("");
@@ -59,7 +62,6 @@ export default function ServiceOrdersRequest() {
 
   const [checkedTypeAdmin, setCheckedTypeAdmin] = useState(false);
   const [checkedTypeAttendance, setCheckedTypeAttendance] = useState(false);
-  const [checkedTypeDriver, setCheckedTypeDriver] = useState(false);
 
   //#endregion
 
@@ -109,8 +111,8 @@ export default function ServiceOrdersRequest() {
                     className="button btnSuccess"
                     onClick={() => {
                       switch (functionExecute) {
-                        case "cancelUpdate":
-                          cancelUpdate();
+                        case "alterPageUpdateForConsult":
+                          alterPageUpdateForConsult();
                           break;
                         case "updatePerson":
                           updatePerson();
@@ -143,12 +145,7 @@ export default function ServiceOrdersRequest() {
 
       setPersonFinded(false);
 
-      const response = await api.get(`/person/${id}`, {
-        headers: {
-          token: getToken(),
-          id_executingperson: getIdExecutingPerson(),
-        },
-      });
+      const response = await api.get(`/person/${id}`);
 
       if (response) {
         setPersonFinded(true);
@@ -231,10 +228,6 @@ export default function ServiceOrdersRequest() {
     typeIds.includes("2")
       ? setCheckedTypeAttendance("true")
       : setCheckedTypeAttendance(false);
-
-    typeIds.includes("3")
-      ? setCheckedTypeDriver(true)
-      : setCheckedTypeDriver(false);
   }
   //#endregion
 
@@ -251,7 +244,6 @@ export default function ServiceOrdersRequest() {
     setEmail("");
     setCheckedTypeAdmin(false);
     setCheckedTypeAttendance(false);
-    setCheckedTypeDriver(false);
   }
   //#endregion
 
@@ -266,12 +258,6 @@ export default function ServiceOrdersRequest() {
       case "cbAttendance":
         console.log("type attendance anterior " + checkedTypeAttendance);
         setCheckedTypeAttendance(!checkedTypeAttendance);
-
-        break;
-      case "cbDriver":
-        console.log("type Driver anterior " + checkedTypeDriver);
-        setCheckedTypeDriver(!checkedTypeDriver);
-
         break;
 
       default:
@@ -315,10 +301,60 @@ export default function ServiceOrdersRequest() {
       email,
       typeAdmin: checkedTypeAdmin,
       typeAttendance: checkedTypeAttendance,
-      typeDriver: checkedTypeDriver,
     };
 
+    setTextButtonSaveUpdate("Aguarde...");
+    setLoadingButton(true);
+    setBtnInactive("btnInactive");
+
     console.log(dataPerson);
+
+    try {
+      const response = await api.put("/person/update", dataPerson);
+
+      console.log(response.data);
+      alterPageUpdateForConsult();
+
+      notify("success", response.data.message);
+
+      setTextButtonSaveUpdate("Salvar");
+      setLoadingButton(false);
+      setBtnInactive("");
+    } catch (error) {
+      setTextButtonSaveUpdate("Salvar");
+      setLoadingButton(false);
+      setBtnInactive("");
+
+      if (error.response) {
+        const dataError = error.response.data;
+        const statusError = error.response.status;
+        console.error(dataError);
+        console.error(statusError);
+
+        if (statusError === 400 && dataError.message) {
+          console.log(dataError.message);
+          switch (dataError.message) {
+            // case '"password" length must be at least 8 characters long':
+            //   notify("warning", "A senha deve conter no mínimo 8 caracteres.");
+            //   break;
+            default:
+              notify("warning", dataError.message);
+          }
+        }
+      } else if (error.request) {
+        notify(
+          "error",
+          `Oops, algo deu errado, entre em contato com o suporte de TI. ${error}`
+        );
+        console.log(error.request);
+      } else {
+        notify(
+          "error",
+          `Oops, algo deu errado, entre em contato com o suporte de TI. ${error}`
+        );
+        console.log("Error", error.message);
+      }
+    }
   }
   //#endregion
 
@@ -327,11 +363,11 @@ export default function ServiceOrdersRequest() {
     confirmationAlert(
       "Atençao!",
       "Deseja realmente CANCELAR essa alteração?",
-      "cancelUpdate"
+      "alterPageUpdateForConsult"
     );
   }
 
-  function cancelUpdate() {
+  function alterPageUpdateForConsult() {
     setPersonFinded(false);
     clearFields(true);
     setTitleUpdate("");
@@ -576,20 +612,6 @@ export default function ServiceOrdersRequest() {
                           />
                           <label htmlFor="cbAttendance">Atendente</label>
                         </div>
-
-                        <div className="checkbox-block">
-                          <input
-                            type="checkbox"
-                            id="cbDriver"
-                            disabled={isReadonly}
-                            value="3"
-                            checked={checkedTypeDriver}
-                            onClick={() => {
-                              handleCheckBox("cbDriver");
-                            }}
-                          />
-                          <label htmlFor="cbDriver">Motorista</label>
-                        </div>
                       </div>
                     </div>
                   </div>
@@ -599,7 +621,8 @@ export default function ServiceOrdersRequest() {
                       <>
                         <button
                           type="button"
-                          className="button btnCancel"
+                          className={`button btnCancel ${btnInactive}`}
+                          disabled={loadingButton}
                           onClick={() => {
                             handleCancelUpdate();
                           }}
@@ -607,9 +630,20 @@ export default function ServiceOrdersRequest() {
                           <RiCloseLine size={30} />
                           Cancelar
                         </button>
-                        <button type="submit" className="button btnSuccess">
-                          <RiCheckLine size={25} />
-                          Salvar
+                        <button
+                          type="submit"
+                          className={`button btnSuccess ${btnInactive}`}
+                          disabled={loadingButton}
+                        >
+                          {!loadingButton ? (
+                            <RiCheckLine size={25} />
+                          ) : (
+                            <RiLoader4Line
+                              size={25}
+                              className="load-spinner-button"
+                            />
+                          )}
+                          {textButtonSaveUpdate}
                         </button>
                       </>
                     ) : (

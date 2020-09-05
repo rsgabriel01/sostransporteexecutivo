@@ -100,7 +100,6 @@ module.exports = {
   async show(req, res) {
     try {
       const { idPerson } = req.params;
-      console.log(idPerson);
 
       const person = await People.findByPk(idPerson, {
         include: ["Users", "People_Type"],
@@ -116,6 +115,7 @@ module.exports = {
         id,
         name,
         cpf_cnpj,
+        rg,
         phone,
         email,
         active,
@@ -124,7 +124,7 @@ module.exports = {
       } = person;
 
       const responseData = {
-        person: { id, name, cpf_cnpj, phone, email, active },
+        person: { id, name, cpf_cnpj, phone, email, active, rg },
         user: Users,
         peopleType: People_Type,
       };
@@ -193,8 +193,6 @@ module.exports = {
         },
         include: ["People_Type"],
       });
-
-      console.log(oldPersonFinded);
 
       if (oldPersonFinded) {
         typesPersonId = oldPersonFinded.People_Type.map(function (index) {
@@ -366,6 +364,7 @@ module.exports = {
 
       return res.json({
         newPersonFinded,
+        message: "Cadastro alterado com sucesso.",
       });
     } catch (error) {
       console.log(error);

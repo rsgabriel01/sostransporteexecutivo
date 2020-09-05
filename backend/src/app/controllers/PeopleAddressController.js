@@ -1,9 +1,4 @@
-const {
-  People_address,
-  People,
-  Neighborhoods,
-  Sessions,
-} = require("../models");
+const { People_address, People, Neighborhoods } = require("../models");
 
 const { Op, fn, col, literal, QueryTypes, Sequelize } = require("sequelize");
 
@@ -27,25 +22,7 @@ module.exports = {
       let typeIds = [];
 
       const { id_people, id_neighborhood, street, street_number } = req.body;
-      const { id_executingperson, authorization } = req.headers;
-
-      const sessionFinded = await Sessions.findAll({
-        where: {
-          token: authorization,
-        },
-      });
-
-      if (sessionFinded.length == 0) {
-        return res.status(401).json({ message: "Token de sessão inválido." });
-      }
-
-      const [{ expiration }] = sessionFinded;
-
-      const expirationDate = moment.utc(expiration).local().format();
-
-      if (!moment(expirationDate).isSameOrAfter(moment())) {
-        return res.status(401).json({ message: "Token de sessão expirado." });
-      }
+      const { id_executingperson } = req.headers;
 
       const executingPersonData = await People.findOne({
         where: {

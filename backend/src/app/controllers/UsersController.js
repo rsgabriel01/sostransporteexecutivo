@@ -1,6 +1,6 @@
 require("dotenv/config");
 
-const { Users, People, Sessions } = require("../models");
+const { Users, People } = require("../models");
 const { Op, fn, col, literal, QueryTypes, Sequelize } = require("sequelize");
 
 const bcrypt = require("bcrypt");
@@ -27,27 +27,7 @@ module.exports = {
       const salt = process.env.DB_SALT_HASH_PASSWORD;
 
       const { id_people, user, password } = req.body;
-      const { id_executingperson, authorization } = req.headers;
-
-      if (id_executingperson != 1) {
-        const sessionFinded = await Sessions.findAll({
-          where: {
-            token: authorization,
-          },
-        });
-
-        if (sessionFinded.length == 0) {
-          return res.status(401).json({ message: "Token inválido." });
-        }
-
-        const [{ expiration }] = sessionFinded;
-
-        const expirationDate = moment.utc(expiration).local().format();
-
-        if (!moment(expirationDate).isSameOrAfter(moment())) {
-          return res.status(401).json({ message: "Token expirado." });
-        }
-      }
+      const { id_executingperson } = req.headers;
 
       const executingPersonData = await People.findOne({
         where: {

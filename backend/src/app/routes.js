@@ -23,6 +23,8 @@ const ClientsController = require("./controllers/ClientsController");
 //#endregion
 
 //#region Validators
+const { verifySession } = require("./validators/headers");
+
 const {
   validatorLogin,
   validatorSession,
@@ -60,17 +62,30 @@ routes.get("/acess/logout", validatorLogout, SessionsController.destroy);
 //#endregion
 
 //#region Routes Person/People
-routes.get("/people", PersonController.index);
+routes.get("/people", verifySession, PersonController.index);
 
-routes.post("/person/create", validatorPersonCreate, PersonController.store);
+routes.post(
+  "/person/create",
+  validatorPersonCreate,
+  verifySession,
+  PersonController.store
+);
 
-routes.get("/person/:idPerson", validatorPersonShow, PersonController.show);
+routes.get(
+  "/person/:idPerson",
+  validatorPersonShow,
+  verifySession,
+  PersonController.show
+);
+
+routes.put("/person/update", verifySession, PersonController.update);
 //#endregion
 
 //#region People Address
 routes.post(
   "/address/create",
   validatorAddressCreate,
+  verifySession,
   PeopleAddressController.store
 );
 //#endregion
@@ -79,32 +94,49 @@ routes.post(
 routes.post(
   "/typepeople/create",
   validatorTypePeopleCreate,
+  verifySession,
   TypePeopleController.store
 );
 //#endregion
 
 //#region Users
-routes.get("/users", UsersController.index);
+routes.get("/users", verifySession, UsersController.index);
 
-routes.post("/users/create", validatorUsersCreate, UsersController.store);
+routes.post(
+  "/users/create",
+  validatorUsersCreate,
+  verifySession,
+  UsersController.store
+);
 //#endregion
 
 //#region Drivers
-routes.post("/drivers/create", validatorDriversCreate, DriversController.store);
+routes.post(
+  "/drivers/create",
+  validatorDriversCreate,
+  verifySession,
+  DriversController.store
+);
 //#endregion
 
 //#region Vehicles
-routes.get("/vehicles", VehiclesController.index);
+routes.get("/vehicles", verifySession, VehiclesController.index);
 
 routes.post(
   "/vehicles/create",
   validatorVehiclesCreate,
+  verifySession,
   VehiclesController.store
 );
 //#endregion
 
 //#region Clients
-routes.post("/clients/create", validatorClientsCreate, ClientsController.store);
+routes.post(
+  "/clients/create",
+  validatorClientsCreate,
+  verifySession,
+  ClientsController.store
+);
 //#endregion
 
 routes.get("/citys", CitysController.index);

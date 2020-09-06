@@ -312,14 +312,16 @@ export default function ServiceOrdersRequest() {
     try {
       const response = await api.put("/person/update", dataPerson);
 
-      console.log(response.data);
-      alterPageUpdateForConsult();
+      if (response) {
+        console.log(response.data);
+        alterPageUpdateForConsult();
 
-      notify("success", response.data.message);
+        notify("success", response.data.message);
 
-      setTextButtonSaveUpdate("Salvar");
-      setLoadingButton(false);
-      setBtnInactive("");
+        setTextButtonSaveUpdate("Salvar");
+        setLoadingButton(false);
+        setBtnInactive("");
+      }
     } catch (error) {
       setTextButtonSaveUpdate("Salvar");
       setLoadingButton(false);

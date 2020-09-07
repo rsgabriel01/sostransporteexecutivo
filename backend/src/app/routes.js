@@ -34,6 +34,7 @@ const {
 const {
   validatorPersonCreate,
   validatorPersonShow,
+  validatorPersonUpdate,
 } = require("./validators/routesPerson");
 
 const { validatorAddressCreate } = require("./validators/routesPeopleAddress");
@@ -78,7 +79,12 @@ routes.get(
   PersonController.show
 );
 
-routes.put("/person/update", verifySession, PersonController.update);
+routes.put(
+  "/person/update",
+  validatorPersonUpdate,
+  verifySession,
+  PersonController.update
+);
 //#endregion
 
 //#region People Address

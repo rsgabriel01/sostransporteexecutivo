@@ -336,9 +336,15 @@ export default function ServiceOrdersRequest() {
         if (statusError === 400 && dataError.message) {
           console.log(dataError.message);
           switch (dataError.message) {
-            // case '"password" length must be at least 8 characters long':
-            //   notify("warning", "A senha deve conter no mínimo 8 caracteres.");
-            //   break;
+            case '"email" must be a valid email':
+              notify("warning", "O e-mail informado precisa ser válido.");
+              break;
+            case '"cpf_cnpj" length must be at least 9 characters long':
+              notify(
+                "warning",
+                "O CPF informado precisa ter no mínimo 9 caracteres"
+              );
+              break;
             default:
               notify("warning", dataError.message);
           }
@@ -512,7 +518,7 @@ export default function ServiceOrdersRequest() {
                         <input
                           id="cpf_cnpj"
                           type="text"
-                          minLength="8"
+                          minLength="9"
                           maxLength="11"
                           title="Esse campo aceita apenas números"
                           pattern="[0-9]+"

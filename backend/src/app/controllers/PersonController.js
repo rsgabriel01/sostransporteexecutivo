@@ -31,6 +31,17 @@ module.exports = {
       });
 
       if (executingPersonData) {
+        const { active } = executingPersonData;
+
+        if (!active) {
+          return res.status(401).json({
+            message:
+              "Seu usuário não tem permissao para realizar essa operação.",
+          });
+        }
+      }
+
+      if (executingPersonData) {
         typeIds = executingPersonData.People_Type.map(function (index) {
           return index.id;
         });
@@ -100,6 +111,41 @@ module.exports = {
   async show(req, res) {
     try {
       const { idPerson } = req.params;
+      const { id_executingperson } = req.headers;
+
+      const executingPersonData = await People.findOne({
+        where: {
+          id: id_executingperson,
+        },
+        include: ["People_Type"],
+      });
+
+      if (executingPersonData) {
+        const { active } = executingPersonData;
+
+        if (!active) {
+          return res.status(401).json({
+            message:
+              "Seu usuário não tem permissao para realizar essa operação.",
+          });
+        }
+      }
+
+      if (executingPersonData) {
+        typeIds = executingPersonData.People_Type.map(function (index) {
+          return index.id;
+        });
+      } else {
+        return res.status(401).json({
+          message: "Seu usuário não tem permissao para realizar essa operação.",
+        });
+      }
+
+      if (!(typeIds.includes("1") || typeIds.includes("2"))) {
+        return res.status(401).json({
+          message: "Seu usuário não tem permissao para realizar essa operação.",
+        });
+      }
 
       const person = await People.findByPk(idPerson, {
         include: ["Users", "People_Type"],
@@ -162,6 +208,7 @@ module.exports = {
         typeAdmin,
         typeAttendance,
       } = req.body;
+
       const { id_executingperson } = req.headers;
 
       const executingPersonData = await People.findOne({
@@ -170,6 +217,17 @@ module.exports = {
         },
         include: ["People_Type"],
       });
+
+      if (executingPersonData) {
+        const { active } = executingPersonData;
+
+        if (!active) {
+          return res.status(401).json({
+            message:
+              "Seu usuário não tem permissao para realizar essa operação.",
+          });
+        }
+      }
 
       if (executingPersonData) {
         typeIds = executingPersonData.People_Type.map(function (index) {

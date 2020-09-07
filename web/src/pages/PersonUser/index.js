@@ -131,9 +131,12 @@ export default function ServiceOrdersRequest(props) {
       clearFields(true);
 
       const response = await api.get(`/person/${id}`);
+      console.log(response.data);
 
       if (response) {
-        fillFields(response.data.user);
+        if (response.data) {
+          fillFields(response.data);
+        }
       }
 
       console.log(response.data.user);
@@ -165,15 +168,16 @@ export default function ServiceOrdersRequest(props) {
       } else if (error.request) {
         notify(
           "error",
-          `Oops, algo deu errado, entre em contato com o suporte de TI. ${error}`
+          `Oops, algo deu errado, entre em contato com o suporte de TI. ${error}. Error Request.`
         );
         console.log(error.request);
       } else {
         notify(
           "error",
-          `Oops, algo deu errado, entre em contato com o suporte de TI. ${error}`
+          `Oops, algo deu errado, entre em contato com o suporte de TI. ${error}. Error`
         );
         console.log("Error", error.message);
+        console.log("Error", error);
       }
     }
   }
@@ -182,13 +186,16 @@ export default function ServiceOrdersRequest(props) {
 
   //#region Fill Fields
   function fillFields(response) {
-    const { id_people, user, active } = response;
+    const { id } = response.person;
 
-    id_people ? setIdPeople(id_people) : setIdPeople("");
+    if (response.user != null) {
+      const { user, active } = response.user;
 
-    user ? setUser(user) : setUser("");
+      user ? setUser(user) : setUser("");
+      active ? setCheckedStatus(active) : setCheckedStatus(false);
+    }
 
-    active ? setCheckedStatus(active) : setCheckedStatus(false);
+    id ? setIdPeople(id) : setIdPeople("");
   }
   //#endregion
 

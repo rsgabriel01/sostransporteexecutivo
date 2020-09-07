@@ -6,6 +6,7 @@ const { Op, fn, col, literal, QueryTypes, Sequelize } = require("sequelize");
 const bcrypt = require("bcrypt");
 
 const moment = require("moment");
+const { update } = require("./PersonController");
 
 module.exports = {
   async index(req, res) {
@@ -26,7 +27,7 @@ module.exports = {
 
       const salt = process.env.DB_SALT_HASH_PASSWORD;
 
-      const { id_people, user, password } = req.body;
+      const { idPeople, user, password, active } = req.body;
       const { id_executingperson } = req.headers;
 
       const executingPersonData = await People.findOne({
@@ -35,6 +36,17 @@ module.exports = {
         },
         include: ["People_Type"],
       });
+
+      if (executingPersonData) {
+        const { active } = executingPersonData;
+
+        if (!active) {
+          return res.status(401).json({
+            message:
+              "Seu usuário não tem permissao para realizar essa operação.",
+          });
+        }
+      }
 
       if (executingPersonData) {
         typeIds = executingPersonData.People_Type.map(function (index) {
@@ -59,7 +71,7 @@ module.exports = {
 
       const personFinded = await People.findOne({
         where: {
-          id: id_people,
+          id: idPeople,
         },
       });
 
@@ -72,7 +84,7 @@ module.exports = {
 
       const userPeopleFinded = await Users.findOne({
         where: {
-          id_people,
+          id_people: idPeople,
         },
       });
 
@@ -103,15 +115,174 @@ module.exports = {
       console.log(encryptedPassword);
 
       const createdUser = await Users.create({
-        id_people,
+        id_people: idPeople,
         user,
         password: encryptedPassword,
-        active: true,
+        active,
       });
 
       return res.json({
         createdUser,
         message: "Cadastro de usuário efetuado com sucesso!",
+      });
+    } catch (error) {
+      console.log(error);
+      return res.status(500);
+    }
+  },
+
+  async update(req, res) {
+    try {
+      let executingTypeIds = [];
+
+      let typesPersonOfUser = [];
+      let columnsUpdateUser = {};
+
+      let removedOrAddActive = "";
+
+      let userOld = "";
+      let passwordOld = "";
+      let activeOld = false;
+
+      const salt = process.env.DB_SALT_HASH_PASSWORD;
+
+      const { idPeople, user, password, active } = req.body;
+      const { id_executingperson } = req.headers;
+
+      const executingPersonData = await People.findOne({
+        where: {
+          id: id_executingperson,
+        },
+        include: ["People_Type"],
+      });
+
+      if (executingPersonData) {
+        const { active } = executingPersonData;
+
+        if (!active) {
+          return res.status(401).json({
+            message:
+              "Seu usuário não tem permissao para realizar essa operação.",
+          });
+        }
+      }
+
+      if (executingPersonData) {
+        executingTypeIds = executingPersonData.People_Type.map(function (
+          index
+        ) {
+          return index.id;
+        });
+      } else {
+        return res.status(401).json({
+          message:
+            "Esse usuário não tem permissao para realizar essa operação.",
+        });
+      }
+
+      if (!(executingTypeIds.includes("1") || executingTypeIds.includes("2"))) {
+        console.log("aqui2");
+        return res.status(401).json({
+          message:
+            "Esse usuário não tem permissao para realizar essa operação.",
+        });
+      }
+
+      const personFinded = await People.findOne({
+        where: {
+          id: idPeople,
+        },
+        include: ["People_Type"],
+      });
+
+      if (personFinded) {
+        typesPersonOfUser = personFinded.People_Type.map(function (index) {
+          return index.id;
+        });
+
+        if (typesPersonOfUser.includes("4")) {
+          return res.status(400).json({
+            message: "Nenhum cadastro foi encontrada com o código informado.",
+          });
+        }
+      } else {
+        return res.status(400).json({
+          message: "Nenhum cadastro foi encontrada com o código informado.",
+        });
+      }
+
+      const oldUserFinded = await Users.findOne({
+        where: {
+          id_people: idPeople,
+        },
+      });
+
+      if (oldUserFinded) {
+        userOld = oldUserFinded.user;
+        passwordOld = oldUserFinded.password;
+        activeOld = oldUserFinded.active;
+      } else {
+        return res.status(400).json({
+          message:
+            "O pessoa informada não possui usuário cadastrado para ser alterado, por favor verifique.",
+        });
+      }
+
+      if (userOld != user) {
+        const userFinded = await Users.findOne({
+          where: {
+            user,
+          },
+        });
+
+        if (userFinded) {
+          return res.status(400).json({
+            message:
+              "O usuário informado já está cadastrado, por favor verifique.",
+          });
+        }
+
+        columnsUpdateUser["user"] = user;
+      }
+
+      if (password != "" || password != null) {
+        const passwordMatch = bcrypt.compareSync(password, passwordOld);
+
+        console.log(passwordMatch);
+
+        if (!passwordMatch) {
+          console.log(salt);
+
+          const encryptedPassword = bcrypt.hashSync(password, salt);
+
+          console.log(encryptedPassword);
+
+          columnsUpdateUser["password"] = encryptedPassword;
+        }
+
+        if (activeOld != active) {
+          columnsUpdateUser["active"] = active;
+        }
+      }
+
+      console.log(columnsUpdateUser);
+
+      const updatedUser = await Users.update(columnsUpdateUser, {
+        where: {
+          id_people: idPeople,
+        },
+      });
+
+      const newUserFinded = await Users.findOne({
+        where: {
+          id_people: idPeople,
+        },
+      });
+
+      return res.json({
+        columnsUpdateUser,
+        newUserFinded,
+        message: "Cadastro alterado com sucesso.",
       });
     } catch (error) {
       console.log(error);

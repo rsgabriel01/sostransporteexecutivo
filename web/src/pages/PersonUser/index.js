@@ -39,6 +39,8 @@ export default function ServiceOrdersRequest(props) {
 
   const [updateRegister, setUpdateRegister] = useState(false);
 
+  const [isCreateUser, setIsCreateUser] = useState(true);
+
   const [titleUpdate, setTitleUpdate] = useState("");
 
   const [loadingButton, setLoadingButton] = useState(false);
@@ -104,6 +106,10 @@ export default function ServiceOrdersRequest(props) {
                         case "updateUser":
                           updateUser();
                           break;
+                        case "createUser":
+                          createUser();
+                          break;
+
                         default:
                           break;
                       }
@@ -191,8 +197,12 @@ export default function ServiceOrdersRequest(props) {
     if (response.user != null) {
       const { user, active } = response.user;
 
+      setIsCreateUser(false);
+
       user ? setUser(user) : setUser("");
       active ? setCheckedStatus(active) : setCheckedStatus(false);
+    } else {
+      setIsCreateUser(true);
     }
 
     id ? setIdPeople(id) : setIdPeople("");
@@ -208,6 +218,88 @@ export default function ServiceOrdersRequest(props) {
     setUser("");
     setPassword("");
     setCheckedStatus(false);
+  }
+  //#endregion
+
+  //#region Handle Submit Create
+  function handleSubmitCreate(e) {
+    e.preventDefault();
+
+    confirmationAlert(
+      "Atençao!",
+      "Deseja realmente SALVAR esse cadastro?",
+      "createUser"
+    );
+  }
+  //#endregion
+
+  //#region Create Person
+  async function createUser() {
+    let dataUser = {
+      idPeople,
+      user,
+      password,
+      active: checkedStatus,
+    };
+
+    setTextButtonSaveUpdate("Aguarde...");
+    setLoadingButton(true);
+    setBtnInactive("btnInactive");
+
+    console.log(dataUser);
+
+    try {
+      const response = await api.post("/user/create", dataUser);
+
+      if (response) {
+        console.log(response.data);
+        alterPageUpdateForConsultUser();
+
+        notify("success", response.data.message);
+
+        setTextButtonSaveUpdate("Salvar");
+        setLoadingButton(false);
+        setBtnInactive("");
+      }
+    } catch (error) {
+      setTextButtonSaveUpdate("Salvar");
+      setLoadingButton(false);
+      setBtnInactive("");
+
+      if (error.response) {
+        const dataError = error.response.data;
+        const statusError = error.response.status;
+        console.error(dataError);
+        console.error(statusError);
+
+        if (statusError === 400 && dataError.message) {
+          console.log(dataError.message);
+          switch (dataError.message) {
+            case '"password" is not allowed to be empty':
+              notify(
+                "warning",
+                "A senha não pode estar vazia, por favor verifique"
+              );
+              break;
+
+            default:
+              notify("warning", dataError.message);
+          }
+        }
+      } else if (error.request) {
+        notify(
+          "error",
+          `Oops, algo deu errado, entre em contato com o suporte de TI. ${error}`
+        );
+        console.log(error.request);
+      } else {
+        notify(
+          "error",
+          `Oops, algo deu errado, entre em contato com o suporte de TI. ${error}`
+        );
+        console.log("Error", error.message);
+      }
+    }
   }
   //#endregion
 
@@ -239,7 +331,7 @@ export default function ServiceOrdersRequest(props) {
     console.log(dataUser);
 
     try {
-      const response = await api.put("/person/user/update", dataUser);
+      const response = await api.put("/user/update", dataUser);
 
       if (response) {
         console.log(response.data);
@@ -309,7 +401,7 @@ export default function ServiceOrdersRequest(props) {
   //#region Handle Update Register
   function handleUpdateRegisterUser() {
     if (idPeople) {
-      setTitleUpdate("ALTERAR ");
+      isCreateUser ? setTitleUpdate("CRIAR ") : setTitleUpdate("ALTERAR ");
       setUpdateRegister(true);
       setIsReadonly(false);
     } else if (idPeople.length === 0) {
@@ -390,7 +482,11 @@ export default function ServiceOrdersRequest(props) {
               </div>
 
               <section className="form">
-                <form onSubmit={handleSubmitUpdate}>
+                <form
+                  onSubmit={
+                    isCreateUser ? handleSubmitCreate : handleSubmitUpdate
+                  }
+                >
                   <div className="form-title">
                     <RiCheckDoubleLine size={30} />
                     <h1>{titleUpdate}USUÁRIO DA PLATAFORMA</h1>
@@ -453,6 +549,7 @@ export default function ServiceOrdersRequest(props) {
                               minLength="8"
                               maxLength="16"
                               readOnly={isReadonly}
+                              required={isCreateUser}
                             />
                           </div>
                         </div>

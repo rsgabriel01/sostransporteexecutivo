@@ -41,7 +41,10 @@ const { validatorAddressCreate } = require("./validators/routesPeopleAddress");
 
 const { validatorTypePeopleCreate } = require("./validators/routesTypePeople");
 
-const { validatorUsersCreate } = require("./validators/routesUsers");
+const {
+  validatorUsersCreate,
+  validatorUsersUpdate,
+} = require("./validators/routesUsers");
 
 const { validatorDriversCreate } = require("./validators/routesDrivers");
 
@@ -109,11 +112,19 @@ routes.post(
 routes.get("/users", verifySession, UsersController.index);
 
 routes.post(
-  "/users/create",
+  "/user/create",
   validatorUsersCreate,
   verifySession,
   UsersController.store
 );
+
+routes.put(
+  "/user/update",
+  validatorUsersUpdate,
+  verifySession,
+  UsersController.update
+);
+
 //#endregion
 
 //#region Drivers

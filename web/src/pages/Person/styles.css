@@ -213,12 +213,7 @@ label {
   flex-direction: row;
 }
 
-input-label-group-row
-  .person-container
-  section.form
-  form
-  .input-button-block-row
-  input {
+.person-container section.form form .input-button-block-row input {
   margin-right: 10px;
   width: 74%;
 }

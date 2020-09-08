@@ -120,8 +120,8 @@ form input {
 }
 
 div.custom-ui {
-  width: 35vw;
-  height: 30vh;
+  width: 40vw;
+  height: 40vh;
 
   display: grid;
   grid-template-rows: 1fr 1fr;

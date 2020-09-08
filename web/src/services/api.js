@@ -11,6 +11,8 @@ api.interceptors.request.use(async (config) => {
   const executingperson = getIdExecutingPerson();
   if (token) {
     config.headers.authorization = `${token}`;
+  }
+  if (executingperson) {
     config.headers.id_executingperson = `${executingperson}`;
   }
   return config;

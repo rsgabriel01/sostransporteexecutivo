@@ -13,6 +13,7 @@ import {
   RiCloseLine,
   RiBookLine,
   RiUserLine,
+  RiArrowLeftLine,
 } from "react-icons/ri";
 
 // import "./styles.css";
@@ -106,6 +107,16 @@ export default function ServiceOrdersRequest() {
                   </div>
 
                   <div className="button-group">
+                    <button
+                      type="button"
+                      className="button btnReturn"
+                      onClick={() => {
+                        history.push("/people/person/");
+                      }}
+                    >
+                      <RiArrowLeftLine size={25} />
+                      Voltar
+                    </button>
                     <button
                       type="button"
                       className="button btnCancel btnInactive"

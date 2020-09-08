@@ -210,6 +210,17 @@ div.custom-ui
   margin-left: 10px;
 }
 
+::-webkit-scrollbar-track {
+  background-color: #f4f4f4;
+}
+::-webkit-scrollbar {
+  width: 6px;
+  background: #f4f4f4;
+}
+::-webkit-scrollbar-thumb {
+  background: #c1c1c1;
+}
+
 /* Animation Loading */
 
 @keyframes spin-animation {

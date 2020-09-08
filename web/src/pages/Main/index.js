@@ -83,7 +83,7 @@ export default function Main() {
           {loading ? (
             <Loading type="bars" color="#0f4c82" />
           ) : (
-            <div className="solicitations-container">
+            <div className="solicitations-waiting-container">
               <div className="status-bar">
                 <div className="group-tabs">
                   <button
@@ -137,38 +137,462 @@ export default function Main() {
               <div className="solicitation-table">
                 {/* <h1>{AlterTab}</h1> */}
                 <table className="table-header">
-                  <tr id="table-header">
-                    <th>NÚMERO</th>
-                    <th>CLIENTE</th>
-                    <th>SOLICITADO</th>
-                    <th>ORIGEM</th>
-                    <th>DESTINO</th>
-                    <th>OBSERVAÇÃO</th>
-                    <th>ATENDER</th>
-                  </tr>
+                  <thead>
+                    <tr id="table-header">
+                      <th>NÚMERO</th>
+                      <th>CLIENTE</th>
+                      <th>SOLICITADO</th>
+                      <th>ORIGEM</th>
+                      <th>DESTINO</th>
+                      <th>OBSERVAÇÃO</th>
+                      <th>ATENDER</th>
+                    </tr>
+                  </thead>
                 </table>
 
                 <div className="div-responsive-table">
                   <table className="table-content">
-                    <tr>
-                      <td>123456789</td>
-                      <td>honda Henjis</td>
-                      <td>27/08/2020 15:30</td>
-                      <td>SÃO CRISTOVÃO </td>
-                      <td>CENTRO</td>
-                      <td>CLIENTE COM</td>
-                      <td>
-                        <div className="answer">
-                          <button
-                            type="button"
-                            className={`button btnDefault`}
-                            onClick={() => {}}
-                          >
-                            <RiArrowRightLine size={24} />
-                          </button>
-                        </div>
-                      </td>
-                    </tr>
+                    <tbody>
+                      <tr>
+                        <td>1</td>
+                        <td>honda Henjis</td>
+                        <td>27/08/2020 15:30</td>
+                        <td>SÃO CRISTOVÃO </td>
+                        <td>CENTRO</td>
+                        <td>CLIENTE COM</td>
+                        <td>
+                          <div className="answer">
+                            <button
+                              type="button"
+                              className={`button btnDefault`}
+                              onClick={() => {}}
+                            >
+                              <RiArrowRightLine size={24} />
+                            </button>
+                          </div>
+                        </td>
+                      </tr>
+
+                      <tr>
+                        <td>2</td>
+                        <td>honda Henjis</td>
+                        <td>27/08/2020 15:30</td>
+                        <td>SÃO CRISTOVÃO </td>
+                        <td>CENTRO</td>
+                        <td>CLIENTE COM</td>
+                        <td>
+                          <div className="answer">
+                            <button
+                              type="button"
+                              className={`button btnDefault`}
+                              onClick={() => {}}
+                            >
+                              <RiArrowRightLine size={24} />
+                            </button>
+                          </div>
+                        </td>
+                      </tr>
+
+                      <tr>
+                        <td>3</td>
+                        <td>honda Henjis</td>
+                        <td>27/08/2020 15:30</td>
+                        <td>SÃO CRISTOVÃO </td>
+                        <td>CENTRO</td>
+                        <td>CLIENTE COM</td>
+                        <td>
+                          <div className="answer">
+                            <button
+                              type="button"
+                              className={`button btnDefault`}
+                              onClick={() => {}}
+                            >
+                              <RiArrowRightLine size={24} />
+                            </button>
+                          </div>
+                        </td>
+                      </tr>
+
+                      <tr>
+                        <td>4</td>
+                        <td>honda Henjis</td>
+                        <td>27/08/2020 15:30</td>
+                        <td>SÃO CRISTOVÃO </td>
+                        <td>CENTRO</td>
+                        <td>CLIENTE COM</td>
+                        <td>
+                          <div className="answer">
+                            <button
+                              type="button"
+                              className={`button btnDefault`}
+                              onClick={() => {}}
+                            >
+                              <RiArrowRightLine size={24} />
+                            </button>
+                          </div>
+                        </td>
+                      </tr>
+
+                      <tr>
+                        <td>5</td>
+                        <td>honda Henjis</td>
+                        <td>27/08/2020 15:30</td>
+                        <td>SÃO CRISTOVÃO </td>
+                        <td>CENTRO</td>
+                        <td>CLIENTE COM</td>
+                        <td>
+                          <div className="answer">
+                            <button
+                              type="button"
+                              className={`button btnDefault`}
+                              onClick={() => {}}
+                            >
+                              <RiArrowRightLine size={24} />
+                            </button>
+                          </div>
+                        </td>
+                      </tr>
+
+                      <tr>
+                        <td>6</td>
+                        <td>honda Henjis</td>
+                        <td>27/08/2020 15:30</td>
+                        <td>SÃO CRISTOVÃO </td>
+                        <td>CENTRO</td>
+                        <td>CLIENTE COM</td>
+                        <td>
+                          <div className="answer">
+                            <button
+                              type="button"
+                              className={`button btnDefault`}
+                              onClick={() => {}}
+                            >
+                              <RiArrowRightLine size={24} />
+                            </button>
+                          </div>
+                        </td>
+                      </tr>
+
+                      <tr>
+                        <td>7</td>
+                        <td>honda Henjis</td>
+                        <td>27/08/2020 15:30</td>
+                        <td>SÃO CRISTOVÃO </td>
+                        <td>CENTRO</td>
+                        <td>CLIENTE COM</td>
+                        <td>
+                          <div className="answer">
+                            <button
+                              type="button"
+                              className={`button btnDefault`}
+                              onClick={() => {}}
+                            >
+                              <RiArrowRightLine size={24} />
+                            </button>
+                          </div>
+                        </td>
+                      </tr>
+
+                      <tr>
+                        <td>8</td>
+                        <td>honda Henjis</td>
+                        <td>27/08/2020 15:30</td>
+                        <td>SÃO CRISTOVÃO </td>
+                        <td>CENTRO</td>
+                        <td>CLIENTE COM</td>
+                        <td>
+                          <div className="answer">
+                            <button
+                              type="button"
+                              className={`button btnDefault`}
+                              onClick={() => {}}
+                            >
+                              <RiArrowRightLine size={24} />
+                            </button>
+                          </div>
+                        </td>
+                      </tr>
+
+                      <tr>
+                        <td>9</td>
+                        <td>honda Henjis</td>
+                        <td>27/08/2020 15:30</td>
+                        <td>SÃO CRISTOVÃO </td>
+                        <td>CENTRO</td>
+                        <td>CLIENTE COM</td>
+                        <td>
+                          <div className="answer">
+                            <button
+                              type="button"
+                              className={`button btnDefault`}
+                              onClick={() => {}}
+                            >
+                              <RiArrowRightLine size={24} />
+                            </button>
+                          </div>
+                        </td>
+                      </tr>
+
+                      <tr>
+                        <td>10</td>
+                        <td>honda Henjis</td>
+                        <td>27/08/2020 15:30</td>
+                        <td>SÃO CRISTOVÃO </td>
+                        <td>CENTRO</td>
+                        <td>CLIENTE COM</td>
+                        <td>
+                          <div className="answer">
+                            <button
+                              type="button"
+                              className={`button btnDefault`}
+                              onClick={() => {}}
+                            >
+                              <RiArrowRightLine size={24} />
+                            </button>
+                          </div>
+                        </td>
+                      </tr>
+
+                      <tr>
+                        <td>11</td>
+                        <td>honda Henjis</td>
+                        <td>27/08/2020 15:30</td>
+                        <td>SÃO CRISTOVÃO </td>
+                        <td>CENTRO</td>
+                        <td>CLIENTE COM</td>
+                        <td>
+                          <div className="answer">
+                            <button
+                              type="button"
+                              className={`button btnDefault`}
+                              onClick={() => {}}
+                            >
+                              <RiArrowRightLine size={24} />
+                            </button>
+                          </div>
+                        </td>
+                      </tr>
+
+                      <tr>
+                        <td>12</td>
+                        <td>honda Henjis</td>
+                        <td>27/08/2020 15:30</td>
+                        <td>SÃO CRISTOVÃO </td>
+                        <td>CENTRO</td>
+                        <td>CLIENTE COM</td>
+                        <td>
+                          <div className="answer">
+                            <button
+                              type="button"
+                              className={`button btnDefault`}
+                              onClick={() => {}}
+                            >
+                              <RiArrowRightLine size={24} />
+                            </button>
+                          </div>
+                        </td>
+                      </tr>
+
+                      <tr>
+                        <td>13</td>
+                        <td>honda Henjis</td>
+                        <td>27/08/2020 15:30</td>
+                        <td>SÃO CRISTOVÃO </td>
+                        <td>CENTRO</td>
+                        <td>CLIENTE COM</td>
+                        <td>
+                          <div className="answer">
+                            <button
+                              type="button"
+                              className={`button btnDefault`}
+                              onClick={() => {}}
+                            >
+                              <RiArrowRightLine size={24} />
+                            </button>
+                          </div>
+                        </td>
+                      </tr>
+
+                      <tr>
+                        <td>14</td>
+                        <td>honda Henjis</td>
+                        <td>27/08/2020 15:30</td>
+                        <td>SÃO CRISTOVÃO </td>
+                        <td>CENTRO</td>
+                        <td>CLIENTE COM</td>
+                        <td>
+                          <div className="answer">
+                            <button
+                              type="button"
+                              className={`button btnDefault`}
+                              onClick={() => {}}
+                            >
+                              <RiArrowRightLine size={24} />
+                            </button>
+                          </div>
+                        </td>
+                      </tr>
+
+                      <tr>
+                        <td>15</td>
+                        <td>honda Henjis</td>
+                        <td>27/08/2020 15:30</td>
+                        <td>SÃO CRISTOVÃO </td>
+                        <td>CENTRO</td>
+                        <td>CLIENTE COM</td>
+                        <td>
+                          <div className="answer">
+                            <button
+                              type="button"
+                              className={`button btnDefault`}
+                              onClick={() => {}}
+                            >
+                              <RiArrowRightLine size={24} />
+                            </button>
+                          </div>
+                        </td>
+                      </tr>
+
+                      <tr>
+                        <td>16</td>
+                        <td>honda Henjis</td>
+                        <td>27/08/2020 15:30</td>
+                        <td>SÃO CRISTOVÃO </td>
+                        <td>CENTRO</td>
+                        <td>CLIENTE COM</td>
+                        <td>
+                          <div className="answer">
+                            <button
+                              type="button"
+                              className={`button btnDefault`}
+                              onClick={() => {}}
+                            >
+                              <RiArrowRightLine size={24} />
+                            </button>
+                          </div>
+                        </td>
+                      </tr>
+
+                      <tr>
+                        <td>17</td>
+                        <td>honda Henjis</td>
+                        <td>27/08/2020 15:30</td>
+                        <td>SÃO CRISTOVÃO </td>
+                        <td>CENTRO</td>
+                        <td>CLIENTE COM</td>
+                        <td>
+                          <div className="answer">
+                            <button
+                              type="button"
+                              className={`button btnDefault`}
+                              onClick={() => {}}
+                            >
+                              <RiArrowRightLine size={24} />
+                            </button>
+                          </div>
+                        </td>
+                      </tr>
+
+                      <tr>
+                        <td>18</td>
+                        <td>honda Henjis</td>
+                        <td>27/08/2020 15:30</td>
+                        <td>SÃO CRISTOVÃO </td>
+                        <td>CENTRO</td>
+                        <td>CLIENTE COM</td>
+                        <td>
+                          <div className="answer">
+                            <button
+                              type="button"
+                              className={`button btnDefault`}
+                              onClick={() => {}}
+                            >
+                              <RiArrowRightLine size={24} />
+                            </button>
+                          </div>
+                        </td>
+                      </tr>
+
+                      <tr>
+                        <td>19</td>
+                        <td>honda Henjis</td>
+                        <td>27/08/2020 15:30</td>
+                        <td>SÃO CRISTOVÃO </td>
+                        <td>CENTRO</td>
+                        <td>CLIENTE COM</td>
+                        <td>
+                          <div className="answer">
+                            <button
+                              type="button"
+                              className={`button btnDefault`}
+                              onClick={() => {}}
+                            >
+                              <RiArrowRightLine size={24} />
+                            </button>
+                          </div>
+                        </td>
+                      </tr>
+
+                      <tr>
+                        <td>20</td>
+                        <td>honda Henjis</td>
+                        <td>27/08/2020 15:30</td>
+                        <td>SÃO CRISTOVÃO </td>
+                        <td>CENTRO</td>
+                        <td>CLIENTE COM</td>
+                        <td>
+                          <div className="answer">
+                            <button
+                              type="button"
+                              className={`button btnDefault`}
+                              onClick={() => {}}
+                            >
+                              <RiArrowRightLine size={24} />
+                            </button>
+                          </div>
+                        </td>
+                      </tr>
+
+                      <tr>
+                        <td>21</td>
+                        <td>honda Henjis</td>
+                        <td>27/08/2020 15:30</td>
+                        <td>SÃO CRISTOVÃO </td>
+                        <td>CENTRO</td>
+                        <td>CLIENTE COM</td>
+                        <td>
+                          <div className="answer">
+                            <button
+                              type="button"
+                              className={`button btnDefault`}
+                              onClick={() => {}}
+                            >
+                              <RiArrowRightLine size={24} />
+                            </button>
+                          </div>
+                        </td>
+                      </tr>
+
+                      <tr>
+                        <td>22</td>
+                        <td>honda Henjis</td>
+                        <td>27/08/2020 15:30</td>
+                        <td>SÃO CRISTOVÃO </td>
+                        <td>CENTRO</td>
+                        <td>CLIENTE COM</td>
+                        <td>
+                          <div className="answer">
+                            <button
+                              type="button"
+                              className={`button btnDefault`}
+                              onClick={() => {}}
+                            >
+                              <RiArrowRightLine size={24} />
+                            </button>
+                          </div>
+                        </td>
+                      </tr>
+                    </tbody>
                   </table>
                 </div>
               </div>

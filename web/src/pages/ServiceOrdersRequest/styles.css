@@ -99,7 +99,7 @@
   flex-direction: column;
 }
 
-.os-request-container section.form h1 {
+:single-button .os-request-container section.form h1 {
   display: inline-flex;
 
   /* justify-content: center; */

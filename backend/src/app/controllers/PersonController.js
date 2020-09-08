@@ -277,8 +277,8 @@ module.exports = {
         });
       }
 
-      if (nameOld != name) {
-        columnsUpdatePerson["name"] = name;
+      if (nameOld.toUpperCase() != name.toUpperCase()) {
+        columnsUpdatePerson["name"] = name.toUpperCase();
       }
 
       if (cpf_cnpjOld != cpf_cnpj) {

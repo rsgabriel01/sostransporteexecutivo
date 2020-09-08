@@ -169,6 +169,10 @@ label {
   flex-direction: row;
 }
 
+.person-container section.form form .input-label-group-row input#name {
+  text-transform: uppercase;
+}
+
 .person-container
   section.form
   form
@@ -205,13 +209,16 @@ label {
 }
 
 .person-container section.form form .input-button-block-row {
-  /* width: 100%; */
-
   display: flex;
   flex-direction: row;
 }
 
-.person-container section.form form .input-button-block-row input {
+input-label-group-row
+  .person-container
+  section.form
+  form
+  .input-button-block-row
+  input {
   margin-right: 10px;
   width: 74%;
 }

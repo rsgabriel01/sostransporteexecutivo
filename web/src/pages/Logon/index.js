@@ -6,7 +6,11 @@ import { ToastContainer } from "react-toastify";
 
 import api from "../../services/api";
 
-import { login, isAuthenticated } from "../../services/auth";
+import {
+  login,
+  isAuthenticated,
+  getNameExecutingPerson,
+} from "../../services/auth";
 
 import Loading from "../components/Loading/Loading";
 
@@ -115,7 +119,11 @@ export default function Logon() {
 
       console.log(response.data);
 
-      login(response.data.session.token, response.data.id_person);
+      login(
+        response.data.session.token,
+        response.data.id_person,
+        response.data.personName
+      );
 
       history.push("/main");
     } catch (error) {

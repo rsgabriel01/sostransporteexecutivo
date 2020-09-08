@@ -14,6 +14,7 @@ module.exports = {
   async show(req, res) {
     try {
       const { token } = req.headers;
+      let personName = "";
 
       const sessionFinded = await Sessions.findAll({
         where: {
@@ -54,6 +55,15 @@ module.exports = {
       });
 
       if (!dataUser) {
+        console.log("user nao encontrado");
+        return res
+          .status(400)
+          .json({ message: "Usuário ou senha incorretos." });
+      }
+
+      if (!dataUser.active) {
+        console.log("usuario inativo");
+
         return res
           .status(400)
           .json({ message: "Usuário ou senha incorretos." });
@@ -62,12 +72,15 @@ module.exports = {
       const passwordMatch = bcrypt.compareSync(password, dataUser.password);
 
       if (!passwordMatch) {
+        console.log("senha incorreta");
         return res
           .status(400)
           .json({ message: "Usuário ou senha incorretos." });
       }
 
       const { id, id_people } = dataUser;
+
+      personName = dataUser.People.name;
 
       while (tokenUnavailable === false) {
         token = `${id}!${crypto.randomBytes(64).toString("HEX")}`;
@@ -108,7 +121,12 @@ module.exports = {
         expiration,
       });
 
-      return res.json({ userId: id, id_person: id_people, session: { token } });
+      return res.json({
+        userId: id,
+        id_person: id_people,
+        personName,
+        session: { token },
+      });
     } catch (error) {
       console.log(error);
     }

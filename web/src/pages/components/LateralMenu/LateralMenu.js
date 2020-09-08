@@ -1,6 +1,8 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Link, useHistory } from "react-router-dom";
 import { getToken, logout } from "../../../services/auth";
+
+import { getNameExecutingPerson } from "../../../services/auth";
 
 import {
   ProSidebar,
@@ -36,12 +38,25 @@ import api from "../../../services/api";
 
 export default function LateralMenu() {
   const [collapsedMenu, setCollapsedMenu] = useState(true);
+  const [personNameUser, setPersonNameUser] = useState("");
 
   const [collapseIcon, setCollapseIcon] = useState(
     <RiArrowDropRightLine size={35} />
   );
 
   let history = useHistory();
+
+  useEffect(() => {
+    getPersonNameUser();
+  }, [history]);
+
+  function getPersonNameUser() {
+    const fullName = getNameExecutingPerson();
+
+    const firtName = fullName.substring(0, fullName.indexOf(" "));
+
+    firtName !== "" ? setPersonNameUser(firtName) : setPersonNameUser(fullName);
+  }
 
   function handleCollapsedChange() {
     if (collapsedMenu === true) {
@@ -83,7 +98,7 @@ export default function LateralMenu() {
       <SidebarHeader>
         <Menu>
           <SubMenu
-            title="Gabriel Souza"
+            title={personNameUser}
             icon={<RiAccountCircleLine size={50} />}
           >
             <MenuItem prefix={<RiAccountBoxLine size={20} />}>

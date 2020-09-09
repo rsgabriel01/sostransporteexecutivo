@@ -224,7 +224,7 @@ div.custom-ui
 input[type="date"] {
   height: 35px;
 
-  width: 175px;
+  width: 100%;
 
   color: #3f3d56;
 

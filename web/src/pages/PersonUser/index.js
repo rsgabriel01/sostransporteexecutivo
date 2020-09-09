@@ -351,15 +351,22 @@ export default function ServiceOrdersRequest(props) {
       if (error.response) {
         const dataError = error.response.data;
         const statusError = error.response.status;
-        console.error(dataError);
-        console.error(statusError);
+        console.error("data erros" + dataError);
+        console.error("estaus error" + statusError);
 
         if (statusError === 400 && dataError.message) {
-          console.log(dataError.message);
+          console.log("switch " + dataError.message);
           switch (dataError.message) {
             // case '"password" length must be at least 8 characters long':
             //   notify("warning", "A senha deve conter no mínimo 8 caracteres.");
             //   break;
+            default:
+              notify("warning", dataError.message);
+          }
+        }
+
+        if (statusError === 401) {
+          switch (dataError.message) {
             default:
               notify("warning", dataError.message);
           }

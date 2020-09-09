@@ -156,9 +156,10 @@ export default function ServiceOrdersRequest() {
     } catch (error) {
       if (error.response) {
         setPersonFinded(false);
-        console.log("if error.response");
+
         const dataError = error.response.data;
         const statusError = error.response.status;
+
         console.error(dataError);
         console.error(statusError);
 

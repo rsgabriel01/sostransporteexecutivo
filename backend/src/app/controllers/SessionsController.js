@@ -26,7 +26,23 @@ module.exports = {
         return res.status(401).json({ message: "Token de sessão inválido." });
       }
 
-      const [{ expiration }] = sessionFinded;
+      const [{ expiration, id_user }] = sessionFinded;
+
+      const userFinded = await Users.findOne({
+        where: {
+          id: id_user,
+        },
+      });
+
+      if (id_user) {
+        if (!userFinded.active) {
+          return res.status(401).json({ message: "Token de sessão inválido." });
+        }
+      } else {
+        return res.status(401).json({ message: "Token de sessão inválido." });
+      }
+
+      console.log(id_user);
 
       const expirationDate = moment.utc(expiration).local().format();
 

@@ -27,21 +27,20 @@ module.exports = {
         where: {
           id: id_executingperson,
         },
-        include: ["People_Type"],
+        include: ["People_Type", "Users"],
       });
 
       if (executingPersonData) {
-        const { active } = executingPersonData;
+        const activeExecutingPerson = executingPersonData.Users.active;
 
-        if (!active) {
+        console.log(activeExecutingPerson);
+
+        if (activeExecutingPerson != true) {
           return res.status(401).json({
-            message:
-              "Seu usuário não tem permissao para realizar essa operação.",
+            message: "Ação não permitida.",
           });
         }
-      }
 
-      if (executingPersonData) {
         typeIds = executingPersonData.People_Type.map(function (index) {
           return index.id;
         });
@@ -117,21 +116,20 @@ module.exports = {
         where: {
           id: id_executingperson,
         },
-        include: ["People_Type"],
+        include: ["People_Type", "Users"],
       });
 
       if (executingPersonData) {
-        const { active } = executingPersonData;
+        const activeExecutingPerson = executingPersonData.Users.active;
 
-        if (!active) {
+        console.log(activeExecutingPerson);
+
+        if (activeExecutingPerson != true) {
           return res.status(401).json({
-            message:
-              "Seu usuário não tem permissao para realizar essa operação.",
+            message: "Ação não permitida.",
           });
         }
-      }
 
-      if (executingPersonData) {
         typeIds = executingPersonData.People_Type.map(function (index) {
           return index.id;
         });
@@ -215,21 +213,20 @@ module.exports = {
         where: {
           id: id_executingperson,
         },
-        include: ["People_Type"],
+        include: ["People_Type", "Users"],
       });
 
       if (executingPersonData) {
-        const { active } = executingPersonData;
+        const activeExecutingPerson = executingPersonData.Users.active;
 
-        if (!active) {
+        console.log(activeExecutingPerson);
+
+        if (activeExecutingPerson != true) {
           return res.status(401).json({
-            message:
-              "Seu usuário não tem permissao para realizar essa operação.",
+            message: "Ação não permitida.",
           });
         }
-      }
 
-      if (executingPersonData) {
         typeIds = executingPersonData.People_Type.map(function (index) {
           return index.id;
         });
@@ -338,7 +335,7 @@ module.exports = {
       });
 
       if (typeAdminOld && !typeAdmin) {
-        if (typesPersonId.includes("1")) {
+        if (typeIds.includes("1")) {
           if (id_executingperson == idPeople) {
             return res.status(400).json({
               message:
@@ -365,7 +362,7 @@ module.exports = {
       }
 
       if (!typeAdminOld && typeAdmin) {
-        if (typesPersonId.includes("1")) {
+        if (typeIds.includes("1")) {
           const createdTypeAdmin = await Type_people.create({
             id_people: idPeople,
             id_type: 1,

@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from "react";
-import { useHistory } from "react-router-dom";
+import { Link, useHistory } from "react-router-dom";
 import LateralMenu from "../components/LateralMenu/LateralMenu";
 import Header from "../components/Header/Header";
 import Loading from "../components/Loading/Loading";
 
-import { isAuthenticated } from "../../services/auth";
+import { isAuthenticated, logout } from "../../services/auth";
 
 import {
   RiFileCopy2Line,
@@ -12,6 +12,7 @@ import {
   RiTaxiWifiLine,
   RiCheckLine,
   RiFileList2Line,
+  RiFilterLine,
 } from "react-icons/ri";
 
 import "./styles.css";
@@ -26,24 +27,25 @@ export default function Main() {
   const [tabActive4, setTabActive4] = useState("");
   const [loading, setLoading] = useState(true);
 
-  //#region Verify Session
+  //#region Use Effect
   useEffect(() => {
-    async function virifyAuthorization() {
-      const response = await isAuthenticated();
-      if (!response) {
-        console.log("response" + response);
-        history.push("/");
-      } else {
-        setLoading(false);
-      }
-    }
     virifyAuthorization();
   }, []);
   //#endregion
 
-  useEffect(() => {
-    console.log("carregou antes da promise");
-  }, []);
+  //#region Verify Session
+  async function virifyAuthorization() {
+    const response = await isAuthenticated();
+    if (!response) {
+      logout();
+      history.push("/");
+    } else {
+      setLoading(false);
+    }
+  }
+
+  //#endregion
+
   //#region handleAlterTab Active
   function handleAlterTab(text) {
     setAlterTab(text);
@@ -86,56 +88,54 @@ export default function Main() {
             <div className="solicitations-waiting-container">
               <div className="status-bar">
                 <div className="group-tabs">
-                  <button
-                    type="button"
-                    className={`button ${tabActive1}`}
-                    onClick={() => {
-                      handleAlterTab("Solicitações");
-                    }}
-                  >
-                    <RiFileCopy2Line size={24} />
-                    Aguardando
-                  </button>
+                  <Link to="/main">
+                    <button type="button" className={`button tab-active`}>
+                      <RiFileCopy2Line size={24} />
+                      Aguardando
+                    </button>
+                  </Link>
+                  <Link to="/main/met">
+                    <button type="button" className={`button `}>
+                      <RiArrowRightLine size={24} />
+                      Atendidas
+                    </button>
+                  </Link>
+                  <Link to="/main/executing">
+                    <button type="button" className={`button `}>
+                      <RiTaxiWifiLine size={22} />
+                      Execução
+                    </button>
+                  </Link>
+                  <Link to="/main/finished">
+                    <button type="button" className={`button `}>
+                      <RiCheckLine size={24} />
+                      Finalizadas
+                    </button>
+                  </Link>
+                </div>
+                <div className="group-dates">
+                  <div className="row">
+                    <div className="column">
+                      <label htmlFor="startDate">Inicio:</label>
+                      <input type="date" id="startDate" />
+                    </div>
+                    <div className="column">
+                      <label htmlFor="endDate">Fim:</label>
+                      <input type="date" id="endDate" />
+                    </div>
+                  </div>
 
                   <button
                     type="button"
-                    className={`button ${tabActive2}`}
-                    onClick={() => {
-                      handleAlterTab("Atendidas");
-                    }}
+                    className="button btnOther"
+                    id="filterDate"
                   >
-                    <RiArrowRightLine size={24} />
-                    Atendidas
-                  </button>
-                  <button
-                    type="button"
-                    className={`button ${tabActive3}`}
-                    onClick={() => {
-                      handleAlterTab("Execução");
-                    }}
-                  >
-                    <RiTaxiWifiLine size={22} />
-                    Execução
-                  </button>
-
-                  <button
-                    type="button"
-                    className={`button ${tabActive4}`}
-                    onClick={() => {
-                      handleAlterTab("Finalizadas");
-                    }}
-                  >
-                    <RiCheckLine size={24} />
-                    Finalizadas
+                    <RiFilterLine size={24} />
                   </button>
                 </div>
-                {/* <div className="group-dates">
-              <h1>group-dates</h1>
-             </div> */}
               </div>
 
-              <div className="solicitation-table">
-                {/* <h1>{AlterTab}</h1> */}
+              <div className="solicitation-waiting-table">
                 <table className="table-header">
                   <thead>
                     <tr id="table-header">

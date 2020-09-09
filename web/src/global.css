@@ -73,7 +73,7 @@ form input {
 }
 
 .btnOther {
-  background: #4f4f4f !important;
+  background: #7e7e7e !important;
 }
 
 .button:hover {
@@ -221,8 +221,33 @@ div.custom-ui
   background: #c1c1c1;
 }
 
-/* Animation Loading */
+input[type="date"] {
+  height: 35px;
 
+  width: 175px;
+
+  color: #3f3d56;
+
+  background: #efefef;
+
+  border: #efefef;
+  border-radius: 4px;
+
+  padding-left: 6px;
+
+  cursor: text;
+}
+
+input[type="date"]::-webkit-calendar-picker-indicator {
+  background: url(../src/assets/calendarDate.svg) no-repeat;
+  cursor: pointer;
+}
+
+input[type="date"]::-webkit-calendar-picker-indicator:hover {
+  background: url(../src/assets/calendarDateBlue.svg) no-repeat;
+}
+
+/* Animation Loading */
 @keyframes spin-animation {
   0% {
     transform: rotate(0deg);

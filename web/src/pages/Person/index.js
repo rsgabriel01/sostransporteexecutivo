@@ -9,11 +9,7 @@ import { confirmAlert } from "react-confirm-alert";
 
 import api from "../../services/api";
 
-import {
-  isAuthenticated,
-  getToken,
-  getIdExecutingPerson,
-} from "../../services/auth";
+import { isAuthenticated, logout } from "../../services/auth";
 
 import {
   RiSearchLine,
@@ -76,7 +72,7 @@ export default function ServiceOrdersRequest() {
   async function virifyAuthorization() {
     const response = await isAuthenticated();
     if (!response) {
-      console.log("response" + response);
+      logout();
       history.push("/");
     } else {
       setLoading(false);
@@ -346,6 +342,13 @@ export default function ServiceOrdersRequest() {
                 "O CPF informado precisa ter no mínimo 9 caracteres"
               );
               break;
+            default:
+              notify("warning", dataError.message);
+          }
+        }
+
+        if (statusError === 401) {
+          switch (dataError.message) {
             default:
               notify("warning", dataError.message);
           }

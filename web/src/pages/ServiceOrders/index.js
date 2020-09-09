@@ -6,7 +6,7 @@ import Loading from "../components/Loading/Loading";
 
 import api from "../../services/api";
 
-import { isAuthenticated } from "../../services/auth";
+import { isAuthenticated, logout } from "../../services/auth";
 
 import {
   RiFileListLine,
@@ -38,19 +38,23 @@ export default function ServiceOrdersRequest() {
 
   //#endregion
 
-  //#region Verify Session
+  //#region Use Effect
   useEffect(() => {
-    async function virifyAuthorization() {
-      const response = await isAuthenticated();
-      if (!response) {
-        console.log("response" + response);
-        history.push("/");
-      } else {
-        setLoading(false);
-      }
-    }
     virifyAuthorization();
   }, []);
+  //#endregion
+
+  //#region Verify Session
+  async function virifyAuthorization() {
+    const response = await isAuthenticated();
+    if (!response) {
+      logout();
+      history.push("/");
+    } else {
+      setLoading(false);
+    }
+  }
+
   //#endregion
 
   //#region Request Service Order

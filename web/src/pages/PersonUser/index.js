@@ -9,7 +9,7 @@ import { confirmAlert } from "react-confirm-alert";
 
 import api from "../../services/api";
 
-import { isAuthenticated } from "../../services/auth";
+import { isAuthenticated, logout } from "../../services/auth";
 
 import {
   RiBookLine,
@@ -66,6 +66,7 @@ export default function ServiceOrdersRequest(props) {
   async function virifyAuthorization() {
     const response = await isAuthenticated();
     if (!response) {
+      logout();
       history.push("/");
     } else {
       setLoading(false);
@@ -167,6 +168,13 @@ export default function ServiceOrdersRequest(props) {
               );
               break;
 
+            default:
+              notify("warning", dataError.message);
+          }
+        }
+
+        if (statusError === 401) {
+          switch (dataError.message) {
             default:
               notify("warning", dataError.message);
           }
@@ -282,6 +290,13 @@ export default function ServiceOrdersRequest(props) {
               );
               break;
 
+            default:
+              notify("warning", dataError.message);
+          }
+        }
+
+        if (statusError === 401) {
+          switch (dataError.message) {
             default:
               notify("warning", dataError.message);
           }

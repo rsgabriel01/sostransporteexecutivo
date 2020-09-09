@@ -4,6 +4,12 @@ import LateralMenu from "../components/LateralMenu/LateralMenu";
 import Header from "../components/Header/Header";
 import Loading from "../components/Loading/Loading";
 
+import {
+  getDateForDatePickerWithClassDate,
+  getDateForDatePickerWithDateString,
+  getDateOfDatePickerValue,
+} from "../../helpers/dates";
+
 import { isAuthenticated, logout } from "../../services/auth";
 
 import {
@@ -20,16 +26,26 @@ import "./styles.css";
 export default function Main() {
   let history = useHistory();
 
-  const [AlterTab, setAlterTab] = useState("Solicitações");
-  const [tabActive1, setTabActive1] = useState("tab-active");
-  const [tabActive2, setTabActive2] = useState("");
-  const [tabActive3, setTabActive3] = useState("");
-  const [tabActive4, setTabActive4] = useState("");
+  const date = new Date();
+  const optionsDate = { year: "numeric", month: "numeric", day: "numeric" };
+
+  const endDateNow = date.toLocaleDateString("en", optionsDate);
+
   const [loading, setLoading] = useState(true);
+  const [startDate, setStartDate] = useState(
+    getDateForDatePickerWithClassDate(date)
+  );
+  const [endDate, setEndDate] = useState(
+    getDateForDatePickerWithClassDate(date)
+  );
 
   //#region Use Effect
   useEffect(() => {
     virifyAuthorization();
+
+    console.log(getDateForDatePickerWithClassDate(date));
+
+    console.log(testObjectConsult());
   }, []);
   //#endregion
 
@@ -46,30 +62,14 @@ export default function Main() {
 
   //#endregion
 
-  //#region handleAlterTab Active
-  function handleAlterTab(text) {
-    setAlterTab(text);
-    if (text === "Solicitações") {
-      setTabActive1("tab-active");
-      setTabActive2("");
-      setTabActive3("");
-      setTabActive4("");
-    } else if (text === "Atendidas") {
-      setTabActive1("");
-      setTabActive2("tab-active");
-      setTabActive3("");
-      setTabActive4("");
-    } else if (text === "Execução") {
-      setTabActive1("");
-      setTabActive2("");
-      setTabActive3("tab-active");
-      setTabActive4("");
-    } else if (text === "Finalizadas") {
-      setTabActive1("");
-      setTabActive2("");
-      setTabActive3("");
-      setTabActive4("tab-active");
-    }
+  //#region Handle Set Start Date
+  function testObjectConsult() {
+    const data = {
+      startDate: getDateOfDatePickerValue(startDate),
+      endDate: getDateOfDatePickerValue(endDate),
+    };
+
+    return data;
   }
   //#endregion
 
@@ -117,11 +117,27 @@ export default function Main() {
                   <div className="row">
                     <div className="column">
                       <label htmlFor="startDate">Inicio:</label>
-                      <input type="date" id="startDate" />
+                      <input
+                        type="date"
+                        id="startDate"
+                        onChange={(e) => {
+                          setStartDate(e.target.value);
+                          console.log(testObjectConsult());
+                        }}
+                        value={startDate}
+                      />
                     </div>
                     <div className="column">
                       <label htmlFor="endDate">Fim:</label>
-                      <input type="date" id="endDate" />
+                      <input
+                        type="date"
+                        id="endDate"
+                        onChange={(e) => {
+                          setEndDate(e.target.value);
+                          console.log(testObjectConsult());
+                        }}
+                        value={endDate}
+                      />
                     </div>
                   </div>
 

@@ -480,7 +480,7 @@ export default function ServiceOrdersRequest(props) {
                   <Link to="/people/person">
                     <button type="button" className={`button `}>
                       <RiBookLine size={24} />
-                      Dados
+                      Consultar
                     </button>
                   </Link>
 
@@ -511,7 +511,7 @@ export default function ServiceOrdersRequest(props) {
                 >
                   <div className="form-title">
                     <RiCheckDoubleLine size={30} />
-                    <h1>{titleUpdate}USUÁRIO DA PLATAFORMA</h1>
+                    <h1>{titleUpdate}DADOS DE USUÁRIO</h1>
                   </div>
 
                   <div className="group-form-fills-row">

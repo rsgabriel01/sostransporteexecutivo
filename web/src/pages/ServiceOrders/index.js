@@ -16,6 +16,8 @@ import {
   RiSearchLine,
   RiMapPinLine,
   RiPencilLine,
+  RiAddLine,
+  RiSearchEyeLine,
 } from "react-icons/ri";
 
 import "./styles.css";
@@ -80,15 +82,15 @@ export default function ServiceOrdersRequest() {
                 <div className="group-tabs">
                   <Link to="/serviceorders">
                     <button type="button" className={`button tab-active`}>
-                      <RiFileList2Line size={24} />
+                      <RiSearchEyeLine size={24} />
                       Consultar
                     </button>
                   </Link>
 
                   <Link to="/serviceorders/request">
                     <button type="button" className={`button`}>
-                      <RiPhoneLine size={24} />
-                      Solicitar
+                      <RiAddLine size={24} />
+                      Criar
                     </button>
                   </Link>
                 </div>
@@ -98,7 +100,7 @@ export default function ServiceOrdersRequest() {
                 <form onSubmit={handleRequestOs}>
                   <div className="form-title">
                     <RiFileList2Line size={30} />
-                    <h1>ORDENS DE SERVIÇO</h1>
+                    <h1>ORDEM DE SERVIÇO</h1>
                   </div>
 
                   <div className="input-group-client">

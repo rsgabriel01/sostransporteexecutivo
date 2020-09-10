@@ -264,11 +264,6 @@ form .input-block + .input-block {
   width: 19px;
 }
 
-label {
-  color: #828282;
-  font-size: 15px;
-}
-
 .os-request-container .input-block label {
   padding-bottom: 5px;
 }

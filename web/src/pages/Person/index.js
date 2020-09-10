@@ -26,6 +26,8 @@ import {
   RiInformationLine,
   RiQuestionLine,
   RiLoader4Line,
+  RiFileSearchLine,
+  RiSearchEyeLine,
 } from "react-icons/ri";
 
 import "./styles.css";
@@ -428,8 +430,8 @@ export default function ServiceOrdersRequest() {
                 <div className="group-tabs">
                   <Link to="/people/person">
                     <button type="button" className={`button tab-active`}>
-                      <RiBookLine size={24} />
-                      Dados
+                      <RiSearchEyeLine size={24} />
+                      Consultar
                     </button>
                   </Link>
 
@@ -454,6 +456,7 @@ export default function ServiceOrdersRequest() {
                       title="Cadastro de nova pessoa física."
                     >
                       <RiAddLine size={24} />
+                      Criar
                     </button>
                   </Link>
                 </div>
@@ -463,7 +466,7 @@ export default function ServiceOrdersRequest() {
                 <form onSubmit={handleSubmitUpdate}>
                   <div className="form-title">
                     <RiCheckDoubleLine size={30} />
-                    <h1>{titleUpdate}DADOS CADASTRADOS</h1>
+                    <h1>{titleUpdate}DADOS DE PESSOA</h1>
                   </div>
 
                   <div className="input-group-person">

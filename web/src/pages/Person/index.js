@@ -451,8 +451,7 @@ export default function ServiceOrdersRequest() {
                   <Link to="/people/person/new">
                     <button
                       type="button"
-                      className={`button `}
-                      id="add-person"
+                      className={`button add`}
                       title="Cadastro de nova pessoa física."
                     >
                       <RiAddLine size={24} />

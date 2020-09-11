@@ -88,7 +88,7 @@ export default function ServiceOrdersRequest() {
                   </Link>
 
                   <Link to="/serviceorders/request">
-                    <button type="button" className={`button`}>
+                    <button type="button" className={`button add`}>
                       <RiAddLine size={24} />
                       Criar
                     </button>

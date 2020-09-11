@@ -26,9 +26,9 @@ export default function Routes() {
     <BrowserRouter>
       <Switch>
         <Route path="/" exact component={Logon} />
-        <Route path="/main" component={Main} />
-        <Route path="/remember" component={Remember} />
-        <Route path="/myaccount" component={MyAccount} />
+        <Route path="/main" exact component={Main} />
+        <Route path="/remember" exact component={Remember} />
+        <Route path="/myaccount" exact component={MyAccount} />
         <Route
           path="/serviceorders/request"
           exact
@@ -50,7 +50,9 @@ export default function Routes() {
           component={ReportsOsFinished}
         />
         <Route path="/loading" component={Loading} />
-        <Route component={NotFound} />
+        <Route component={NotFound}>
+          {/* <Redirect to="/dashboard" /> : <PublicHomePage /> */}
+        </Route>
       </Switch>
     </BrowserRouter>
   );

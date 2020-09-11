@@ -10,16 +10,14 @@ import { isAuthenticated, logout } from "../../services/auth";
 
 import {
   RiFileListLine,
-  RiPhoneLine,
-  RiFileList2Line,
   RiUser2Line,
   RiDraftLine,
   RiSearchLine,
   RiMapPinLine,
   RiCheckLine,
   RiCloseLine,
-  RiAddLine,
   RiSearchEyeLine,
+  RiArrowLeftLine,
 } from "react-icons/ri";
 
 import "./styles.css";
@@ -115,13 +113,6 @@ export default function ServiceOrdersRequest() {
                     <button type="button" className={`button`}>
                       <RiSearchEyeLine size={24} />
                       Consultar
-                    </button>
-                  </Link>
-
-                  <Link to="/serviceorders/request">
-                    <button type="button" className={`button tab-active`}>
-                      <RiAddLine size={24} />
-                      Criar
                     </button>
                   </Link>
                 </div>
@@ -302,6 +293,16 @@ export default function ServiceOrdersRequest() {
                   </div>
 
                   <div className="button-group">
+                    <button
+                      type="button"
+                      className="button btnReturn"
+                      onClick={() => {
+                        history.push("/serviceorders");
+                      }}
+                    >
+                      <RiArrowLeftLine size={25} />
+                      Voltar
+                    </button>
                     <button type="button" className="button btnCancel">
                       <RiCloseLine size={30} />
                       Cancelar

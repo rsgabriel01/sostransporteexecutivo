@@ -56,7 +56,7 @@
   margin: 0;
 }
 
-.person-container .tab-bar .group-tabs button#add-person:hover {
+.person-container .tab-bar .group-tabs button.add:hover {
   color: #0f4c82;
 
   border-top: none;

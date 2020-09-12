@@ -17,30 +17,7 @@ export default function NotFound() {
 
   const [loading, setLoading] = useState(true);
 
-  //#region Use Effect
-  // useEffect(() => {
-  //   virifyAuthorization();
-  // }, []);
-  //#endregion
-
-  //#region Verify Session
-  // async function virifyAuthorization() {
-  //   const response = await isAuthenticated();
-  //   if (!response) {
-  //     logout();
-  //     history.push("/");
-  //   } else {
-  //     setLoading(false);
-  //   }
-  // }
-
-  //#endregion
-
   return (
-    // <>
-    //   {loading ? (
-    //     <Loading type="bars" color="#0f4c82" />
-    //   ) : (
     <div className="notfound-container">
       <img src={notFoundImage} alt="Solicitação de viagem" />
       <div className="message-notfound">
@@ -61,7 +38,5 @@ export default function NotFound() {
         </div>
       </div>
     </div>
-    //   )}
-    // </>
   );
 }

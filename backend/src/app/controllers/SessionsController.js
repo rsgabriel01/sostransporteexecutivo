@@ -42,8 +42,6 @@ module.exports = {
         return res.status(401).json({ message: "Token de sessão inválido." });
       }
 
-      console.log(id_user);
-
       const expirationDate = moment.utc(expiration).local().format();
 
       if (!moment(expirationDate).isSameOrAfter(moment())) {

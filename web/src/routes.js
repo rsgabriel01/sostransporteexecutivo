@@ -3,6 +3,8 @@ import { BrowserRouter, Route, Switch } from "react-router-dom";
 
 import Logon from "./pages/Logon";
 import Main from "./pages/Main";
+import MainMet from "./pages/MainMet";
+import MainExecuting from "./pages/MainExecuting";
 import Remember from "./pages/ForgotPassword";
 import MyAccount from "./pages/MyAccount";
 import ServiceOrdersRequest from "./pages/ServiceOrdersRequest";
@@ -27,6 +29,8 @@ export default function Routes() {
       <Switch>
         <Route path="/" exact component={Logon} />
         <Route path="/main" exact component={Main} />
+        <Route path="/main/met" exact component={MainMet} />
+        <Route path="/main/executing" exact component={MainExecuting} />
         <Route path="/remember" exact component={Remember} />
         <Route path="/myaccount" exact component={MyAccount} />
         <Route

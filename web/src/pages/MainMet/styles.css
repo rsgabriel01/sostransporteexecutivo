@@ -1,0 +1,211 @@
+.solicitations-met-container {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  /* border: 3px solid red; */
+
+  padding: 0 50px;
+}
+
+.status-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 50px;
+
+  margin: 5px 0;
+}
+
+.solicitations-met-container .status-bar h1 {
+  padding: 0;
+}
+
+.solicitations-met-container .status-bar .group-tabs {
+  display: flex;
+  flex-direction: row;
+
+  width: 50%;
+
+  /* border: 3px solid gray; */
+}
+
+.solicitations-met-container .status-bar .group-tabs a {
+  text-decoration: none;
+}
+.solicitations-met-container .status-bar .group-tabs button {
+  height: 30px;
+
+  line-height: 30px;
+  font-size: 14px;
+  color: #000000;
+
+  border-radius: 0px;
+
+  padding: 0px 5px 0px 5px;
+}
+
+.solicitations-met-container .status-bar .group-tabs button:hover {
+  color: #0f4c82;
+
+  border-radius: 5px 5px 0px 0px !important;
+  border-top: 2px solid #0f4c82;
+  border-left: 2px solid #0f4c82;
+  border-right: 2px solid #0f4c82;
+  filter: unset;
+
+  margin: 0;
+}
+
+.solicitations-met-container .status-bar .group-tabs button.tab-active {
+  color: #0f4c82;
+
+  box-sizing: border-box;
+
+  border-radius: 5px 5px 0px 0px !important;
+  border-top: 2px solid #0f4c82;
+  border-left: 2px solid #0f4c82;
+  border-right: 2px solid #0f4c82;
+
+  filter: unset;
+
+  margin: 0;
+}
+
+.solicitations-met-container .status-bar .group-dates {
+  display: flex;
+  flex-direction: row;
+  align-items: flex-end;
+}
+
+.solicitations-met-container .status-bar .group-dates button#filterDate {
+  margin-left: 5px;
+}
+
+.solicitations-met-container .status-bar .group-dates button {
+  /* filter: none; */
+  color: #ffffff;
+  height: 34px;
+  width: 35px;
+
+  /* border: 1px solid red; */
+}
+
+.solicitations-met-container .status-bar .group-dates .row {
+  display: flex;
+  flex-direction: row;
+}
+.solicitations-met-container .status-bar .group-dates .column {
+  display: flex;
+  flex-direction: column;
+}
+
+.solicitations-met-container .status-bar .group-dates .column + .column {
+  margin-left: 10px;
+}
+
+.solicitations-met-container .status-bar .group-dates .column label {
+  padding-left: 5px;
+}
+
+.solicitations-met-container .status-bar .group-dates input[type="date"] {
+  color: #000000;
+  background: #ffffff;
+}
+
+.solicitations-met-container
+  .status-bar
+  .group-dates
+  input[type="date"]::-webkit-calendar-picker-indicator {
+  background: url(../../assets/calendarDateBlack.svg) no-repeat;
+}
+
+.solicitations-met-container
+  .status-bar
+  .group-dates
+  input[type="date"]::-webkit-calendar-picker-indicator:hover {
+  background: url(../../assets/calendarDateBlue.svg) no-repeat;
+}
+
+.solicitation-met-table {
+  height: 100%;
+  margin: 5px 0;
+}
+
+.solicitations-met-container .solicitation-met-table h1 {
+  padding: 0;
+}
+
+.solicitation-met-table table.table-header {
+  width: 100%;
+  text-align: left;
+  border-collapse: collapse;
+  word-wrap: break-word;
+  table-layout: fixed;
+  margin-bottom: 10px;
+}
+
+.solicitation-met-table table tr#table-header th {
+  padding: 0 0 0 10px;
+  background: #0f4c82;
+  color: #ffffff;
+  height: 30px;
+}
+
+.solicitation-met-table table tr#table-header :first-child {
+  border-radius: 3px 0px 0px 3px;
+}
+
+.solicitation-met-table table tr#table-header :last-child {
+  border-radius: 0px 3px 3px 0px;
+}
+
+.solicitation-met-table .div-responsive-table {
+  width: 100%;
+  height: 72vh;
+  overflow: auto;
+}
+
+.solicitation-met-table .div-responsive-table table.table-content {
+  width: 100%;
+  /* height: 100%; */
+  text-align: left;
+  border-collapse: collapse;
+  word-wrap: break-word;
+  table-layout: fixed;
+  font-weight: 700;
+}
+
+.div-responsive-table table.table-content tr {
+  border-bottom: 1px solid gray;
+}
+
+.div-responsive-table table.table-content tr td {
+  height: 30px;
+}
+
+.div-responsive-table table.table-content tr td div.answer {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  height: 100%;
+}
+
+div.answer button {
+  height: 30px;
+  width: 30px;
+}
+
+.solicitation-met-table table tr td {
+  padding: 5px 0 5px 10px;
+  vertical-align: middle;
+  height: 30px;
+  border-radius: 3px;
+}
+
+.solicitation-met-table table tr td:last-child {
+  padding-right: 10px;
+}
+
+.solicitation-met-table table tr td button {
+  border-radius: 4px;
+}

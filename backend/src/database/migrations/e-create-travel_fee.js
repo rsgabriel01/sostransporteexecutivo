@@ -21,7 +21,7 @@ module.exports = {
         },
         value: {
           allowNull: false,
-          type: DataTypes.BIGINT,
+          type: DataTypes.REAL,
         },
       },
       {

@@ -5,9 +5,6 @@ const { Op, fn, col, literal, QueryTypes, Sequelize } = require("sequelize");
 
 const bcrypt = require("bcrypt");
 
-const moment = require("moment");
-const { update } = require("./PersonController");
-
 module.exports = {
   async index(req, res) {
     try {

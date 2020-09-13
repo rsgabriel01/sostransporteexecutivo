@@ -59,6 +59,10 @@ module.exports = {
           allowNull: true,
           type: DataTypes.DATE,
         },
+        date_time_execution: {
+          allowNull: true,
+          type: DataTypes.DATE,
+        },
         id_neighborhood_origin: {
           allowNull: false,
           type: DataTypes.BIGINT,
@@ -111,9 +115,17 @@ module.exports = {
             key: "id",
           },
         },
-        observation: {
+        observation_service: {
           allowNull: true,
           type: DataTypes.STRING,
+        },
+        observation_cancellation: {
+          allowNull: true,
+          type: DataTypes.STRING,
+        },
+        cancellation_fee: {
+          allowNull: true,
+          type: DataTypes.REAL,
         },
       },
       {

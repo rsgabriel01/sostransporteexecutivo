@@ -22,7 +22,7 @@ app.use("/api", routes);
 app.use(errors());
 
 db.sequelize.sync().then(() => {
-  app.listen(process.env.PORT || 3001, () => {
-    console.log("Server is running. Lintening on port 3001.");
+  app.listen(process.env.PORT || 3333, () => {
+    console.log("Server is running. Lintening on port 3333.");
   });
 });

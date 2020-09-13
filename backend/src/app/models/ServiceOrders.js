@@ -11,6 +11,7 @@ module.exports = (sequelize, DataTypes) => {
       id_status: DataTypes.BIGINT,
       date_time_solicitation: DataTypes.DATE,
       date_time_attendance: DataTypes.DATE,
+      date_time_completion: DataTypes.DATE,
       id_neighborhood_origin: DataTypes.BIGINT,
       street_origin: DataTypes.STRING,
       street_number_origin: DataTypes.BIGINT,
@@ -21,7 +22,9 @@ module.exports = (sequelize, DataTypes) => {
       complement_destiny: DataTypes.STRING,
       date_time_completion: DataTypes.DATE,
       id_user_completion: DataTypes.BIGINT,
-      observation: DataTypes.STRING,
+      observation_service: DataTypes.STRING,
+      observation_cancellation: DataTypes.STRING,
+      cancellation_fee: DataTypes.REAL,
     },
     {
       tableName: "Service_orders",

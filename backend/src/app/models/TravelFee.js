@@ -5,7 +5,7 @@ module.exports = (sequelize, DataTypes) => {
     "Travel_fee",
     {
       id_neighborhood: DataTypes.BIGINT,
-      value: DataTypes.BIGINT,
+      value: DataTypes.REAL,
     },
     {
       tableName: "Travel_fee",

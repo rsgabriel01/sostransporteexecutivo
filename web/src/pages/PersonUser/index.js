@@ -12,7 +12,6 @@ import api from "../../services/api";
 import { isAuthenticated, logout } from "../../services/auth";
 
 import {
-  RiBookLine,
   RiUserSharedLine,
   RiAddLine,
   RiUserLine,
@@ -24,13 +23,14 @@ import {
   RiLoader4Line,
   RiArrowLeftLine,
   RiCheckboxMultipleLine,
+  RiSearchEyeLine,
 } from "react-icons/ri";
 
 import "./styles.css";
 import "react-toastify/dist/ReactToastify.css";
 import "react-confirm-alert/src/react-confirm-alert.css";
 
-export default function ServiceOrdersRequest(props) {
+export default function PersonUser(props) {
   //#region Definitions
   let history = useHistory();
   const [loading, setLoading] = useState(true);
@@ -234,7 +234,7 @@ export default function ServiceOrdersRequest(props) {
     e.preventDefault();
 
     confirmationAlert(
-      "Atençao!",
+      "Atenção!",
       "Deseja realmente SALVAR esse cadastro?",
       "createUser"
     );
@@ -323,7 +323,7 @@ export default function ServiceOrdersRequest(props) {
     e.preventDefault();
 
     confirmationAlert(
-      "Atençao!",
+      "Atenção!",
       "Deseja realmente SALVAR essa alteração?",
       "updateUser"
     );
@@ -406,8 +406,8 @@ export default function ServiceOrdersRequest(props) {
   //#region Handle Cancel Update
   async function handleCancelUpdateUser() {
     confirmationAlert(
-      "Atençao!",
-      "Deseja realmente CANCELAR essa alteração?",
+      "Atenção!",
+      "Deseja realmente CANCELAR essa alteração? Os dados não salvos serão perdidos.",
       "alterPageUpdateForConsultUser"
     );
   }
@@ -479,7 +479,7 @@ export default function ServiceOrdersRequest(props) {
                 <div className="group-tabs">
                   <Link to="/people/person">
                     <button type="button" className={`button `}>
-                      <RiBookLine size={24} />
+                      <RiSearchEyeLine size={24} />
                       Consultar
                     </button>
                   </Link>
@@ -498,6 +498,7 @@ export default function ServiceOrdersRequest(props) {
                   <Link to="/people/person/new">
                     <button type="button" className={`button `} id="add-person">
                       <RiAddLine size={24} />
+                      Criar
                     </button>
                   </Link>
                 </div>

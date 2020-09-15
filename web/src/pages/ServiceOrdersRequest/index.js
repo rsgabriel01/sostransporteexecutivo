@@ -16,7 +16,6 @@ import {
   RiMapPinLine,
   RiCheckLine,
   RiCloseLine,
-  RiSearchEyeLine,
   RiArrowLeftLine,
 } from "react-icons/ri";
 
@@ -24,19 +23,40 @@ import "./styles.css";
 
 export default function ServiceOrdersRequest() {
   //#region Definitions
-  let history = useHistory();
+  const history = useHistory();
+
   const [loading, setLoading] = useState(true);
+  const [isReadOnlyOrigin, setIsReadOnlyOrigin] = useState(true);
+  const [isReadOnlyDestiny, setIsReadOnlyDestiny] = useState(true);
+  const [isDisabledRbAddressClient, setIsDisabledRbAddressClient] = useState(
+    true
+  );
 
   const [idClient, setIdClient] = useState("");
   const [client, setClient] = useState("");
+
+  const [rbCheckedAddressOrigin, setRbCheckedAddressOrigin] = useState(false);
+  const [idNeighborhoodOrigin, setIdNeighborhoodOrigin] = useState("");
   const [neighborhoodOrigin, setNeighborhoodOrigin] = useState("");
   const [streetOrigin, setStreetOrigin] = useState("");
   const [streetNumberOrigin, setStreetNumberOrigin] = useState("");
   const [complementOrigin, setComplementOrigin] = useState("");
+
+  const [rbCheckedAddressDestiny, setRbCheckedAddressDestiny] = useState(false);
+  const [idNeighborhoodDestiny, setIdNeighborhoodDestiny] = useState("");
   const [neighborhoodDestiny, setNeighborhoodDestiny] = useState("");
   const [streetDestiny, setStreetDestiny] = useState("");
   const [streetNumberDestiny, setStreetNumberDestiny] = useState("");
   const [complementDestiny, setComplementDestiny] = useState("");
+
+  const dataClient = {
+    fantasy_name: "HONDA ENJIN",
+    id_neighborhood: 1,
+    neighborhood: "SÃO CRISTOVÃO",
+    street: "AV BRASIL",
+    street_number: "1050",
+    complement: "NENHUM",
+  };
 
   //#endregion
 
@@ -60,6 +80,98 @@ export default function ServiceOrdersRequest() {
   //#endregion
 
   //#region Request Service Order
+
+  // #region Handle Address Check Client
+  function handleAddressCheckClient(address) {
+    if (address === "origin") {
+      console.log("origin");
+      if (
+        idNeighborhoodOrigin !== "" ||
+        neighborhoodOrigin !== "" ||
+        streetOrigin !== "" ||
+        streetNumberOrigin !== "" ||
+        complementOrigin !== ""
+      ) {
+        alert("tem certeza que mudar a origem para o endereço do cliente?");
+      } else if (rbCheckedAddressOrigin === false) {
+        let idNeighborhoodOriginOld = idNeighborhoodOrigin;
+        let neighborhoodOriginOld = neighborhoodOrigin;
+        let streetOriginOld = streetOrigin;
+        let streetNumberOriginOld = streetNumberOrigin;
+        let complementOriginOld = complementOrigin;
+
+        setIdNeighborhoodOrigin(dataClient.id_neighborhood);
+        setIdNeighborhoodDestiny(idNeighborhoodOriginOld);
+
+        setNeighborhoodOrigin(dataClient.neighborhood);
+        setNeighborhoodDestiny(neighborhoodOriginOld);
+
+        setStreetOrigin(dataClient.street);
+        setStreetDestiny(streetOriginOld);
+
+        setStreetNumberOrigin(dataClient.street_number);
+        setStreetNumberDestiny(streetNumberOriginOld);
+
+        setComplementOrigin(dataClient.complement);
+        setComplementDestiny(complementOriginOld);
+
+        setRbCheckedAddressOrigin(true);
+        setRbCheckedAddressDestiny(false);
+
+        setIsReadOnlyOrigin(true);
+        setIsReadOnlyDestiny(false);
+      }
+    } else if (address === "destiny") {
+      console.log("destiny");
+
+      if (
+        idNeighborhoodOrigin !== "" ||
+        neighborhoodOrigin !== "" ||
+        streetOrigin !== "" ||
+        streetNumberOrigin !== "" ||
+        complementOrigin !== ""
+      ) {
+        alert("tem certeza que mudar o destino para o endereço do cliente?");
+      } else if (rbCheckedAddressDestiny === false) {
+        let idNeighborhoodDestinyOld = idNeighborhoodDestiny;
+        let neighborhoodDestinyOld = neighborhoodDestiny;
+        let streetDestinyOld = streetDestiny;
+        let streetNumberDestinyOld = streetNumberDestiny;
+        let complementDestinyOld = complementDestiny;
+
+        setIdNeighborhoodDestiny(dataClient.id_neighborhood);
+        setIdNeighborhoodOrigin(idNeighborhoodDestinyOld);
+
+        setNeighborhoodDestiny(dataClient.neighborhood);
+        setNeighborhoodOrigin(neighborhoodDestinyOld);
+
+        setStreetDestiny(dataClient.street);
+        setStreetOrigin(streetDestinyOld);
+
+        setStreetNumberDestiny(dataClient.street_number);
+        setStreetNumberOrigin(streetNumberDestinyOld);
+
+        setComplementDestiny(dataClient.complement);
+        setComplementOrigin(complementDestinyOld);
+
+        setRbCheckedAddressOrigin(false);
+        setRbCheckedAddressDestiny(true);
+
+        setIsReadOnlyOrigin(false);
+        setIsReadOnlyDestiny(true);
+      }
+    }
+  }
+  // #endregion
+
+  // #region object Client test
+
+  function preencheStatesTest() {
+    setIsDisabledRbAddressClient(false);
+  }
+  // #endregion
+
+  // #region request OS
   async function handleRequestOs(e) {
     e.preventDefault();
 
@@ -108,14 +220,7 @@ export default function ServiceOrdersRequest() {
             ></Header>
             <div className="os-request-container">
               <div className="tab-bar">
-                <div className="group-tabs">
-                  <Link to="/serviceorders">
-                    <button type="button" className={`button`}>
-                      <RiSearchEyeLine size={24} />
-                      Consultar
-                    </button>
-                  </Link>
-                </div>
+                <div className="group-tabs"></div>
               </div>
 
               <section className="form">
@@ -130,23 +235,22 @@ export default function ServiceOrdersRequest() {
                       <RiUser2Line size={30} />
                       Cliente
                     </h1>
-                    <input
-                      type="hidden"
-                      value={idClient}
-                      onChange={(e) => setIdClient(e.target.value)}
-                      id="id_client"
-                      required
-                    />
                     <div className="input-block">
                       <input
                         type="text"
                         value={client}
                         onChange={(e) => setClient(e.target.value)}
                         id="client"
-                        readonly="true"
+                        readOnly={true}
                         required
                       />
-                      <button type="button" className="button btnDefault">
+                      <button
+                        type="button"
+                        className="button btnDefault"
+                        onClick={() => {
+                          preencheStatesTest();
+                        }}
+                      >
                         <RiSearchLine size={24} />
                       </button>
                     </div>
@@ -158,16 +262,22 @@ export default function ServiceOrdersRequest() {
                       id="input-group-address-origin"
                     >
                       <div className="label-address">
-                        {/* <div className="address-title"> */}
                         <h1>
                           <RiMapPinLine size={30} />
                           Origem
                         </h1>
-                        {/* </div> */}
 
                         <div className="checkbox-block">
-                          <input type="checkbox" id="cbClientOrigin" />
-                          <label htmlFor="cbClientOrigin">Cliente</label>
+                          <input
+                            type="radio"
+                            name="rbAddressClient"
+                            id="rbAddressClientOrigin"
+                            disabled={isDisabledRbAddressClient}
+                            onClick={() => {
+                              handleAddressCheckClient("origin");
+                            }}
+                          />
+                          <label htmlFor="rbAddressClientOrigin">Cliente</label>
                         </div>
                       </div>
 
@@ -181,10 +291,16 @@ export default function ServiceOrdersRequest() {
                             onChange={(e) =>
                               setNeighborhoodOrigin(e.target.value)
                             }
-                            readonly="true"
+                            readOnly={true}
                             required
                           />
-                          <button type="button" className="button btnDefault">
+                          <button
+                            type="button"
+                            className={`button btnDefault ${
+                              isReadOnlyOrigin ? "btnInactive" : ""
+                            }`}
+                            disabled={isReadOnlyOrigin}
+                          >
                             <RiSearchLine size={24} />
                           </button>
                         </div>
@@ -195,6 +311,7 @@ export default function ServiceOrdersRequest() {
                           <input
                             type="text"
                             value={streetOrigin}
+                            readOnly={isReadOnlyOrigin}
                             onChange={(e) => setStreetOrigin(e.target.value)}
                             required
                           />
@@ -207,6 +324,7 @@ export default function ServiceOrdersRequest() {
                             type="number"
                             min="0"
                             value={streetNumberOrigin}
+                            readOnly={isReadOnlyOrigin}
                             onChange={(e) =>
                               setStreetNumberOrigin(e.target.value)
                             }
@@ -219,6 +337,7 @@ export default function ServiceOrdersRequest() {
                         <input
                           type="text"
                           value={complementOrigin}
+                          readOnly={isReadOnlyOrigin}
                           onChange={(e) => setComplementOrigin(e.target.value)}
                         />
                       </div>
@@ -235,8 +354,18 @@ export default function ServiceOrdersRequest() {
                         </h1>
 
                         <div className="checkbox-block">
-                          <input type="checkbox" id="cbClientDestiny" />
-                          <label htmlFor="cbClientDestiny">Cliente</label>
+                          <input
+                            type="radio"
+                            name="rbAddressClient"
+                            id="rbAddressClientDestiny"
+                            disabled={isDisabledRbAddressClient}
+                            onClick={() => {
+                              handleAddressCheckClient("destiny");
+                            }}
+                          />
+                          <label htmlFor="rbAddressClientDestiny">
+                            Cliente
+                          </label>
                         </div>
                       </div>
 
@@ -249,10 +378,16 @@ export default function ServiceOrdersRequest() {
                             onChange={(e) =>
                               setNeighborhoodDestiny(e.target.value)
                             }
-                            readonly="true"
+                            readOnly={true}
                             required
                           />
-                          <button type="button" className="button btnDefault">
+                          <button
+                            type="button"
+                            className={`button btnDefault ${
+                              isReadOnlyDestiny ? "btnInactive" : ""
+                            }`}
+                            disabled={isReadOnlyDestiny}
+                          >
                             <RiSearchLine size={24} />
                           </button>
                         </div>
@@ -263,6 +398,7 @@ export default function ServiceOrdersRequest() {
                           <input
                             type="text"
                             value={streetDestiny}
+                            readOnly={isReadOnlyDestiny}
                             onChange={(e) => setStreetDestiny(e.target.value)}
                             required
                           />
@@ -273,6 +409,7 @@ export default function ServiceOrdersRequest() {
                             type="number"
                             min="0"
                             value={streetNumberDestiny}
+                            readOnly={isReadOnlyDestiny}
                             onChange={(e) =>
                               setStreetNumberDestiny(e.target.value)
                             }
@@ -286,6 +423,7 @@ export default function ServiceOrdersRequest() {
                         <input
                           type="text"
                           value={complementDestiny}
+                          readOnly={isReadOnlyDestiny}
                           onChange={(e) => setComplementDestiny(e.target.value)}
                         />
                       </div>

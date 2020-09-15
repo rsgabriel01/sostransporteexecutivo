@@ -134,7 +134,7 @@ export default function ServiceOrdersRequest() {
                           value={client}
                           onChange={(e) => setClient(e.target.value)}
                           id="client"
-                          readonly="true"
+                          readOnly={true}
                           required
                         />
                       </div>
@@ -156,7 +156,7 @@ export default function ServiceOrdersRequest() {
                           <input
                             type="checkbox"
                             id="cbClientOrigin"
-                            disabled="true"
+                            disabled={true}
                           />
                           <label htmlFor="cbClientOrigin">Cliente</label>
                         </div>
@@ -171,7 +171,7 @@ export default function ServiceOrdersRequest() {
                           onChange={(e) =>
                             setNeighborhoodOrigin(e.target.value)
                           }
-                          readonly="true"
+                          readOnly={true}
                           required
                         />
                       </div>
@@ -182,7 +182,7 @@ export default function ServiceOrdersRequest() {
                             type="text"
                             value={streetOrigin}
                             onChange={(e) => setStreetOrigin(e.target.value)}
-                            readonly="true"
+                            readOnly={true}
                             required
                           />
                         </div>
@@ -197,7 +197,7 @@ export default function ServiceOrdersRequest() {
                             onChange={(e) =>
                               setStreetNumberOrigin(e.target.value)
                             }
-                            readonly="true"
+                            readOnly={true}
                             required
                           />
                         </div>
@@ -208,7 +208,7 @@ export default function ServiceOrdersRequest() {
                           type="text"
                           value={complementOrigin}
                           onChange={(e) => setComplementOrigin(e.target.value)}
-                          readonly="true"
+                          readOnly={true}
                           required
                         />
                       </div>
@@ -228,7 +228,7 @@ export default function ServiceOrdersRequest() {
                           <input
                             type="checkbox"
                             id="cbClientDestiny"
-                            disabled="true"
+                            disabled={true}
                           />
                           <label htmlFor="cbClientDestiny">Cliente</label>
                         </div>
@@ -242,7 +242,7 @@ export default function ServiceOrdersRequest() {
                           onChange={(e) =>
                             setNeighborhoodDestiny(e.target.value)
                           }
-                          readonly="true"
+                          readOnly={true}
                           required
                         />
                       </div>
@@ -253,7 +253,7 @@ export default function ServiceOrdersRequest() {
                             type="text"
                             value={streetDestiny}
                             onChange={(e) => setStreetDestiny(e.target.value)}
-                            readonly="true"
+                            readOnly={true}
                             required
                           />
                         </div>
@@ -266,7 +266,7 @@ export default function ServiceOrdersRequest() {
                             onChange={(e) =>
                               setStreetNumberDestiny(e.target.value)
                             }
-                            readonly="true"
+                            readOnly={true}
                             required
                           />
                         </div>
@@ -278,7 +278,7 @@ export default function ServiceOrdersRequest() {
                           type="text"
                           value={complementDestiny}
                           onChange={(e) => setComplementDestiny(e.target.value)}
-                          readonly="true"
+                          readOnly={true}
                           required
                         />
                       </div>
@@ -294,11 +294,7 @@ export default function ServiceOrdersRequest() {
                       <RiCloseLine size={30} />
                       Cancelar
                     </button> */}
-                    <button
-                      type="submit"
-                      className="button btnDefault btnInactive"
-                      disabled="true"
-                    >
+                    <button type="submit" className="button btnDefault">
                       <RiPencilLine size={25} />
                       Alterar
                     </button>

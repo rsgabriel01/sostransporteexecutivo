@@ -34,7 +34,7 @@ import "./styles.css";
 import "react-toastify/dist/ReactToastify.css";
 import "react-confirm-alert/src/react-confirm-alert.css";
 
-export default function ServiceOrdersRequest() {
+export default function Person() {
   //#region Definitions
   let history = useHistory();
   const [loading, setLoading] = useState(true);
@@ -282,7 +282,7 @@ export default function ServiceOrdersRequest() {
     e.preventDefault();
 
     confirmationAlert(
-      "Atençao!",
+      "Atenção!",
       "Deseja realmente SALVAR essa alteração?",
       "updatePerson"
     );
@@ -344,6 +344,13 @@ export default function ServiceOrdersRequest() {
                 "O CPF informado precisa ter no mínimo 9 caracteres"
               );
               break;
+            case '"cpf_cnpj" length must be less than or equal to 11 characters long':
+              notify(
+                "warning",
+                "O CPF informado pode ter no máximo 11 caracteres"
+              );
+              break;
+
             default:
               notify("warning", dataError.message);
           }
@@ -375,8 +382,8 @@ export default function ServiceOrdersRequest() {
   //#region Handle Cancel Update
   async function handleCancelUpdate() {
     confirmationAlert(
-      "Atençao!",
-      "Deseja realmente CANCELAR essa alteração?",
+      "Atenção!",
+      "Deseja realmente CANCELAR essa alteração? Os dados não salvos serão perdidos.",
       "alterPageUpdateForConsult"
     );
   }
@@ -507,7 +514,10 @@ export default function ServiceOrdersRequest() {
                         </div>
                       </div>
 
-                      <div className="input-label-block-column">
+                      <div
+                        className="input-label-block-column"
+                        id="input-label-block-column-name"
+                      >
                         <label htmlFor="name">Nome:</label>
 
                         <input
@@ -589,7 +599,7 @@ export default function ServiceOrdersRequest() {
                           type="email"
                           value={email}
                           onChange={(e) => setEmail(e.target.value)}
-                          id="client"
+                          id="email"
                           readOnly={isReadonly}
                         />
                       </div>

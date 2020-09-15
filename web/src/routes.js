@@ -5,6 +5,7 @@ import Logon from "./pages/Logon";
 import Main from "./pages/Main";
 import MainMet from "./pages/MainMet";
 import MainExecuting from "./pages/MainExecuting";
+import MainFinished from "./pages/MainFinished";
 import Remember from "./pages/ForgotPassword";
 import MyAccount from "./pages/MyAccount";
 import ServiceOrdersRequest from "./pages/ServiceOrdersRequest";
@@ -31,6 +32,7 @@ export default function Routes() {
         <Route path="/main" exact component={Main} />
         <Route path="/main/met" exact component={MainMet} />
         <Route path="/main/executing" exact component={MainExecuting} />
+        <Route path="/main/finished" exact component={MainFinished} />
         <Route path="/remember" exact component={Remember} />
         <Route path="/myaccount" exact component={MyAccount} />
         <Route

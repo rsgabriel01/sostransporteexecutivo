@@ -1,4 +1,4 @@
-.solicitations-waiting-container {
+.solicitations-finished-container {
   display: flex;
   flex-direction: column;
   height: 100%;
@@ -16,11 +16,11 @@
   margin: 5px 0;
 }
 
-.solicitations-waiting-container .status-bar h1 {
+.solicitations-finished-container .status-bar h1 {
   padding: 0;
 }
 
-.solicitations-waiting-container .status-bar .group-tabs {
+.solicitations-finished-container .status-bar .group-tabs {
   display: flex;
   flex-direction: row;
 
@@ -29,10 +29,10 @@
   /* border: 3px solid gray; */
 }
 
-.solicitations-waiting-container .status-bar .group-tabs a {
+.solicitations-finished-container .status-bar .group-tabs a {
   text-decoration: none;
 }
-.solicitations-waiting-container .status-bar .group-tabs button {
+.solicitations-finished-container .status-bar .group-tabs button {
   height: 30px;
 
   line-height: 30px;
@@ -44,7 +44,7 @@
   padding: 0px 5px 0px 5px;
 }
 
-.solicitations-waiting-container .status-bar .group-tabs button:hover {
+.solicitations-finished-container .status-bar .group-tabs button:hover {
   color: #0f4c82;
 
   border-radius: 5px 5px 0px 0px !important;
@@ -56,7 +56,7 @@
   margin: 0;
 }
 
-.solicitations-waiting-container .status-bar .group-tabs button.tab-active {
+.solicitations-finished-container .status-bar .group-tabs button.tab-active {
   color: #0f4c82;
 
   box-sizing: border-box;
@@ -71,17 +71,17 @@
   margin: 0;
 }
 
-.solicitations-waiting-container .status-bar .group-dates {
+.solicitations-finished-container .status-bar .group-dates {
   display: flex;
   flex-direction: row;
   align-items: flex-end;
 }
 
-.solicitations-waiting-container .status-bar .group-dates button#filterDate {
+.solicitations-finished-container .status-bar .group-dates button#filterDate {
   margin-left: 5px;
 }
 
-.solicitations-waiting-container .status-bar .group-dates button {
+.solicitations-finished-container .status-bar .group-dates button {
   /* filter: none; */
   color: #ffffff;
   height: 34px;
@@ -90,52 +90,52 @@
   /* border: 1px solid red; */
 }
 
-.solicitations-waiting-container .status-bar .group-dates .row {
+.solicitations-finished-container .status-bar .group-dates .row {
   display: flex;
   flex-direction: row;
 }
-.solicitations-waiting-container .status-bar .group-dates .column {
+.solicitations-finished-container .status-bar .group-dates .column {
   display: flex;
   flex-direction: column;
 }
 
-.solicitations-waiting-container .status-bar .group-dates .column + .column {
+.solicitations-finished-container .status-bar .group-dates .column + .column {
   margin-left: 10px;
 }
 
-.solicitations-waiting-container .status-bar .group-dates .column label {
+.solicitations-finished-container .status-bar .group-dates .column label {
   padding-left: 5px;
 }
 
-.solicitations-waiting-container .status-bar .group-dates input[type="date"] {
+.solicitations-finished-container .status-bar .group-dates input[type="date"] {
   color: #000000;
   background: #ffffff;
 }
 
-.solicitations-waiting-container
+.solicitations-finished-container
   .status-bar
   .group-dates
   input[type="date"]::-webkit-calendar-picker-indicator {
   background: url(../../assets/calendarDateBlack.svg) no-repeat;
 }
 
-.solicitations-waiting-container
+.solicitations-finished-container
   .status-bar
   .group-dates
   input[type="date"]::-webkit-calendar-picker-indicator:hover {
   background: url(../../assets/calendarDateBlue.svg) no-repeat;
 }
 
-.solicitation-waiting-table {
+.solicitation-finished-table {
   height: 100%;
   margin: 5px 0;
 }
 
-.solicitations-waiting-container .solicitation-waiting-table h1 {
+.solicitations-finished-container .solicitation-finished-table h1 {
   padding: 0;
 }
 
-.solicitation-waiting-table table.table-header {
+.solicitation-finished-table table.table-header {
   width: 100%;
   text-align: left;
   border-collapse: collapse;
@@ -144,30 +144,29 @@
   margin-bottom: 10px;
 }
 
-.solicitation-waiting-table table tr#table-header th {
+.solicitation-finished-table table tr#table-header th {
   padding: 0 0 0 10px;
   background: #0f4c82;
   color: #ffffff;
   height: 30px;
 }
 
-.solicitation-waiting-table table tr#table-header :first-child {
+.solicitation-finished-table table tr#table-header :first-child {
   border-radius: 3px 0px 0px 3px;
 }
 
-.solicitation-waiting-table table tr#table-header :last-child {
+.solicitation-finished-table table tr#table-header :last-child {
   border-radius: 0px 3px 3px 0px;
-  text-align: right;
   padding-right: 10px;
 }
 
-.solicitation-waiting-table .div-responsive-table {
+.solicitation-finished-table .div-responsive-table {
   width: 100%;
   height: 72vh;
   overflow: auto;
 }
 
-.solicitation-waiting-table .div-responsive-table table.table-content {
+.solicitation-finished-table .div-responsive-table table.table-content {
   width: 100%;
   /* height: 100%; */
   text-align: left;
@@ -197,17 +196,17 @@ div.answer button {
   width: 30px;
 }
 
-.solicitation-waiting-table table tr td {
+.solicitation-finished-table table tr td {
   padding: 5px 0 5px 10px;
   vertical-align: middle;
   height: 30px;
   border-radius: 3px;
 }
 
-.solicitation-waiting-table table tr td:last-child {
+.solicitation-finished-table table tr td:last-child {
   padding-right: 10px;
 }
 
-.solicitation-waiting-table table tr td button {
+.solicitation-finished-table table tr td button {
   border-radius: 4px;
 }

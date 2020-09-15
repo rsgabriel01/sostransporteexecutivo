@@ -85,15 +85,7 @@ export default function ServiceOrdersRequest() {
   function handleAddressCheckClient(address) {
     if (address === "origin") {
       console.log("origin");
-      if (
-        idNeighborhoodOrigin !== "" ||
-        neighborhoodOrigin !== "" ||
-        streetOrigin !== "" ||
-        streetNumberOrigin !== "" ||
-        complementOrigin !== ""
-      ) {
-        alert("tem certeza que mudar a origem para o endereço do cliente?");
-      } else if (rbCheckedAddressOrigin === false) {
+      if (rbCheckedAddressOrigin === false) {
         let idNeighborhoodOriginOld = idNeighborhoodOrigin;
         let neighborhoodOriginOld = neighborhoodOrigin;
         let streetOriginOld = streetOrigin;
@@ -123,16 +115,7 @@ export default function ServiceOrdersRequest() {
       }
     } else if (address === "destiny") {
       console.log("destiny");
-
-      if (
-        idNeighborhoodOrigin !== "" ||
-        neighborhoodOrigin !== "" ||
-        streetOrigin !== "" ||
-        streetNumberOrigin !== "" ||
-        complementOrigin !== ""
-      ) {
-        alert("tem certeza que mudar o destino para o endereço do cliente?");
-      } else if (rbCheckedAddressDestiny === false) {
+      if (rbCheckedAddressDestiny === false) {
         let idNeighborhoodDestinyOld = idNeighborhoodDestiny;
         let neighborhoodDestinyOld = neighborhoodDestiny;
         let streetDestinyOld = streetDestiny;

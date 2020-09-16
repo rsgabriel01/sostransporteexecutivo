@@ -13,8 +13,6 @@
   justify-content: space-between;
   height: 50px;
 
-  /* border: 3px solid yellow; */
-
   margin: 5px 0;
 }
 
@@ -56,7 +54,7 @@
   margin: 0;
 }
 
-.client-container .tab-bar .group-tabs button#add-client:hover {
+.client-container .tab-bar .group-tabs button.add:hover {
   color: #0f4c82;
 
   border-top: none;
@@ -116,7 +114,7 @@
 
   justify-content: center;
 
-  padding-bottom: 10px;
+  padding-bottom: 20px;
 }
 
 .client-container section.form form .form-title h1 {
@@ -136,193 +134,141 @@
   border: 2px solid #0f4c82;
 }
 
-.client-container section.form form .input-group-client {
+.client-container section.form form .input-group-person {
   width: 100%;
 
   display: flex;
   flex-direction: column;
-  padding-bottom: 25px;
 }
 
-.client-container section.form form .input-group-client h1 {
+.client-container section.form form .input-group-person + .input-group-person {
+  margin-top: 25px;
+}
+
+.client-container section.form form .input-group-person h1 {
   padding-bottom: 10px;
 }
 
-.client-container
-  section.form
-  form
-  .input-group-client
-  .input-block-cod-client {
-  display: flex;
-  flex-direction: column;
-  padding-right: 10px;
-}
-
-.client-container
-  section.form
-  form
-  .input-group-client
-  .input-block-cod-client
-  .input-block-client {
-  width: 100%;
-
-  display: flex;
-  flex-direction: row;
-}
-
-.client-container
-  section.form
-  form
-  .input-group-client
-  .input-block-name-company {
-  width: 100%;
-
-  display: flex;
-  flex-direction: column;
-}
-
-.client-container section.form form .input-group-client .input-block {
-  width: 100%;
-
-  display: flex;
-  flex-direction: row;
-}
-
-.client-container section.form form .input-group-client .input-block input {
-  margin-right: 10px;
-}
-
-.street-number-block {
-  width: 100%;
-
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-  padding: 10px 0px 10px 0px;
-}
-
-.street-number-block .input-block {
-  padding-top: 0px !important;
-}
-
-.street-number-block .input-block + .input-block {
-  width: 125px;
-}
-
-.street-number-block > :first-child {
-  padding-right: 10px;
-}
-
-.client-container section.form form .input-group-client .input-block button {
-  height: 35px;
-  width: 40px;
-  padding: 0px;
-  margin: 0;
-}
-
-form .input-block {
-  display: flex;
-  flex-direction: column;
-  width: 100%;
-}
-
-form .input-block + .input-block {
-  padding-top: 10px;
-}
-
-.client-container section.form form .group-address {
-  width: 100%;
-
-  display: flex;
-  flex-direction: row;
-}
-
-.client-container section.form form .group-address #input-group-address-origin {
-  padding-right: 20px;
-}
-
-.client-container
-  section.form
-  form
-  .group-address
-  #input-group-address-destiny {
-  padding-left: 20px;
-}
-
-.client-container section.form form .group-address .input-group-address {
-  width: 50%;
-
-  display: flex;
-  flex-direction: column;
-}
-
-.label-address {
-  width: 100%;
-
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  justify-content: space-between;
-  padding-bottom: 10px;
-}
-
-.address-title {
-  display: inline-flex;
-
-  align-items: center;
-}
-
-.checkbox-block {
-  display: inline-flex;
-
-  align-items: center;
-  cursor: pointer;
-}
-
-.checkbox-block label {
-  cursor: pointer;
-}
-
-.checkbox-block input {
-  cursor: pointer;
-}
-
-.label-address input {
-  height: 19px;
-  width: 19px;
-}
-
-label {
-  color: #828282;
-  font-size: 15px;
-}
-
-.input-block label {
+.client-container section.form form .input-group-person label {
   padding-bottom: 5px;
 }
 
-.label-address label {
-  padding-left: 5px;
-}
+.client-container section.form form .input-label-group-row {
+  width: 100%;
 
-.button-group {
   display: flex;
   flex-direction: row;
-
-  justify-content: flex-end !important;
-
-  padding-top: 50px;
 }
 
-.button-group button {
-  height: 45px;
-  width: 150px;
+.client-container section.form form .input-label-group-row input#name {
+  text-transform: uppercase;
 }
 
-.neighborhood-block {
+.client-container
+  section.form
+  form
+  .input-label-group-row
+  + .input-label-group-row {
+  margin-top: 10px;
+}
+
+.client-container section.form form .input-label-block-column {
+  width: 100%;
+
   display: flex;
+  flex-direction: column;
+}
 
+.client-container
+  section.form
+  form
+  .input-label-block-column
+  + .input-label-block-column {
+  margin-left: 10px;
+}
+
+.client-container section.form form #input-label-block-column-cod {
+  width: 42.5%;
+}
+
+.client-container section.form form #input-label-block-column-name {
+  width: 90%;
+}
+
+.client-container section.form form #input-label-block-column-cpf-rg {
+  width: 27%;
+}
+
+.client-container section.form form #input-label-block-column-phone {
+  width: 27%;
+}
+
+.client-container section.form form #input-label-block-column-neighborhood {
+  width: 77%;
+}
+
+.client-container section.form form #input-label-block-column-street {
+  width: 140%;
+}
+
+.client-container section.form form #input-label-block-column-street-number {
+  width: 28%;
+}
+
+.client-container section.form form #input-label-block-column-complement {
+  width: 63%;
+}
+
+.client-container section.form form .input-button-block-row {
+  display: flex;
   flex-direction: row;
+}
+
+.client-container section.form form .input-button-block-row button {
+  height: 35px;
+  width: 50px !important;
+
+  margin: 0px 0px 0px 10px;
+}
+
+.client-container
+  section.form
+  form
+  .input-button-block-row
+  button#btnNeighborhood {
+  width: 45.6px !important;
+}
+
+.client-container .input-group-person .input-label-group-row .checkbox-block {
+  display: inline-flex;
 
   align-items: center;
+  cursor: pointer;
+}
+
+.client-container
+  .input-group-person
+  .input-label-group-row
+  .checkbox-block
+  + .checkbox-block {
+  margin-left: 10px;
+}
+
+.client-container
+  .input-group-person
+  .input-label-group-row
+  .checkbox-block
+  label {
+  cursor: pointer;
+  padding: 0px 0px 0px 5px;
+}
+
+.client-container
+  .input-group-person
+  .input-label-group-row
+  .checkbox-block
+  input {
+  cursor: pointer;
+  height: 19px;
+  width: 19px;
 }

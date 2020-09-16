@@ -24,7 +24,10 @@
     ],
     "global-require": "off",
     "import/prefer-default-export": "off",
-    "no-unused-expressions": ["error", { "allowTaggedTemplates": true }],
+    "no-unused-expressions": [
+      "error",
+      { "allowTaggedTemplates": true, "allowTernary": true }
+    ],
     "quotes": [
       2,
       "double",
@@ -32,6 +35,10 @@
     ],
     "comma-dangle": ["error", "only-multiline"],
     "jsx-a11y/label-has-associated-control": "off",
-    "jsx-a11y/label-has-for": "off"
+    "jsx-a11y/label-has-for": "off",
+    "no-shadow": "off",
+    "no-console": ["error", { "allow": ["warn", "error", "log"] }],
+    "react/button-has-type": "off",
+    "react/prop-types": "off"
   }
 }

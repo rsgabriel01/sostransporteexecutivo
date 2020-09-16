@@ -1,16 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Link, useHistory } from "react-router-dom";
-import LateralMenu from "../components/LateralMenu/LateralMenu";
-import Header from "../components/Header/Header";
-import Loading from "../components/Loading/Loading";
-import notify from "../../helpers/notifys";
 import { ToastContainer } from "react-toastify";
 import { confirmAlert } from "react-confirm-alert";
-
-import api from "../../services/api";
-
-import { isAuthenticated, logout } from "../../services/auth";
-
 import {
   RiUserSharedLine,
   RiAddLine,
@@ -26,13 +17,22 @@ import {
   RiSearchEyeLine,
 } from "react-icons/ri";
 
+import LateralMenu from "../components/LateralMenu/LateralMenu";
+import Header from "../components/Header/Header";
+import Loading from "../components/Loading/Loading";
+import notify from "../../helpers/notifys";
+
+import api from "../../services/api";
+
+import { isAuthenticated, logout } from "../../services/auth";
+
 import "./styles.css";
 import "react-toastify/dist/ReactToastify.css";
 import "react-confirm-alert/src/react-confirm-alert.css";
 
 export default function PersonUser(props) {
-  //#region Definitions
-  let history = useHistory();
+  // #region Definitions
+  const history = useHistory();
   const [loading, setLoading] = useState(true);
 
   const [isReadonly, setIsReadonly] = useState(true);
@@ -52,17 +52,9 @@ export default function PersonUser(props) {
   const [password, setPassword] = useState("");
   const [checkedStatus, setCheckedStatus] = useState(false);
 
-  //#endregion
+  // #endregion
 
-  //#region useEffect
-  useEffect(() => {
-    virifyAuthorization();
-    loadDataUser(props.match.params.id);
-  }, []);
-
-  //#endregion
-
-  //#region Verify Session
+  // #region Verify Session
   async function virifyAuthorization() {
     const response = await isAuthenticated();
     if (!response) {
@@ -73,64 +65,40 @@ export default function PersonUser(props) {
     }
   }
 
-  //#endregion
+  // #endregion
 
-  //#region Alert confirmation
-  function confirmationAlert(title, message, functionExecute) {
-    confirmAlert({
-      customUI: ({ onClose }) => {
-        return (
-          <div className="custom-ui">
-            <div className="content">
-              <div className="header">
-                <RiQuestionLine size={70} />
-                <h1>{title}</h1>
-              </div>
+  // #region Clear Fields
+  function clearFields(withCode) {
+    if (withCode) {
+      setIdPeople("");
+    }
 
-              <p>{message}</p>
-            </div>
-
-            <div className="alert-button-group-column">
-              <div className="alert-button-group-row">
-                <div className="alert-button-block">
-                  <button onClick={onClose} className="button btnCancel">
-                    <RiCloseLine size={25} />
-                    Não
-                  </button>
-                  <button
-                    className="button btnSuccess"
-                    onClick={() => {
-                      switch (functionExecute) {
-                        case "alterPageUpdateForConsultUser":
-                          alterPageUpdateForConsultUser();
-                          break;
-                        case "updateUser":
-                          updateUser();
-                          break;
-                        case "createUser":
-                          createUser();
-                          break;
-
-                        default:
-                          break;
-                      }
-                      onClose();
-                    }}
-                  >
-                    <RiCheckLine size={25} />
-                    Sim
-                  </button>
-                </div>
-              </div>
-            </div>
-          </div>
-        );
-      },
-    });
+    setUser("");
+    setPassword("");
+    setCheckedStatus(false);
   }
-  //#endregion
+  // #endregion
 
-  //#region Load Data Person
+  // #region Fill Fields
+  function fillFields(response) {
+    const { id } = response.person;
+
+    if (response.user != null) {
+      const { user, active } = response.user;
+
+      setIsCreateUser(false);
+
+      user ? setUser(user) : setUser("");
+      active ? setCheckedStatus(active) : setCheckedStatus(false);
+    } else {
+      setIsCreateUser(true);
+    }
+
+    id ? setIdPeople(id) : setIdPeople("");
+  }
+  // #endregion
+
+  // #region Load Data Person
   async function loadDataUser(id) {
     try {
       console.log(id);
@@ -196,54 +164,18 @@ export default function PersonUser(props) {
     }
   }
 
-  //#endregion
+  // #endregion
 
-  //#region Fill Fields
-  function fillFields(response) {
-    const { id } = response.person;
-
-    if (response.user != null) {
-      const { user, active } = response.user;
-
-      setIsCreateUser(false);
-
-      user ? setUser(user) : setUser("");
-      active ? setCheckedStatus(active) : setCheckedStatus(false);
-    } else {
-      setIsCreateUser(true);
-    }
-
-    id ? setIdPeople(id) : setIdPeople("");
+  function alterPageUpdateForConsultUser() {
+    loadDataUser(idPeople);
+    setTitleUpdate("");
+    setUpdateRegister(false);
+    setIsReadonly(true);
   }
-  //#endregion
 
-  //#region Clear Fields
-  function clearFields(withCode) {
-    if (withCode) {
-      setIdPeople("");
-    }
-
-    setUser("");
-    setPassword("");
-    setCheckedStatus(false);
-  }
-  //#endregion
-
-  //#region Handle Submit Create
-  function handleSubmitCreate(e) {
-    e.preventDefault();
-
-    confirmationAlert(
-      "Atenção!",
-      "Deseja realmente SALVAR esse cadastro?",
-      "createUser"
-    );
-  }
-  //#endregion
-
-  //#region Create Person
+  // #region Create Person
   async function createUser() {
-    let dataUser = {
+    const dataUser = {
       idPeople,
       user,
       password,
@@ -316,23 +248,11 @@ export default function PersonUser(props) {
       }
     }
   }
-  //#endregion
+  // #endregion
 
-  //#region Handle Submit Update
-  function handleSubmitUpdate(e) {
-    e.preventDefault();
-
-    confirmationAlert(
-      "Atenção!",
-      "Deseja realmente SALVAR essa alteração?",
-      "updateUser"
-    );
-  }
-  //#endregion
-
-  //#region Update Person
+  // #region Update Person
   async function updateUser() {
-    let dataUser = {
+    const dataUser = {
       idPeople,
       user,
       password,
@@ -366,11 +286,11 @@ export default function PersonUser(props) {
       if (error.response) {
         const dataError = error.response.data;
         const statusError = error.response.status;
-        console.error("data erros" + dataError);
-        console.error("estaus error" + statusError);
+        console.error(`data erros ${dataError}`);
+        console.error(`estaus error ${statusError}`);
 
         if (statusError === 400 && dataError.message) {
-          console.log("switch " + dataError.message);
+          console.log(`switch ${dataError.message}`);
           switch (dataError.message) {
             // case '"password" length must be at least 8 characters long':
             //   notify("warning", "A senha deve conter no mínimo 8 caracteres.");
@@ -401,26 +321,9 @@ export default function PersonUser(props) {
       }
     }
   }
-  //#endregion
+  // #endregion
 
-  //#region Handle Cancel Update
-  async function handleCancelUpdateUser() {
-    confirmationAlert(
-      "Atenção!",
-      "Deseja realmente CANCELAR essa alteração? Os dados não salvos serão perdidos.",
-      "alterPageUpdateForConsultUser"
-    );
-  }
-
-  function alterPageUpdateForConsultUser() {
-    loadDataUser(idPeople);
-    setTitleUpdate("");
-    setUpdateRegister(false);
-    setIsReadonly(true);
-  }
-  //#endregion
-
-  //#region Handle Update Register
+  // #region Handle Update Register
   function handleUpdateRegisterUser() {
     if (idPeople) {
       isCreateUser ? setTitleUpdate("CRIAR ") : setTitleUpdate("ALTERAR ");
@@ -438,19 +341,19 @@ export default function PersonUser(props) {
       );
     }
   }
-  //#endregion
+  // #endregion
 
-  //#region Handle Return Page Person
+  // #region Handle Return Page Person
   function handleReturn() {
     history.push("/people/person");
   }
-  //#endregion
+  // #endregion
 
-  //#region Handle Check Checkbox
+  // #region Handle Check Checkbox
   function handleCheckBoxStatus(checkbox) {
     switch (checkbox) {
       case "cbStatus":
-        console.log("Status anterior " + checkedStatus);
+        console.log(`Status anterior ${checkedStatus}`);
         setCheckedStatus(!checkedStatus);
         break;
 
@@ -458,11 +361,106 @@ export default function PersonUser(props) {
         break;
     }
   }
-  //#endregion
+  // #endregion
+
+  // #region Alert confirmation
+  function confirmationAlert(title, message, functionExecute) {
+    confirmAlert({
+      customUI: ({ onClose }) => (
+        <div className="custom-ui">
+          <div className="content">
+            <div className="header">
+              <RiQuestionLine size={70} />
+              <h1>{title}</h1>
+            </div>
+
+            <p>{message}</p>
+          </div>
+
+          <div className="alert-button-group-column">
+            <div className="alert-button-group-row">
+              <div className="alert-button-block">
+                <button onClick={onClose} className="button btnCancel">
+                  <RiCloseLine size={25} />
+                  Não
+                </button>
+                <button
+                  className="button btnSuccess"
+                  onClick={() => {
+                    switch (functionExecute) {
+                      case "alterPageUpdateForConsultUser":
+                        alterPageUpdateForConsultUser();
+                        break;
+                      case "updateUser":
+                        updateUser();
+                        break;
+                      case "createUser":
+                        createUser();
+                        break;
+
+                      default:
+                        break;
+                    }
+                    onClose();
+                  }}
+                >
+                  <RiCheckLine size={25} />
+                  Sim
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      ),
+    });
+  }
+  // #endregion
+
+  // #region Handle Submit Create
+  function handleSubmitCreate(e) {
+    e.preventDefault();
+
+    confirmationAlert(
+      "Atenção!",
+      "Deseja realmente SALVAR esse cadastro?",
+      "createUser"
+    );
+  }
+  // #endregion
+
+  // #region Handle Submit Update
+  function handleSubmitUpdate(e) {
+    e.preventDefault();
+
+    confirmationAlert(
+      "Atenção!",
+      "Deseja realmente SALVAR essa alteração?",
+      "updateUser"
+    );
+  }
+  // #endregion
+
+  // #region Handle Cancel Update
+  async function handleCancelUpdateUser() {
+    confirmationAlert(
+      "Atenção!",
+      "Deseja realmente CANCELAR essa alteração? Os dados não salvos serão perdidos.",
+      "alterPageUpdateForConsultUser"
+    );
+  }
+  // #endregion
+
+  // #region useEffect
+  useEffect(() => {
+    virifyAuthorization();
+    loadDataUser(props.match.params.id);
+  }, []);
+
+  // #endregion
 
   return (
     <div className="main-container">
-      <LateralMenu></LateralMenu>
+      <LateralMenu />
       <>
         {loading ? (
           <Loading type="bars" color="#0f4c82" />
@@ -470,10 +468,7 @@ export default function PersonUser(props) {
           <div className="content-container">
             <ToastContainer />
 
-            <Header
-              title={"Pessoa Física"}
-              icon={<RiUserLine size={40} />}
-            ></Header>
+            <Header title="Pessoa Física" icon={<RiUserLine size={40} />} />
             <div className="person-user-container">
               <div className="tab-bar">
                 <div className="group-tabs">
@@ -485,11 +480,7 @@ export default function PersonUser(props) {
                   </Link>
 
                   <Link to={`/people/person/user/${idPeople}`}>
-                    <button
-                      type="button"
-                      className="button tab-active"
-                      disabled={true}
-                    >
+                    <button type="button" className="button tab-active">
                       <RiUserSharedLine size={24} />
                       Usuário
                     </button>
@@ -512,7 +503,10 @@ export default function PersonUser(props) {
                 >
                   <div className="form-title">
                     <RiCheckDoubleLine size={30} />
-                    <h1>{titleUpdate}DADOS DE USUÁRIO</h1>
+                    <h1>
+                      {titleUpdate}
+                      DADOS DE USUÁRIO
+                    </h1>
                   </div>
 
                   <div className="group-form-fills-row">

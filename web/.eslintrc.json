@@ -41,6 +41,7 @@
     "react/button-has-type": "off",
     "react/prop-types": "off",
     "no-unused-vars": "off",
-    "object-curly-newline": "off"
+    "object-curly-newline": "off",
+    "operator-linebreak": "off"
   }
 }

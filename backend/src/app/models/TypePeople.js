@@ -6,6 +6,7 @@ module.exports = (sequelize, DataTypes) => {
     {
       id_people: DataTypes.BIGINT,
       id_type: DataTypes.BIGINT,
+      active: DataTypes.BOOLEAN,
     },
     {
       tableName: "Type_people",

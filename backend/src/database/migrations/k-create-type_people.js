@@ -27,6 +27,10 @@ module.exports = {
             key: "id",
           },
         },
+        active: {
+          allowNull: false,
+          type: DataTypes.BOOLEAN,
+        },
       },
       {
         tableName: "Type_people",

@@ -532,8 +532,8 @@ export default function Client() {
                         <input
                           id="cpfCnpj"
                           type="text"
-                          minLength="9"
-                          maxLength="11"
+                          minLength="14"
+                          maxLength="14"
                           title="Esse campo aceita apenas números"
                           pattern="[0-9]+"
                           readOnly={isReadonly}
@@ -594,9 +594,9 @@ export default function Client() {
                           <input
                             id="neighborhood"
                             type="text"
-                            min="1"
                             required
                             value={neighborhood}
+                            readOnly
                             onChange={(e) => setNeighborhood(e.target.value)}
                             onBlur={() => {
                               // handleSearchPerson(idNeighborhood);
@@ -627,10 +627,6 @@ export default function Client() {
 
                         <input
                           id="street"
-                          title="Esse campo aceita apenas números"
-                          pattern="[0-9]+"
-                          minLength="10"
-                          maxLength="11"
                           readOnly={isReadonly}
                           type="text"
                           value={street}

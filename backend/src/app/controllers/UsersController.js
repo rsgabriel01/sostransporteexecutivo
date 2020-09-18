@@ -22,43 +22,43 @@ module.exports = {
       const { idPeople, user, password, active } = req.body;
       const { id_executingperson } = req.headers;
 
-      const executingPersonData = await People.findOne({
-        where: {
-          id: id_executingperson,
-        },
-        include: ["People_Type", "Users"],
-      });
+      // const executingPersonData = await People.findOne({
+      //   where: {
+      //     id: id_executingperson,
+      //   },
+      //   include: ["People_Type", "Users"],
+      // });
 
-      if (executingPersonData) {
-        const activeExecutingPerson = executingPersonData.Users.active;
+      // if (executingPersonData) {
+      //   const activeExecutingPerson = executingPersonData.Users.active;
 
-        console.log(activeExecutingPerson);
+      //   console.log(activeExecutingPerson);
 
-        if (activeExecutingPerson != true) {
-          return res.status(401).json({
-            message: "Ação não permitida.",
-          });
-        }
+      //   if (activeExecutingPerson != true) {
+      //     return res.status(401).json({
+      //       message: "Ação não permitida.",
+      //     });
+      //   }
 
-        typeIds = executingPersonData.People_Type.map(function (index) {
-          return index.id;
-        });
-      } else {
-        console.log("aqui1");
-        return res.status(401).json({
-          message:
-            "Esse usuário não tem permissao para realizar essa operação.",
-        });
-      }
+      //   typeIds = executingPersonData.People_Type.map(function (index) {
+      //     return index.id;
+      //   });
+      // } else {
+      //   console.log("aqui1");
+      //   return res.status(401).json({
+      //     message:
+      //       "Esse usuário não tem permissao para realizar essa operação.",
+      //   });
+      // }
 
-      console.log(typeIds);
-      if (!(typeIds.includes("1") || typeIds.includes("2"))) {
-        console.log("aqui2");
-        return res.status(401).json({
-          message:
-            "Esse usuário não tem permissao para realizar essa operação.",
-        });
-      }
+      // console.log(typeIds);
+      // if (!(typeIds.includes("1") || typeIds.includes("2"))) {
+      //   console.log("aqui2");
+      //   return res.status(401).json({
+      //     message:
+      //       "Esse usuário não tem permissao para realizar essa operação.",
+      //   });
+      // }
 
       const personFinded = await People.findOne({
         where: {

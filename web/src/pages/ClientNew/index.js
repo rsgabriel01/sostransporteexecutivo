@@ -384,7 +384,7 @@ export default function ClientNew() {
                 <form onSubmit={handleSubmitUpdate}>
                   <div className="form-title">
                     <RiUserAddLine size={30} />
-                    <h1> NOVO CLIENTE</h1>
+                    <h1>NOVO CLIENTE</h1>
                   </div>
 
                   <div className="input-group-person">
@@ -437,8 +437,8 @@ export default function ClientNew() {
                         <input
                           id="cpfCnpj"
                           type="text"
-                          minLength="9"
-                          maxLength="11"
+                          minLength="14"
+                          maxLength="14"
                           title="Esse campo aceita apenas números"
                           pattern="[0-9]+"
                           readOnly={isReadonly}
@@ -499,9 +499,8 @@ export default function ClientNew() {
                           <input
                             id="neighborhood"
                             type="text"
-                            min="1"
-                            required
                             value={neighborhood}
+                            required
                             readOnly
                             onChange={(e) => setNeighborhood(e.target.value)}
                             onBlur={() => {
@@ -533,10 +532,6 @@ export default function ClientNew() {
 
                         <input
                           id="street"
-                          title="Esse campo aceita apenas números"
-                          pattern="[0-9]+"
-                          minLength="10"
-                          maxLength="11"
                           readOnly={isReadonly}
                           type="text"
                           value={street}

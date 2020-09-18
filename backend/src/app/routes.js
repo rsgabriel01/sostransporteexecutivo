@@ -114,7 +114,7 @@ routes.get("/users", verifySession, UsersController.index);
 routes.post(
   "/user/create",
   validatorUsersCreate,
-  verifySession,
+  /*verifySession,*/
   UsersController.store
 );
 

@@ -42,7 +42,9 @@ module.exports = {
         }
 
         typeIds = executingPersonData.People_Type.map(function (index) {
-          return index.id;
+          if (index.active) {
+            return index.id;
+          }
         });
       } else {
         return res.status(401).json({
@@ -51,6 +53,7 @@ module.exports = {
         });
       }
 
+      console.log(typeIds);
       if (!(typeIds.includes("1") || typeIds.includes("2"))) {
         return res.status(401).json({
           message:
@@ -131,7 +134,9 @@ module.exports = {
         }
 
         typeIds = executingPersonData.People_Type.map(function (index) {
-          return index.id;
+          if (!index.active) {
+            return index.id;
+          }
         });
       } else {
         return res.status(401).json({
@@ -139,6 +144,7 @@ module.exports = {
         });
       }
 
+      console.log(typeIds);
       if (!(typeIds.includes("1") || typeIds.includes("2"))) {
         return res.status(401).json({
           message: "Seu usuário não tem permissao para realizar essa operação.",

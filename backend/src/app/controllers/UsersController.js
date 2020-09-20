@@ -41,7 +41,9 @@ module.exports = {
       //   }
 
       //   typeIds = executingPersonData.People_Type.map(function (index) {
-      //     return index.id;
+      //     if (!index.active) {
+      //        return index.id;
+      //     }
       //   });
       // } else {
       //   console.log("aqui1");

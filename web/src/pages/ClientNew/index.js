@@ -324,7 +324,6 @@ export default function ClientNew() {
       );
     }
   }
-
   // #endregion
 
   // #region Handle Submit Update

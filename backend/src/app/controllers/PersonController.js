@@ -234,7 +234,9 @@ module.exports = {
         }
 
         typeIds = executingPersonData.People_Type.map(function (index) {
-          return index.id;
+          if (!index.active) {
+            return index.id;
+          }
         });
       } else {
         return res.status(401).json({

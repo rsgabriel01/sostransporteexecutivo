@@ -491,10 +491,7 @@ export default function Driver() {
                         </div>
                       </div>
 
-                      <div
-                        className="input-label-block-column"
-                        id="input-label-block-column"
-                      >
+                      <div className="input-label-block-column">
                         <label htmlFor="companyName">Nome:</label>
 
                         <input

@@ -1,0 +1,249 @@
+.vehicles-container {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  /* border: 3px solid red; */
+
+  padding: 0 50px;
+}
+
+.tab-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 50px;
+
+  margin: 5px 0;
+}
+
+.vehicles-container .tab-bar h1 {
+  padding: 0;
+}
+
+.vehicles-container .tab-bar .group-tabs {
+  display: flex;
+  flex-direction: row;
+
+  width: 50%;
+}
+
+.vehicles-container .tab-bar .group-tabs a {
+  text-decoration: none;
+}
+.vehicles-container .tab-bar .group-tabs button {
+  height: 30px;
+
+  line-height: 30px;
+  font-size: 14px;
+  color: #000000;
+
+  border-radius: 0px;
+
+  padding: 0px 5px 0px 5px;
+}
+
+.vehicles-container .tab-bar .group-tabs button:hover {
+  color: #0f4c82;
+
+  border-radius: 5px 5px 0px 0px !important;
+  border-top: 2px solid #0f4c82;
+  border-left: 2px solid #0f4c82;
+  border-right: 2px solid #0f4c82;
+  filter: unset;
+
+  margin: 0;
+}
+
+.vehicles-container .tab-bar .group-tabs button.add:hover {
+  color: #0f4c82;
+
+  border-top: none;
+  border-left: none;
+  border-right: none;
+  border-bottom: 2px solid #0f4c82;
+
+  filter: unset;
+
+  margin: 0;
+}
+
+.vehicles-container .tab-bar .group-tabs button.tab-active {
+  color: #0f4c82;
+
+  box-sizing: border-box;
+  border-radius: 5px 5px 0px 0px !important;
+  border-top: 2px solid #0f4c82;
+  border-left: 2px solid #0f4c82;
+  border-right: 2px solid #0f4c82;
+  filter: unset;
+
+  margin: 0;
+}
+
+.vehicles-container section.form {
+  width: 100%;
+  height: 78vh;
+  overflow: auto;
+
+  background: #ffffff;
+
+  border-radius: 9px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.vehicles-container section.form form {
+  width: 100%;
+  height: 100%;
+  padding: 20px 60px;
+
+  display: flex;
+  flex-direction: column;
+}
+
+.vehicles-container section.form h1 {
+  display: inline-flex;
+
+  padding: 0;
+}
+
+.vehicles-container section.form form .form-title {
+  display: inline-flex;
+
+  justify-content: center;
+
+  padding-bottom: 20px;
+}
+
+.vehicles-container section.form form .form-title h1 {
+  padding-left: 5px;
+}
+
+.vehicles-container section.form form input {
+  border: 0;
+  padding: 0px 10px;
+}
+
+.vehicles-container section.form form input:hover {
+  border: 2px solid #0f4c82;
+}
+
+.vehicles-container section.form form input:focus {
+  border: 2px solid #0f4c82;
+}
+
+.vehicles-container section.form form .input-group-vehicles {
+  width: 100%;
+
+  display: flex;
+  flex-direction: column;
+}
+
+.vehicles-container
+  section.form
+  form
+  .input-group-vehicles
+  + .input-group-vehicles {
+  margin-top: 25px;
+}
+
+.vehicles-container section.form form .input-group-vehicles h1 {
+  padding-bottom: 10px;
+}
+
+.vehicles-container section.form form .input-group-vehicles label {
+  padding-bottom: 5px;
+}
+
+.vehicles-container section.form form .input-label-group-row {
+  width: 100%;
+
+  display: flex;
+  flex-direction: row;
+}
+
+.vehicles-container section.form form .input-label-group-row input#name {
+  text-transform: uppercase;
+}
+
+.vehicles-container
+  section.form
+  form
+  .input-label-group-row
+  + .input-label-group-row {
+  margin-top: 10px;
+}
+
+.vehicles-container section.form form .input-label-block-column {
+  width: 100%;
+
+  display: flex;
+  flex-direction: column;
+}
+
+.vehicles-container
+  section.form
+  form
+  .input-label-block-column
+  + .input-label-block-column {
+  margin-left: 10px;
+}
+
+.vehicles-container section.form form #input-label-block-column-cod {
+  width: 86.5%;
+}
+
+.vehicles-container section.form form #input-label-block-column-cod-driver {
+  width: 21%;
+}
+
+.vehicles-container section.form form .input-button-block-row {
+  display: flex;
+  flex-direction: row;
+}
+
+.vehicles-container section.form form .input-button-block-row button {
+  height: 35px;
+  width: 50px !important;
+
+  margin: 0px 0px 0px 10px;
+}
+
+.vehicles-container
+  .input-group-vehicles
+  .input-label-group-row
+  .checkbox-block {
+  display: inline-flex;
+
+  align-items: center;
+  cursor: pointer;
+}
+
+.vehicles-container
+  .input-group-vehicles
+  .input-label-group-row
+  .checkbox-block
+  + .checkbox-block {
+  margin-left: 10px;
+}
+
+.vehicles-container
+  .input-group-vehicles
+  .input-label-group-row
+  .checkbox-block
+  label {
+  cursor: pointer;
+  padding: 0px 0px 0px 5px;
+}
+
+.vehicles-container
+  .input-group-vehicles
+  .input-label-group-row
+  .checkbox-block
+  input {
+  cursor: pointer;
+  height: 19px;
+  width: 19px;
+}

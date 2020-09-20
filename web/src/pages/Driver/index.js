@@ -6,7 +6,6 @@ import { ToastContainer } from "react-toastify";
 import {
   RiSearchLine,
   RiAddLine,
-  RiCheckDoubleLine,
   RiPencilLine,
   RiCloseLine,
   RiCheckLine,
@@ -14,11 +13,10 @@ import {
   RiQuestionLine,
   RiLoader4Line,
   RiSearchEyeLine,
-  RiUser2Line,
   RiCheckboxMultipleLine,
-  RiMapPinLine,
   RiUserLocationLine,
   RiUserLine,
+  RiBook2Line,
 } from "react-icons/ri";
 import LateralMenu from "../components/LateralMenu/LateralMenu";
 import Header from "../components/Header/Header";
@@ -446,7 +444,7 @@ export default function Driver() {
               <section className="form">
                 <form onSubmit={handleSubmitUpdate}>
                   <div className="form-title">
-                    <RiCheckDoubleLine size={30} />
+                    <RiBook2Line size={30} />
                     <h1>
                       {titleUpdate}
                       DADOS DE MOTORISTA

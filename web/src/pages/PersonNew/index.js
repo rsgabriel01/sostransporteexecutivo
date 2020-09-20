@@ -19,7 +19,7 @@ import {
   RiQuestionLine,
   RiLoader4Line,
   RiArrowLeftLine,
-  RiUserAddLine,
+  RiAddCircleLine,
 } from "react-icons/ri";
 
 import "./styles.css";
@@ -351,7 +351,7 @@ export default function PersonNew() {
               <section className="form">
                 <form onSubmit={handleSubmit}>
                   <div className="form-title">
-                    <RiUserAddLine size={30} />
+                    <RiAddCircleLine size={30} />
                     <h1>NOVA PESSOA FÍSICA</h1>
                   </div>
 

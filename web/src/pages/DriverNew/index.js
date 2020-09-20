@@ -5,16 +5,14 @@ import { confirmAlert } from "react-confirm-alert";
 import { ToastContainer } from "react-toastify";
 import {
   RiSearchLine,
-  RiPencilLine,
   RiCloseLine,
   RiCheckLine,
-  RiBrushLine,
   RiQuestionLine,
   RiLoader4Line,
   RiCheckboxMultipleLine,
   RiUserLocationLine,
   RiUserLine,
-  RiUserAddLine,
+  RiAddCircleLine,
   RiArrowLeftLine,
 } from "react-icons/ri";
 import LateralMenu from "../components/LateralMenu/LateralMenu";
@@ -461,7 +459,7 @@ export default function DriverNew() {
               <section className="form">
                 <form onSubmit={handleSubmitUpdate}>
                   <div className="form-title">
-                    <RiUserAddLine size={30} />
+                    <RiAddCircleLine size={30} />
                     <h1>NOVO MOTORISTA</h1>
                   </div>
 

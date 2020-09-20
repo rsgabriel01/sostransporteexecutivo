@@ -8,7 +8,7 @@ import {
   RiUserSharedLine,
   RiAddLine,
   RiUserLine,
-  RiCheckDoubleLine,
+  RiBook2Line,
   RiPencilLine,
   RiUserStarLine,
   RiCloseLine,
@@ -459,7 +459,7 @@ export default function Person() {
               <section className="form">
                 <form onSubmit={handleSubmitUpdate}>
                   <div className="form-title">
-                    <RiCheckDoubleLine size={30} />
+                    <RiBook2Line size={30} />
                     <h1>
                       {titleUpdate}
                       DADOS DE PESSOA

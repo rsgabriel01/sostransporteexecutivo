@@ -6,7 +6,7 @@ import { ToastContainer } from "react-toastify";
 import {
   RiSearchLine,
   RiAddLine,
-  RiCheckDoubleLine,
+  RiBook2Line,
   RiPencilLine,
   RiCloseLine,
   RiCheckLine,
@@ -444,7 +444,7 @@ export default function Client() {
               <section className="form">
                 <form onSubmit={handleSubmitUpdate}>
                   <div className="form-title">
-                    <RiCheckDoubleLine size={30} />
+                    <RiBook2Line size={30} />
                     <h1>
                       {titleUpdate}
                       DADOS DE CLIENTE

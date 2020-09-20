@@ -19,6 +19,8 @@ import {
   RiTaxiLine,
   RiUserLocationLine,
   RiCarLine,
+  RiBook2Line,
+  RiBook3Line,
 } from "react-icons/ri";
 import LateralMenu from "../components/LateralMenu/LateralMenu";
 import Header from "../components/Header/Header";
@@ -33,7 +35,7 @@ import "./styles.css";
 import "react-toastify/dist/ReactToastify.css";
 import "react-confirm-alert/src/react-confirm-alert.css";
 
-export default function Client() {
+export default function Vehicles() {
   // #region Definitions
   const history = useHistory();
   const [loading, setLoading] = useState(true);
@@ -446,7 +448,7 @@ export default function Client() {
               <section className="form">
                 <form onSubmit={handleSubmitUpdate}>
                   <div className="form-title">
-                    <RiCheckDoubleLine size={30} />
+                    <RiBook2Line size={30} />
                     <h1>
                       {titleUpdate}
                       DADOS DE VEÍCULO

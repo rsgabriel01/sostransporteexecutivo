@@ -11,7 +11,7 @@ import {
   RiLoader4Line,
   RiCheckboxMultipleLine,
   RiMapPinLine,
-  RiUserAddLine,
+  RiAddCircleLine,
   RiArrowLeftLine,
   RiUser2Line,
 } from "react-icons/ri";
@@ -382,7 +382,7 @@ export default function ClientNew() {
               <section className="form">
                 <form onSubmit={handleSubmitUpdate}>
                   <div className="form-title">
-                    <RiUserAddLine size={30} />
+                    <RiAddCircleLine size={30} />
                     <h1>NOVO CLIENTE</h1>
                   </div>
 

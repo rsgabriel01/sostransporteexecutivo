@@ -28,7 +28,7 @@ button {
   cursor: pointer;
 }
 
-form input {
+input {
   width: 100%;
   height: 35px;
   color: #3f3d56;
@@ -78,7 +78,7 @@ form input {
 }
 
 .btnOther {
-  background: #7e7e7e !important;
+  background: #5f5f5f !important;
 }
 
 .button:hover {

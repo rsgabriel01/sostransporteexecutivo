@@ -30,7 +30,7 @@ module.exports = {
 
       if (executingPersonData) {
         typeIds = executingPersonData.People_Type.map(function (index) {
-          if (!index.active) {
+          if (index.active) {
             return index.id;
           }
         });
@@ -41,7 +41,7 @@ module.exports = {
         });
       }
 
-      if (!(typeIds.includes("1") || typeIds.includes("2"))) {
+      if (!typeIds.includes("1") && !typeIds.includes("2")) {
         return res.status(401).json({
           message:
             "Esse usuário não tem permissao para realizar essa operação.",

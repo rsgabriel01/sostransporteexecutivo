@@ -54,7 +54,7 @@ module.exports = {
       }
 
       console.log(typeIds);
-      if (!(typeIds.includes("1") || typeIds.includes("2"))) {
+      if (!typeIds.includes("1") && !typeIds.includes("2")) {
         return res.status(401).json({
           message:
             "Esse usuário não tem permissao para realizar essa operação.",
@@ -114,42 +114,6 @@ module.exports = {
     try {
       const { idPerson } = req.params;
       const { id_executingperson } = req.headers;
-
-      const executingPersonData = await People.findOne({
-        where: {
-          id: id_executingperson,
-        },
-        include: ["People_Type", "Users"],
-      });
-
-      if (executingPersonData) {
-        const activeExecutingPerson = executingPersonData.Users.active;
-
-        console.log(activeExecutingPerson);
-
-        if (activeExecutingPerson != true) {
-          return res.status(401).json({
-            message: "Ação não permitida.",
-          });
-        }
-
-        typeIds = executingPersonData.People_Type.map(function (index) {
-          if (!index.active) {
-            return index.id;
-          }
-        });
-      } else {
-        return res.status(401).json({
-          message: "Seu usuário não tem permissao para realizar essa operação.",
-        });
-      }
-
-      console.log(typeIds);
-      if (!(typeIds.includes("1") || typeIds.includes("2"))) {
-        return res.status(401).json({
-          message: "Seu usuário não tem permissao para realizar essa operação.",
-        });
-      }
 
       const person = await People.findByPk(idPerson, {
         include: ["Users", "People_Type"],
@@ -234,7 +198,7 @@ module.exports = {
         }
 
         typeIds = executingPersonData.People_Type.map(function (index) {
-          if (!index.active) {
+          if (index.active) {
             return index.id;
           }
         });
@@ -244,7 +208,7 @@ module.exports = {
         });
       }
 
-      if (!(typeIds.includes("1") || typeIds.includes("2"))) {
+      if (!typeIds.includes("1") && typeIds.includes("2")) {
         return res.status(401).json({
           message: "Seu usuário não tem permissao para realizar essa operação.",
         });

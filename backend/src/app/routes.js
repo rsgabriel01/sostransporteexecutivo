@@ -23,8 +23,6 @@ const ClientsController = require("./controllers/ClientsController");
 //#endregion
 
 //#region Validators
-const { verifySession } = require("./validators/headers");
-
 const {
   validatorLogin,
   validatorSession,
@@ -53,6 +51,11 @@ const { validatorVehiclesCreate } = require("./validators/routesVehicles");
 const { validatorClientsCreate } = require("./validators/routesClients");
 //#endregion
 
+// #region Middlewares
+const { verifySession } = require("./middlewares/sessions");
+const { permissionAdminAttendance } = require("./middlewares/permissions");
+// #endregion
+
 routes.get("/", (req, res) => {
   return res.json("Server is running...");
 });
@@ -79,6 +82,7 @@ routes.get(
   "/person/:idPerson",
   validatorPersonShow,
   verifySession,
+  permissionAdminAttendance,
   PersonController.show
 );
 

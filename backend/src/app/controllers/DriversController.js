@@ -44,7 +44,7 @@ module.exports = {
         typeExecutingPersonIds = executingPersonData.People_Type.map(function (
           index
         ) {
-          if (!index.active) {
+          if (index.active) {
             return index.id;
           }
         });
@@ -56,10 +56,8 @@ module.exports = {
       }
 
       if (
-        !(
-          typeExecutingPersonIds.includes("1") ||
-          typeExecutingPersonIds.includes("2")
-        )
+        !typeExecutingPersonIds.includes("1") &&
+        !typeExecutingPersonIds.includes("2")
       ) {
         return res.status(401).json({
           message:

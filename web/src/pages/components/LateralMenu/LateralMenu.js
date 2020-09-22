@@ -32,6 +32,7 @@ import {
 } from "react-icons/ri";
 
 import "./custom.scss";
+import "./styles.css";
 // import "react-pro-sidebar/dist/css/styles.css";
 
 import api from "../../../services/api";

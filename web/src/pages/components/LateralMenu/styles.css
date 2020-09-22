@@ -1,0 +1,7 @@
+.pro-sidebar
+  .pro-menu
+  .pro-menu-item.pro-sub-menu
+  .pro-inner-list-item
+  .pro-inner-item:before {
+  content: none;
+}

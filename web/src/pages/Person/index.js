@@ -103,7 +103,7 @@ export default function Person() {
       : setCheckedTypeAdmin(false);
 
     typeIds.includes("2")
-      ? setCheckedTypeAttendance("true")
+      ? setCheckedTypeAttendance(true)
       : setCheckedTypeAttendance(false);
   }
   // #endregion
@@ -112,6 +112,7 @@ export default function Person() {
   function clearFields(withCode) {
     if (withCode) {
       setIdPeople("");
+      setPersonFinded(false);
     }
 
     setName("");
@@ -125,7 +126,6 @@ export default function Person() {
 
   // #endregion
   function alterPageUpdateForConsult() {
-    setPersonFinded(false);
     clearFields(true);
     setTitleUpdate("");
     setUpdateRegister(false);
@@ -190,6 +190,13 @@ export default function Person() {
               );
               break;
 
+            default:
+              notify("warning", dataError.message);
+          }
+        }
+
+        if (statusError === 401) {
+          switch (dataError.message) {
             default:
               notify("warning", dataError.message);
           }
@@ -493,8 +500,8 @@ export default function Person() {
                             onKeyUp={(e) => {
                               console.log(idPeople.length);
                               if (idPeople.length === 0) {
-                                clearFields();
-                                clearFields();
+                                clearFields(true);
+                                clearFields(true);
                               }
                             }}
                           />

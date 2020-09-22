@@ -166,7 +166,7 @@ export default function Main() {
                   <thead>
                     <tr id="table-header">
                       <th></th>
-                      <th>NÚMERO</th>
+                      <th>CÓDIGO</th>
                       <th>CLIENTE</th>
                       <th>SOLICITADO</th>
                       <th>FINALIZADO</th>

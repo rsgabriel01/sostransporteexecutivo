@@ -15,52 +15,10 @@ module.exports = {
 
   async store(req, res) {
     try {
-      let typeIds = [];
-
       const salt = process.env.DB_SALT_HASH_PASSWORD;
 
       const { idPeople, user, password, active } = req.body;
       const { id_executingperson } = req.headers;
-
-      // const executingPersonData = await People.findOne({
-      //   where: {
-      //     id: id_executingperson,
-      //   },
-      //   include: ["People_Type", "Users"],
-      // });
-
-      // if (executingPersonData) {
-      //   const activeExecutingPerson = executingPersonData.Users.active;
-
-      //   console.log(activeExecutingPerson);
-
-      //   if (activeExecutingPerson != true) {
-      //     return res.status(401).json({
-      //       message: "Ação não permitida.",
-      //     });
-      //   }
-
-      //   typeIds = executingPersonData.People_Type.map(function (index) {
-      //     if (!index.active) {
-      //        return index.id;
-      //     }
-      //   });
-      // } else {
-      //   console.log("aqui1");
-      //   return res.status(401).json({
-      //     message:
-      //       "Esse usuário não tem permissao para realizar essa operação.",
-      //   });
-      // }
-
-      // console.log(typeIds);
-      // if (!(typeIds.includes("1") || typeIds.includes("2"))) {
-      //   console.log("aqui2");
-      //   return res.status(401).json({
-      //     message:
-      //       "Esse usuário não tem permissao para realizar essa operação.",
-      //   });
-      // }
 
       const personFinded = await People.findOne({
         where: {
@@ -126,7 +84,7 @@ module.exports = {
 
   async update(req, res) {
     try {
-      let executingTypeIds = [];
+      let typesExecutingPersonIds = [];
 
       let typesPersonOfUser = [];
       let columnsUpdateUser = {};
@@ -149,35 +107,11 @@ module.exports = {
         include: ["People_Type", "Users"],
       });
 
-      if (executingPersonData) {
-        const activeExecutingPerson = executingPersonData.Users.active;
-
-        console.log(activeExecutingPerson);
-
-        if (activeExecutingPerson != true) {
-          return res.status(401).json({
-            message: "Ação não permitida.",
-          });
-        }
-
-        executingTypeIds = executingPersonData.People_Type.map(function (
-          index
-        ) {
-          return index.id;
-        });
-      } else {
-        console.log("Pessoa executante nao encontrada");
-        return res.status(401).json({
-          message: "Ação não permitida.",
-        });
-      }
-
-      if (!(executingTypeIds.includes("1") || executingTypeIds.includes("2"))) {
-        console.log("Tipo de pessoa diferente de 1 ou 2");
-        return res.status(401).json({
-          message: "Seu usuário não tem permissao para realizar essa operação.",
-        });
-      }
+      typesExecutingPersonIds = executingPersonData.People_Type.map(function (
+        index
+      ) {
+        return index.Type_people.id_type;
+      });
 
       const personFinded = await People.findOne({
         where: {
@@ -188,7 +122,7 @@ module.exports = {
 
       if (personFinded) {
         typesPersonOfUser = personFinded.People_Type.map(function (index) {
-          return index.id;
+          return index.Type_people.id_type;
         });
 
         if (typesPersonOfUser.includes("4")) {
@@ -254,7 +188,7 @@ module.exports = {
 
       if (activeOld != active) {
         if (
-          !executingTypeIds.includes("1") &&
+          !typesExecutingPersonIds.includes("1") &&
           typesPersonOfUser.includes("1")
         ) {
           return res.status(401).json({

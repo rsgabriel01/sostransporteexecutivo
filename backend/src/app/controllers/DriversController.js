@@ -28,44 +28,8 @@ module.exports = {
 
   async store(req, res) {
     try {
-      let typeExecutingPersonIds = [];
-
       const { id_people, cnh, num_permit, business_phone } = req.body;
       const { id_executingperson } = req.headers;
-
-      const executingPersonData = await People.findOne({
-        where: {
-          id: id_executingperson,
-        },
-        include: ["People_Type"],
-      });
-
-      if (executingPersonData) {
-        typeExecutingPersonIds = executingPersonData.People_Type.map(function (
-          index
-        ) {
-          if (!index.active) {
-            return index.id;
-          }
-        });
-      } else {
-        return res.status(401).json({
-          message:
-            "Esse usuário não tem permissao para realizar essa operação.",
-        });
-      }
-
-      if (
-        !(
-          typeExecutingPersonIds.includes("1") ||
-          typeExecutingPersonIds.includes("2")
-        )
-      ) {
-        return res.status(401).json({
-          message:
-            "Esse usuário não tem permissao para realizar essa operação.",
-        });
-      }
 
       const personFinded = await People.findOne({
         where: {

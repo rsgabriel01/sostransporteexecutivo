@@ -18,48 +18,8 @@ module.exports = {
 
   async store(req, res) {
     try {
-      let typeIds = [];
-
       const { name, cpf_cnpj, rg, phone, email } = req.body;
       const { id_executingperson } = req.headers;
-
-      const executingPersonData = await People.findOne({
-        where: {
-          id: id_executingperson,
-        },
-        include: ["People_Type", "Users"],
-      });
-
-      if (executingPersonData) {
-        const activeExecutingPerson = executingPersonData.Users.active;
-
-        console.log(activeExecutingPerson);
-
-        if (activeExecutingPerson != true) {
-          return res.status(401).json({
-            message: "Ação não permitida.",
-          });
-        }
-
-        typeIds = executingPersonData.People_Type.map(function (index) {
-          if (index.active) {
-            return index.id;
-          }
-        });
-      } else {
-        return res.status(401).json({
-          message:
-            "Esse usuário não tem permissao para realizar essa operação.",
-        });
-      }
-
-      console.log(typeIds);
-      if (!typeIds.includes("1") && !typeIds.includes("2")) {
-        return res.status(401).json({
-          message:
-            "Esse usuário não tem permissao para realizar essa operação.",
-        });
-      }
 
       if (CpfValidation(cpf_cnpj) === false) {
         return res.status(400).json({
@@ -112,6 +72,8 @@ module.exports = {
 
   async show(req, res) {
     try {
+      let typesPersonId = [];
+
       const { idPerson } = req.params;
       const { id_executingperson } = req.headers;
 
@@ -121,7 +83,19 @@ module.exports = {
 
       if (!person) {
         return res.status(400).json({
-          message: "Nenhum cadastro foi encontrada com o código fornecido.",
+          message:
+            "Nenhum cadastro de pessoa foi encontrada com o código fornecido.",
+        });
+      }
+
+      typesPersonId = person.People_Type.map(function (index) {
+        return index.Type_people.id_type;
+      });
+
+      if (typesPersonId.includes("4")) {
+        return res.status(400).json({
+          message:
+            "Nenhum cadastro de pessoa foi encontrada com o código informado.",
         });
       }
 
@@ -151,7 +125,7 @@ module.exports = {
 
   async update(req, res) {
     try {
-      let typeIds = [];
+      let typesExecutingPersonIds = [];
       let typesPersonId = [];
       let columnsUpdatePerson = {};
 
@@ -186,33 +160,13 @@ module.exports = {
         include: ["People_Type", "Users"],
       });
 
-      if (executingPersonData) {
-        const activeExecutingPerson = executingPersonData.Users.active;
-
-        console.log(activeExecutingPerson);
-
-        if (activeExecutingPerson != true) {
-          return res.status(401).json({
-            message: "Ação não permitida.",
-          });
+      typesExecutingPersonIds = executingPersonData.People_Type.map(function (
+        index
+      ) {
+        if (index.active) {
+          return index.Type_people.id_type;
         }
-
-        typeIds = executingPersonData.People_Type.map(function (index) {
-          if (index.active) {
-            return index.id;
-          }
-        });
-      } else {
-        return res.status(401).json({
-          message: "Seu usuário não tem permissao para realizar essa operação.",
-        });
-      }
-
-      if (!typeIds.includes("1") && typeIds.includes("2")) {
-        return res.status(401).json({
-          message: "Seu usuário não tem permissao para realizar essa operação.",
-        });
-      }
+      });
 
       const oldPersonFinded = await People.findOne({
         where: {
@@ -223,7 +177,7 @@ module.exports = {
 
       if (oldPersonFinded) {
         typesPersonId = oldPersonFinded.People_Type.map(function (index) {
-          return index.id;
+          return index.Type_people.id_type;
         });
 
         if (typesPersonId.includes("4")) {
@@ -307,7 +261,7 @@ module.exports = {
       });
 
       if (typeAdminOld && !typeAdmin) {
-        if (typeIds.includes("1")) {
+        if (typesExecutingPersonIds.includes("1")) {
           if (id_executingperson == idPeople) {
             return res.status(400).json({
               message:
@@ -315,14 +269,17 @@ module.exports = {
             });
           }
 
-          const destroyedTypeAdmin = await Type_people.destroy({
-            where: {
-              id_people: idPeople,
-              id_type: 1,
-            },
-          });
+          const inactivedTypeAdmin = await Type_people.update(
+            { active: false },
+            {
+              where: {
+                id_people: idPeople,
+                id_type: 1,
+              },
+            }
+          );
 
-          if (destroyedTypeAdmin) {
+          if (inactivedTypeAdmin) {
             removedOrAddTypeAdmin = "removed";
           }
         } else {
@@ -334,13 +291,16 @@ module.exports = {
       }
 
       if (!typeAdminOld && typeAdmin) {
-        if (typeIds.includes("1")) {
-          const createdTypeAdmin = await Type_people.create({
-            id_people: idPeople,
-            id_type: 1,
-          });
+        if (typesExecutingPersonIds.includes("1")) {
+          const activedTypeAdmin = await Type_people.update(
+            { active: true },
+            {
+              id_people: idPeople,
+              id_type: 1,
+            }
+          );
 
-          if (createdTypeAdmin) {
+          if (activedTypeAdmin) {
             removedOrAddTypeAdmin = "added";
           }
         } else {
@@ -359,25 +319,33 @@ module.exports = {
           });
         }
 
-        const destroyedTypeAttendance = await Type_people.destroy({
-          where: {
-            id_people: idPeople,
-            id_type: 2,
-          },
-        });
+        const inactivedTypeAttendance = await Type_people.update(
+          { active: false },
+          {
+            where: {
+              id_people: idPeople,
+              id_type: 2,
+            },
+          }
+        );
 
-        if (destroyedTypeAttendance) {
+        if (inactivedTypeAttendance) {
           removedOrAddTypeAttendance = "removed";
         }
       }
 
       if (!typeAttendanceOld && typeAttendance) {
-        const createdTypeAttendance = await Type_people.create({
-          id_people: idPeople,
-          id_type: 2,
-        });
+        const activedTypeAttendance = await Type_people.update(
+          { active: true },
+          {
+            where: {
+              id_people: idPeople,
+              id_type: 2,
+            },
+          }
+        );
 
-        if (createdTypeAttendance) {
+        if (activedTypeAttendance) {
           removedOrAddTypeAttendance = "added";
         }
       }

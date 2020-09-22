@@ -16,37 +16,8 @@ module.exports = {
 
   async store(req, res) {
     try {
-      let typeIds = [];
-
       const { id_people, id_type } = req.body;
       const { id_executingperson } = req.headers;
-
-      const executingPersonData = await People.findOne({
-        where: {
-          id: id_executingperson,
-        },
-        include: ["People_Type"],
-      });
-
-      if (executingPersonData) {
-        typeIds = executingPersonData.People_Type.map(function (index) {
-          if (index.active) {
-            return index.id;
-          }
-        });
-      } else {
-        return res.status(401).json({
-          message:
-            "Esse usuário não tem permissao para realizar essa operação.",
-        });
-      }
-
-      if (!typeIds.includes("1") && !typeIds.includes("2")) {
-        return res.status(401).json({
-          message:
-            "Esse usuário não tem permissao para realizar essa operação.",
-        });
-      }
 
       const personFinded = await People.findOne({
         where: {

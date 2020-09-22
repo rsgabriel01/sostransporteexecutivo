@@ -69,12 +69,18 @@ routes.get("/acess/logout", validatorLogout, SessionsController.destroy);
 //#endregion
 
 //#region Routes Person/People
-routes.get("/people", verifySession, PersonController.index);
+routes.get(
+  "/people",
+  verifySession,
+  permissionAdminAttendance,
+  PersonController.index
+);
 
 routes.post(
   "/person/create",
   validatorPersonCreate,
   verifySession,
+  permissionAdminAttendance,
   PersonController.store
 );
 
@@ -90,6 +96,7 @@ routes.put(
   "/person/update",
   validatorPersonUpdate,
   verifySession,
+  permissionAdminAttendance,
   PersonController.update
 );
 //#endregion
@@ -99,6 +106,7 @@ routes.post(
   "/address/create",
   validatorAddressCreate,
   verifySession,
+  permissionAdminAttendance,
   PeopleAddressController.store
 );
 //#endregion
@@ -108,17 +116,24 @@ routes.post(
   "/typepeople/create",
   validatorTypePeopleCreate,
   verifySession,
+  permissionAdminAttendance,
   TypePeopleController.store
 );
 //#endregion
 
 //#region Users
-routes.get("/users", verifySession, UsersController.index);
+routes.get(
+  "/users",
+  verifySession,
+  permissionAdminAttendance,
+  UsersController.index
+);
 
 routes.post(
   "/user/create",
   validatorUsersCreate,
-  /*verifySession,*/
+  /*verifySession,
+  permissionAdminAttendance,*/
   UsersController.store
 );
 
@@ -126,6 +141,7 @@ routes.put(
   "/user/update",
   validatorUsersUpdate,
   verifySession,
+  permissionAdminAttendance,
   UsersController.update
 );
 
@@ -136,17 +152,24 @@ routes.post(
   "/drivers/create",
   validatorDriversCreate,
   verifySession,
+  permissionAdminAttendance,
   DriversController.store
 );
 //#endregion
 
 //#region Vehicles
-routes.get("/vehicles", verifySession, VehiclesController.index);
+routes.get(
+  "/vehicles",
+  verifySession,
+  permissionAdminAttendance,
+  VehiclesController.index
+);
 
 routes.post(
   "/vehicles/create",
   validatorVehiclesCreate,
   verifySession,
+  permissionAdminAttendance,
   VehiclesController.store
 );
 //#endregion
@@ -156,6 +179,7 @@ routes.post(
   "/clients/create",
   validatorClientsCreate,
   verifySession,
+  permissionAdminAttendance,
   ClientsController.store
 );
 //#endregion

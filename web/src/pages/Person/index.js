@@ -103,7 +103,7 @@ export default function Person() {
       : setCheckedTypeAdmin(false);
 
     typeIds.includes("2")
-      ? setCheckedTypeAttendance("true")
+      ? setCheckedTypeAttendance(true)
       : setCheckedTypeAttendance(false);
   }
   // #endregion

@@ -110,6 +110,7 @@
 .solicitations-waiting-container .status-bar .group-dates input[type="date"] {
   color: #000000;
   background: #ffffff;
+  padding-right: 0;
 }
 
 .solicitations-waiting-container
@@ -163,7 +164,7 @@
 
 .solicitation-waiting-table .div-responsive-table {
   width: 100%;
-  height: 72vh;
+  height: 70vh;
   overflow: auto;
 }
 

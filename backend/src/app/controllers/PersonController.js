@@ -117,8 +117,9 @@ module.exports = {
       }
 
       typesPersonId = person.People_Type.map(function (index) {
-        return index.Type_people.id_type;
-      });
+        if (index.Type_people.active) {
+          return index.Type_people.id_type;
+        }
 
       if (typesPersonId.includes("4")) {
         return res.status(400).json({

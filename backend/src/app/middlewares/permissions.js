@@ -23,7 +23,7 @@ const permissionAdminAttendance = async function (req, res, next) {
     }
 
     typeIds = executingPersonData.People_Type.map(function (index) {
-      if (index.active) {
+      if (index.Type_people.active) {
         return index.Type_people.id_type;
       }
     });

@@ -44,6 +44,7 @@ const validatorPersonUpdate = celebrate({
       .allow("", null),
     typeAdmin: Joi.boolean().required(),
     typeAttendance: Joi.boolean().required(),
+    active: Joi.boolean().required(),
   }),
 });
 

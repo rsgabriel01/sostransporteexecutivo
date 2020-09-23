@@ -167,6 +167,7 @@ module.exports = {
       let emailOld = "";
       let typeAdminOld;
       let typeAttendanceOld;
+      let activeOld;
 
       const {
         idPeople,
@@ -177,7 +178,10 @@ module.exports = {
         email,
         typeAdmin,
         typeAttendance,
+        active,
       } = req.body;
+
+      // console.log(req.body);
 
       const { id_executingperson } = req.headers;
 
@@ -191,7 +195,7 @@ module.exports = {
       typesExecutingPersonIds = executingPersonData.People_Type.map(function (
         index
       ) {
-        if (index.active) {
+        if (index.Type_people.active) {
           return index.Type_people.id_type;
         }
       });
@@ -203,9 +207,13 @@ module.exports = {
         include: ["People_Type"],
       });
 
+      console.log(JSON.stringify(oldPersonFinded));
+
       if (oldPersonFinded) {
         typesPersonId = oldPersonFinded.People_Type.map(function (index) {
-          return index.Type_people.id_type;
+          if (index.Type_people.active) {
+            return index.Type_people.id_type;
+          }
         });
 
         if (typesPersonId.includes("4")) {
@@ -219,6 +227,7 @@ module.exports = {
         rgOld = oldPersonFinded.rg;
         phoneOld = oldPersonFinded.phone;
         emailOld = oldPersonFinded.email;
+        activeOld = oldPersonFinded.active;
 
         typeAdminOld = typesPersonId.includes("1") ? true : false;
         typeAttendanceOld = typesPersonId.includes("2") ? true : false;
@@ -282,11 +291,35 @@ module.exports = {
         columnsUpdatePerson["email"] = email;
       }
 
+      if (activeOld != active) {
+        if (
+          !typesExecutingPersonIds.includes("1") &&
+          typesPersonId.includes("1")
+        ) {
+          return res.status(400).json({
+            message:
+              "Seu usuário não tem permissão para MUDAR o status de cadastros de perfis Administradores.",
+          });
+        }
+
+        if (id_executingperson == idPeople) {
+          return res.status(400).json({
+            message: "Você não pode INATIVAR seu proprio cadastro.",
+          });
+        }
+
+        columnsUpdatePerson["active"] = active;
+      }
+
+      console.log(columnsUpdatePerson);
+
       const updatedPerson = await People.update(columnsUpdatePerson, {
         where: {
           id: idPeople,
         },
       });
+
+      console.log(`TypeAdminOld: ${typeAdminOld} TypeAdmin: ${typeAdmin}`);
 
       if (typeAdminOld && !typeAdmin) {
         if (typesExecutingPersonIds.includes("1")) {
@@ -323,8 +356,10 @@ module.exports = {
           const activedTypeAdmin = await Type_people.update(
             { active: true },
             {
-              id_people: idPeople,
-              id_type: 1,
+              where: {
+                id_people: idPeople,
+                id_type: 1,
+              },
             }
           );
 
@@ -338,6 +373,10 @@ module.exports = {
           });
         }
       }
+
+      console.log(
+        `TypeAttendanceOld: ${typeAttendanceOld} TypeAttendance: ${typeAttendance}`
+      );
 
       if (typeAttendanceOld && !typeAttendance) {
         if (id_executingperson == idPeople) {

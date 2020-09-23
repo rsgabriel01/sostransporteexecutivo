@@ -17,6 +17,7 @@ import {
   RiQuestionLine,
   RiLoader4Line,
   RiSearchEyeLine,
+  RiCheckboxMultipleLine,
 } from "react-icons/ri";
 import LateralMenu from "../components/LateralMenu/LateralMenu";
 import Header from "../components/Header/Header";
@@ -54,6 +55,7 @@ export default function Person() {
   const [rg, setRg] = useState("");
   const [phone, setPhone] = useState("");
   const [email, setEmail] = useState("");
+  const [active, setActive] = useState(false);
 
   const [checkedTypeAdmin, setCheckedTypeAdmin] = useState(false);
   const [checkedTypeAttendance, setCheckedTypeAttendance] = useState(false);
@@ -81,8 +83,12 @@ export default function Person() {
   // #region Fill Fields
   function fillFields(response) {
     const { name, cpf_cnpj, rg, phone, email, active } = response.person;
-
-    const typeIds = response.peopleType.map((index) => index.id);
+    console.log(response.peopleType);
+    const typeIds = response.peopleType.map((index) => {
+      if (index.Type_people.active) {
+        return index.id;
+      }
+    });
 
     console.log(typeIds);
 
@@ -97,6 +103,8 @@ export default function Person() {
     phone ? setPhone(phone) : setPhone("");
 
     email ? setEmail(email) : setEmail("");
+
+    active ? setActive(active) : setActive(false);
 
     typeIds.includes(1) || typeIds.includes("1")
       ? setCheckedTypeAdmin(true)
@@ -120,6 +128,7 @@ export default function Person() {
     setRg("");
     setPhone("");
     setEmail("");
+    setActive(false);
     setCheckedTypeAdmin(false);
     setCheckedTypeAttendance(false);
   }
@@ -136,13 +145,15 @@ export default function Person() {
   function handleCheckBox(checkbox) {
     switch (checkbox) {
       case "cbAdmin":
-        console.log(`type admin anterior ${checkedTypeAdmin}`);
         setCheckedTypeAdmin(!checkedTypeAdmin);
 
         break;
       case "cbAttendance":
-        console.log(`type attendance anterior ${checkedTypeAttendance}`);
         setCheckedTypeAttendance(!checkedTypeAttendance);
+        break;
+
+      case "cbStatus":
+        setActive(!active);
         break;
 
       default:
@@ -244,6 +255,7 @@ export default function Person() {
       email,
       typeAdmin: checkedTypeAdmin,
       typeAttendance: checkedTypeAttendance,
+      active: active,
     };
 
     setTextButtonSaveUpdate("Aguarde...");
@@ -638,6 +650,30 @@ export default function Person() {
                             }}
                           />
                           <label htmlFor="cbAttendance">Atendente</label>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className="input-group-person">
+                    <h1>
+                      <RiCheckboxMultipleLine size={30} />
+                      Status
+                    </h1>
+
+                    <div className="input-label-group-row">
+                      <div className="input-label-group-row">
+                        <div className="checkbox-block">
+                          <input
+                            type="checkbox"
+                            id="cbStatus"
+                            disabled={isReadonly}
+                            checked={active}
+                            onClick={() => {
+                              handleCheckBox("cbStatus");
+                            }}
+                          />
+                          <label htmlFor="cbStatus">Ativo</label>
                         </div>
                       </div>
                     </div>

@@ -18,7 +18,15 @@ module.exports = {
 
   async store(req, res) {
     try {
-      const { name, cpf_cnpj, rg, phone, email } = req.body;
+      const {
+        name,
+        cpf_cnpj,
+        rg,
+        phone,
+        email,
+        typeAdmin,
+        typeAttendance,
+      } = req.body;
       const { id_executingperson } = req.headers;
 
       if (CpfValidation(cpf_cnpj) === false) {
@@ -60,8 +68,28 @@ module.exports = {
         active: true,
       });
 
+      if (createdPerson) {
+        const createdTypePeople1 = await Type_people.create({
+          id_people: createdPerson.id,
+          id_type: 1,
+          active: typeAdmin,
+        });
+
+        if (createdTypePeople1) {
+          const createdTypePeople2 = await Type_people.create({
+            id_people: createdPerson.id,
+            id_type: 2,
+            active: typeAttendance,
+          });
+        }
+      }
+
+      const createdPersonComplete = await People.findByPk(createdPerson.id, {
+        include: ["People_Type"],
+      });
+
       return res.json({
-        createdPerson,
+        createdPersonComplete,
         message: "Cadastro de pessoa efetuado com sucesso!",
       });
     } catch (error) {

@@ -27,12 +27,10 @@ import "react-toastify/dist/ReactToastify.css";
 import "react-confirm-alert/src/react-confirm-alert.css";
 
 export default function PersonNew() {
-  //#region Definitions
+  // #region Definitions
   const history = useHistory();
 
   const [loading, setLoading] = useState(true);
-
-  const [personFinded, setPersonFinded] = useState(false);
 
   const [loadingButton, setLoadingButton] = useState(false);
   const [textButtonSave, setTextButtonSave] = useState("Salvar");
@@ -46,10 +44,9 @@ export default function PersonNew() {
 
   const [checkedTypeAdmin, setCheckedTypeAdmin] = useState(false);
   const [checkedTypeAttendance, setCheckedTypeAttendance] = useState(false);
+  // #endregion
 
-  //#endregion
-
-  //#region Verify Session
+  // #region Verify Session
   async function virifyAuthorization() {
     const response = await isAuthenticated();
     if (!response) {
@@ -59,17 +56,15 @@ export default function PersonNew() {
       setLoading(false);
     }
   }
+  // #endregion
 
-  //#endregion
-
-  //#region useEffect
+  // #region useEffect
   useEffect(() => {
     virifyAuthorization();
   }, []);
+  // #endregion
 
-  //#endregion
-
-  //#region Alert confirmation
+  // #region Alert confirmation
   function confirmationAlert(title, message, functionExecute) {
     confirmAlert({
       customUI: ({ onClose }) => {
@@ -121,41 +116,9 @@ export default function PersonNew() {
       },
     });
   }
-  //#endregion
+  // #endregion
 
-  //#region Fill Fields
-  function fillFields(response) {
-    const { name, cpf_cnpj, rg, phone, email, active } = response.person;
-
-    const typeIds = response.peopleType.map(function (index) {
-      return index.id;
-    });
-
-    console.log(typeIds);
-
-    console.log(typeIds.includes("1"));
-
-    name ? setName(name) : setName("");
-
-    cpf_cnpj ? setCpf_cnpj(cpf_cnpj) : setCpf_cnpj("");
-
-    rg ? setRg(rg) : setRg("");
-
-    phone ? setPhone(phone) : setPhone("");
-
-    email ? setEmail(email) : setEmail("");
-
-    typeIds.includes("1")
-      ? setCheckedTypeAdmin(true)
-      : setCheckedTypeAdmin(false);
-
-    typeIds.includes("2")
-      ? setCheckedTypeAttendance("true")
-      : setCheckedTypeAttendance(false);
-  }
-  //#endregion
-
-  //#region Clear Fields
+  // #region Clear Fields
   function clearFields() {
     setName("");
     setCpf_cnpj("");
@@ -165,18 +128,16 @@ export default function PersonNew() {
     setCheckedTypeAdmin(false);
     setCheckedTypeAttendance(false);
   }
-  //#endregion
+  // #endregion
 
-  //#region Handle Check Checkbox
+  // #region Handle Check Checkbox
   function handleCheckBox(checkbox) {
     switch (checkbox) {
       case "cbAdmin":
-        console.log("type admin anterior " + checkedTypeAdmin);
         setCheckedTypeAdmin(!checkedTypeAdmin);
-
         break;
+
       case "cbAttendance":
-        console.log("type attendance anterior " + checkedTypeAttendance);
         setCheckedTypeAttendance(!checkedTypeAttendance);
         break;
 
@@ -184,9 +145,9 @@ export default function PersonNew() {
         break;
     }
   }
-  //#endregion
+  // #endregion
 
-  //#region Handle Submit Update
+  // #region Handle Submit Update
   function handleSubmit(e) {
     e.preventDefault();
 
@@ -196,9 +157,9 @@ export default function PersonNew() {
       "createPerson"
     );
   }
-  //#endregion
+  // #endregion
 
-  //#region Update Person
+  // #region Update Person
   async function createPerson() {
     let dataPerson = {
       name: name.toUpperCase(),
@@ -210,20 +171,21 @@ export default function PersonNew() {
       typeAttendance: checkedTypeAttendance,
     };
 
-    /*setTextButtonSave("Aguarde...");
+    setTextButtonSave("Aguarde...");
     setLoadingButton(true);
-    setBtnInactive("btnInactive");*/
+    setBtnInactive("btnInactive");
 
-    alert(JSON.stringify(dataPerson));
+    // alert(JSON.stringify(dataPerson));
 
-    /*try {
-      const response = await api.put("/person/create", dataPerson);
+    try {
+      const response = await api.post("/person/create", dataPerson);
 
       if (response) {
         console.log(response.data);
         clearFields();
+        const { id } = response.data.createdPersonComplete;
 
-        notify("success", response.data.message);
+        notify("success", `${response.data.message} Código da pessoa: ${id}`);
 
         setTextButtonSave("Salvar");
         setLoadingButton(false);
@@ -249,16 +211,31 @@ export default function PersonNew() {
             case '"cpf_cnpj" length must be at least 9 characters long':
               notify(
                 "warning",
-                "O CPF informado precisa ter no mínimo 9 caracteres"
+                "O CPF informado precisa ter no mínimo 9 caracteres."
               );
               break;
 
             case '"cpf_cnpj" length must be less than or equal to 11 characters long':
               notify(
                 "warning",
-                "O CPF informado pode ter no máximo 11 caracteres"
+                "O CPF informado pode ter no máximo 11 caracteres."
               );
               break;
+
+            case '"rg" length must be at least 7 characters long':
+              notify(
+                "warning",
+                "O RG informado precisa ter no mínimo 7 caracteres."
+              );
+              break;
+
+            case '""rg" length must be less than or equal to 12 characters long"':
+              notify(
+                "warning",
+                "O RG informado pode ter no máximo 12 caracteres."
+              );
+              break;
+
             default:
               notify("warning", dataError.message);
           }
@@ -283,11 +260,11 @@ export default function PersonNew() {
         );
         console.log("Error", error.message);
       }
-    }*/
+    }
   }
-  //#endregion
+  // #endregion
 
-  //#region Handle Cancel Create
+  // #region Handle Cancel Create
   async function handleCancel() {
     if (
       name !== "" ||
@@ -304,9 +281,9 @@ export default function PersonNew() {
     }
   }
 
-  //#endregion
+  // #endregion
 
-  //#region Handle Return Page Consult
+  // #region Handle Return Page Consult
   async function handleReturn() {
     if (
       name !== "" ||
@@ -328,7 +305,7 @@ export default function PersonNew() {
   function returnPageConsult() {
     history.push("/people/person");
   }
-  //#endregion
+  // #endregion
 
   return (
     <div className="main-container">
@@ -458,8 +435,6 @@ export default function PersonNew() {
                           <input
                             type="checkbox"
                             id="cbAdmin"
-                            value="1"
-                            // defaultChecked={checkedTypeAdmin}
                             onClick={() => {
                               handleCheckBox("cbAdmin");
                             }}
@@ -471,8 +446,6 @@ export default function PersonNew() {
                           <input
                             type="checkbox"
                             id="cbAttendance"
-                            value="2"
-                            // defaultChecked={checkedTypeAttendance}
                             onClick={() => {
                               handleCheckBox("cbAttendance");
                             }}

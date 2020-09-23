@@ -12,6 +12,8 @@ const validatorPersonCreate = celebrate({
     rg: Joi.string().regex(/^\d+$/).required().min(7).max(11),
     phone: Joi.string().regex(/^\d+$/).required().min(10).max(11),
     email: Joi.string().required().email(),
+    typeAdmin: Joi.boolean().required(),
+    typeAttendance: Joi.boolean().required(),
   }),
 });
 
@@ -34,7 +36,7 @@ const validatorPersonUpdate = celebrate({
     idPeople: Joi.number().positive().integer().required(),
     name: Joi.string().required(),
     cpf_cnpj: Joi.string().regex(/^\d+$/).required().min(9).max(11),
-    rg: Joi.string().regex(/^\d+$/).required().min(7).max(11),
+    rg: Joi.string().regex(/^\d+$/).required().min(7).max(12),
     phone: Joi.string().regex(/^\d+$/).required().min(10).max(11),
     email: Joi.string()
       .required()

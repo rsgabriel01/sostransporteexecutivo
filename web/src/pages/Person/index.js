@@ -98,11 +98,11 @@ export default function Person() {
 
     email ? setEmail(email) : setEmail("");
 
-    typeIds.includes("1")
+    typeIds.includes(1) || typeIds.includes("1")
       ? setCheckedTypeAdmin(true)
       : setCheckedTypeAdmin(false);
 
-    typeIds.includes("2")
+    typeIds.includes(2) || typeIds.includes("2")
       ? setCheckedTypeAttendance(true)
       : setCheckedTypeAttendance(false);
   }

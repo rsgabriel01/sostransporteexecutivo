@@ -89,8 +89,6 @@ module.exports = {
       let typesPersonOfUser = [];
       let columnsUpdateUser = {};
 
-      let removedOrAddActive = "";
-
       let userOld = "";
       let passwordOld = "";
       let activeOld = false;
@@ -110,7 +108,9 @@ module.exports = {
       typesExecutingPersonIds = executingPersonData.People_Type.map(function (
         index
       ) {
-        return index.Type_people.id_type;
+        if (index.Type_people.active) {
+          return index.Type_people.id_type;
+        }
       });
 
       const personFinded = await People.findOne({
@@ -122,7 +122,9 @@ module.exports = {
 
       if (personFinded) {
         typesPersonOfUser = personFinded.People_Type.map(function (index) {
-          return index.Type_people.id_type;
+          if (index.Type_people.active) {
+            return index.Type_people.id_type;
+          }
         });
 
         if (typesPersonOfUser.includes("4")) {
@@ -223,9 +225,8 @@ module.exports = {
       });
 
       return res.json({
-        columnsUpdateUser,
         newUserFinded,
-        message: "Cadastro alterado com sucesso.",
+        message: "Cadastro alterado com sucesso!",
       });
     } catch (error) {
       console.log(error);

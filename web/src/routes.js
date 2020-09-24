@@ -1,7 +1,7 @@
 import React from "react";
 import { BrowserRouter, Route, Switch } from "react-router-dom";
 
-import Logon from "./pages/Logon";
+import Login from "./pages/Login";
 import Main from "./pages/Main";
 import MainMet from "./pages/MainMet";
 import MainExecuting from "./pages/MainExecuting";
@@ -28,7 +28,7 @@ export default function Routes() {
   return (
     <BrowserRouter>
       <Switch>
-        <Route path="/" exact component={Logon} />
+        <Route path="/" exact component={Login} />
         <Route path="/main" exact component={Main} />
         <Route path="/main/met" exact component={MainMet} />
         <Route path="/main/executing" exact component={MainExecuting} />

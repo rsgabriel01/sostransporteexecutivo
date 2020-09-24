@@ -31,7 +31,7 @@ import "./styles.css";
 
 import "react-toastify/dist/ReactToastify.css";
 
-export default function Logon() {
+export default function Login() {
   //#region Definitions
 
   let history = useHistory();

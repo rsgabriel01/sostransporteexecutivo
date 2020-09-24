@@ -42,16 +42,15 @@ export default function ClientNew() {
   const [companyName, setCompanyName] = useState("");
   const [fantasyName, setFantasyName] = useState("");
   const [cpfCnpj, setCpfCnpj] = useState("");
+  const [phone, setPhone] = useState("");
+  const [email, setEmail] = useState("");
   const [idNeighborhood, setIdNeighborhood] = useState("");
   const [neighborhood, setNeighborhood] = useState("");
   const [street, setStreet] = useState("");
   const [streetNumber, setStreetNumber] = useState("");
   const [complement, setComplement] = useState("");
-  const [phone, setPhone] = useState("");
-  const [email, setEmail] = useState("");
 
   const [checkedStatus, setCheckedStatus] = useState(false);
-
   // #endregion
 
   // #region Verify Session
@@ -77,13 +76,13 @@ export default function ClientNew() {
     setCompanyName("");
     setFantasyName("");
     setCpfCnpj("");
+    setPhone("");
+    setEmail("");
     setIdNeighborhood("");
     setNeighborhood("");
     setStreet("");
     setStreetNumber("");
     setComplement("");
-    setPhone("");
-    setEmail("");
     setCheckedStatus(false);
   }
 
@@ -103,63 +102,8 @@ export default function ClientNew() {
   }
   // #endregion
 
-  // #region Load Data Person
-  async function loadDataPerson(id) {
-    try {
-      clearFields();
-
-      const response = await api.get(`/person/${id}`);
-
-      if (response) {
-        // fillFields(response.data);
-      }
-
-      console.log(response.data);
-    } catch (error) {
-      if (error.response) {
-        const dataError = error.response.data;
-        const statusError = error.response.status;
-
-        console.error(dataError);
-        console.error(statusError);
-
-        if (statusError === 400 && dataError.message) {
-          console.log(dataError.message);
-          switch (dataError.message) {
-            case '"idPerson" must be a number':
-              notify("warning", "O código da pessoa precisa ser um número.");
-              break;
-            case '"idPerson" must be a positive number':
-              notify(
-                "warning",
-                "O código de pessoa deve ser maior ou igual a 1."
-              );
-              break;
-
-            default:
-              notify("warning", dataError.message);
-          }
-        }
-      } else if (error.request) {
-        notify(
-          "error",
-          `Oops, algo deu errado, entre em contato com o suporte de TI. ${error}`
-        );
-        console.log(error.request);
-      } else {
-        notify(
-          "error",
-          `Oops, algo deu errado, entre em contato com o suporte de TI. ${error}`
-        );
-        console.log("Error", error.message);
-      }
-    }
-  }
-
-  // #endregion
-
   // #region Update Person
-  async function updatePerson() {
+  async function createClient() {
     const dataPerson = {
       companyName,
       fantasyName,
@@ -170,7 +114,7 @@ export default function ClientNew() {
       street,
       streetNumber,
       complement,
-      status: checkedStatus,
+      active: checkedStatus,
     };
 
     setTextButtonSave("Aguarde...");
@@ -180,7 +124,7 @@ export default function ClientNew() {
     console.log(dataPerson);
 
     try {
-      const response = await api.put("/person/update", dataPerson);
+      const response = await api.post("/clients/create", dataPerson);
 
       if (response) {
         console.log(response.data);
@@ -285,6 +229,9 @@ export default function ClientNew() {
                         clearFields();
                         break;
 
+                      case "createClient":
+                        createClient();
+                        break;
                       default:
                         break;
                     }
@@ -309,13 +256,13 @@ export default function ClientNew() {
       companyName !== "" ||
       fantasyName !== "" ||
       cpfCnpj !== "" ||
+      phone !== "" ||
+      email !== "" ||
       idNeighborhood !== "" ||
       neighborhood !== "" ||
       street !== "" ||
       streetNumber !== "" ||
-      complement !== "" ||
-      phone !== "" ||
-      email !== ""
+      complement !== ""
     ) {
       confirmationAlert(
         "Atenção!",
@@ -327,13 +274,21 @@ export default function ClientNew() {
   // #endregion
 
   // #region Handle Submit Update
-  function handleSubmitUpdate(e) {
+  function handleSubmit(e) {
     e.preventDefault();
+
+    // if (idNeighborhood === "" || neighborhood == "") {
+    //   notify(
+    //     "warning",
+    //     "Os dados do bairro devem estar preenchidos, por favor verifique."
+    //   );
+    //   return;
+    // }
 
     confirmationAlert(
       "Atenção!",
-      "Deseja realmente SALVAR essa alteração?",
-      "updatePerson"
+      "Deseja realmente SALVAR esse cadastro?",
+      "createClient"
     );
   }
   // #endregion
@@ -344,13 +299,13 @@ export default function ClientNew() {
       companyName !== "" ||
       fantasyName !== "" ||
       cpfCnpj !== "" ||
+      phone !== "" ||
+      email !== "" ||
       idNeighborhood !== "" ||
       neighborhood !== "" ||
       street !== "" ||
       streetNumber !== "" ||
-      complement !== "" ||
-      phone !== "" ||
-      email !== ""
+      complement !== ""
     ) {
       confirmationAlert(
         "Atenção!",
@@ -380,7 +335,7 @@ export default function ClientNew() {
               </div>
 
               <section className="form">
-                <form onSubmit={handleSubmitUpdate}>
+                <form onSubmit={handleSubmit}>
                   <div className="form-title">
                     <RiAddCircleLine size={30} />
                     <h1>NOVO CLIENTE</h1>
@@ -402,7 +357,6 @@ export default function ClientNew() {
                         <input
                           id="companyName"
                           type="text"
-                          readOnly={isReadonly}
                           required
                           value={companyName}
                           onChange={(e) => setCompanyName(e.target.value)}
@@ -418,7 +372,6 @@ export default function ClientNew() {
                         <input
                           id="fantasyName"
                           type="text"
-                          readOnly={isReadonly}
                           required
                           value={fantasyName}
                           onChange={(e) => setFantasyName(e.target.value)}
@@ -440,7 +393,6 @@ export default function ClientNew() {
                           maxLength="14"
                           title="Esse campo aceita apenas números"
                           pattern="[0-9]+"
-                          readOnly={isReadonly}
                           required
                           value={cpfCnpj}
                           onChange={(e) => setCpfCnpj(e.target.value)}
@@ -459,7 +411,6 @@ export default function ClientNew() {
                           pattern="[0-9]+"
                           minLength="10"
                           maxLength="11"
-                          readOnly={isReadonly}
                           type="text"
                           value={phone}
                           onChange={(e) => setPhone(e.target.value)}
@@ -502,15 +453,15 @@ export default function ClientNew() {
                             required
                             readOnly
                             onChange={(e) => setNeighborhood(e.target.value)}
-                            onBlur={() => {
-                              // handleSearchPerson(idNeighborhood);
-                            }}
-                            onKeyUp={(e) => {
-                              if (neighborhood.length === 0) {
-                                clearFields();
-                                clearFields();
-                              }
-                            }}
+                            // onBlur={() => {
+                            //   // handleSearchPerson(idNeighborhood);
+                            // }}
+                            // onKeyUp={(e) => {
+                            //   if (neighborhood.length === 0) {
+                            //     clearFields();
+                            //     clearFields();
+                            //   }
+                            // }}
                           />
 
                           <button
@@ -531,7 +482,6 @@ export default function ClientNew() {
 
                         <input
                           id="street"
-                          readOnly={isReadonly}
                           type="text"
                           value={street}
                           onChange={(e) => setStreet(e.target.value)}
@@ -567,7 +517,6 @@ export default function ClientNew() {
                           value={complement}
                           onChange={(e) => setComplement(e.target.value)}
                           id="complement"
-                          readOnly={isReadonly}
                         />
                       </div>
                     </div>
@@ -585,10 +534,9 @@ export default function ClientNew() {
                           <input
                             type="checkbox"
                             id="cbStatus"
-                            disabled={isReadonly}
                             value="1"
                             checked={checkedStatus}
-                            onClick={() => {
+                            onChange={() => {
                               handleCheckBox("cbStatus");
                             }}
                           />

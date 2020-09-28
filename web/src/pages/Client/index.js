@@ -3,6 +3,10 @@ import React, { useState, useEffect } from "react";
 import { Link, useHistory } from "react-router-dom";
 import { confirmAlert } from "react-confirm-alert";
 import { ToastContainer } from "react-toastify";
+import { makeStyles } from "@material-ui/core/styles";
+import Modal from "@material-ui/core/Modal";
+import Backdrop from "@material-ui/core/Backdrop";
+import Fade from "@material-ui/core/Fade";
 import {
   RiSearchLine,
   RiAddLine,
@@ -47,6 +51,10 @@ export default function Client() {
   const [loadingButton, setLoadingButton] = useState(false);
   const [textButtonSaveUpdate, setTextButtonSaveUpdate] = useState("Salvar");
   const [btnInactive, setBtnInactive] = useState("");
+  const [
+    openModalSearchNeighborhood,
+    setOpenModalSearchNeighborhood,
+  ] = useState(false);
 
   const [idClient, setIdClient] = useState("");
   const [companyName, setCompanyName] = useState("");
@@ -59,9 +67,34 @@ export default function Client() {
   const [complement, setComplement] = useState("");
   const [phone, setPhone] = useState("");
   const [email, setEmail] = useState("");
-
   const [checkedStatus, setCheckedStatus] = useState(false);
 
+  const [searchClient, setSearchClient] = useState("");
+  const [searchNeighborhood, setSearchNeighborhood] = useState("");
+
+  const useStyles = makeStyles((theme) => ({
+    modal: {
+      display: "flex",
+      alignItems: "center",
+      justifyContent: "center",
+    },
+    paper: {
+      backgroundColor: "#ffffff",
+      borderRadius: "10px",
+      boxShadow: theme.shadows[5],
+      padding: theme.spacing(2, 4, 3),
+      width: "80%",
+      height: "80%",
+    },
+  }));
+
+  const handleOpenModalSearchNeighborhood = () => {
+    setOpenModalSearchNeighborhood(true);
+  };
+
+  const handleClose = () => {
+    setOpenModalSearchNeighborhood(false);
+  };
   // #endregion
 
   // #region Verify Session
@@ -407,8 +440,63 @@ export default function Client() {
   }
   // #endregion
 
+  // #region Modal Search Bairro
+
+  function SearchNeighborhoodModal({ titleModal }) {
+    const classes = useStyles();
+
+    return (
+      <Modal
+        aria-labelledby="transition-modal-title"
+        aria-describedby="transition-modal-description"
+        className={classes.modal}
+        open={openModalSearchNeighborhood}
+        onClose={handleClose}
+        closeAfterTransition
+        BackdropComponent={Backdrop}
+        BackdropProps={{
+          timeout: 500,
+        }}
+      >
+        <Fade in={openModalSearchNeighborhood}>
+          <div className={classes.paper}>
+            <h1 className="modal-title">{titleModal.toUpperCase()}</h1>
+            <div className="modal-input-button">
+              <div className="input-label-block-colum">
+                <label htmlFor="inputSearchClient">Nome fantasia:</label>
+
+                <input
+                  id="inputSearchClient"
+                  type="text"
+                  value={searchClient}
+                  onChange={(e) => setSearchClient(e.target.value)}
+                  // onKeyUp={(e) => {
+                  //   if (idClient.length === 0) {
+                  //     clearFields();
+                  //     clearFields();
+                  //   }
+                  // }}
+                ></input>
+              </div>
+
+              <button
+                type="button"
+                className="button btnDefault btnSearchModal"
+              >
+                <RiSearchLine size={24} />
+                Buscar
+              </button>
+            </div>
+          </div>
+        </Fade>
+      </Modal>
+    );
+  }
+  // #endregion
+
   return (
     <div className="main-container">
+      <SearchNeighborhoodModal titleModal="Pesquisar clientes" />
       <LateralMenu />
       <>
         {loading ? (
@@ -483,7 +571,11 @@ export default function Client() {
                             }}
                           />
 
-                          <button type="button" className="button btnDefault">
+                          <button
+                            type="button"
+                            className="button btnDefault"
+                            onClick={handleOpenModalSearchNeighborhood}
+                          >
                             <RiSearchLine size={24} />
                           </button>
                         </div>

@@ -252,6 +252,11 @@ input[type="date"]::-webkit-calendar-picker-indicator:hover {
   background: url(../src/assets/calendarDateBlue.svg) no-repeat;
 }
 
+.modal-title {
+  text-align: center;
+  padding: 0px 0px 20px 0px;
+}
+
 /* Animation Loading */
 @keyframes spin-animation {
   0% {

@@ -1,5 +1,5 @@
 /* eslint-disable camelcase */
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { Link, useHistory } from "react-router-dom";
 import { confirmAlert } from "react-confirm-alert";
 import { ToastContainer } from "react-toastify";
@@ -45,16 +45,14 @@ export default function Client() {
   const [updateRegister, setUpdateRegister] = useState(false);
 
   const [titleUpdate, setTitleUpdate] = useState("");
+  const [titleModal, setTitleModal] = useState("");
 
   const [personFinded, setPersonFinded] = useState(false);
 
   const [loadingButton, setLoadingButton] = useState(false);
   const [textButtonSaveUpdate, setTextButtonSaveUpdate] = useState("Salvar");
   const [btnInactive, setBtnInactive] = useState("");
-  const [
-    openModalSearchNeighborhood,
-    setOpenModalSearchNeighborhood,
-  ] = useState(false);
+  const [openModalSearchClient, setOpenModalSearchClient] = useState(false);
 
   const [idClient, setIdClient] = useState("");
   const [companyName, setCompanyName] = useState("");
@@ -69,7 +67,11 @@ export default function Client() {
   const [email, setEmail] = useState("");
   const [checkedStatus, setCheckedStatus] = useState(false);
 
+  const idClientInputRef = useRef(null);
+
   const [searchClient, setSearchClient] = useState("");
+  const [searchClientList, setSearchClientList] = useState([]);
+
   const [searchNeighborhood, setSearchNeighborhood] = useState("");
 
   const useStyles = makeStyles((theme) => ({
@@ -88,12 +90,60 @@ export default function Client() {
     },
   }));
 
-  const handleOpenModalSearchNeighborhood = () => {
-    setOpenModalSearchNeighborhood(true);
+  const classes = useStyles();
+
+  const handleOpenModalSearchClient = () => {
+    setSearchClientList([
+      {
+        id: "1",
+        cnpj: "123456787",
+        companyName: "Gabriel Rodrigues Sozuza",
+        fanstasyName: "Gabriel",
+      },
+      {
+        id: "2",
+        cnpj: "12345678789",
+        companyName: "Gabriel Rodrigues Sozuza 1",
+        fanstasyName: "Gabriel 1",
+      },
+      {
+        id: "3",
+        cnpj: "12345678789",
+        companyName: "Gabriel Rodrigues Sozuza 1",
+        fanstasyName: "Gabriel 1",
+      },
+      {
+        id: "4",
+        cnpj: "12345678789",
+        companyName: "Gabriel Rodrigues Sozuza 1",
+        fanstasyName: "Gabriel 1",
+      },
+      {
+        id: "5",
+        cnpj: "12345678789",
+        companyName: "Gabriel Rodrigues Sozuza 1",
+        fanstasyName: "Gabriel 1",
+      },
+      {
+        id: "6",
+        cnpj: "12345678789",
+        companyName: "Gabriel Rodrigues Sozuza 1",
+        fanstasyName: "Gabriel 1",
+      },
+      {
+        id: "7",
+        cnpj: "12345678789",
+        companyName: "Gabriel Rodrigues Sozuza 1",
+        fanstasyName: "Gabriel 1",
+      },
+    ]);
+    setTitleModal("PESQUISAR CLIENTES");
+    setOpenModalSearchClient(true);
   };
 
   const handleClose = () => {
-    setOpenModalSearchNeighborhood(false);
+    setTitleModal("");
+    setOpenModalSearchClient(false);
   };
   // #endregion
 
@@ -440,17 +490,23 @@ export default function Client() {
   }
   // #endregion
 
-  // #region Modal Search Bairro
+  // #region Handle Search Client
+  function handleSelectClientInSearch(id) {
+    setIdClient(id);
+    handleClose();
+    console.log(idClientInputRef.current);
+    idClientInputRef.current.focus();
+  }
+  // #endregion
 
-  function SearchNeighborhoodModal({ titleModal }) {
-    const classes = useStyles();
-
-    return (
+  return (
+    <div className="main-container">
       <Modal
+        id="modalSearchClient"
         aria-labelledby="transition-modal-title"
         aria-describedby="transition-modal-description"
         className={classes.modal}
-        open={openModalSearchNeighborhood}
+        open={openModalSearchClient}
         onClose={handleClose}
         closeAfterTransition
         BackdropComponent={Backdrop}
@@ -458,46 +514,64 @@ export default function Client() {
           timeout: 500,
         }}
       >
-        <Fade in={openModalSearchNeighborhood}>
+        <Fade in={openModalSearchClient}>
           <div className={classes.paper}>
-            <h1 className="modal-title">{titleModal.toUpperCase()}</h1>
-            <div className="modal-input-button">
-              <div className="input-label-block-colum">
-                <label htmlFor="inputSearchClient">Nome fantasia:</label>
+            <h1 className="modal-title">{titleModal}</h1>
+            <div className="modal-content">
+              <div className="modal-search-input-button">
+                <div className="input-label-block-colum">
+                  <label htmlFor="inputSearchClient">Nome fantasia:</label>
+                  <input
+                    id="inputSearchClient"
+                    type="text"
+                    value={searchClient}
+                    onChange={(e) => setSearchClient(e.target.value)}
+                  ></input>
+                </div>
 
-                <input
-                  id="inputSearchClient"
-                  type="text"
-                  value={searchClient}
-                  onChange={(e) => setSearchClient(e.target.value)}
-                  // onKeyUp={(e) => {
-                  //   if (idClient.length === 0) {
-                  //     clearFields();
-                  //     clearFields();
-                  //   }
-                  // }}
-                ></input>
+                <button
+                  type="button"
+                  className="button btnDefault btnSearchModal"
+                >
+                  <RiSearchLine size={24} />
+                  Buscar
+                </button>
               </div>
 
-              <button
-                type="button"
-                className="button btnDefault btnSearchModal"
-              >
-                <RiSearchLine size={24} />
-                Buscar
-              </button>
+              <div className="modal-search-list">
+                {searchClientList.map((client) => (
+                  <div id="clientListIten" key={client.id}>
+                    <div id="clientData">
+                      <strong id="codClient">Código: {client.id}</strong>
+                      <section id="clientItens">
+                        <p id="searchCnpjClient">CNPJ: {client.cnpj}</p>
+                        <p id="searchCompanyNameClient">
+                          Razão Social: {client.companyName}
+                        </p>
+                        <p id="searchNameFantasyClient">
+                          Nome Fantasia: {client.fanstasyName}
+                        </p>
+                      </section>
+                    </div>
+                    <div id="clientBtnSelect">
+                      <button
+                        type="button"
+                        className="button btnSuccess"
+                        onClick={() => handleSelectClientInSearch(client.id)}
+                      >
+                        <RiCheckLine size={24} />
+                      </button>
+                    </div>
+                  </div>
+                ))}
+              </div>
             </div>
           </div>
         </Fade>
       </Modal>
-    );
-  }
-  // #endregion
 
-  return (
-    <div className="main-container">
-      <SearchNeighborhoodModal titleModal="Pesquisar clientes" />
       <LateralMenu />
+
       <>
         {loading ? (
           <Loading type="bars" color="#0f4c82" />
@@ -555,9 +629,11 @@ export default function Client() {
                         <div className="input-button-block-row">
                           <input
                             id="idClient"
+                            ref={idClientInputRef}
                             type="number"
                             min="1"
                             required
+                            autoFocus
                             value={idClient}
                             onChange={(e) => setIdClient(e.target.value)}
                             onBlur={() => {
@@ -574,7 +650,7 @@ export default function Client() {
                           <button
                             type="button"
                             className="button btnDefault"
-                            onClick={handleOpenModalSearchNeighborhood}
+                            onClick={handleOpenModalSearchClient}
                           >
                             <RiSearchLine size={24} />
                           </button>

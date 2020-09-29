@@ -278,9 +278,16 @@
   height: 35px;
 }
 
-.modal-input-button {
-  width: 100%;
+.modal-content {
+  display: grid;
 
+  row-gap: 10px;
+  height: 90%;
+  /* padding-bottom: 45px; */
+}
+
+.modal-search-input-button {
+  width: 100%;
   display: flex;
   flex-direction: row;
   align-items: flex-end;
@@ -292,16 +299,69 @@
   margin-top: 5px;
 }
 /* .client-container
-  .modal-input-button
+  .modal-search-input-button
   .input-label-group-row
   + .input-label-group-row {
   margin-top: 10px;
 } */
 
-.modal-input-button .input-label-block-colum {
-  width: 100% !important;
+.modal-search-input-button .input-label-block-colum {
+  width: 100%;
 
-  display: flex !important;
-  flex-direction: column !important;
+  display: flex;
+  flex-direction: column;
   margin-right: 5px;
+}
+
+.modal-search-list {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  overflow: auto;
+}
+
+.modal-search-list #clientListIten {
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+
+  border: 1px solid gray;
+
+  border-radius: 5px;
+
+  padding: 10px;
+}
+
+.modal-search-list #clientListIten + #clientListIten {
+  margin-top: 10px;
+}
+
+.modal-search-list #clientListIten button {
+  height: 35px;
+  width: 35px;
+}
+
+.modal-search-list #clientListIten #clientData {
+  width: 100%;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.modal-search-list #clientListIten #clientData strong {
+  margin-bottom: 5px;
+}
+
+.modal-search-list #clientListIten #clientData #clientItens {
+  width: 100%;
+
+  display: flex;
+  flex-direction: row;
+}
+
+.modal-search-list #clientListIten #clientData #clientItens p + p {
+  margin-left: 15px;
 }

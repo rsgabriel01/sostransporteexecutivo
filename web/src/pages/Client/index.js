@@ -1,5 +1,5 @@
 /* eslint-disable camelcase */
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect, useRef, useCallback } from "react";
 import { Link, useHistory } from "react-router-dom";
 import { confirmAlert } from "react-confirm-alert";
 import { ToastContainer } from "react-toastify";
@@ -494,9 +494,15 @@ export default function Client() {
   function handleSelectClientInSearch(id) {
     setIdClient(id);
     handleClose();
-    console.log(idClientInputRef.current);
-    idClientInputRef.current.focus();
+    inputFocusIdClient();
   }
+
+  function inputFocusIdClient() {
+    setTimeout(() => {
+      idClientInputRef.current.focus();
+    }, 1);
+  }
+
   // #endregion
 
   return (
@@ -852,7 +858,7 @@ export default function Client() {
                             disabled={isReadonly}
                             value="1"
                             checked={checkedStatus}
-                            onClick={() => {
+                            onChange={() => {
                               handleCheckBox("cbStatus");
                             }}
                           />

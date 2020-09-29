@@ -281,9 +281,8 @@
 .modal-content {
   display: grid;
 
-  row-gap: 10px;
+  row-gap: 20px;
   height: 90%;
-  /* padding-bottom: 45px; */
 }
 
 .modal-search-input-button {
@@ -298,12 +297,6 @@
   padding: 0px 10px;
   margin-top: 5px;
 }
-/* .client-container
-  .modal-search-input-button
-  .input-label-group-row
-  + .input-label-group-row {
-  margin-top: 10px;
-} */
 
 .modal-search-input-button .input-label-block-colum {
   width: 100%;

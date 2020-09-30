@@ -85,7 +85,7 @@ export default function Client() {
       borderRadius: "10px",
       boxShadow: theme.shadows[5],
       padding: theme.spacing(2, 4, 3),
-      width: "80%",
+      width: "70%",
       height: "80%",
     },
   }));
@@ -502,7 +502,6 @@ export default function Client() {
       idClientInputRef.current.focus();
     }, 1);
   }
-
   // #endregion
 
   return (
@@ -522,8 +521,8 @@ export default function Client() {
       >
         <Fade in={openModalSearchClient}>
           <div className={classes.paper}>
-            <h1 className="modal-title">{titleModal}</h1>
-            <div className="modal-content">
+            <h1 className="modal-search-title">{titleModal}</h1>
+            <div className="modal-search-content">
               <div className="modal-search-input-button">
                 <div className="input-label-block-colum">
                   <label htmlFor="inputSearchClient">Nome fantasia:</label>
@@ -546,10 +545,10 @@ export default function Client() {
 
               <div className="modal-search-list">
                 {searchClientList.map((client) => (
-                  <div id="clientListIten" key={client.id}>
-                    <div id="clientData">
-                      <strong id="codClient">Código: {client.id}</strong>
-                      <section id="clientItens">
+                  <div className="searchListIten" key={client.id}>
+                    <div className="searchItenData">
+                      <strong>Código: {client.id}</strong>
+                      <section id="searchClientData">
                         <p id="searchCnpjClient">CNPJ: {client.cnpj}</p>
                         <p id="searchCompanyNameClient">
                           Razão Social: {client.companyName}
@@ -559,7 +558,7 @@ export default function Client() {
                         </p>
                       </section>
                     </div>
-                    <div id="clientBtnSelect">
+                    <div className="clientBtnSelect">
                       <button
                         type="button"
                         className="button btnSuccess"

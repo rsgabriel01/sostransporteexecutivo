@@ -176,11 +176,11 @@ export default function Login() {
   //#endregion
 
   return (
-    <>
+    <div className="logon-container">
       {loadingPage ? (
         <Loading type="bars" color="#0f4c82" />
       ) : (
-        <div className="logon-container">
+        <>
           <ToastContainer />
           <img src={loginIllustrator} alt="Solicitação de viagem" />
           <section className="form">
@@ -228,8 +228,8 @@ export default function Login() {
               </button>
             </form>
           </section>
-        </div>
+        </>
       )}
-    </>
+    </div>
   );
 }

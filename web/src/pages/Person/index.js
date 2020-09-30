@@ -1,8 +1,12 @@
 /* eslint-disable camelcase */
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { Link, useHistory } from "react-router-dom";
 import { confirmAlert } from "react-confirm-alert";
 import { ToastContainer } from "react-toastify";
+import { makeStyles } from "@material-ui/core/styles";
+import Modal from "@material-ui/core/Modal";
+import Backdrop from "@material-ui/core/Backdrop";
+import Fade from "@material-ui/core/Fade";
 import {
   RiSearchLine,
   RiUserSharedLine,
@@ -18,6 +22,7 @@ import {
   RiLoader4Line,
   RiSearchEyeLine,
   RiCheckboxMultipleLine,
+  RiArrowRightUpLine,
 } from "react-icons/ri";
 import LateralMenu from "../components/LateralMenu/LateralMenu";
 import Header from "../components/Header/Header";
@@ -36,6 +41,7 @@ export default function Person() {
   // #region Definitions
   const history = useHistory();
   const [loading, setLoading] = useState(true);
+  const [loadingModal, setLoadingModal] = useState(true);
 
   const [isReadonly, setIsReadonly] = useState(true);
 
@@ -56,9 +62,31 @@ export default function Person() {
   const [phone, setPhone] = useState("");
   const [email, setEmail] = useState("");
   const [active, setActive] = useState(false);
-
   const [checkedTypeAdmin, setCheckedTypeAdmin] = useState(false);
   const [checkedTypeAttendance, setCheckedTypeAttendance] = useState(false);
+
+  const [titleModal, setTitleModal] = useState("");
+  const [titleIconModal, setTitleIconModal] = useState();
+  const [openModalSearchPerson, setOpenModalSearchPerson] = useState(false);
+  const idPersonInputRef = useRef(null);
+  const [searchClient, setSearchClient] = useState("");
+  const [searchClientList, setSearchClientList] = useState([]);
+  const useStyles = makeStyles((theme) => ({
+    modal: {
+      display: "flex",
+      alignItems: "center",
+      justifyContent: "center",
+    },
+    paper: {
+      backgroundColor: "#ffffff",
+      borderRadius: "10px",
+      boxShadow: theme.shadows[5],
+      padding: theme.spacing(2, 4, 3),
+      width: "70%",
+      height: "80%",
+    },
+  }));
+  const classes = useStyles();
 
   // #endregion
 
@@ -134,12 +162,15 @@ export default function Person() {
   }
 
   // #endregion
+
+  // #region Alter Page Update To Consult
   function alterPageUpdateForConsult() {
     clearFields(true);
     setTitleUpdate("");
     setUpdateRegister(false);
     setIsReadonly(true);
   }
+  // #endregion
 
   // #region Handle Check Checkbox
   function handleCheckBox(checkbox) {
@@ -428,9 +459,131 @@ export default function Person() {
   }
   // #endregion
 
+  // #region Handle Open Modal Search Person
+  const handleOpenModalSearchPersonEdit = () => {
+    setLoadingModal(true);
+    setTimeout(() => {
+      loadSearchPersonList(true);
+      setLoadingModal(false);
+    }, 2000);
+    setTitleIconModal(<RiUserLine size={30} />);
+    setTitleModal("PESQUISAR PESSOA");
+    setOpenModalSearchPerson(true);
+  };
+
+  const handleCloseModalSearchPersonEdit = () => {
+    setTitleModal("");
+    setOpenModalSearchPerson(false);
+  };
+  // #endregion
+
+  // #region Handle Search Client
+  function handleSelectClientInSearch(id) {
+    setIdPeople(id);
+    handleCloseModalSearchPersonEdit();
+    inputFocusIdPerson();
+  }
+
+  function inputFocusIdPerson() {
+    setTimeout(() => {
+      idPersonInputRef.current.focus();
+    }, 1);
+  }
+  // #endregion
+
+  // #region Load Search Person List
+
+  async function loadSearchPersonList(active) {
+    setSearchClientList([
+      {
+        id: "1",
+        cnpj: "123456787",
+        companyName: "Gabriel Rodrigues Sozuza",
+        fanstasyName: "Gabriel",
+      },
+    ]);
+  }
+
+  //#endregion
   return (
     <div className="main-container">
+      <Modal
+        id="modalSearchClient"
+        aria-labelledby="transition-modal-title"
+        aria-describedby="transition-modal-description"
+        className={classes.modal}
+        open={openModalSearchPerson}
+        onClose={handleCloseModalSearchPersonEdit}
+        closeAfterTransition
+        BackdropComponent={Backdrop}
+        BackdropProps={{
+          timeout: 500,
+        }}
+      >
+        <Fade in={openModalSearchPerson}>
+          <div className={classes.paper}>
+            <h1 className="modal-search-title">
+              {titleIconModal} {titleModal}
+            </h1>
+            <div className="modal-search-content">
+              <div className="modal-search-input-button">
+                <div className="input-label-block-colum">
+                  <label htmlFor="inputSearchClient">Nome:</label>
+                  <input
+                    id="inputSearchClient"
+                    type="text"
+                    value={searchClient}
+                    onChange={(e) => setSearchClient(e.target.value)}
+                  ></input>
+                </div>
+
+                <button
+                  type="button"
+                  className="button btnDefault btnSearchModal"
+                >
+                  <RiSearchLine size={24} />
+                  Buscar
+                </button>
+              </div>
+
+              <div className="modal-search-list">
+                {loadingModal ? (
+                  <Loading type="bars" color="#0f4c82" />
+                ) : (
+                  searchClientList.map((client) => (
+                    <div className="searchListIten" key={client.id}>
+                      <div className="searchItenData">
+                        <strong>Código: {client.id}</strong>
+                        <section id="searchClientData">
+                          <p id="searchCnpjClient">CNPJ: {client.cnpj}</p>
+                          <p id="searchCompanyNameClient">
+                            Razão Social: {client.companyName}
+                          </p>
+                          <p id="searchNameFantasyClient">
+                            Nome Fantasia: {client.fanstasyName}
+                          </p>
+                        </section>
+                      </div>
+                      <div className="clientBtnSelect">
+                        <button
+                          type="button"
+                          className="button btnSuccess"
+                          onClick={() => handleSelectClientInSearch(client.id)}
+                        >
+                          <RiArrowRightUpLine />
+                        </button>
+                      </div>
+                    </div>
+                  ))
+                )}
+              </div>
+            </div>
+          </div>
+        </Fade>
+      </Modal>
+
       <LateralMenu />
+
       <>
         {loading ? (
           <Loading type="bars" color="#0f4c82" />
@@ -500,6 +653,7 @@ export default function Person() {
 
                         <div className="input-button-block-row">
                           <input
+                            ref={idPersonInputRef}
                             id="idPeople"
                             type="number"
                             min="1"
@@ -518,7 +672,11 @@ export default function Person() {
                             }}
                           />
 
-                          <button type="button" className="button btnDefault">
+                          <button
+                            type="button"
+                            className="button btnDefault"
+                            onClick={handleOpenModalSearchPersonEdit}
+                          >
                             <RiSearchLine size={24} />
                           </button>
                         </div>

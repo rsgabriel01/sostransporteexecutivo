@@ -101,6 +101,11 @@ input {
   cursor: default !important;
 }
 
+.btnSearchModal {
+  width: 130px;
+  height: 35px;
+}
+
 .main-container {
   display: flex;
   flex-direction: row;
@@ -252,9 +257,86 @@ input[type="date"]::-webkit-calendar-picker-indicator:hover {
   background: url(../src/assets/calendarDateBlue.svg) no-repeat;
 }
 
-.modal-title {
+.modal-search-title {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
   text-align: center;
+
   padding: 0px 0px 20px 0px;
+}
+
+.modal-search-content {
+  display: grid;
+  grid-template-rows: auto 1fr;
+  row-gap: 20px;
+  height: 90%;
+}
+
+.modal-search-input-button {
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  align-items: flex-end;
+}
+
+.inputSearchClient {
+  width: 100%;
+  padding: 0px 10px;
+  margin-top: 5px;
+}
+
+.modal-search-input-button .input-label-block-colum {
+  width: 100%;
+
+  display: flex;
+  flex-direction: column;
+  margin-right: 10px;
+}
+.modal-search-input-button .input-label-block-colum label {
+  padding-bottom: 5px;
+}
+
+.modal-search-input-button .input-label-block-colum input {
+  padding: 0px 10px;
+}
+.modal-search-list {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  overflow: auto;
+}
+
+.modal-search-list .searchListIten {
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+
+  border: 1px solid gray;
+
+  border-radius: 5px;
+
+  padding: 10px;
+}
+
+.modal-search-list .searchListIten + .searchListIten {
+  margin-top: 10px;
+}
+
+.modal-search-list .searchListIten button {
+  height: 35px;
+  width: 35px;
+}
+
+.modal-search-list .searchListIten .searchItenData {
+  width: 100%;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
 }
 
 /* Animation Loading */

@@ -300,7 +300,17 @@ input[type="date"]::-webkit-calendar-picker-indicator:hover {
 
 .modal-search-input-button .input-label-block-colum input {
   padding: 0px 10px;
+  text-transform: uppercase;
 }
+
+.modal-search-input-button .input-label-block-colum input:hover {
+  border: 2px solid #0f4c82;
+}
+
+.modal-search-input-button .input-label-block-colum input:focus {
+  border: 2px solid #0f4c82;
+}
+
 .modal-search-list {
   width: 100%;
   display: flex;
@@ -320,6 +330,11 @@ input[type="date"]::-webkit-calendar-picker-indicator:hover {
   border-radius: 5px;
 
   padding: 10px;
+}
+
+.modal-search-list .searchListIten:hover {
+  border: 2px solid #006800;
+  cursor: pointer;
 }
 
 .modal-search-list .searchListIten + .searchListIten {

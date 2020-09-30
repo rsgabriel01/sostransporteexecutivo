@@ -2,12 +2,13 @@ const express = require("express");
 
 const routes = express.Router();
 
-//#region Controllers
+// #region Controllers
 const CitysController = require("./controllers/CitysController");
 const UsersController = require("./controllers/UsersController");
 const NeighborhoodsController = require("./controllers/NeighborhoodsController");
 const PeopleAddressController = require("./controllers/PeopleAddressController");
 const DriversController = require("./controllers/DriversController");
+const PeopleController = require("./controllers/PeopleController");
 const PersonController = require("./controllers/PersonController");
 const ServiceOrdersController = require("./controllers/ServiceOrdersController");
 const SessionsController = require("./controllers/SessionsController");
@@ -20,9 +21,9 @@ const VehicleBrandsController = require("./controllers/VehicleBrandsController")
 const VehicleModelsController = require("./controllers/VehicleModelsController");
 const VehiclesController = require("./controllers/VehiclesController");
 const ClientsController = require("./controllers/ClientsController");
-//#endregion
+// #endregion
 
-//#region Validators
+// #region Validators
 const {
   validatorLogin,
   validatorSession,
@@ -49,7 +50,7 @@ const { validatorDriversCreate } = require("./validators/routesDrivers");
 const { validatorVehiclesCreate } = require("./validators/routesVehicles");
 
 const { validatorClientsCreate } = require("./validators/routesClients");
-//#endregion
+// #endregion
 
 // #region Middlewares
 const { verifySession } = require("./middlewares/sessions");
@@ -60,21 +61,15 @@ routes.get("/", (req, res) => {
   return res.json("Server is running...");
 });
 
-//#region Routes Acess
+// #region Routes Acess
 routes.get("/acess/session", validatorSession, SessionsController.show);
 
 routes.post("/acess/login", validatorLogin, SessionsController.store);
 
 routes.get("/acess/logout", validatorLogout, SessionsController.destroy);
-//#endregion
+// #endregion
 
-//#region Routes Person/People
-routes.get(
-  "/people",
-  verifySession,
-  permissionAdminAttendance,
-  PersonController.index
-);
+// #region Routes Person
 
 routes.post(
   "/person/create",
@@ -99,9 +94,13 @@ routes.put(
   permissionAdminAttendance,
   PersonController.update
 );
-//#endregion
+// #endregion
 
-//#region People Address
+// #region People
+routes.get("/people/active/", PeopleController.indexActiveInactive);
+// #endregion
+
+// #region People Address
 routes.post(
   "/address/create",
   validatorAddressCreate,
@@ -109,9 +108,9 @@ routes.post(
   permissionAdminAttendance,
   PeopleAddressController.store
 );
-//#endregion
+// #endregion
 
-//#region Type People
+// #region Type People
 routes.post(
   "/typepeople/create",
   validatorTypePeopleCreate,
@@ -119,9 +118,9 @@ routes.post(
   permissionAdminAttendance,
   TypePeopleController.store
 );
-//#endregion
+// #endregion
 
-//#region Users
+// #region Users
 routes.get(
   "/users",
   verifySession,
@@ -145,9 +144,9 @@ routes.put(
   UsersController.update
 );
 
-//#endregion
+// #endregion
 
-//#region Drivers
+// #region Drivers
 routes.post(
   "/drivers/create",
   validatorDriversCreate,
@@ -155,9 +154,9 @@ routes.post(
   permissionAdminAttendance,
   DriversController.store
 );
-//#endregion
+// #endregion
 
-//#region Vehicles
+// #region Vehicles
 routes.get(
   "/vehicles",
   verifySession,
@@ -172,9 +171,9 @@ routes.post(
   permissionAdminAttendance,
   VehiclesController.store
 );
-//#endregion
+// #endregion
 
-//#region Clients
+// #region Clients
 routes.post(
   "/clients/create",
   validatorClientsCreate,
@@ -182,7 +181,7 @@ routes.post(
   permissionAdminAttendance,
   ClientsController.store
 );
-//#endregion
+// #endregion
 
 routes.get("/citys", CitysController.index);
 routes.get("/neighborhoods", NeighborhoodsController.index);

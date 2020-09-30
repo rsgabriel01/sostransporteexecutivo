@@ -6,16 +6,6 @@ const moment = require("moment");
 var CpfValidation = require("../helpers/CpfValidation");
 
 module.exports = {
-  async index(req, res) {
-    try {
-      const people = await People.findAll({});
-
-      return res.json(people);
-    } catch (error) {
-      console.log(error);
-    }
-  },
-
   async store(req, res) {
     try {
       const {

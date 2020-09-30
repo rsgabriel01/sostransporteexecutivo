@@ -36,6 +36,7 @@ import { isAuthenticated, logout } from "../../services/auth";
 import "./styles.css";
 import "react-toastify/dist/ReactToastify.css";
 import "react-confirm-alert/src/react-confirm-alert.css";
+import jsonClassesModal from "../../helpers/stylesModal";
 
 export default function Person() {
   // #region Definitions
@@ -54,6 +55,7 @@ export default function Person() {
   const [loadingButton, setLoadingButton] = useState(false);
   const [textButtonSaveUpdate, setTextButtonSaveUpdate] = useState("Salvar");
   const [btnInactive, setBtnInactive] = useState("");
+  const [searchPersonInactive, setSearchPersonInactive] = useState(false);
 
   const [idPeople, setIdPeople] = useState("");
   const [name, setName] = useState("");
@@ -69,24 +71,10 @@ export default function Person() {
   const [titleIconModal, setTitleIconModal] = useState();
   const [openModalSearchPerson, setOpenModalSearchPerson] = useState(false);
   const idPersonInputRef = useRef(null);
-  const [searchClient, setSearchClient] = useState("");
-  const [searchClientList, setSearchClientList] = useState([]);
-  const useStyles = makeStyles((theme) => ({
-    modal: {
-      display: "flex",
-      alignItems: "center",
-      justifyContent: "center",
-    },
-    paper: {
-      backgroundColor: "#ffffff",
-      borderRadius: "10px",
-      boxShadow: theme.shadows[5],
-      padding: theme.spacing(2, 4, 3),
-      width: "70%",
-      height: "80%",
-    },
-  }));
-  const classes = useStyles();
+  const [searchPerson, setSearchPerson] = useState("");
+  const [searchPersonList, setSearchPersonList] = useState([]);
+  const useStyles = makeStyles((theme) => jsonClassesModal(theme));
+  const ClassesModal = useStyles();
 
   // #endregion
 
@@ -462,10 +450,8 @@ export default function Person() {
   // #region Handle Open Modal Search Person
   const handleOpenModalSearchPersonEdit = () => {
     setLoadingModal(true);
-    setTimeout(() => {
-      loadSearchPersonList(true);
-      setLoadingModal(false);
-    }, 2000);
+    loadSearchPersonList();
+
     setTitleIconModal(<RiUserLine size={30} />);
     setTitleModal("PESQUISAR PESSOA");
     setOpenModalSearchPerson(true);
@@ -477,8 +463,9 @@ export default function Person() {
   };
   // #endregion
 
-  // #region Handle Search Client
+  // #region Handle Select Search Client
   function handleSelectClientInSearch(id) {
+    clearFields();
     setIdPeople(id);
     handleCloseModalSearchPersonEdit();
     inputFocusIdPerson();
@@ -492,26 +479,77 @@ export default function Person() {
   // #endregion
 
   // #region Load Search Person List
+  async function loadSearchPersonList() {
+    setLoadingModal(true);
+    // setBtnInactive("btnInactive");
 
-  async function loadSearchPersonList(active) {
-    setSearchClientList([
-      {
-        id: "1",
-        cnpj: "123456787",
-        companyName: "Gabriel Rodrigues Sozuza",
-        fanstasyName: "Gabriel",
-      },
-    ]);
+    try {
+      const response = await api.get(
+        `/people/active/?name=${searchPerson.toUpperCase()}`
+      );
+
+      if (response) {
+        console.log(response.data);
+
+        setSearchPersonList(response.data);
+        setLoadingModal(false);
+        // setBtnInactive("");
+      }
+    } catch (error) {
+      setLoadingModal(false);
+      // setBtnInactive("");
+
+      if (error.response) {
+        const dataError = error.response.data;
+        const statusError = error.response.status;
+        console.error(dataError);
+        console.error(statusError);
+
+        if (statusError === 400 && dataError.message) {
+          console.log(dataError.message);
+          switch (dataError.message) {
+            // case '"cpf_cnpj" length must be less than or equal to 11 characters long':
+            //   notify(
+            //     "warning",
+            //     "O CPF informado pode ter no máximo 11 caracteres"
+            //   );
+            //   break;
+
+            default:
+              notify("warning", dataError.message);
+          }
+        }
+
+        if (statusError === 401) {
+          switch (dataError.message) {
+            default:
+              notify("warning", dataError.message);
+          }
+        }
+      } else if (error.request) {
+        notify(
+          "error",
+          `Oops, algo deu errado, entre em contato com o suporte de TI. ${error}`
+        );
+        console.log(error.request);
+      } else {
+        notify(
+          "error",
+          `Oops, algo deu errado, entre em contato com o suporte de TI. ${error}`
+        );
+        console.log("Error", error.message);
+      }
+    }
   }
+  // #endregion
 
-  //#endregion
   return (
     <div className="main-container">
       <Modal
-        id="modalSearchClient"
+        id="modalSearchPerson"
         aria-labelledby="transition-modal-title"
         aria-describedby="transition-modal-description"
-        className={classes.modal}
+        className={ClassesModal.modal}
         open={openModalSearchPerson}
         onClose={handleCloseModalSearchPersonEdit}
         closeAfterTransition
@@ -521,25 +559,27 @@ export default function Person() {
         }}
       >
         <Fade in={openModalSearchPerson}>
-          <div className={classes.paper}>
+          <div className={ClassesModal.paper}>
             <h1 className="modal-search-title">
               {titleIconModal} {titleModal}
             </h1>
             <div className="modal-search-content">
               <div className="modal-search-input-button">
                 <div className="input-label-block-colum">
-                  <label htmlFor="inputSearchClient">Nome:</label>
+                  <label htmlFor="inputSearchPerson">Nome:</label>
                   <input
-                    id="inputSearchClient"
+                    id="inputSearchPerson"
                     type="text"
-                    value={searchClient}
-                    onChange={(e) => setSearchClient(e.target.value)}
+                    value={searchPerson}
+                    onChange={(e) => setSearchPerson(e.target.value)}
+                    onKeyUp={loadSearchPersonList}
                   ></input>
                 </div>
 
                 <button
                   type="button"
                   className="button btnDefault btnSearchModal"
+                  onClick={loadSearchPersonList}
                 >
                   <RiSearchLine size={24} />
                   Buscar
@@ -550,25 +590,28 @@ export default function Person() {
                 {loadingModal ? (
                   <Loading type="bars" color="#0f4c82" />
                 ) : (
-                  searchClientList.map((client) => (
-                    <div className="searchListIten" key={client.id}>
+                  searchPersonList.map((person) => (
+                    <div
+                      className="searchListIten"
+                      key={person.id}
+                      onDoubleClick={() =>
+                        handleSelectClientInSearch(person.id)
+                      }
+                    >
                       <div className="searchItenData">
-                        <strong>Código: {client.id}</strong>
-                        <section id="searchClientData">
-                          <p id="searchCnpjClient">CNPJ: {client.cnpj}</p>
-                          <p id="searchCompanyNameClient">
-                            Razão Social: {client.companyName}
-                          </p>
-                          <p id="searchNameFantasyClient">
-                            Nome Fantasia: {client.fanstasyName}
-                          </p>
+                        <strong>Código: {person.id}</strong>
+                        <section id="searchPersonData">
+                          <p id="searchNamePerson">Nome: {person.name}</p>
+                          <p id="searchCpfPerson">CPF: {person.cpf_cnpj}</p>
+
+                          <p id="searchRgPerson">RG: {person.rg}</p>
                         </section>
                       </div>
                       <div className="clientBtnSelect">
                         <button
                           type="button"
                           className="button btnSuccess"
-                          onClick={() => handleSelectClientInSearch(client.id)}
+                          onClick={() => handleSelectClientInSearch(person.id)}
                         >
                           <RiArrowRightUpLine />
                         </button>
@@ -659,7 +702,11 @@ export default function Person() {
                             min="1"
                             required
                             value={idPeople}
-                            onChange={(e) => setIdPeople(e.target.value)}
+                            readOnly={searchPersonInactive}
+                            onChange={(e) => {
+                              setIdPeople(e.target.value);
+                              clearFields();
+                            }}
                             onBlur={() => {
                               handleSearchPerson(idPeople);
                             }}
@@ -674,7 +721,9 @@ export default function Person() {
 
                           <button
                             type="button"
-                            className="button btnDefault"
+                            className={`button btnDefault ${
+                              searchPersonInactive ? "btnInactive" : ""
+                            }`}
                             onClick={handleOpenModalSearchPersonEdit}
                           >
                             <RiSearchLine size={24} />

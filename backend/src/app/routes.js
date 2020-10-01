@@ -36,6 +36,8 @@ const {
   validatorPersonUpdate,
 } = require("./validators/routesPerson");
 
+const { validatorPeopleIndexActive } = require("./validators/routesPeople");
+
 const { validatorAddressCreate } = require("./validators/routesPeopleAddress");
 
 const { validatorTypePeopleCreate } = require("./validators/routesTypePeople");
@@ -97,7 +99,13 @@ routes.put(
 // #endregion
 
 // #region People
-routes.get("/people/active/", PeopleController.indexActiveInactive);
+routes.get(
+  "/people/active/",
+  validatorPeopleIndexActive,
+  verifySession,
+  permissionAdminAttendance,
+  PeopleController.indexActive
+);
 // #endregion
 
 // #region People Address

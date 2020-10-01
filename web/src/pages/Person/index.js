@@ -491,7 +491,7 @@ export default function Person() {
 
     try {
       const response = await api.get(
-        `/people/active/?name=${searchPerson.toUpperCase()}`
+        `/people/active/?nam=${searchPerson.toUpperCase()}`
       );
 
       if (response) {
@@ -514,12 +514,12 @@ export default function Person() {
         if (statusError === 400 && dataError.message) {
           console.log(dataError.message);
           switch (dataError.message) {
-            // case '"cpf_cnpj" length must be less than or equal to 11 characters long':
-            //   notify(
-            //     "warning",
-            //     "O CPF informado pode ter no máximo 11 caracteres"
-            //   );
-            //   break;
+            case '"name" is required':
+              notify(
+                "error",
+                "Erro: o QUERY PARAM 'name' não foi encontrado no endereço da rota."
+              );
+              break;
 
             default:
               notify("warning", dataError.message);

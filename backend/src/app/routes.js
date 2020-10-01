@@ -3,33 +3,45 @@ const express = require("express");
 const routes = express.Router();
 
 // #region Controllers
-const CitysController = require("./controllers/CitysController");
-const UsersController = require("./controllers/UsersController");
-const NeighborhoodsController = require("./controllers/NeighborhoodsController");
-const PeopleAddressController = require("./controllers/PeopleAddressController");
-const DriversController = require("./controllers/DriversController");
-const PersonLikeNameController = require("./controllers/PersonLikeNameController");
 const PersonController = require("./controllers/PersonController");
-const ServiceOrdersController = require("./controllers/ServiceOrdersController");
-const SessionsController = require("./controllers/SessionsController");
-const StatesController = require("./controllers/StatesController");
-const StatusController = require("./controllers/StatusController");
-const TravelFeeController = require("./controllers/TravelFeeController");
-const TypePeopleController = require("./controllers/TypePeopleController");
-const TypesController = require("./controllers/TypesController");
-const VehicleBrandsController = require("./controllers/VehicleBrandsController");
-const VehicleModelsController = require("./controllers/VehicleModelsController");
-const VehiclesController = require("./controllers/VehiclesController");
+const PersonLikeNameController = require("./controllers/PersonLikeNameController");
+
 const clientController = require("./controllers/clientController");
+
+const clientLikeNameFantasyController = require("./controllers/clientLikeNameFantasyController");
+
+const DriversController = require("./controllers/DriversController");
+
+const TypesController = require("./controllers/TypesController");
+
+const TypePeopleController = require("./controllers/TypePeopleController");
+
+const PeopleAddressController = require("./controllers/PeopleAddressController");
+
+const UsersController = require("./controllers/UsersController");
+
+const SessionsController = require("./controllers/SessionsController");
+
+const StatesController = require("./controllers/StatesController");
+
+const CitysController = require("./controllers/CitysController");
+
+const NeighborhoodsController = require("./controllers/NeighborhoodsController");
+
+const TravelFeeController = require("./controllers/TravelFeeController");
+
+const StatusController = require("./controllers/StatusController");
+
+const ServiceOrdersController = require("./controllers/ServiceOrdersController");
+
+const VehicleBrandsController = require("./controllers/VehicleBrandsController");
+
+const VehicleModelsController = require("./controllers/VehicleModelsController");
+
+const VehiclesController = require("./controllers/VehiclesController");
 // #endregion
 
 // #region Validators
-const {
-  validatorLogin,
-  validatorSession,
-  validatorLogout,
-} = require("./validators/routesAcess");
-
 const {
   validatorPersonCreate,
   validatorPersonShow,
@@ -39,6 +51,18 @@ const {
 const {
   validatorPersonIndexLikeName,
 } = require("./validators/routesPersonLikeName");
+
+const { validatorClientCreate } = require("./validators/routesClient");
+
+const {
+  validatorClientIndexLikeNameFantasy,
+} = require("./validators/routesClientLikeNameFantasy");
+
+const {
+  validatorLogin,
+  validatorSession,
+  validatorLogout,
+} = require("./validators/routesAcess");
 
 const { validatorAddressCreate } = require("./validators/routesPeopleAddress");
 
@@ -52,8 +76,6 @@ const {
 const { validatorDriversCreate } = require("./validators/routesDrivers");
 
 const { validatorVehiclesCreate } = require("./validators/routesVehicles");
-
-const { validatorClientCreate } = require("./validators/routesClient");
 // #endregion
 
 // #region Middlewares
@@ -74,7 +96,6 @@ routes.get("/acess/logout", validatorLogout, SessionsController.destroy);
 // #endregion
 
 // #region Routes Person
-
 routes.post(
   "/person/create",
   validatorPersonCreate,
@@ -118,6 +139,23 @@ routes.get(
 );
 // #endregion
 
+// #region Client
+routes.post(
+  "/client/create",
+  validatorClientCreate,
+  verifySession,
+  permissionAdminAttendance,
+  clientController.store
+);
+// #endregion
+
+routes.get(
+  "/client/",
+  validatorClientIndexLikeNameFantasy,
+  verifySession,
+  permissionAdminAttendance,
+  clientLikeNameFantasyController.indexLikeNameFantsy
+);
 // #region People Address
 routes.post(
   "/address/create",
@@ -188,16 +226,6 @@ routes.post(
   verifySession,
   permissionAdminAttendance,
   VehiclesController.store
-);
-// #endregion
-
-// #region Client
-routes.post(
-  "/client/create",
-  validatorClientCreate,
-  verifySession,
-  permissionAdminAttendance,
-  clientController.store
 );
 // #endregion
 

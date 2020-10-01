@@ -67,18 +67,15 @@ export default function Person() {
   const [checkedTypeAdmin, setCheckedTypeAdmin] = useState(false);
   const [checkedTypeAttendance, setCheckedTypeAttendance] = useState(false);
 
+  const useStyles = makeStyles((theme) => jsonClassesModal(theme));
+  const ClassesModal = useStyles();
+
   const [titleModal, setTitleModal] = useState("");
   const [titleIconModal, setTitleIconModal] = useState();
   const [openModalSearchPerson, setOpenModalSearchPerson] = useState(false);
   const idPersonInputRef = useRef(null);
   const [searchPerson, setSearchPerson] = useState("");
   const [searchPersonList, setSearchPersonList] = useState([]);
-  const useStyles = makeStyles((theme) => jsonClassesModal(theme));
-  const ClassesModal = useStyles();
-
-  const btnAlterPesonRef = useRef(null);
-  const btnUpdatePesonRef = useRef(null);
-  const formVisuAlterPersonRef = useRef(null);
 
   // #endregion
 
@@ -469,8 +466,8 @@ export default function Person() {
   };
   // #endregion
 
-  // #region Handle Select Search Client
-  function handleSelectClientInSearch(id) {
+  // #region Handle Select Search Person
+  function handleSelectPersonInSearch(id) {
     clearFields();
     setIdPeople(id);
     handleCloseModalSearchPersonEdit();
@@ -487,7 +484,6 @@ export default function Person() {
   // #region Load Search Person List
   async function loadSearchPersonList() {
     setLoadingModal(true);
-    // setBtnInactive("btnInactive");
 
     try {
       const response = await api.get(
@@ -499,11 +495,9 @@ export default function Person() {
 
         setSearchPersonList(response.data);
         setLoadingModal(false);
-        // setBtnInactive("");
       }
     } catch (error) {
       setLoadingModal(false);
-      // setBtnInactive("");
 
       if (error.response) {
         const dataError = error.response.data;
@@ -601,7 +595,7 @@ export default function Person() {
                       className="searchListIten"
                       key={person.id}
                       onDoubleClick={() =>
-                        handleSelectClientInSearch(person.id)
+                        handleSelectPersonInSearch(person.id)
                       }
                     >
                       <div className="searchItenData">
@@ -617,7 +611,7 @@ export default function Person() {
                         <button
                           type="button"
                           className="button btnSuccess"
-                          onClick={() => handleSelectClientInSearch(person.id)}
+                          onClick={() => handleSelectPersonInSearch(person.id)}
                         >
                           <RiArrowRightUpLine />
                         </button>
@@ -678,11 +672,7 @@ export default function Person() {
               </div>
 
               <section className="form">
-                <form
-                  id="formVisuAlterPerson"
-                  ref={formVisuAlterPersonRef}
-                  onSubmit={handleSubmitUpdate}
-                >
+                <form id="formVisuAlterPerson" onSubmit={handleSubmitUpdate}>
                   <div className="form-title">
                     <RiBook2Line size={30} />
                     <h1>
@@ -946,7 +936,6 @@ export default function Person() {
                           Limpar
                         </button>
                         <button
-                          ref={btnAlterPesonRef}
                           id="btnAlterPerson"
                           type="button"
                           className="button btnDefault"

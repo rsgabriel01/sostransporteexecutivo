@@ -34,25 +34,27 @@ import { isAuthenticated, logout } from "../../services/auth";
 import "./styles.css";
 import "react-toastify/dist/ReactToastify.css";
 import "react-confirm-alert/src/react-confirm-alert.css";
+import jsonClassesModal from "../../helpers/stylesModal";
 
 export default function Client() {
   // #region Definitions
   const history = useHistory();
+
   const [loading, setLoading] = useState(true);
+  const [loadingModal, setLoadingModal] = useState(true);
 
   const [isReadonly, setIsReadonly] = useState(false);
 
   const [updateRegister, setUpdateRegister] = useState(false);
 
   const [titleUpdate, setTitleUpdate] = useState("");
-  const [titleModal, setTitleModal] = useState("");
 
   const [personFinded, setPersonFinded] = useState(false);
 
   const [loadingButton, setLoadingButton] = useState(false);
   const [textButtonSaveUpdate, setTextButtonSaveUpdate] = useState("Salvar");
   const [btnInactive, setBtnInactive] = useState("");
-  const [openModalSearchClient, setOpenModalSearchClient] = useState(false);
+  const [searchPersonInactive, setSearchPersonInactive] = useState(false);
 
   const [idClient, setIdClient] = useState("");
   const [companyName, setCompanyName] = useState("");
@@ -67,85 +69,17 @@ export default function Client() {
   const [email, setEmail] = useState("");
   const [checkedStatus, setCheckedStatus] = useState(false);
 
-  const idClientInputRef = useRef(null);
+  const useStyles = makeStyles((theme) => jsonClassesModal(theme));
+  const ClassesModal = useStyles();
 
+  const [titleModal, setTitleModal] = useState("");
+  const [titleIconModal, setTitleIconModal] = useState();
+  const [openModalSearchClient, setOpenModalSearchClient] = useState(false);
+  const idClientInputRef = useRef(null);
   const [searchClient, setSearchClient] = useState("");
   const [searchClientList, setSearchClientList] = useState([]);
 
   const [searchNeighborhood, setSearchNeighborhood] = useState("");
-
-  const useStyles = makeStyles((theme) => ({
-    modal: {
-      display: "flex",
-      alignItems: "center",
-      justifyContent: "center",
-    },
-    paper: {
-      backgroundColor: "#ffffff",
-      borderRadius: "10px",
-      boxShadow: theme.shadows[5],
-      padding: theme.spacing(2, 4, 3),
-      width: "70%",
-      height: "80%",
-    },
-  }));
-
-  const classes = useStyles();
-
-  const handleOpenModalSearchClient = () => {
-    setSearchClientList([
-      {
-        id: "1",
-        cnpj: "123456787",
-        companyName: "Gabriel Rodrigues Sozuza",
-        fanstasyName: "Gabriel",
-      },
-      {
-        id: "2",
-        cnpj: "12345678789",
-        companyName: "Gabriel Rodrigues Sozuza 1",
-        fanstasyName: "Gabriel 1",
-      },
-      {
-        id: "3",
-        cnpj: "12345678789",
-        companyName: "Gabriel Rodrigues Sozuza 1",
-        fanstasyName: "Gabriel 1",
-      },
-      {
-        id: "4",
-        cnpj: "12345678789",
-        companyName: "Gabriel Rodrigues Sozuza 1",
-        fanstasyName: "Gabriel 1",
-      },
-      {
-        id: "5",
-        cnpj: "12345678789",
-        companyName: "Gabriel Rodrigues Sozuza 1",
-        fanstasyName: "Gabriel 1",
-      },
-      {
-        id: "6",
-        cnpj: "12345678789",
-        companyName: "Gabriel Rodrigues Sozuza 1",
-        fanstasyName: "Gabriel 1",
-      },
-      {
-        id: "7",
-        cnpj: "12345678789",
-        companyName: "Gabriel Rodrigues Sozuza 1",
-        fanstasyName: "Gabriel 1",
-      },
-    ]);
-    setTitleModal("PESQUISAR CLIENTES");
-    setOpenModalSearchClient(true);
-  };
-
-  const handleClose = () => {
-    setTitleModal("");
-    setOpenModalSearchClient(false);
-  };
-  // #endregion
 
   // #region Verify Session
   async function virifyAuthorization() {
@@ -490,10 +424,27 @@ export default function Client() {
   }
   // #endregion
 
-  // #region Handle Search Client
+  // #region Handle Open Modal Search Person
+  const handleOpenModalSearchClientEdit = () => {
+    setLoadingModal(true);
+    loadSearchClientList();
+
+    setTitleIconModal(<RiUser2Line size={30} />);
+    setTitleModal("PESQUISAR CLIENTE");
+    setOpenModalSearchClient(true);
+  };
+
+  const handleCloseModalSearchClientEdit = () => {
+    setTitleModal("");
+    setOpenModalSearchClient(false);
+  };
+  // #endregion
+
+  // #region Handle Select Search Client
   function handleSelectClientInSearch(id) {
+    clearFields();
     setIdClient(id);
-    handleClose();
+    handleCloseModalSearchClientEdit();
     inputFocusIdClient();
   }
 
@@ -504,15 +455,77 @@ export default function Client() {
   }
   // #endregion
 
+  // #region Load Search Person List
+  async function loadSearchClientList() {
+    setLoadingModal(true);
+
+    try {
+      const response = await api.get(
+        `/client/?nameFantasy=${searchClient.toUpperCase()}`
+      );
+
+      if (response) {
+        console.log(response.data);
+
+        setSearchClientList(response.data);
+        setLoadingModal(false);
+      }
+    } catch (error) {
+      setLoadingModal(false);
+
+      if (error.response) {
+        const dataError = error.response.data;
+        const statusError = error.response.status;
+        console.error(dataError);
+        console.error(statusError);
+
+        if (statusError === 400 && dataError.message) {
+          console.log(dataError.message);
+          switch (dataError.message) {
+            case '"nameFantasy" is required':
+              notify(
+                "error",
+                "Erro: o QUERY PARAM 'nameFantasy' não foi encontrado no endereço da rota."
+              );
+              break;
+
+            default:
+              notify("warning", dataError.message);
+          }
+        }
+
+        if (statusError === 401) {
+          switch (dataError.message) {
+            default:
+              notify("warning", dataError.message);
+          }
+        }
+      } else if (error.request) {
+        notify(
+          "error",
+          `Oops, algo deu errado, entre em contato com o suporte de TI. ${error}`
+        );
+        console.log(error.request);
+      } else {
+        notify(
+          "error",
+          `Oops, algo deu errado, entre em contato com o suporte de TI. ${error}`
+        );
+        console.log("Error", error.message);
+      }
+    }
+  }
+  // #endregion
+
   return (
     <div className="main-container">
       <Modal
         id="modalSearchClient"
         aria-labelledby="transition-modal-title"
         aria-describedby="transition-modal-description"
-        className={classes.modal}
+        className={ClassesModal.modal}
         open={openModalSearchClient}
-        onClose={handleClose}
+        onClose={handleCloseModalSearchClientEdit}
         closeAfterTransition
         BackdropComponent={Backdrop}
         BackdropProps={{
@@ -520,8 +533,10 @@ export default function Client() {
         }}
       >
         <Fade in={openModalSearchClient}>
-          <div className={classes.paper}>
-            <h1 className="modal-search-title">{titleModal}</h1>
+          <div className={ClassesModal.paper}>
+            <h1 className="modal-search-title">
+              {titleIconModal} {titleModal}
+            </h1>
             <div className="modal-search-content">
               <div className="modal-search-input-button">
                 <div className="input-label-block-colum">
@@ -531,12 +546,14 @@ export default function Client() {
                     type="text"
                     value={searchClient}
                     onChange={(e) => setSearchClient(e.target.value)}
+                    onKeyUp={loadSearchClientList}
                   ></input>
                 </div>
 
                 <button
                   type="button"
                   className="button btnDefault btnSearchModal"
+                  onClick={loadSearchClientList}
                 >
                   <RiSearchLine size={24} />
                   Buscar
@@ -544,31 +561,41 @@ export default function Client() {
               </div>
 
               <div className="modal-search-list">
-                {searchClientList.map((client) => (
-                  <div className="searchListIten" key={client.id}>
-                    <div className="searchItenData">
-                      <strong>Código: {client.id}</strong>
-                      <section id="searchClientData">
-                        <p id="searchCnpjClient">CNPJ: {client.cnpj}</p>
-                        <p id="searchCompanyNameClient">
-                          Razão Social: {client.companyName}
-                        </p>
-                        <p id="searchNameFantasyClient">
-                          Nome Fantasia: {client.fanstasyName}
-                        </p>
-                      </section>
+                {loadingModal ? (
+                  <Loading type="bars" color="#0f4c82" />
+                ) : (
+                  searchClientList.map((client) => (
+                    <div
+                      className="searchListIten"
+                      key={client.id}
+                      onDoubleClick={() =>
+                        handleSelectClientInSearch(client.id)
+                      }
+                    >
+                      <div className="searchItenData">
+                        <strong>Código: {client.id}</strong>
+                        <section id="searchClientData">
+                          <p id="searchCnpjClient">CNPJ: {client.cpf_cnpj}</p>
+                          <p id="searchCompanyNameClient">
+                            Razão Social: {client.company_name}
+                          </p>
+                          <p id="searchNameFantasyClient">
+                            Nome Fantasia: {client.name_fantasy}
+                          </p>
+                        </section>
+                      </div>
+                      <div className="clientBtnSelect">
+                        <button
+                          type="button"
+                          className="button btnSuccess"
+                          onClick={() => handleSelectClientInSearch(client.id)}
+                        >
+                          <RiCheckLine size={24} />
+                        </button>
+                      </div>
                     </div>
-                    <div className="clientBtnSelect">
-                      <button
-                        type="button"
-                        className="button btnSuccess"
-                        onClick={() => handleSelectClientInSearch(client.id)}
-                      >
-                        <RiCheckLine size={24} />
-                      </button>
-                    </div>
-                  </div>
-                ))}
+                  ))
+                )}
               </div>
             </div>
           </div>
@@ -655,7 +682,7 @@ export default function Client() {
                           <button
                             type="button"
                             className="button btnDefault"
-                            onClick={handleOpenModalSearchClient}
+                            onClick={handleOpenModalSearchClientEdit}
                           >
                             <RiSearchLine size={24} />
                           </button>

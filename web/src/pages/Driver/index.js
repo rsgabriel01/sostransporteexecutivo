@@ -588,7 +588,7 @@ export default function Driver() {
                     </div>
                   </div>
 
-                  <div className="button-group">
+                  <div className="button-group-forms">
                     {updateRegister ? (
                       <>
                         <button
@@ -619,7 +619,7 @@ export default function Driver() {
                         </button>
                       </>
                     ) : (
-                      <>
+                      <div>
                         <button
                           type="button"
                           className="button btnReturn"
@@ -640,7 +640,7 @@ export default function Driver() {
                           <RiPencilLine size={25} />
                           Alterar
                         </button>
-                      </>
+                      </div>
                     )}
                   </div>
                 </form>

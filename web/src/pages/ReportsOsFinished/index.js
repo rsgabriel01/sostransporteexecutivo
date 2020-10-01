@@ -1,31 +1,21 @@
 import React, { useState, useEffect } from "react";
-import { Link, useHistory } from "react-router-dom";
+import { useHistory } from "react-router-dom";
 import LateralMenu from "../components/LateralMenu/LateralMenu";
 import Header from "../components/Header/Header";
 import Loading from "../components/Loading/Loading";
 
 import {
   getDateForDatePickerWithClassDate,
-  getDateForDatePickerWithDateString,
   getDateOfDatePickerValue,
 } from "../../helpers/dates";
 
 import { isAuthenticated, logout } from "../../services/auth";
 
 import {
-  RiFileCopy2Line,
-  RiArrowRightLine,
-  RiTaxiWifiLine,
-  RiCheckLine,
-  RiFileList2Line,
-  RiFilterLine,
   RiFileTextLine,
   RiSearchLine,
-  RiHistoryLine,
-  RiFileHistoryLine,
   RiFileSearchLine,
   RiPrinterLine,
-  RiSave3Line,
   RiFileExcel2Line,
 } from "react-icons/ri";
 
@@ -37,7 +27,7 @@ export default function Main() {
   const date = new Date();
 
   const [loading, setLoading] = useState(true);
-  const [idClient, setIdClient] = useState("");
+  // const [idClient, setIdClient] = useState("");
   const [companyName, setCompanyName] = useState("");
   const [startDate, setStartDate] = useState(
     getDateForDatePickerWithClassDate(date)
@@ -45,12 +35,6 @@ export default function Main() {
   const [endDate, setEndDate] = useState(
     getDateForDatePickerWithClassDate(date)
   );
-
-  //#region Use Effect
-  useEffect(() => {
-    virifyAuthorization();
-  }, []);
-  //#endregion
 
   //#region Verify Session
   async function virifyAuthorization() {
@@ -62,7 +46,12 @@ export default function Main() {
       setLoading(false);
     }
   }
+  //#endregion
 
+  //#region Use Effect
+  useEffect(() => {
+    virifyAuthorization();
+  }, []);
   //#endregion
 
   //#region Handle Set Start Date

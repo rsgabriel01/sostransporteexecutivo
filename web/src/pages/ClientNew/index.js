@@ -546,7 +546,7 @@ export default function ClientNew() {
                     </div>
                   </div>
 
-                  <div className="button-group">
+                  <div className="button-group-forms">
                     <button
                       type="button"
                       className={`button btnReturn ${btnInactive}`}

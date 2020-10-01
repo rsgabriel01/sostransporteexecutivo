@@ -354,6 +354,30 @@ input[type="date"]::-webkit-calendar-picker-indicator:hover {
   justify-content: center;
 }
 
+.button-group-forms {
+  display: flex;
+  flex-direction: row;
+
+  justify-content: flex-end;
+
+  column-gap: 10px;
+
+  padding-top: 50px;
+}
+
+.button-group-forms div {
+  display: flex;
+  flex-direction: row;
+
+  justify-content: flex-end;
+
+  column-gap: 10px;
+}
+
+.button-group-forms button {
+  height: 45px;
+  width: 150px;
+}
 /* Animation Loading */
 @keyframes spin-animation {
   0% {

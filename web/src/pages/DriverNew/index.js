@@ -603,7 +603,7 @@ export default function DriverNew() {
                     </div>
                   </div>
 
-                  <div className="button-group">
+                  <div className="button-group-forms">
                     <button
                       type="button"
                       className={`button btnReturn ${btnInactive}`}

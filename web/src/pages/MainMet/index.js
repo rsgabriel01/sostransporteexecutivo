@@ -35,12 +35,6 @@ export default function MainMet() {
     getDateForDatePickerWithClassDate(date)
   );
 
-  //#region Use Effect
-  useEffect(() => {
-    virifyAuthorization();
-  }, []);
-  //#endregion
-
   //#region Verify Session
   async function virifyAuthorization() {
     const response = await isAuthenticated();
@@ -51,7 +45,12 @@ export default function MainMet() {
       setLoading(false);
     }
   }
+  //#endregion
 
+  //#region Use Effect
+  useEffect(() => {
+    virifyAuthorization();
+  }, []);
   //#endregion
 
   //#region Handle Set Start Date

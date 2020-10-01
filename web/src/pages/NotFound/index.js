@@ -1,10 +1,6 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 
 import { useHistory } from "react-router-dom";
-
-import Loading from "../components/Loading/Loading";
-
-import { isAuthenticated, logout } from "../../services/auth";
 
 import { RiArrowLeftLine } from "react-icons/ri";
 
@@ -15,8 +11,6 @@ import notFoundImage from "../../assets/notFoundImage.svg";
 export default function NotFound() {
   let history = useHistory();
 
-  const [loading, setLoading] = useState(true);
-
   return (
     <div className="notfound-container">
       <img src={notFoundImage} alt="Solicitação de viagem" />
@@ -24,7 +18,7 @@ export default function NotFound() {
         <h1>Oops... quebrou!</h1>
         <p>Não conseguimos encontrar a página que você está procurando.</p>
 
-        <div className="button-group">
+        <div className="button-group-forms">
           <button
             type="button"
             className="button btnDefault"

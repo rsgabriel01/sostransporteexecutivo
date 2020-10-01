@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from "react";
-import { Link, useHistory } from "react-router-dom";
+import { useHistory } from "react-router-dom";
 import LateralMenu from "../components/LateralMenu/LateralMenu";
 import Header from "../components/Header/Header";
 import Loading from "../components/Loading/Loading";
 
-import api from "../../services/api";
+// import api from "../../services/api";
 
 import { isAuthenticated, logout } from "../../services/auth";
 
@@ -32,7 +32,7 @@ export default function ServiceOrdersRequest() {
     true
   );
 
-  const [idClient, setIdClient] = useState("");
+  // const [idClient, setIdClient] = useState("");
   const [client, setClient] = useState("");
 
   const [rbCheckedAddressOrigin, setRbCheckedAddressOrigin] = useState(false);
@@ -60,12 +60,6 @@ export default function ServiceOrdersRequest() {
 
   //#endregion
 
-  //#region Use Effect
-  useEffect(() => {
-    virifyAuthorization();
-  }, []);
-  //#endregion
-
   //#region Verify Session
   async function virifyAuthorization() {
     const response = await isAuthenticated();
@@ -76,7 +70,12 @@ export default function ServiceOrdersRequest() {
       setLoading(false);
     }
   }
+  //#endregion
 
+  //#region Use Effect
+  useEffect(() => {
+    virifyAuthorization();
+  }, []);
   //#endregion
 
   //#region Request Service Order
@@ -413,7 +412,7 @@ export default function ServiceOrdersRequest() {
                     </div>
                   </div>
 
-                  <div className="button-group">
+                  <div className="button-group-forms">
                     <button
                       type="button"
                       className="button btnReturn"

@@ -656,7 +656,7 @@ export default function Vehicles() {
                     </div>
                   </div>
 
-                  <div className="button-group">
+                  <div className="button-group-forms">
                     {updateRegister ? (
                       <>
                         <button
@@ -687,7 +687,7 @@ export default function Vehicles() {
                         </button>
                       </>
                     ) : (
-                      <>
+                      <div>
                         <button
                           type="button"
                           className="button btnReturn"
@@ -708,7 +708,7 @@ export default function Vehicles() {
                           <RiPencilLine size={25} />
                           Alterar
                         </button>
-                      </>
+                      </div>
                     )}
                   </div>
                 </form>

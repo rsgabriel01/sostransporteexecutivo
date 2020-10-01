@@ -1,5 +1,5 @@
 /* eslint-disable camelcase */
-import React, { useState, useEffect, useRef, useCallback } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { Link, useHistory } from "react-router-dom";
 import { confirmAlert } from "react-confirm-alert";
 import { ToastContainer } from "react-toastify";
@@ -867,7 +867,7 @@ export default function Client() {
                     </div>
                   </div>
 
-                  <div className="button-group">
+                  <div className="button-group-forms">
                     {updateRegister ? (
                       <>
                         <button
@@ -898,7 +898,7 @@ export default function Client() {
                         </button>
                       </>
                     ) : (
-                      <>
+                      <div>
                         <button
                           type="button"
                           className="button btnReturn"
@@ -919,7 +919,7 @@ export default function Client() {
                           <RiPencilLine size={25} />
                           Alterar
                         </button>
-                      </>
+                      </div>
                     )}
                   </div>
                 </form>

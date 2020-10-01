@@ -76,6 +76,10 @@ export default function Person() {
   const useStyles = makeStyles((theme) => jsonClassesModal(theme));
   const ClassesModal = useStyles();
 
+  const btnAlterPesonRef = useRef(null);
+  const btnUpdatePesonRef = useRef(null);
+  const formVisuAlterPersonRef = useRef(null);
+
   // #endregion
 
   // #region Verify Session
@@ -136,8 +140,9 @@ export default function Person() {
   function clearFields(withCode) {
     if (withCode) {
       setIdPeople("");
-      setPersonFinded(false);
     }
+
+    setPersonFinded(false);
 
     setName("");
     setCpf_cnpj("");
@@ -157,6 +162,7 @@ export default function Person() {
     setTitleUpdate("");
     setUpdateRegister(false);
     setIsReadonly(true);
+    setSearchPersonInactive(false);
   }
   // #endregion
 
@@ -182,7 +188,6 @@ export default function Person() {
   // #endregion
 
   // #region Load Data Person
-
   async function loadDataPerson(id) {
     try {
       clearFields();
@@ -253,11 +258,11 @@ export default function Person() {
 
   // #region Handle Search Person
   function handleSearchPerson(idPerson) {
-    if (idPerson) {
+    if (idPerson && !updateRegister) {
       loadDataPerson(idPerson);
       setUpdateRegister(false);
       setTitleUpdate("");
-    } else {
+    } else if (!updateRegister) {
       clearFields();
     }
   }
@@ -405,7 +410,7 @@ export default function Person() {
   // #endregion
 
   // #region Handle Submit Update
-  function handleSubmitUpdate(e) {
+  const handleSubmitUpdate = (e) => {
     e.preventDefault();
 
     confirmationAlert(
@@ -413,7 +418,7 @@ export default function Person() {
       "Deseja realmente SALVAR essa alteração?",
       "updatePerson"
     );
-  }
+  };
   // #endregion
 
   // #region Handle Cancel Update
@@ -427,10 +432,11 @@ export default function Person() {
   // #endregion
 
   // #region Handle Update Register
-  function handleUpdateRegister() {
+  const handleUpdateRegister = () => {
     if (personFinded) {
       setTitleUpdate("ALTERAR ");
 
+      setSearchPersonInactive(true);
       setUpdateRegister(true);
       setIsReadonly(false);
     } else if (idPeople.length === 0) {
@@ -444,7 +450,7 @@ export default function Person() {
         "Não foi possível acessar a alteração de dados, pois nenhuma pessoa foi encontrada."
       );
     }
-  }
+  };
   // #endregion
 
   // #region Handle Open Modal Search Person
@@ -672,7 +678,11 @@ export default function Person() {
               </div>
 
               <section className="form">
-                <form onSubmit={handleSubmitUpdate}>
+                <form
+                  id="formVisuAlterPerson"
+                  ref={formVisuAlterPersonRef}
+                  onSubmit={handleSubmitUpdate}
+                >
                   <div className="form-title">
                     <RiBook2Line size={30} />
                     <h1>
@@ -721,10 +731,14 @@ export default function Person() {
 
                           <button
                             type="button"
+                            disabled={searchPersonInactive}
                             className={`button btnDefault ${
                               searchPersonInactive ? "btnInactive" : ""
                             }`}
-                            onClick={handleOpenModalSearchPersonEdit}
+                            onClick={() => {
+                              clearFields();
+                              handleOpenModalSearchPersonEdit();
+                            }}
                           >
                             <RiSearchLine size={24} />
                           </button>
@@ -886,10 +900,11 @@ export default function Person() {
                     </div>
                   </div>
 
-                  <div className="button-group">
+                  <div className="button-group-forms">
                     {updateRegister ? (
                       <>
                         <button
+                          id="btnCancelPerson"
                           type="button"
                           className={`button btnCancel ${btnInactive}`}
                           disabled={loadingButton}
@@ -901,6 +916,7 @@ export default function Person() {
                           Cancelar
                         </button>
                         <button
+                          id="btnUpdatePerson"
                           type="submit"
                           className={`button btnSuccess ${btnInactive}`}
                           disabled={loadingButton}
@@ -917,8 +933,9 @@ export default function Person() {
                         </button>
                       </>
                     ) : (
-                      <>
+                      <div>
                         <button
+                          id="btnCleanSearchPerson"
                           type="button"
                           className="button btnReturn"
                           onClick={() => {
@@ -929,16 +946,16 @@ export default function Person() {
                           Limpar
                         </button>
                         <button
+                          ref={btnAlterPesonRef}
+                          id="btnAlterPerson"
                           type="button"
                           className="button btnDefault"
-                          onClick={() => {
-                            handleUpdateRegister();
-                          }}
+                          onClick={handleUpdateRegister}
                         >
                           <RiPencilLine size={25} />
                           Alterar
                         </button>
-                      </>
+                      </div>
                     )}
                   </div>
                 </form>

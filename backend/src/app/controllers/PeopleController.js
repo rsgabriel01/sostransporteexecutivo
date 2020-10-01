@@ -27,6 +27,7 @@ module.exports = {
           },
           active: true,
         },
+        order: [["id", "ASC"]],
       });
 
       return res.json(people);

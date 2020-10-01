@@ -64,7 +64,6 @@ export default function PersonUser(props) {
       setLoading(false);
     }
   }
-
   // #endregion
 
   // #region Clear Fields
@@ -455,7 +454,6 @@ export default function PersonUser(props) {
     virifyAuthorization();
     loadDataUser(props.match.params.id);
   }, []);
-
   // #endregion
 
   return (
@@ -599,7 +597,7 @@ export default function PersonUser(props) {
                     </div>
                   </div>
 
-                  <div className="button-group">
+                  <div className="button-group-forms">
                     {updateRegister ? (
                       <>
                         <button
@@ -630,7 +628,7 @@ export default function PersonUser(props) {
                         </button>
                       </>
                     ) : (
-                      <>
+                      <div>
                         <button
                           type="button"
                           className="button btnReturn"
@@ -651,7 +649,7 @@ export default function PersonUser(props) {
                           <RiPencilLine size={25} />
                           Alterar
                         </button>
-                      </>
+                      </div>
                     )}
                   </div>
                 </form>

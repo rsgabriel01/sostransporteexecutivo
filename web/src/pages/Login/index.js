@@ -6,11 +6,7 @@ import { ToastContainer } from "react-toastify";
 
 import api from "../../services/api";
 
-import {
-  login,
-  isAuthenticated,
-  getNameExecutingPerson,
-} from "../../services/auth";
+import { login, isAuthenticated } from "../../services/auth";
 
 import Loading from "../components/Loading/Loading";
 
@@ -35,7 +31,6 @@ export default function Login() {
   //#region Definitions
 
   let history = useHistory();
-  const authorization = localStorage.getItem("authorization");
   //#endregion
 
   //#region States

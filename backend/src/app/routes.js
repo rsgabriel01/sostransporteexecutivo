@@ -8,7 +8,7 @@ const UsersController = require("./controllers/UsersController");
 const NeighborhoodsController = require("./controllers/NeighborhoodsController");
 const PeopleAddressController = require("./controllers/PeopleAddressController");
 const DriversController = require("./controllers/DriversController");
-const PeopleController = require("./controllers/PeopleController");
+const PersonLikeNameController = require("./controllers/PersonLikeNameController");
 const PersonController = require("./controllers/PersonController");
 const ServiceOrdersController = require("./controllers/ServiceOrdersController");
 const SessionsController = require("./controllers/SessionsController");
@@ -20,7 +20,7 @@ const TypesController = require("./controllers/TypesController");
 const VehicleBrandsController = require("./controllers/VehicleBrandsController");
 const VehicleModelsController = require("./controllers/VehicleModelsController");
 const VehiclesController = require("./controllers/VehiclesController");
-const ClientsController = require("./controllers/ClientsController");
+const clientController = require("./controllers/clientController");
 // #endregion
 
 // #region Validators
@@ -36,7 +36,9 @@ const {
   validatorPersonUpdate,
 } = require("./validators/routesPerson");
 
-const { validatorPeopleIndexActive } = require("./validators/routesPeople");
+const {
+  validatorPersonIndexLikeName,
+} = require("./validators/routesPersonLikeName");
 
 const { validatorAddressCreate } = require("./validators/routesPeopleAddress");
 
@@ -51,7 +53,7 @@ const { validatorDriversCreate } = require("./validators/routesDrivers");
 
 const { validatorVehiclesCreate } = require("./validators/routesVehicles");
 
-const { validatorClientsCreate } = require("./validators/routesClients");
+const { validatorClientCreate } = require("./validators/routesClient");
 // #endregion
 
 // #region Middlewares
@@ -98,13 +100,21 @@ routes.put(
 );
 // #endregion
 
-// #region People
+// #region Person like name
 routes.get(
-  "/people/active/",
-  validatorPeopleIndexActive,
+  "/person/",
+  validatorPersonIndexLikeName,
   verifySession,
   permissionAdminAttendance,
-  PeopleController.indexActive
+  PersonLikeNameController.indexLikeName
+);
+
+routes.get(
+  "/person/active/",
+  validatorPersonIndexLikeName,
+  verifySession,
+  permissionAdminAttendance,
+  PersonLikeNameController.indexActiveLikeName
 );
 // #endregion
 
@@ -181,13 +191,23 @@ routes.post(
 );
 // #endregion
 
-// #region Clients
+// #region Client
 routes.post(
-  "/clients/create",
-  validatorClientsCreate,
+  "/client/create",
+  validatorClientCreate,
   verifySession,
   permissionAdminAttendance,
-  ClientsController.store
+  clientController.store
+);
+// #endregion
+
+// #region Clients
+routes.post(
+  "/clients/active",
+  validatorClientCreate,
+  verifySession,
+  permissionAdminAttendance,
+  clientController.store
 );
 // #endregion
 

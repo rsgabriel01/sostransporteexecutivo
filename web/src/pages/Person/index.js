@@ -491,7 +491,7 @@ export default function Person() {
 
     try {
       const response = await api.get(
-        `/people/active/?nam=${searchPerson.toUpperCase()}`
+        `/person/?name=${searchPerson.toUpperCase()}`
       );
 
       if (response) {

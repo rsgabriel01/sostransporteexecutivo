@@ -27,6 +27,7 @@ const StatesController = require("./controllers/StatesController");
 const CitysController = require("./controllers/CitysController");
 
 const NeighborhoodsController = require("./controllers/NeighborhoodsController");
+const NeighborhoodsLikeNameController = require("./controllers/NeighborhoodsLikeNameController");
 
 const TravelFeeController = require("./controllers/TravelFeeController");
 
@@ -42,6 +43,7 @@ const VehiclesController = require("./controllers/VehiclesController");
 // #endregion
 
 // #region Validators
+// #region Person
 const {
   validatorPersonCreate,
   validatorPersonShow,
@@ -51,31 +53,76 @@ const {
 const {
   validatorPersonIndexLikeName,
 } = require("./validators/routesPersonLikeName");
+// #endregion
 
+// #region Client
 const { validatorClientCreate } = require("./validators/routesClient");
 
 const {
   validatorClientIndexLikeNameFantasy,
 } = require("./validators/routesClientLikeNameFantasy");
+// #endregion
 
+// #region Driver
+const { validatorDriversCreate } = require("./validators/routesDrivers");
+// #endregion
+
+// #region Types
+// #endregion
+
+// #region TypePeople
+
+// #endregion
+
+// #region PeopleAddress
+const { validatorTypePeopleCreate } = require("./validators/routesTypePeople");
+
+const { validatorAddressCreate } = require("./validators/routesPeopleAddress");
+// #endregion
+
+// #region Users
+const {
+  validatorUsersCreate,
+  validatorUsersUpdate,
+} = require("./validators/routesUsers");
+// #endregion
+
+// #region Sessions
 const {
   validatorLogin,
   validatorSession,
   validatorLogout,
 } = require("./validators/routesAcess");
+// #endregion
 
-const { validatorAddressCreate } = require("./validators/routesPeopleAddress");
+// #region States
+// #endregion
 
-const { validatorTypePeopleCreate } = require("./validators/routesTypePeople");
+// #region Citys
+// #endregion
 
-const {
-  validatorUsersCreate,
-  validatorUsersUpdate,
-} = require("./validators/routesUsers");
+// #region Neighborhood
+// #endregion
 
-const { validatorDriversCreate } = require("./validators/routesDrivers");
+// #region TravelFee
+// #endregion
 
+// #region Status
+// #endregion
+
+// #region ServiceOrders
+// #endregion
+
+// #region VehicleBrands
+// #endregion
+
+// #region VehicleModels
+// #endregion
+
+// #region Vehicle
 const { validatorVehiclesCreate } = require("./validators/routesVehicles");
+// #endregion
+
 // #endregion
 
 // #region Middlewares
@@ -87,7 +134,9 @@ routes.get("/", (req, res) => {
   return res.json("Server is running...");
 });
 
-// #region Routes Acess
+//#region Routes
+
+// #region Acess
 routes.get("/acess/session", validatorSession, SessionsController.show);
 
 routes.post("/acess/login", validatorLogin, SessionsController.store);
@@ -95,7 +144,7 @@ routes.post("/acess/login", validatorLogin, SessionsController.store);
 routes.get("/acess/logout", validatorLogout, SessionsController.destroy);
 // #endregion
 
-// #region Routes Person
+// #region Person
 routes.post(
   "/person/create",
   validatorPersonCreate,
@@ -119,9 +168,7 @@ routes.put(
   permissionAdminAttendance,
   PersonController.update
 );
-// #endregion
 
-// #region Person like name
 routes.get(
   "/person/",
   validatorPersonIndexLikeName,
@@ -147,7 +194,14 @@ routes.post(
   permissionAdminAttendance,
   clientController.store
 );
-// #endregion
+
+routes.post(
+  "/clients/active",
+  validatorClientCreate,
+  verifySession,
+  permissionAdminAttendance,
+  clientController.store
+);
 
 routes.get(
   "/client/",
@@ -156,23 +210,39 @@ routes.get(
   permissionAdminAttendance,
   clientLikeNameFantasyController.indexLikeNameFantsy
 );
-// #region People Address
+
+// #endregion
+
+// #region Driver
 routes.post(
-  "/address/create",
-  validatorAddressCreate,
+  "/drivers/create",
+  validatorDriversCreate,
   verifySession,
   permissionAdminAttendance,
-  PeopleAddressController.store
+  DriversController.store
 );
 // #endregion
 
-// #region Type People
+// #region Types
+// #endregion
+
+// #region TypePeople
 routes.post(
   "/typepeople/create",
   validatorTypePeopleCreate,
   verifySession,
   permissionAdminAttendance,
   TypePeopleController.store
+);
+// #endregion
+
+// #region PeopleAddress
+routes.post(
+  "/address/create",
+  validatorAddressCreate,
+  verifySession,
+  permissionAdminAttendance,
+  PeopleAddressController.store
 );
 // #endregion
 
@@ -199,20 +269,43 @@ routes.put(
   permissionAdminAttendance,
   UsersController.update
 );
-
 // #endregion
 
-// #region Drivers
-routes.post(
-  "/drivers/create",
-  validatorDriversCreate,
-  verifySession,
-  permissionAdminAttendance,
-  DriversController.store
+// #region Sessions
+// #endregion
+
+// #region States
+// #endregion
+
+// #region Citys
+// #endregion
+
+// #region Neighborhood
+routes.get("/neighborhoods", NeighborhoodsController.index);
+routes.get(
+  "/neighborhoods/like/",
+  NeighborhoodsLikeNameController.indexLikeName
 );
 // #endregion
 
-// #region Vehicles
+// #region TravelFee
+routes.get("/travelFee", TravelFeeController.index);
+// #endregion
+
+// #region Status
+// #endregion
+
+// #region ServiceOrders
+routes.get("/serviceOrders", ServiceOrdersController.index);
+// #endregion
+
+// #region VehicleBrands
+// #endregion
+
+// #region VehicleModels
+// #endregion
+
+// #region Vehicle
 routes.get(
   "/vehicles",
   verifySession,
@@ -229,25 +322,10 @@ routes.post(
 );
 // #endregion
 
-// #region Clients
-routes.post(
-  "/clients/active",
-  validatorClientCreate,
-  verifySession,
-  permissionAdminAttendance,
-  clientController.store
-);
-// #endregion
+//#endregion Routes
 
-routes.get("/citys", CitysController.index);
-routes.get("/neighborhoods", NeighborhoodsController.index);
-routes.get("/serviceOrders", ServiceOrdersController.index);
-// routes.get("/sessions", SessionsController.index);
-routes.get("/states", StatesController.index);
-routes.get("/status", StatusController.index);
-routes.get("/travelFee", TravelFeeController.index);
-routes.get("/types", TypesController.index);
-routes.get("/vehicleBrands", VehicleBrandsController.index);
-routes.get("/vehicleModels", VehicleModelsController.index);
+// #region Clients
+
+// #endregion
 
 module.exports = routes;

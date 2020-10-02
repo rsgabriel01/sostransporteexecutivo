@@ -462,6 +462,7 @@ export default function Person() {
 
   const handleCloseModalSearchPersonEdit = () => {
     setTitleModal("");
+    setSearchPerson("");
     setOpenModalSearchPerson(false);
   };
   // #endregion

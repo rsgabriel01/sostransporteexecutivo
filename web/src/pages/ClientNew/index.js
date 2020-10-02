@@ -19,6 +19,7 @@ import {
   RiArrowLeftLine,
   RiUser2Line,
   RiRoadMapLine,
+  RiArrowRightUpLine,
 } from "react-icons/ri";
 import LateralMenu from "../components/LateralMenu/LateralMenu";
 import Header from "../components/Header/Header";
@@ -39,6 +40,7 @@ export default function ClientNew() {
   const history = useHistory();
   const [loading, setLoading] = useState(true);
   const [loadingModal, setLoadingModal] = useState(true);
+  const [isReadOnly, setIsReadOnly] = useState(true);
 
   const [loadingButton, setLoadingButton] = useState(false);
   const [textButtonSave, setTextButtonSave] = useState("Salvar");
@@ -340,7 +342,6 @@ export default function ClientNew() {
 
   // #region Handle Open Modal Search Neighborhood
   const handleOpenModalSearchNeighborhood = () => {
-    setLoadingModal(true);
     loadSearchNeighborhoodList();
 
     setTitleIconModal(<RiRoadMapLine size={30} />);
@@ -350,14 +351,18 @@ export default function ClientNew() {
 
   const handleCloseModalSearchNeighborhood = () => {
     setTitleModal("");
+    setSearchNeighborhood("");
     setOpenModalSearchNeighborhood(false);
   };
   // #endregion
 
   // #region Handle Select Search Neighborhood
-  function handleSelectNeighborhoodInSearch(id) {
+  function handleSelectNeighborhoodInSearch(id, neighborhood) {
     clearFields();
     setIdNeighborhood(id);
+    setIsReadOnly(false);
+    setNeighborhood(neighborhood);
+    setIsReadOnly(true);
     handleCloseModalSearchNeighborhood();
     inputFocusStreet();
   }
@@ -375,7 +380,7 @@ export default function ClientNew() {
 
     try {
       const response = await api.get(
-        `/neighborhood/?name=${searchNeighborhood}`
+        `/neighborhoods/like/?name=${searchNeighborhood.toUpperCase()}`
       );
 
       if (response) {
@@ -483,18 +488,14 @@ export default function ClientNew() {
                       className="searchListIten"
                       key={client.id}
                       onDoubleClick={() =>
-                        handleSelectNeighborhoodInSearch(client.id)
+                        handleSelectNeighborhoodInSearch(client.id, client.name)
                       }
                     >
                       <div className="searchItenData">
                         <strong>Código: {client.id}</strong>
                         <section id="searchClientData">
-                          <p id="searchCnpjClient">CNPJ: {client.cpf_cnpj}</p>
                           <p id="searchCompanyNameClient">
-                            Razão Social: {client.company_name}
-                          </p>
-                          <p id="searchNameFantasyClient">
-                            Nome Fantasia: {client.name_fantasy}
+                            Bairro: {client.name}
                           </p>
                         </section>
                       </div>
@@ -503,10 +504,13 @@ export default function ClientNew() {
                           type="button"
                           className="button btnSuccess"
                           onClick={() =>
-                            handleSelectNeighborhoodInSearch(client.id)
+                            handleSelectNeighborhoodInSearch(
+                              client.id,
+                              client.name
+                            )
                           }
                         >
-                          <RiCheckLine size={24} />
+                          <RiArrowRightUpLine size={24} />
                         </button>
                       </div>
                     </div>
@@ -649,7 +653,7 @@ export default function ClientNew() {
                             type="text"
                             value={neighborhood}
                             required
-                            readOnly
+                            readOnly={isReadOnly}
                             onChange={(e) => setNeighborhood(e.target.value)}
                           />
 
@@ -671,6 +675,7 @@ export default function ClientNew() {
                         <label htmlFor="street">Rua:</label>
 
                         <input
+                          ref={streetInputRef}
                           id="street"
                           type="text"
                           value={street}

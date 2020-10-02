@@ -21,6 +21,7 @@ import {
   RiUser2Line,
   RiCheckboxMultipleLine,
   RiMapPinLine,
+  RiArrowRightUpLine,
 } from "react-icons/ri";
 import LateralMenu from "../components/LateralMenu/LateralMenu";
 import Header from "../components/Header/Header";
@@ -436,6 +437,7 @@ export default function Client() {
 
   const handleCloseModalSearchClientEdit = () => {
     setTitleModal("");
+    setSearchClient("");
     setOpenModalSearchClient(false);
   };
   // #endregion
@@ -590,7 +592,7 @@ export default function Client() {
                           className="button btnSuccess"
                           onClick={() => handleSelectClientInSearch(client.id)}
                         >
-                          <RiCheckLine size={24} />
+                          <RiArrowRightUpLine size={24} />
                         </button>
                       </div>
                     </div>

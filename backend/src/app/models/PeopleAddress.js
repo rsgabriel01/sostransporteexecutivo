@@ -8,6 +8,7 @@ module.exports = (sequelize, DataTypes) => {
       id_neighborhood: DataTypes.BIGINT,
       street: DataTypes.STRING,
       street_number: DataTypes.BIGINT,
+      complement: DataTypes.STRING,
     },
     {
       tableName: "People_address",

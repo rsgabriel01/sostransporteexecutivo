@@ -47,7 +47,7 @@ export default function ClientNew() {
   const [btnInactive, setBtnInactive] = useState("");
 
   const [companyName, setCompanyName] = useState("");
-  const [fantasyName, setFantasyName] = useState("");
+  const [nameFantasy, setNameFantasy] = useState("");
   const [cpfCnpj, setCpfCnpj] = useState("");
   const [phone, setPhone] = useState("");
   const [email, setEmail] = useState("");
@@ -94,7 +94,7 @@ export default function ClientNew() {
   // #region Clear Fields
   function clearFields() {
     setCompanyName("");
-    setFantasyName("");
+    setNameFantasy("");
     setCpfCnpj("");
     setPhone("");
     setEmail("");
@@ -125,15 +125,15 @@ export default function ClientNew() {
   // #region Create Client
   async function createClient() {
     const dataPerson = {
-      companyName,
-      fantasyName,
-      cpfCnpj,
+      company_name: companyName.toUpperCase(),
+      name_fantasy: nameFantasy.toUpperCase(),
+      cpf_cnpj: cpfCnpj,
       phone,
       email,
-      idNeighborhood,
-      street,
-      streetNumber,
-      complement,
+      id_neighborhood: idNeighborhood,
+      street: street.toUpperCase(),
+      street_number: streetNumber,
+      complement: complement.toUpperCase(),
       active: checkedStatus,
     };
 
@@ -144,16 +144,20 @@ export default function ClientNew() {
     console.log(dataPerson);
 
     try {
-      const response = await api.post("/clients/create", dataPerson);
+      const response = await api.post("/client/create", dataPerson);
 
       if (response) {
         console.log(response.data);
 
-        notify("success", response.data.message);
+        notify(
+          "success",
+          `${response.data.message} Codigo do cliente: ${response.data.createdClientComplete.id}`
+        );
 
         setTextButtonSave("Salvar");
         setLoadingButton(false);
         setBtnInactive("");
+        clearFields();
       }
     } catch (error) {
       setTextButtonSave("Salvar");
@@ -277,7 +281,7 @@ export default function ClientNew() {
   const fieldsIsEmpty = () => {
     if (
       companyName !== "" ||
-      fantasyName !== "" ||
+      nameFantasy !== "" ||
       cpfCnpj !== "" ||
       phone !== "" ||
       email !== "" ||
@@ -358,7 +362,6 @@ export default function ClientNew() {
 
   // #region Handle Select Search Neighborhood
   function handleSelectNeighborhoodInSearch(id, neighborhood) {
-    clearFields();
     setIdNeighborhood(id);
     setIsReadOnly(false);
     setNeighborhood(neighborhood);
@@ -570,14 +573,14 @@ export default function ClientNew() {
                         className="input-label-block-column"
                         id="input-label-block-column"
                       >
-                        <label htmlFor="fantasyName">Nome Fantasia:</label>
+                        <label htmlFor="nameFantasy">Nome Fantasia:</label>
 
                         <input
-                          id="fantasyName"
+                          id="nameFantasy"
                           type="text"
                           required
-                          value={fantasyName}
-                          onChange={(e) => setFantasyName(e.target.value)}
+                          value={nameFantasy}
+                          onChange={(e) => setNameFantasy(e.target.value)}
                         />
                       </div>
                     </div>

@@ -1,15 +1,25 @@
-const { People } = require("../models");
+const { People, People_address, Neighborhoods } = require("../models");
 const { Op, fn, col, literal, QueryTypes, Sequelize } = require("sequelize");
 
 module.exports = {
   async store(req, res) {
     try {
-      const { company_name, name_fantasy, cpf_cnpj, phone, email } = req.body;
-      const { id_executingperson } = req.headers;
+      const {
+        company_name,
+        name_fantasy,
+        cpf_cnpj,
+        phone,
+        email,
+        id_neighborhood,
+        street,
+        street_number,
+        complement,
+        active,
+      } = req.body;
 
       const companyNameFinded = await People.findOne({
         where: {
-          company_name,
+          company_name: company_name.toUpperCase(),
         },
       });
 
@@ -44,20 +54,50 @@ module.exports = {
         });
       }
 
+      console.log(id_neighborhood);
+      const neighborhoodFinded = await Neighborhoods.findByPk(id_neighborhood);
+
+      console.log(neighborhoodFinded);
+      if (!neighborhoodFinded) {
+        return res.status(400).json({
+          message:
+            "O bairro informado não foi encontrado em nossa base de dados, por favor verifique.",
+        });
+      }
+
       const createdClient = await People.create({
         company_name: company_name.toUpperCase(),
         name_fantasy: name_fantasy.toUpperCase(),
         cpf_cnpj,
         phone,
         email,
-        active: true,
+        active,
       });
 
       if (createdClient) {
-        return res.json({
-          createdClient,
-          message: "Cadastro de cliente efetuado com sucesso!",
+        const createdClientAddress = await People_address.create({
+          id_people: createdClient.id,
+          id_neighborhood,
+          street: street.toUpperCase(),
+          street_number,
+          complement,
         });
+
+        if (createdClientAddress) {
+          const createdClientComplete = await People.findByPk(
+            createdClient.id,
+            {
+              include: ["People_address"],
+            }
+          );
+
+          if (createdClientComplete) {
+            return res.json({
+              createdClientComplete,
+              message: "Cadastro de cliente efetuado com sucesso!",
+            });
+          }
+        }
       }
     } catch (error) {
       console.log(error);

@@ -71,9 +71,9 @@ export default function Client() {
 
   const useStyles = makeStyles((theme) => jsonClassesModal(theme));
   const ClassesModal = useStyles();
-
   const [titleModal, setTitleModal] = useState("");
   const [titleIconModal, setTitleIconModal] = useState();
+
   const [openModalSearchClient, setOpenModalSearchClient] = useState(false);
   const idClientInputRef = useRef(null);
   const [searchClient, setSearchClient] = useState("");
@@ -424,7 +424,7 @@ export default function Client() {
   }
   // #endregion
 
-  // #region Handle Open Modal Search Person
+  // #region Handle Open Modal Search client
   const handleOpenModalSearchClientEdit = () => {
     setLoadingModal(true);
     loadSearchClientList();
@@ -455,7 +455,7 @@ export default function Client() {
   }
   // #endregion
 
-  // #region Load Search Person List
+  // #region Load Search Client List
   async function loadSearchClientList() {
     setLoadingModal(true);
 

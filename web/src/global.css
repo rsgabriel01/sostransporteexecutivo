@@ -264,6 +264,7 @@ input[type="date"]::-webkit-calendar-picker-indicator:hover {
 
   text-align: center;
 
+  column-gap: 3px;
   padding: 0px 0px 20px 0px;
 }
 

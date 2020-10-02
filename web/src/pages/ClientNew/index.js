@@ -1,8 +1,12 @@
 /* eslint-disable camelcase */
-import React, { useState, useEffect } from "react";
-import { Link, useHistory } from "react-router-dom";
+import React, { useState, useEffect, useRef } from "react";
+import { useHistory } from "react-router-dom";
 import { confirmAlert } from "react-confirm-alert";
 import { ToastContainer } from "react-toastify";
+import { makeStyles } from "@material-ui/core/styles";
+import Modal from "@material-ui/core/Modal";
+import Backdrop from "@material-ui/core/Backdrop";
+import Fade from "@material-ui/core/Fade";
 import {
   RiSearchLine,
   RiCloseLine,
@@ -14,6 +18,7 @@ import {
   RiAddCircleLine,
   RiArrowLeftLine,
   RiUser2Line,
+  RiRoadMapLine,
 } from "react-icons/ri";
 import LateralMenu from "../components/LateralMenu/LateralMenu";
 import Header from "../components/Header/Header";
@@ -27,13 +32,13 @@ import { isAuthenticated, logout } from "../../services/auth";
 import "./styles.css";
 import "react-toastify/dist/ReactToastify.css";
 import "react-confirm-alert/src/react-confirm-alert.css";
+import jsonClassesModal from "../../helpers/stylesModal";
 
 export default function ClientNew() {
   // #region Definitions
   const history = useHistory();
   const [loading, setLoading] = useState(true);
-
-  const [isReadonly, setIsReadonly] = useState(false);
+  const [loadingModal, setLoadingModal] = useState(true);
 
   const [loadingButton, setLoadingButton] = useState(false);
   const [textButtonSave, setTextButtonSave] = useState("Salvar");
@@ -49,8 +54,21 @@ export default function ClientNew() {
   const [street, setStreet] = useState("");
   const [streetNumber, setStreetNumber] = useState("");
   const [complement, setComplement] = useState("");
+  const [checkedStatus, setCheckedStatus] = useState(true);
 
-  const [checkedStatus, setCheckedStatus] = useState(false);
+  const useStyles = makeStyles((theme) => jsonClassesModal(theme));
+  const ClassesModal = useStyles();
+  const [titleModal, setTitleModal] = useState("");
+  const [titleIconModal, setTitleIconModal] = useState();
+
+  const [
+    openModalSearchNeighborhood,
+    setOpenModalSearchNeighborhood,
+  ] = useState(false);
+  const streetInputRef = useRef(null);
+  const [searchNeighborhood, setSearchNeighborhood] = useState("");
+  const [searchNeighborhoodList, setSearchNeighborhoodList] = useState([]);
+
   // #endregion
 
   // #region Verify Session
@@ -94,15 +112,15 @@ export default function ClientNew() {
       case "cbStatus":
         console.log(`Status anterior ${checkedStatus}`);
         setCheckedStatus(!checkedStatus);
-
         break;
+
       default:
         break;
     }
   }
   // #endregion
 
-  // #region Update Person
+  // #region Create Client
   async function createClient() {
     const dataPerson = {
       companyName,
@@ -193,9 +211,11 @@ export default function ClientNew() {
   }
   // #endregion
 
+  // #region Return Page Consult
   function returnPageConsult() {
     history.push("/people/client");
   }
+  // #endregion
 
   // #region Alert confirmation
   function confirmationAlert(title, message, functionExecute) {
@@ -225,6 +245,7 @@ export default function ClientNew() {
                       case "returnPageConsult":
                         returnPageConsult();
                         break;
+
                       case "clearFields":
                         clearFields();
                         break;
@@ -250,8 +271,8 @@ export default function ClientNew() {
   }
   // #endregion
 
-  // #region Handle Cancel Create
-  async function handleCancel() {
+  //#region Verify Field Empty
+  const fieldsIsEmpty = () => {
     if (
       companyName !== "" ||
       fantasyName !== "" ||
@@ -264,26 +285,24 @@ export default function ClientNew() {
       streetNumber !== "" ||
       complement !== ""
     ) {
-      confirmationAlert(
-        "Atenção!",
-        "Deseja realmente CANCELAR esse cadastro? Os dados não salvos serão perdidos.",
-        "clearFields"
-      );
+      return true;
+    } else {
+      return false;
     }
-  }
+  };
   // #endregion
 
-  // #region Handle Submit Update
+  // #region Handle Submit
   function handleSubmit(e) {
     e.preventDefault();
 
-    // if (idNeighborhood === "" || neighborhood == "") {
-    //   notify(
-    //     "warning",
-    //     "Os dados do bairro devem estar preenchidos, por favor verifique."
-    //   );
-    //   return;
-    // }
+    if (idNeighborhood === "" || neighborhood == "") {
+      notify(
+        "warning",
+        "Os dados do bairro devem estar preenchidos, por favor verifique."
+      );
+      return;
+    }
 
     confirmationAlert(
       "Atenção!",
@@ -293,20 +312,21 @@ export default function ClientNew() {
   }
   // #endregion
 
+  // #region Handle Cancel Create
+  async function handleCancel() {
+    if (!fieldsIsEmpty) {
+      confirmationAlert(
+        "Atenção!",
+        "Deseja realmente CANCELAR esse cadastro? Os dados não salvos serão perdidos.",
+        "clearFields"
+      );
+    }
+  }
+  // #endregion
+
   // #region Handle Return Page Consult
   async function handleReturn() {
-    if (
-      companyName !== "" ||
-      fantasyName !== "" ||
-      cpfCnpj !== "" ||
-      phone !== "" ||
-      email !== "" ||
-      idNeighborhood !== "" ||
-      neighborhood !== "" ||
-      street !== "" ||
-      streetNumber !== "" ||
-      complement !== ""
-    ) {
+    if (!fieldsIsEmpty) {
       confirmationAlert(
         "Atenção!",
         "Deseja realmente VOLTAR para a página de consulta de clientes? Os dados não salvos serão perdidos.",
@@ -318,9 +338,188 @@ export default function ClientNew() {
   }
   // #endregion
 
+  // #region Handle Open Modal Search Neighborhood
+  const handleOpenModalSearchNeighborhood = () => {
+    setLoadingModal(true);
+    loadSearchNeighborhoodList();
+
+    setTitleIconModal(<RiRoadMapLine size={30} />);
+    setTitleModal("PESQUISAR BAIRRO");
+    setOpenModalSearchNeighborhood(true);
+  };
+
+  const handleCloseModalSearchNeighborhood = () => {
+    setTitleModal("");
+    setOpenModalSearchNeighborhood(false);
+  };
+  // #endregion
+
+  // #region Handle Select Search Neighborhood
+  function handleSelectNeighborhoodInSearch(id) {
+    clearFields();
+    setIdNeighborhood(id);
+    handleCloseModalSearchNeighborhood();
+    inputFocusStreet();
+  }
+
+  function inputFocusStreet() {
+    setTimeout(() => {
+      streetInputRef.current.focus();
+    }, 1);
+  }
+  // #endregion
+
+  // #region Load Search Neighborhood List
+  async function loadSearchNeighborhoodList() {
+    setLoadingModal(true);
+
+    try {
+      const response = await api.get(
+        `/neighborhood/?name=${searchNeighborhood}`
+      );
+
+      if (response) {
+        console.log(response.data);
+
+        setSearchNeighborhoodList(response.data);
+        setLoadingModal(false);
+      }
+    } catch (error) {
+      setLoadingModal(false);
+
+      if (error.response) {
+        const dataError = error.response.data;
+        const statusError = error.response.status;
+        console.error(dataError);
+        console.error(statusError);
+
+        if (statusError === 400 && dataError.message) {
+          console.log(dataError.message);
+          switch (dataError.message) {
+            case '"nameFantasy" is required':
+              notify(
+                "error",
+                "Erro: o QUERY PARAM 'name' não foi encontrado no endereço da rota."
+              );
+              break;
+
+            default:
+              notify("warning", dataError.message);
+          }
+        }
+
+        if (statusError === 401) {
+          switch (dataError.message) {
+            default:
+              notify("warning", dataError.message);
+          }
+        }
+      } else if (error.request) {
+        notify(
+          "error",
+          `Oops, algo deu errado, entre em contato com o suporte de TI. ${error}`
+        );
+        console.log(error.request);
+      } else {
+        notify(
+          "error",
+          `Oops, algo deu errado, entre em contato com o suporte de TI. ${error}`
+        );
+        console.log("Error", error.message);
+      }
+    }
+  }
+  // #endregion
+
   return (
     <div className="main-container">
+      <Modal
+        id="modalSearchClient"
+        aria-labelledby="transition-modal-title"
+        aria-describedby="transition-modal-description"
+        className={ClassesModal.modal}
+        open={openModalSearchNeighborhood}
+        onClose={handleCloseModalSearchNeighborhood}
+        closeAfterTransition
+        BackdropComponent={Backdrop}
+        BackdropProps={{
+          timeout: 500,
+        }}
+      >
+        <Fade in={openModalSearchNeighborhood}>
+          <div className={ClassesModal.paper}>
+            <h1 className="modal-search-title">
+              {titleIconModal} {titleModal}
+            </h1>
+            <div className="modal-search-content">
+              <div className="modal-search-input-button">
+                <div className="input-label-block-colum">
+                  <label htmlFor="inputSearchClient">Bairro:</label>
+                  <input
+                    id="inputSearchClient"
+                    type="text"
+                    value={searchNeighborhood}
+                    onChange={(e) => setSearchNeighborhood(e.target.value)}
+                    onKeyUp={loadSearchNeighborhoodList}
+                  ></input>
+                </div>
+
+                <button
+                  type="button"
+                  className="button btnDefault btnSearchModal"
+                  onClick={loadSearchNeighborhoodList}
+                >
+                  <RiSearchLine size={24} />
+                  Buscar
+                </button>
+              </div>
+
+              <div className="modal-search-list">
+                {loadingModal ? (
+                  <Loading type="bars" color="#0f4c82" />
+                ) : (
+                  searchNeighborhoodList.map((client) => (
+                    <div
+                      className="searchListIten"
+                      key={client.id}
+                      onDoubleClick={() =>
+                        handleSelectNeighborhoodInSearch(client.id)
+                      }
+                    >
+                      <div className="searchItenData">
+                        <strong>Código: {client.id}</strong>
+                        <section id="searchClientData">
+                          <p id="searchCnpjClient">CNPJ: {client.cpf_cnpj}</p>
+                          <p id="searchCompanyNameClient">
+                            Razão Social: {client.company_name}
+                          </p>
+                          <p id="searchNameFantasyClient">
+                            Nome Fantasia: {client.name_fantasy}
+                          </p>
+                        </section>
+                      </div>
+                      <div className="clientBtnSelect">
+                        <button
+                          type="button"
+                          className="button btnSuccess"
+                          onClick={() =>
+                            handleSelectNeighborhoodInSearch(client.id)
+                          }
+                        >
+                          <RiCheckLine size={24} />
+                        </button>
+                      </div>
+                    </div>
+                  ))
+                )}
+              </div>
+            </div>
+          </div>
+        </Fade>
+      </Modal>
+
       <LateralMenu />
+
       <>
         {loading ? (
           <Loading type="bars" color="#0f4c82" />
@@ -426,7 +625,6 @@ export default function ClientNew() {
                           value={email}
                           onChange={(e) => setEmail(e.target.value)}
                           id="email"
-                          readOnly={isReadonly}
                         />
                       </div>
                     </div>
@@ -453,21 +651,13 @@ export default function ClientNew() {
                             required
                             readOnly
                             onChange={(e) => setNeighborhood(e.target.value)}
-                            // onBlur={() => {
-                            //   // handleSearchPerson(idNeighborhood);
-                            // }}
-                            // onKeyUp={(e) => {
-                            //   if (neighborhood.length === 0) {
-                            //     clearFields();
-                            //     clearFields();
-                            //   }
-                            // }}
                           />
 
                           <button
                             type="button"
                             className="button btnDefault"
                             id="btnNeighborhood"
+                            onClick={handleOpenModalSearchNeighborhood}
                           >
                             <RiSearchLine size={24} />
                           </button>
@@ -502,7 +692,6 @@ export default function ClientNew() {
                           value={streetNumber}
                           onChange={(e) => setStreetNumber(e.target.value)}
                           id="streetNumber"
-                          readOnly={isReadonly}
                         />
                       </div>
 

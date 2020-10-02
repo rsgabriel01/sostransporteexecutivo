@@ -6,9 +6,9 @@ const routes = express.Router();
 const PersonController = require("./controllers/PersonController");
 const PersonLikeNameController = require("./controllers/PersonLikeNameController");
 
-const clientController = require("./controllers/clientController");
+const clientController = require("./controllers/ClientController");
 
-const clientLikeNameFantasyController = require("./controllers/clientLikeNameFantasyController");
+const clientLikeNameFantasyController = require("./controllers/ClientLikeNameFantasyController");
 
 const DriversController = require("./controllers/DriversController");
 

@@ -1,4 +1,9 @@
-const { People, People_address, Neighborhoods } = require("../models");
+const {
+  People,
+  People_address,
+  Neighborhoods,
+  Type_people,
+} = require("../models");
 const { Op, fn, col, literal, QueryTypes, Sequelize } = require("sequelize");
 
 module.exports = {
@@ -84,18 +89,26 @@ module.exports = {
         });
 
         if (createdClientAddress) {
-          const createdClientComplete = await People.findByPk(
-            createdClient.id,
-            {
-              include: ["People_address"],
-            }
-          );
+          const createdTypePeople4 = await Type_people.create({
+            id_people: createdClient.id,
+            id_type: 4,
+            active: true,
+          });
 
-          if (createdClientComplete) {
-            return res.json({
-              createdClientComplete,
-              message: "Cadastro de cliente efetuado com sucesso!",
-            });
+          if (createdTypePeople4) {
+            const createdClientComplete = await People.findByPk(
+              createdClient.id,
+              {
+                include: ["People_address", "People_Type"],
+              }
+            );
+
+            if (createdClientComplete) {
+              return res.json({
+                createdClientComplete,
+                message: "Cadastro de cliente efetuado com sucesso!",
+              });
+            }
           }
         }
       }

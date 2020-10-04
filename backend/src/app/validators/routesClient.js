@@ -20,6 +20,16 @@ const validatorClientCreate = celebrate({
   }),
 });
 
+const validatorClientIndexLikeNameFantasy = celebrate({
+  [Segments.HEADERS]: Joi.object({
+    authorization: Joi.string().required(),
+    id_executingperson: Joi.number().positive().integer().required(),
+  }).unknown(),
+  [Segments.QUERY]: {
+    nameFantasy: Joi.string().required().allow("", null),
+  },
+});
+
 // const validatorLogin = celebrate({
 //   [Segments.BODY]: Joi.object().keys({
 //     user: Joi.string().required(),
@@ -35,4 +45,5 @@ const validatorClientCreate = celebrate({
 
 module.exports = {
   validatorClientCreate,
+  validatorClientIndexLikeNameFantasy,
 };

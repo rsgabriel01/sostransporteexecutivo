@@ -512,7 +512,7 @@ export default function Person() {
             case '"name" is required':
               notify(
                 "error",
-                "Erro: o QUERY PARAM 'name' não foi encontrado no endereço da rota."
+                "Oops, algo deu errado, entre em contato com o suporte de TI. Erro: o QUERY PARAM 'name' não foi encontrado no endereço da rota."
               );
               break;
 

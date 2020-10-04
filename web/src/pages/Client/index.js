@@ -545,7 +545,7 @@ export default function Client() {
             case '"nameFantasy" is required':
               notify(
                 "error",
-                "Erro: o QUERY PARAM 'nameFantasy' não foi encontrado no endereço da rota."
+                "Oops, algo deu errado, entre em contato com o suporte de TI. Erro: o QUERY PARAM 'nameFantasy' não foi encontrado no endereço da rota."
               );
               break;
 
@@ -639,7 +639,7 @@ export default function Client() {
             case '"name" is required':
               notify(
                 "error",
-                "Erro: o QUERY PARAM 'name' não foi encontrado no endereço da rota."
+                "Oops, algo deu errado, entre em contato com o suporte de TI. Erro: o QUERY PARAM 'name' não foi encontrado no endereço da rota."
               );
               break;
 

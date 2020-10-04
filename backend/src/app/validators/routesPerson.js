@@ -48,21 +48,19 @@ const validatorPersonUpdate = celebrate({
   }),
 });
 
-// const validatorLogin = celebrate({
-//   [Segments.BODY]: Joi.object().keys({
-//     user: Joi.string().required(),
-//     password: Joi.string().required().min(8).max(16),
-//   }),
-// });
-
-// const validatorLogout = celebrate({
-//   [Segments.HEADERS]: Joi.object({
-//     token: Joi.string().required(),
-//   }).unknown(),
-// });
+const validatorPersonIndexLikeName = celebrate({
+  [Segments.HEADERS]: Joi.object({
+    authorization: Joi.string().required(),
+    id_executingperson: Joi.number().positive().integer().required(),
+  }).unknown(),
+  [Segments.QUERY]: {
+    name: Joi.string().required().allow("", null),
+  },
+});
 
 module.exports = {
   validatorPersonCreate,
   validatorPersonShow,
   validatorPersonUpdate,
+  validatorPersonIndexLikeName,
 };

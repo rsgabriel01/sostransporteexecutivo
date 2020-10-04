@@ -6,6 +6,7 @@ module.exports = {
     const { name } = req.query;
 
     const idCascavelCity = 5941;
+
     try {
       const neighborhoods = await Neighborhoods.findAll({
         where: {

@@ -48,19 +48,15 @@ const {
   validatorPersonCreate,
   validatorPersonShow,
   validatorPersonUpdate,
+  validatorPersonIndexLikeName,
 } = require("./validators/routesPerson");
 
-const {
-  validatorPersonIndexLikeName,
-} = require("./validators/routesPersonLikeName");
-// #endregion
-
 // #region Client
-const { validatorClientCreate } = require("./validators/routesClient");
-
 const {
+  validatorClientCreate,
   validatorClientIndexLikeNameFantasy,
-} = require("./validators/routesClientLikeNameFantasy");
+} = require("./validators/routesClient");
+
 // #endregion
 
 // #region Driver
@@ -102,6 +98,9 @@ const {
 // #endregion
 
 // #region Neighborhood
+const {
+  validatorNeighborhoodIndexLikeName,
+} = require("./validators/routesNeighborhood");
 // #endregion
 
 // #region TravelFee
@@ -289,8 +288,12 @@ routes.put(
 
 // #region Neighborhood
 routes.get("/neighborhoods", NeighborhoodsController.index);
+
 routes.get(
   "/neighborhoods/like/",
+  validatorNeighborhoodIndexLikeName,
+  verifySession,
+  permissionAdminAttendance,
   NeighborhoodsLikeNameController.indexLikeName
 );
 // #endregion

@@ -1,7 +1,7 @@
 // const express = require("express");
 const { celebrate, Segments, Joi } = require("celebrate");
 
-const validatorPeopleIndexActive = celebrate({
+const validatorNeighborhoodIndexLikeName = celebrate({
   [Segments.HEADERS]: Joi.object({
     authorization: Joi.string().required(),
     id_executingperson: Joi.number().positive().integer().required(),
@@ -12,5 +12,5 @@ const validatorPeopleIndexActive = celebrate({
 });
 
 module.exports = {
-  validatorPeopleIndexActive,
+  validatorNeighborhoodIndexLikeName,
 };

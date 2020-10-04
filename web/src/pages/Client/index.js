@@ -22,6 +22,7 @@ import {
   RiCheckboxMultipleLine,
   RiMapPinLine,
   RiArrowRightUpLine,
+  RiRoadMapLine,
 } from "react-icons/ri";
 import LateralMenu from "../components/LateralMenu/LateralMenu";
 import Header from "../components/Header/Header";
@@ -44,22 +45,22 @@ export default function Client() {
   const [loading, setLoading] = useState(true);
   const [loadingModal, setLoadingModal] = useState(true);
 
-  const [isReadonly, setIsReadonly] = useState(false);
+  const [isReadonly, setIsReadOnly] = useState(true);
 
   const [updateRegister, setUpdateRegister] = useState(false);
 
   const [titleUpdate, setTitleUpdate] = useState("");
 
-  const [personFinded, setPersonFinded] = useState(false);
+  const [clientFinded, setClientFinded] = useState(false);
 
   const [loadingButton, setLoadingButton] = useState(false);
   const [textButtonSaveUpdate, setTextButtonSaveUpdate] = useState("Salvar");
   const [btnInactive, setBtnInactive] = useState("");
-  const [searchPersonInactive, setSearchPersonInactive] = useState(false);
+  const [searchClientInactive, setSearchClientInactive] = useState(false);
 
   const [idClient, setIdClient] = useState("");
   const [companyName, setCompanyName] = useState("");
-  const [fantasyName, setFantasyName] = useState("");
+  const [nameFantasy, setNameFantasy] = useState("");
   const [cpfCnpj, setCpfCnpj] = useState("");
   const [idNeighborhood, setIdNeighborhood] = useState("");
   const [neighborhood, setNeighborhood] = useState("");
@@ -80,7 +81,13 @@ export default function Client() {
   const [searchClient, setSearchClient] = useState("");
   const [searchClientList, setSearchClientList] = useState([]);
 
+  const [
+    openModalSearchNeighborhood,
+    setOpenModalSearchNeighborhood,
+  ] = useState(false);
   const [searchNeighborhood, setSearchNeighborhood] = useState("");
+  const streetInputRef = useRef(null);
+  const [searchNeighborhoodList, setSearchNeighborhoodList] = useState([]);
 
   // #region Verify Session
   async function virifyAuthorization() {
@@ -101,31 +108,49 @@ export default function Client() {
   // #endregion
 
   // #region Fill Fields
-  // function fillFields(response) {
-  //   const { name, cpf_cnpj, rg, phone, email, active } = response.person;
+  function fillFields(response) {
+    const {
+      cpf_cnpj,
+      company_name,
+      name_fantasy,
+      phone,
+      email,
+      active,
+    } = response.client;
 
-  //   const typeIds = response.peopleType.map((index) => index.id);
+    const {
+      id_neighborhood,
+      street,
+      street_number,
+      complement,
+    } = response.peopleAddress;
 
-  //   console.log(typeIds);
+    const neighborhood = response.peopleAddress.Neighborhood.name;
 
-  //   console.log(typeIds.includes("1"));
+    cpf_cnpj ? setCpfCnpj(cpf_cnpj) : setCpfCnpj("");
 
-  //   name ? setName(name) : setName("");
+    company_name ? setCompanyName(company_name) : setCompanyName("");
 
-  //   cpf_cnpj ? setCpf_cnpj(cpf_cnpj) : setCpf_cnpj("");
+    name_fantasy ? setNameFantasy(name_fantasy) : setNameFantasy("");
 
-  //   rg ? setRg(rg) : setRg("");
+    phone ? setPhone(phone) : setPhone("");
 
-  //   phone ? setPhone(phone) : setPhone("");
+    email ? setEmail(email) : setEmail("");
 
-  //   email ? setEmail(email) : setEmail("");
+    id_neighborhood
+      ? setIdNeighborhood(id_neighborhood)
+      : setIdNeighborhood("");
 
-  //   typeIds.includes("1") ? setCheckedStatus(true) : setCheckedStatus(false);
+    neighborhood ? setNeighborhood(neighborhood) : setNeighborhood("");
 
-  //   typeIds.includes("2")
-  //     ? setCheckedTypeAttendance("true")
-  //     : setCheckedTypeAttendance(false);
-  // }
+    street ? setStreet(street) : setStreet("");
+
+    street_number ? setStreetNumber(street_number) : setStreetNumber("");
+
+    complement ? setComplement(complement) : setComplement("");
+
+    setCheckedStatus(active);
+  }
   // #endregion
 
   // #region Clear Fields
@@ -134,8 +159,16 @@ export default function Client() {
       setIdClient("");
     }
 
+    setCpfCnpj("");
+    setCompanyName("");
+    setNameFantasy("");
     setPhone("");
     setEmail("");
+    setIdNeighborhood("");
+    setNeighborhood("");
+    setStreet("");
+    setStreetNumber("");
+    setComplement("");
     setCheckedStatus(false);
   }
 
@@ -143,11 +176,12 @@ export default function Client() {
 
   // #region alter page to consult
   function alterPageUpdateForConsult() {
-    setPersonFinded(false);
+    setClientFinded(false);
     clearFields(true);
     setTitleUpdate("");
     setUpdateRegister(false);
-    setIsReadonly(true);
+    setIsReadOnly(true);
+    setSearchClientInactive(false);
   }
   // #endregion
 
@@ -165,24 +199,24 @@ export default function Client() {
   }
   // #endregion
 
-  // #region Load Data Person
-  async function loadDataPerson(id) {
+  // #region Load Data Client
+  async function loadDataClient(id) {
     try {
       clearFields();
 
-      setPersonFinded(false);
+      setClientFinded(false);
 
-      const response = await api.get(`/person/${id}`);
+      const response = await api.get(`/client/${id}`);
 
       if (response) {
-        setPersonFinded(true);
-        // fillFields(response.data);
+        setClientFinded(true);
+        fillFields(response.data);
       }
 
       console.log(response.data);
     } catch (error) {
       if (error.response) {
-        setPersonFinded(false);
+        setClientFinded(false);
 
         const dataError = error.response.data;
         const statusError = error.response.status;
@@ -193,10 +227,10 @@ export default function Client() {
         if (statusError === 400 && dataError.message) {
           console.log(dataError.message);
           switch (dataError.message) {
-            case '"idPerson" must be a number':
-              notify("warning", "O código da pessoa precisa ser um número.");
+            case '"idClient" must be a number':
+              notify("warning", "O código do cliente precisa ser um número.");
               break;
-            case '"idPerson" must be a positive number':
+            case '"idClient" must be a positive number':
               notify(
                 "warning",
                 "O código de pessoa deve ser maior ou igual a 1."
@@ -208,14 +242,14 @@ export default function Client() {
           }
         }
       } else if (error.request) {
-        setPersonFinded(false);
+        setClientFinded(false);
         notify(
           "error",
           `Oops, algo deu errado, entre em contato com o suporte de TI. ${error}`
         );
         console.log(error.request);
       } else {
-        setPersonFinded(false);
+        setClientFinded(false);
         notify(
           "error",
           `Oops, algo deu errado, entre em contato com o suporte de TI. ${error}`
@@ -227,31 +261,31 @@ export default function Client() {
 
   // #endregion
 
-  // #region Handle Search Person
-  function handleSearchPerson(idPerson) {
-    if (idPerson) {
-      loadDataPerson(idPerson);
+  // #region Handle Search Client
+  function handleSearchClient(idClient) {
+    if (idClient && !updateRegister) {
+      loadDataClient(idClient);
       setUpdateRegister(false);
       setTitleUpdate("");
-    } else {
+    } else if (!updateRegister) {
       clearFields();
     }
   }
   // #endregion
 
-  // #region Update Person
-  async function updatePerson() {
-    const dataPerson = {
+  // #region Update Client
+  async function updateClient() {
+    const dataClient = {
       idClient,
-      companyName,
-      fantasyName,
+      copanyName: companyName.toUpperCase(),
+      nameFantasy: nameFantasy.toUpperCase(),
       cpfCnpj,
       phone,
       email,
       idNeighborhood,
-      street,
+      street: street.toUpperCase(),
       streetNumber,
-      complement,
+      complement: complement.toUpperCase(),
       status: checkedStatus,
     };
 
@@ -259,10 +293,10 @@ export default function Client() {
     setLoadingButton(true);
     setBtnInactive("btnInactive");
 
-    console.log(dataPerson);
+    console.log(dataClient);
 
     try {
-      const response = await api.put("/person/update", dataPerson);
+      const response = await api.put("/client/update", dataClient);
 
       if (response) {
         console.log(response.data);
@@ -360,8 +394,8 @@ export default function Client() {
                       case "alterPageUpdateForConsult":
                         alterPageUpdateForConsult();
                         break;
-                      case "updatePerson":
-                        updatePerson();
+                      case "updateClient":
+                        updateClient();
                         break;
 
                       default:
@@ -389,28 +423,52 @@ export default function Client() {
     confirmationAlert(
       "Atenção!",
       "Deseja realmente SALVAR essa alteração?",
-      "updatePerson"
+      "updateClient"
     );
   }
   // #endregion
 
+  //#region Verify Field Filled
+  const fieldsIsFilled = () => {
+    if (
+      companyName !== "" ||
+      nameFantasy !== "" ||
+      cpfCnpj !== "" ||
+      phone !== "" ||
+      email !== "" ||
+      idNeighborhood !== "" ||
+      neighborhood !== "" ||
+      street !== "" ||
+      streetNumber !== "" ||
+      complement !== ""
+    ) {
+      return true;
+    } else {
+      return false;
+    }
+  };
+  // #endregion
+
   // #region Handle Cancel Update
   async function handleCancelUpdate() {
-    confirmationAlert(
-      "Atenção!",
-      "Deseja realmente CANCELAR essa alteração? Os dados não salvos serão perdidos.",
-      "alterPageUpdateForConsult"
-    );
+    if (fieldsIsFilled()) {
+      confirmationAlert(
+        "Atenção!",
+        "Deseja realmente CANCELAR essa alteração? Os dados não salvos serão perdidos.",
+        "alterPageUpdateForConsult"
+      );
+    }
   }
   // #endregion
 
   // #region Handle Update Register
   function handleUpdateRegister() {
-    if (personFinded) {
+    if (clientFinded) {
       setTitleUpdate("ALTERAR ");
 
+      setSearchClientInactive(true);
       setUpdateRegister(true);
-      setIsReadonly(false);
+      setIsReadOnly(false);
     } else if (idClient.length === 0) {
       notify(
         "warning",
@@ -463,7 +521,7 @@ export default function Client() {
 
     try {
       const response = await api.get(
-        `/client/?nameFantasy=${searchClient.toUpperCase()}`
+        `/clients/?nameFantasy=${searchClient.toUpperCase()}`
       );
 
       if (response) {
@@ -488,6 +546,100 @@ export default function Client() {
               notify(
                 "error",
                 "Erro: o QUERY PARAM 'nameFantasy' não foi encontrado no endereço da rota."
+              );
+              break;
+
+            default:
+              notify("warning", dataError.message);
+          }
+        }
+
+        if (statusError === 401) {
+          switch (dataError.message) {
+            default:
+              notify("warning", dataError.message);
+          }
+        }
+      } else if (error.request) {
+        notify(
+          "error",
+          `Oops, algo deu errado, entre em contato com o suporte de TI. ${error}`
+        );
+        console.log(error.request);
+      } else {
+        notify(
+          "error",
+          `Oops, algo deu errado, entre em contato com o suporte de TI. ${error}`
+        );
+        console.log("Error", error.message);
+      }
+    }
+  }
+  // #endregion
+
+  // #region Handle Open Modal Search Neighborhood
+  const handleOpenModalSearchNeighborhoodEdit = () => {
+    setLoadingModal(true);
+    loadSearchNeighborhoodList();
+
+    setTitleIconModal(<RiRoadMapLine size={30} />);
+    setTitleModal("PESQUISAR BAIRRO");
+    setOpenModalSearchNeighborhood(true);
+  };
+
+  const handleCloseModalSearchNeighborhoodEdit = () => {
+    setTitleModal("");
+    setSearchNeighborhood("");
+    setOpenModalSearchNeighborhood(false);
+  };
+  // #endregion
+
+  // #region Handle Select Search Neighborhood
+  function handleSelectNeighborhoodInSearch(id, neighborhood) {
+    setIdNeighborhood(id);
+    setNeighborhood(neighborhood);
+    handleCloseModalSearchNeighborhoodEdit();
+    inputFocusIdNeighborhood();
+  }
+
+  function inputFocusIdNeighborhood() {
+    setTimeout(() => {
+      streetInputRef.current.focus();
+    }, 1);
+  }
+  // #endregion
+
+  // #region Load Search Neighborhood List
+  async function loadSearchNeighborhoodList() {
+    setLoadingModal(true);
+
+    try {
+      const response = await api.get(
+        `/neighborhoods/like/?name=${searchNeighborhood.toUpperCase()}`
+      );
+
+      if (response) {
+        console.log(response.data);
+
+        setSearchNeighborhoodList(response.data);
+        setLoadingModal(false);
+      }
+    } catch (error) {
+      setLoadingModal(false);
+
+      if (error.response) {
+        const dataError = error.response.data;
+        const statusError = error.response.status;
+        console.error(dataError);
+        console.error(statusError);
+
+        if (statusError === 400 && dataError.message) {
+          console.log(dataError.message);
+          switch (dataError.message) {
+            case '"name" is required':
+              notify(
+                "error",
+                "Erro: o QUERY PARAM 'name' não foi encontrado no endereço da rota."
               );
               break;
 
@@ -604,6 +756,93 @@ export default function Client() {
         </Fade>
       </Modal>
 
+      <Modal
+        id="modalSearcNeighborhood"
+        aria-labelledby="transition-modal-title"
+        aria-describedby="transition-modal-description"
+        className={ClassesModal.modal}
+        open={openModalSearchNeighborhood}
+        onClose={handleCloseModalSearchNeighborhoodEdit}
+        closeAfterTransition
+        BackdropComponent={Backdrop}
+        BackdropProps={{
+          timeout: 500,
+        }}
+      >
+        <Fade in={openModalSearchNeighborhood}>
+          <div className={ClassesModal.paper}>
+            <h1 className="modal-search-title">
+              {titleIconModal} {titleModal}
+            </h1>
+            <div className="modal-search-content">
+              <div className="modal-search-input-button">
+                <div className="input-label-block-colum">
+                  <label htmlFor="inputSearchNeighborhood">Bairro:</label>
+                  <input
+                    id="inputSearchNeighborhood"
+                    type="text"
+                    value={searchNeighborhood}
+                    onChange={(e) => setSearchNeighborhood(e.target.value)}
+                    onKeyUp={loadSearchNeighborhoodList}
+                  ></input>
+                </div>
+
+                <button
+                  type="button"
+                  className="button btnDefault btnSearchModal"
+                  onClick={loadSearchNeighborhoodList}
+                >
+                  <RiSearchLine size={24} />
+                  Buscar
+                </button>
+              </div>
+
+              <div className="modal-search-list">
+                {loadingModal ? (
+                  <Loading type="bars" color="#0f4c82" />
+                ) : (
+                  searchNeighborhoodList.map((neighborhood) => (
+                    <div
+                      className="searchListIten"
+                      key={neighborhood.id}
+                      onDoubleClick={() =>
+                        handleSelectNeighborhoodInSearch(
+                          neighborhood.id,
+                          neighborhood.name
+                        )
+                      }
+                    >
+                      <div className="searchItenData">
+                        <strong>Código: {neighborhood.id}</strong>
+                        <section id="searchNeighborhoodData">
+                          <p id="searchNeighborhood">
+                            Bairro: {neighborhood.name}
+                          </p>
+                        </section>
+                      </div>
+                      <div className="neighborhoodBtnSelect">
+                        <button
+                          type="button"
+                          className="button btnSuccess"
+                          onClick={() =>
+                            handleSelectNeighborhoodInSearch(
+                              neighborhood.id,
+                              neighborhood.name
+                            )
+                          }
+                        >
+                          <RiArrowRightUpLine size={24} />
+                        </button>
+                      </div>
+                    </div>
+                  ))
+                )}
+              </div>
+            </div>
+          </div>
+        </Fade>
+      </Modal>
+
       <LateralMenu />
 
       <>
@@ -666,12 +905,16 @@ export default function Client() {
                             ref={idClientInputRef}
                             type="number"
                             min="1"
+                            readOnly={searchClientInactive}
                             required
                             autoFocus
                             value={idClient}
-                            onChange={(e) => setIdClient(e.target.value)}
+                            onChange={(e) => {
+                              setIdClient(e.target.value);
+                              clearFields();
+                            }}
                             onBlur={() => {
-                              handleSearchPerson(idClient);
+                              handleSearchClient(idClient);
                             }}
                             onKeyUp={(e) => {
                               if (idClient.length === 0) {
@@ -683,8 +926,14 @@ export default function Client() {
 
                           <button
                             type="button"
-                            className="button btnDefault"
-                            onClick={handleOpenModalSearchClientEdit}
+                            disabled={searchClientInactive}
+                            className={`button btnDefault ${
+                              searchClientInactive ? "btnInactive" : ""
+                            }`}
+                            onClick={() => {
+                              clearFields();
+                              handleOpenModalSearchClientEdit();
+                            }}
                           >
                             <RiSearchLine size={24} />
                           </button>
@@ -711,15 +960,15 @@ export default function Client() {
                         className="input-label-block-column"
                         id="input-label-block-column"
                       >
-                        <label htmlFor="fantasyName">Nome Fantasia:</label>
+                        <label htmlFor="nameFantasy">Nome Fantasia:</label>
 
                         <input
-                          id="fantasyName"
+                          id="nameFantasy"
                           type="text"
                           readOnly={isReadonly}
                           required
-                          value={fantasyName}
-                          onChange={(e) => setFantasyName(e.target.value)}
+                          value={nameFantasy}
+                          onChange={(e) => setNameFantasy(e.target.value)}
                         />
                       </div>
                     </div>
@@ -800,21 +1049,18 @@ export default function Client() {
                             value={neighborhood}
                             readOnly
                             onChange={(e) => setNeighborhood(e.target.value)}
-                            onBlur={() => {
-                              // handleSearchPerson(idNeighborhood);
-                            }}
-                            onKeyUp={(e) => {
-                              if (neighborhood.length === 0) {
-                                clearFields();
-                                clearFields();
-                              }
-                            }}
                           />
 
                           <button
                             type="button"
-                            className="button btnDefault"
+                            className={`button btnDefault ${
+                              isReadonly ? "btnInactive" : ""
+                            }`}
                             id="btnNeighborhood"
+                            disabled={isReadonly}
+                            onClick={() => {
+                              handleOpenModalSearchNeighborhoodEdit();
+                            }}
                           >
                             <RiSearchLine size={24} />
                           </button>
@@ -828,6 +1074,7 @@ export default function Client() {
                         <label htmlFor="street">Rua:</label>
 
                         <input
+                          ref={streetInputRef}
                           id="street"
                           readOnly={isReadonly}
                           type="text"

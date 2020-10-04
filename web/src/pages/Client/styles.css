@@ -160,7 +160,23 @@
   flex-direction: row;
 }
 
-.client-container section.form form .input-label-group-row input#name {
+.client-container section.form form .input-label-group-row input#companyName {
+  text-transform: uppercase;
+}
+
+.client-container section.form form .input-label-group-row input#nameFantasy {
+  text-transform: uppercase;
+}
+
+.client-container section.form form .input-label-group-row input#neighborhood {
+  text-transform: uppercase;
+}
+
+.client-container section.form form .input-label-group-row input#street {
+  text-transform: uppercase;
+}
+
+.client-container section.form form .input-label-group-row input#complement {
   text-transform: uppercase;
 }
 

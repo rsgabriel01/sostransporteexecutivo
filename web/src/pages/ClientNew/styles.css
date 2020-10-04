@@ -1,4 +1,4 @@
-.client-container {
+.client-container-new {
   display: flex;
   flex-direction: column;
   height: 100%;
@@ -16,21 +16,21 @@
   margin: 5px 0;
 }
 
-.client-container .tab-bar h1 {
+.client-container-new .tab-bar h1 {
   padding: 0;
 }
 
-.client-container .tab-bar .group-tabs {
+.client-container-new .tab-bar .group-tabs {
   display: flex;
   flex-direction: row;
 
   width: 50%;
 }
 
-.client-container .tab-bar .group-tabs a {
+.client-container-new .tab-bar .group-tabs a {
   text-decoration: none;
 }
-.client-container .tab-bar .group-tabs button {
+.client-container-new .tab-bar .group-tabs button {
   height: 30px;
 
   line-height: 30px;
@@ -42,7 +42,7 @@
   padding: 0px 5px 0px 5px;
 }
 
-.client-container .tab-bar .group-tabs button:hover {
+.client-container-new .tab-bar .group-tabs button:hover {
   color: #0f4c82;
 
   border-radius: 5px 5px 0px 0px !important;
@@ -54,7 +54,7 @@
   margin: 0;
 }
 
-.client-container .tab-bar .group-tabs button.add:hover {
+.client-container-new .tab-bar .group-tabs button.add:hover {
   color: #0f4c82;
 
   border-top: none;
@@ -67,7 +67,7 @@
   margin: 0;
 }
 
-.client-container .tab-bar .group-tabs button.tab-active {
+.client-container-new .tab-bar .group-tabs button.tab-active {
   color: #0f4c82;
 
   box-sizing: border-box;
@@ -80,7 +80,7 @@
   margin: 0;
 }
 
-.client-container section.form {
+.client-container-new section.form {
   width: 100%;
   height: 78vh;
   overflow: auto;
@@ -94,7 +94,7 @@
   justify-content: center;
 }
 
-.client-container section.form form {
+.client-container-new section.form form {
   width: 100%;
   height: 100%;
   padding: 20px 60px;
@@ -103,13 +103,13 @@
   flex-direction: column;
 }
 
-.client-container section.form h1 {
+.client-container-new section.form h1 {
   display: inline-flex;
 
   padding: 0;
 }
 
-.client-container section.form form .form-title {
+.client-container-new section.form form .form-title {
   display: inline-flex;
 
   justify-content: center;
@@ -117,70 +117,90 @@
   padding-bottom: 20px;
 }
 
-.client-container section.form form .form-title h1 {
+.client-container-new section.form form .form-title h1 {
   padding-left: 5px;
 }
 
-.client-container section.form form input {
+.client-container-new section.form form input {
   border: 0;
   padding: 0px 10px;
 }
 
-.client-container section.form form input:hover {
+.client-container-new section.form form input:hover {
   border: 2px solid #0f4c82;
 }
 
-.client-container section.form form input:focus {
+.client-container-new section.form form input:focus {
   border: 2px solid #0f4c82;
 }
 
-.client-container section.form form .input-group-person {
+.client-container-new section.form form .input-group-person {
   width: 100%;
 
   display: flex;
   flex-direction: column;
 }
 
-.client-container section.form form .input-group-person + .input-group-person {
+.client-container-new
+  section.form
+  form
+  .input-group-person
+  + .input-group-person {
   margin-top: 25px;
 }
 
-.client-container section.form form .input-group-person h1 {
+.client-container-new section.form form .input-group-person h1 {
   padding-bottom: 10px;
 }
 
-.client-container section.form form .input-group-person label {
+.client-container-new section.form form .input-group-person label {
   padding-bottom: 5px;
 }
 
-.client-container section.form form .input-label-group-row {
+.client-container-new section.form form .input-label-group-row {
   width: 100%;
 
   display: flex;
   flex-direction: row;
 }
 
-.client-container section.form form .input-label-group-row input#companyName {
+.client-container-new
+  section.form
+  form
+  .input-label-group-row
+  input#companyName {
   text-transform: uppercase;
 }
 
-.client-container section.form form .input-label-group-row input#nameFantasy {
+.client-container-new
+  section.form
+  form
+  .input-label-group-row
+  input#nameFantasy {
   text-transform: uppercase;
 }
 
-.client-container section.form form .input-label-group-row input#neighborhood {
+.client-container-new
+  section.form
+  form
+  .input-label-group-row
+  input#neighborhood {
   text-transform: uppercase;
 }
 
-.client-container section.form form .input-label-group-row input#street {
+.client-container-new section.form form .input-label-group-row input#street {
   text-transform: uppercase;
 }
 
-.client-container section.form form .input-label-group-row input#complement {
+.client-container-new
+  section.form
+  form
+  .input-label-group-row
+  input#complement {
   text-transform: uppercase;
 }
 
-.client-container
+.client-container-new
   section.form
   form
   .input-label-group-row
@@ -188,14 +208,14 @@
   margin-top: 10px;
 }
 
-.client-container section.form form .input-label-block-column {
+.client-container-new section.form form .input-label-block-column {
   width: 100%;
 
   display: flex;
   flex-direction: column;
 }
 
-.client-container
+.client-container-new
   section.form
   form
   .input-label-block-column
@@ -203,51 +223,54 @@
   margin-left: 10px;
 }
 
-.client-container section.form form #input-label-block-column-cod {
+.client-container-new section.form form #input-label-block-column-cod {
   width: 42.5%;
 }
 
-.client-container section.form form #input-label-block-column-name {
+.client-container-new section.form form #input-label-block-column-name {
   width: 90%;
 }
 
-.client-container section.form form #input-label-block-column-cpf-rg {
+.client-container-new section.form form #input-label-block-column-cpf-rg {
   width: 27%;
 }
 
-.client-container section.form form #input-label-block-column-phone {
+.client-container-new section.form form #input-label-block-column-phone {
   width: 27%;
 }
 
-.client-container section.form form #input-label-block-column-neighborhood {
+.client-container-new section.form form #input-label-block-column-neighborhood {
   width: 77%;
 }
 
-.client-container section.form form #input-label-block-column-street {
+.client-container-new section.form form #input-label-block-column-street {
   width: 140%;
 }
 
-.client-container section.form form #input-label-block-column-street-number {
+.client-container-new
+  section.form
+  form
+  #input-label-block-column-street-number {
   width: 28%;
 }
 
-.client-container section.form form #input-label-block-column-complement {
+.client-container-new section.form form #input-label-block-column-complement {
   width: 63%;
 }
 
-.client-container section.form form .input-button-block-row {
+.client-container-new section.form form .input-button-block-row {
   display: flex;
   flex-direction: row;
 }
 
-.client-container section.form form .input-button-block-row button {
+.client-container-new section.form form .input-button-block-row button {
   height: 35px;
   width: 50px !important;
 
   margin: 0px 0px 0px 10px;
 }
 
-.client-container
+.client-container-new
   section.form
   form
   .input-button-block-row
@@ -255,14 +278,17 @@
   width: 45.6px !important;
 }
 
-.client-container .input-group-person .input-label-group-row .checkbox-block {
+.client-container-new
+  .input-group-person
+  .input-label-group-row
+  .checkbox-block {
   display: inline-flex;
 
   align-items: center;
   cursor: pointer;
 }
 
-.client-container
+.client-container-new
   .input-group-person
   .input-label-group-row
   .checkbox-block
@@ -270,7 +296,7 @@
   margin-left: 10px;
 }
 
-.client-container
+.client-container-new
   .input-group-person
   .input-label-group-row
   .checkbox-block
@@ -279,7 +305,7 @@
   padding: 0px 0px 0px 5px;
 }
 
-.client-container
+.client-container-new
   .input-group-person
   .input-label-group-row
   .checkbox-block

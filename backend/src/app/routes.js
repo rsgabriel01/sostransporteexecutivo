@@ -204,11 +204,18 @@ routes.post(
 );
 
 routes.get(
-  "/client/",
+  "/clients/",
   validatorClientIndexLikeNameFantasy,
   verifySession,
   permissionAdminAttendance,
   clientLikeNameFantasyController.indexLikeNameFantsy
+);
+
+routes.get(
+  "/client/:idClient",
+  verifySession,
+  permissionAdminAttendance,
+  clientController.show
 );
 
 // #endregion

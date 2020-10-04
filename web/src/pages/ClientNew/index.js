@@ -40,7 +40,6 @@ export default function ClientNew() {
   const history = useHistory();
   const [loading, setLoading] = useState(true);
   const [loadingModal, setLoadingModal] = useState(true);
-  const [isReadOnly, setIsReadOnly] = useState(true);
 
   const [loadingButton, setLoadingButton] = useState(false);
   const [textButtonSave, setTextButtonSave] = useState("Salvar");
@@ -103,7 +102,7 @@ export default function ClientNew() {
     setStreet("");
     setStreetNumber("");
     setComplement("");
-    setCheckedStatus(false);
+    setCheckedStatus(true);
   }
 
   // #endregion
@@ -277,8 +276,8 @@ export default function ClientNew() {
   }
   // #endregion
 
-  //#region Verify Field Empty
-  const fieldsIsEmpty = () => {
+  //#region Verify Field Filled
+  const fieldsIsFilled = () => {
     if (
       companyName !== "" ||
       nameFantasy !== "" ||
@@ -320,7 +319,7 @@ export default function ClientNew() {
 
   // #region Handle Cancel Create
   async function handleCancel() {
-    if (!fieldsIsEmpty) {
+    if (fieldsIsFilled()) {
       confirmationAlert(
         "Atenção!",
         "Deseja realmente CANCELAR esse cadastro? Os dados não salvos serão perdidos.",
@@ -332,7 +331,7 @@ export default function ClientNew() {
 
   // #region Handle Return Page Consult
   async function handleReturn() {
-    if (!fieldsIsEmpty) {
+    if (fieldsIsFilled()) {
       confirmationAlert(
         "Atenção!",
         "Deseja realmente VOLTAR para a página de consulta de clientes? Os dados não salvos serão perdidos.",
@@ -363,9 +362,7 @@ export default function ClientNew() {
   // #region Handle Select Search Neighborhood
   function handleSelectNeighborhoodInSearch(id, neighborhood) {
     setIdNeighborhood(id);
-    setIsReadOnly(false);
     setNeighborhood(neighborhood);
-    setIsReadOnly(true);
     handleCloseModalSearchNeighborhood();
     inputFocusStreet();
   }
@@ -535,7 +532,7 @@ export default function ClientNew() {
             <ToastContainer />
 
             <Header title="Cliente" icon={<RiUser2Line size={40} />} />
-            <div className="client-container">
+            <div className="client-container-new">
               <div className="tab-bar">
                 <div className="group-tabs" />
               </div>
@@ -656,7 +653,7 @@ export default function ClientNew() {
                             type="text"
                             value={neighborhood}
                             required
-                            readOnly={isReadOnly}
+                            readOnly
                             onChange={(e) => setNeighborhood(e.target.value)}
                           />
 

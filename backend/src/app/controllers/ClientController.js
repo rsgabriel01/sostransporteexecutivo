@@ -117,4 +117,73 @@ module.exports = {
       return res.status(500);
     }
   },
+
+  async show(req, res) {
+    try {
+      let typesClientId = [];
+
+      const { idClient } = req.params;
+      const { id_executingperson } = req.headers;
+
+      const client = await People.findByPk(idClient, {
+        include: ["People_Type"],
+      });
+
+      if (!client) {
+        return res.status(400).json({
+          message:
+            "Nenhum cadastro de cliente foi encontrada com o código fornecido.",
+        });
+      }
+
+      typesClientId = client.People_Type.map(function (index) {
+        if (index.Type_people.active) {
+          return index.Type_people.id_type;
+        }
+      });
+
+      if (!typesClientId.includes("4")) {
+        return res.status(400).json({
+          message:
+            "Nenhum cadastro de cliente foi encontrada com o código informado.",
+        });
+      }
+
+      const {
+        id,
+        cpf_cnpj,
+        company_name,
+        name_fantasy,
+        phone,
+        email,
+        active,
+        People_Type,
+      } = client;
+
+      const peopleAddress = await People_address.findOne({
+        where: {
+          id_people: idClient,
+        },
+        include: ["Neighborhood"],
+      });
+
+      const responseData = {
+        client: {
+          id,
+          cpf_cnpj,
+          company_name,
+          name_fantasy,
+          phone,
+          email,
+          active,
+        },
+        peopleAddress,
+        peopleType: People_Type,
+      };
+
+      return res.json(responseData);
+    } catch (error) {
+      console.log(error);
+    }
+  },
 };

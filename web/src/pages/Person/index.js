@@ -702,6 +702,7 @@ export default function Person() {
                             type="number"
                             min="1"
                             required
+                            autoFocus
                             value={idPeople}
                             readOnly={searchPersonInactive}
                             onChange={(e) => {

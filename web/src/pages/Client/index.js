@@ -109,47 +109,55 @@ export default function Client() {
 
   // #region Fill Fields
   function fillFields(response) {
-    const {
-      cpf_cnpj,
-      company_name,
-      name_fantasy,
-      phone,
-      email,
-      active,
-    } = response.client;
+    console.log(response);
 
-    const {
-      id_neighborhood,
-      street,
-      street_number,
-      complement,
-    } = response.peopleAddress;
+    if (response.client) {
+      const {
+        cpf_cnpj,
+        company_name,
+        name_fantasy,
+        phone,
+        email,
+        active,
+      } = response.client;
 
-    const neighborhood = response.peopleAddress.Neighborhood.name;
+      cpf_cnpj ? setCpfCnpj(cpf_cnpj) : setCpfCnpj("");
 
-    cpf_cnpj ? setCpfCnpj(cpf_cnpj) : setCpfCnpj("");
+      company_name ? setCompanyName(company_name) : setCompanyName("");
 
-    company_name ? setCompanyName(company_name) : setCompanyName("");
+      name_fantasy ? setNameFantasy(name_fantasy) : setNameFantasy("");
 
-    name_fantasy ? setNameFantasy(name_fantasy) : setNameFantasy("");
+      phone ? setPhone(phone) : setPhone("");
 
-    phone ? setPhone(phone) : setPhone("");
+      email ? setEmail(email) : setEmail("");
 
-    email ? setEmail(email) : setEmail("");
+      setCheckedStatus(active);
+    }
 
-    id_neighborhood
-      ? setIdNeighborhood(id_neighborhood)
-      : setIdNeighborhood("");
+    if (response.peopleAddress) {
+      const {
+        id_neighborhood,
+        street,
+        street_number,
+        complement,
+      } = response.peopleAddress;
 
-    neighborhood ? setNeighborhood(neighborhood) : setNeighborhood("");
+      id_neighborhood
+        ? setIdNeighborhood(id_neighborhood)
+        : setIdNeighborhood("");
 
-    street ? setStreet(street) : setStreet("");
+      street ? setStreet(street) : setStreet("");
 
-    street_number ? setStreetNumber(street_number) : setStreetNumber("");
+      street_number ? setStreetNumber(street_number) : setStreetNumber("");
 
-    complement ? setComplement(complement) : setComplement("");
+      complement ? setComplement(complement) : setComplement("");
 
-    setCheckedStatus(active);
+      if (response.peopleAddress.Neighborhood) {
+        const neighborhood = response.peopleAddress.Neighborhood.name;
+
+        neighborhood ? setNeighborhood(neighborhood) : setNeighborhood("");
+      }
+    }
   }
   // #endregion
 

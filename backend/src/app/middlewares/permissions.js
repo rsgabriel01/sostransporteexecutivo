@@ -14,9 +14,16 @@ const permissionAdminAttendance = async function (req, res, next) {
   });
 
   if (executingPersonData) {
-    const activeExecutingPerson = executingPersonData.Users.active;
+    const activeExecutingPerson = executingPersonData.active;
+    const activeExecutingUser = executingPersonData.Users.active;
 
-    if (activeExecutingPerson != true) {
+    if (!activeExecutingPerson) {
+      return res.status(401).json({
+        message: "Ação não permitida.",
+      });
+    }
+
+    if (!activeExecutingUser) {
       return res.status(401).json({
         message: "Ação não permitida.",
       });

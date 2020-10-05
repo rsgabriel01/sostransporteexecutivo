@@ -1,8 +1,6 @@
 require("dotenv/config");
 
-const { Sessions, Users, People } = require("../models");
-
-const { Op, fn, col, literal, QueryTypes, Sequelize } = require("sequelize");
+const { Sessions, Users } = require("../models");
 
 const crypto = require("crypto");
 
@@ -32,10 +30,14 @@ module.exports = {
         where: {
           id: id_user,
         },
+        include: ["People"],
       });
 
       if (id_user) {
         if (!userFinded.active) {
+          return res.status(401).json({ message: "Token de sessão inválido." });
+        }
+        if (!userFinded.People.active) {
           return res.status(401).json({ message: "Token de sessão inválido." });
         }
       } else {
@@ -77,6 +79,14 @@ module.exports = {
 
       if (!dataUser.active) {
         console.log("usuario inativo");
+
+        return res
+          .status(400)
+          .json({ message: "Usuário ou senha incorretos." });
+      }
+
+      if (!dataUser.People.active) {
+        console.log("pessoa inativa");
 
         return res
           .status(400)

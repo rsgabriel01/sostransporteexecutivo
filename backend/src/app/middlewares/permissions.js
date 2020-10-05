@@ -1,7 +1,4 @@
-var express = require("express");
-const { Op, fn, col, literal, QueryTypes, Sequelize } = require("sequelize");
-const { People, Sessions, Type_people } = require("../models");
-const moment = require("moment");
+const { People } = require("../models");
 
 const permissionAdminAttendance = async function (req, res, next) {
   const { id_executingperson } = req.headers;

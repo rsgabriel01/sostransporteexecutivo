@@ -186,7 +186,7 @@ module.exports = {
       console.log(error);
     }
   },
-on
+
   async update(req, res) {
     try {
       let typesPersonId = [];

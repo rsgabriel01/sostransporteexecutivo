@@ -294,7 +294,7 @@ export default function Client() {
       street: street.toUpperCase(),
       streetNumber,
       complement: complement.toUpperCase(),
-      status: checkedStatus,
+      active: checkedStatus,
     };
 
     setTextButtonSaveUpdate("Aguarde...");

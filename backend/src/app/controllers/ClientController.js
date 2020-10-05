@@ -186,4 +186,211 @@ module.exports = {
       console.log(error);
     }
   },
+on
+  async update(req, res) {
+    try {
+      let typesPersonId = [];
+      let columnsUpdateClient = {};
+      let columnsUpdateClientAddress = {};
+
+      let companyNameOld = "";
+      let nameFantasyOld = "";
+      let cpfCnpjOld = "";
+      let phoneOld = "";
+      let emailOld = "";
+      let activeOld = false;
+
+      let idNeighborhoodOld = "";
+      let streetOld = "";
+      let streetNumberOld = "";
+      let complementOld = "";
+
+      const {
+        idClient,
+        companyName,
+        nameFantasy,
+        cpfCnpj,
+        phone,
+        email,
+        idNeighborhood,
+        street,
+        streetNumber,
+        complement,
+        active,
+      } = req.body;
+
+      // console.log(req.body);
+
+      const oldClientFinded = await People.findOne({
+        where: {
+          id: idClient,
+        },
+        include: ["People_Type"],
+      });
+
+      // console.log(JSON.stringify(oldClientFinded));
+
+      if (oldClientFinded) {
+        typesPersonId = oldClientFinded.People_Type.map(function (index) {
+          if (index.Type_people.active) {
+            return index.Type_people.id_type;
+          }
+        });
+
+        if (!typesPersonId.includes("4")) {
+          return res.status(400).json({
+            message: "Nenhum cadastro foi encontrada com o código informado.",
+          });
+        }
+
+        companyNameOld = oldClientFinded.company_name;
+        nameFantasyOld = oldClientFinded.name_fantasy;
+        cpfCnpjOld = oldClientFinded.cpf_cnpj;
+        phoneOld = oldClientFinded.phone;
+        emailOld = oldClientFinded.email;
+        activeOld = oldClientFinded.active;
+      } else {
+        return res.status(400).json({
+          message: "Nenhum cadastro foi encontrada com o código informado.",
+        });
+      }
+
+      const oldClientAddressFinded = await People_address.findOne({
+        where: {
+          id_people: idClient,
+        },
+        include: ["Neighborhood"],
+      });
+
+      if (oldClientAddressFinded) {
+        idNeighborhoodOld = oldClientAddressFinded.id_neighborhood;
+        streetOld = oldClientAddressFinded.street;
+        streetNumberOld = oldClientAddressFinded.street_number;
+        complementOld = oldClientAddressFinded.complement;
+      }
+
+      if (companyNameOld.toUpperCase() !== companyName.toUpperCase()) {
+        columnsUpdateClient["company_name"] = companyName.toUpperCase();
+      }
+
+      if (nameFantasyOld.toUpperCase() !== nameFantasy.toUpperCase()) {
+        columnsUpdateClient["name_fantasy"] = nameFantasy.toUpperCase();
+      }
+
+      if (cpfCnpjOld !== cpfCnpj) {
+        const cnpjFinded = await People.findOne({
+          where: {
+            cpf_cnpj: cpfCnpj,
+          },
+        });
+
+        if (cnpjFinded) {
+          return res.status(400).json({
+            message:
+              "O CNPJ informado para alteração já foi cadastrado, por favor verifique.",
+          });
+        }
+
+        columnsUpdateClient["cpf_cnpj"] = cpfCnpj;
+      }
+
+      if (phoneOld !== phone) {
+        columnsUpdateClient["phone"] = phone;
+      }
+
+      if (emailOld !== email) {
+        if (email != "") {
+          const emailFinded = await People.findOne({
+            where: {
+              email,
+            },
+          });
+
+          if (emailFinded) {
+            return res.status(400).json({
+              message:
+                "O email informado já foi cadastrado, por favor verifique.",
+            });
+          }
+        }
+
+        columnsUpdateClient["email"] = email;
+      }
+
+      if (activeOld !== active) {
+        columnsUpdateClient["active"] = active;
+      }
+
+      console.log(columnsUpdateClient);
+
+      if (idNeighborhoodOld !== idNeighborhood) {
+        const neighborhoodFinded = await Neighborhoods.findOne({
+          where: {
+            id: idNeighborhood,
+          },
+        });
+
+        if (!neighborhoodFinded) {
+          return res.status(400).json({
+            message:
+              "O email informado já foi cadastrado, por favor verifique.",
+          });
+        }
+
+        columnsUpdateClientAddress["id_neighborhood"] = idNeighborhood;
+      }
+
+      if (streetOld !== street) {
+        columnsUpdateClientAddress["street"] = street;
+      }
+
+      if (streetNumberOld !== streetNumber) {
+        columnsUpdateClientAddress["street_number"] = streetNumber;
+      }
+
+      if (complementOld !== complement) {
+        columnsUpdateClientAddress["complement"] = complement;
+      }
+
+      const updatedClient = await People.update(columnsUpdateClient, {
+        where: {
+          id: idClient,
+        },
+      });
+
+      if (updatedClient) {
+        const updatedClientAddress = await People_address.update(
+          columnsUpdateClientAddress,
+          {
+            where: {
+              id: idClient,
+            },
+          }
+        );
+      }
+
+      const dataClientUpdated = await People.findOne({
+        where: {
+          id: idPeople,
+        },
+        include: ["People_Type"],
+      });
+
+      const dataAddressClientUpdated = await People_address.findOne({
+        where: {
+          id_people: idClient,
+        },
+        include: ["Neighborhood"],
+      });
+
+      return res.json({
+        dataClientUpdated,
+        dataAddressClientUpdated,
+        message: "Cadastro alterado com sucesso.",
+      });
+    } catch (error) {
+      console.log(error);
+      return res.status(500);
+    }
+  },
 };

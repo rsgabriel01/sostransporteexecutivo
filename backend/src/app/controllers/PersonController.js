@@ -149,9 +149,6 @@ module.exports = {
       let typesPersonId = [];
       let columnsUpdatePerson = {};
 
-      let removedOrAddTypeAdmin = "";
-      let removedOrAddTypeAttendance = "";
-
       let nameOld = "";
       let cpf_cnpjOld = "";
       let rgOld = "";
@@ -172,8 +169,6 @@ module.exports = {
         typeAttendance,
         active,
       } = req.body;
-
-      // console.log(req.body);
 
       const { id_executingperson } = req.headers;
 
@@ -198,8 +193,6 @@ module.exports = {
         },
         include: ["People_Type"],
       });
-
-      console.log(JSON.stringify(oldPersonFinded));
 
       if (oldPersonFinded) {
         typesPersonId = oldPersonFinded.People_Type.map(function (index) {
@@ -303,15 +296,11 @@ module.exports = {
         columnsUpdatePerson["active"] = active;
       }
 
-      console.log(columnsUpdatePerson);
-
       const updatedPerson = await People.update(columnsUpdatePerson, {
         where: {
           id: idPeople,
         },
       });
-
-      console.log(`TypeAdminOld: ${typeAdminOld} TypeAdmin: ${typeAdmin}`);
 
       if (typeAdminOld && !typeAdmin) {
         if (typesExecutingPersonIds.includes("1")) {
@@ -366,10 +355,6 @@ module.exports = {
         }
       }
 
-      console.log(
-        `TypeAttendanceOld: ${typeAttendanceOld} TypeAttendance: ${typeAttendance}`
-      );
-
       if (typeAttendanceOld && !typeAttendance) {
         if (id_executingperson == idPeople) {
           return res.status(400).json({
@@ -409,7 +394,7 @@ module.exports = {
         }
       }
 
-      const newPersonFinded = await People.findOne({
+      const dataPersonUpdated = await People.findOne({
         where: {
           id: idPeople,
         },
@@ -417,7 +402,7 @@ module.exports = {
       });
 
       return res.json({
-        newPersonFinded,
+        dataPersonUpdated,
         message: "Cadastro alterado com sucesso.",
       });
     } catch (error) {

@@ -219,7 +219,7 @@ module.exports = {
         active,
       } = req.body;
 
-      // console.log(req.body);
+      console.log(req.body);
 
       const oldClientFinded = await People.findOne({
         where: {
@@ -321,8 +321,6 @@ module.exports = {
         columnsUpdateClient["active"] = active;
       }
 
-      console.log(columnsUpdateClient);
-
       if (idNeighborhoodOld !== idNeighborhood) {
         const neighborhoodFinded = await Neighborhoods.findOne({
           where: {
@@ -352,26 +350,23 @@ module.exports = {
         columnsUpdateClientAddress["complement"] = complement;
       }
 
-      const updatedClient = await People.update(columnsUpdateClient, {
+      console.log(columnsUpdateClient);
+      await People.update(columnsUpdateClient, {
         where: {
           id: idClient,
         },
       });
 
-      if (updatedClient) {
-        const updatedClientAddress = await People_address.update(
-          columnsUpdateClientAddress,
-          {
-            where: {
-              id: idClient,
-            },
-          }
-        );
-      }
+      console.log(columnsUpdateClientAddress);
+      await People_address.update(columnsUpdateClientAddress, {
+        where: {
+          id_people: idClient,
+        },
+      });
 
       const dataClientUpdated = await People.findOne({
         where: {
-          id: idPeople,
+          id: idClient,
         },
         include: ["People_Type"],
       });

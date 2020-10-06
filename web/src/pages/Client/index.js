@@ -89,6 +89,8 @@ export default function Client() {
   const streetInputRef = useRef(null);
   const [searchNeighborhoodList, setSearchNeighborhoodList] = useState([]);
 
+  // #endregion Definitions
+
   // #region Verify Session
   async function virifyAuthorization() {
     const response = await isAuthenticated();
@@ -285,7 +287,7 @@ export default function Client() {
   async function updateClient() {
     const dataClient = {
       idClient,
-      copanyName: companyName.toUpperCase(),
+      companyName: companyName.toUpperCase(),
       nameFantasy: nameFantasy.toUpperCase(),
       cpfCnpj,
       phone,

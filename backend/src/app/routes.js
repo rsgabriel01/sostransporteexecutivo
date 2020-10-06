@@ -43,6 +43,7 @@ const VehiclesController = require("./controllers/VehiclesController");
 // #endregion
 
 // #region Validators
+
 // #region Person
 const {
   validatorPersonCreate,
@@ -50,6 +51,7 @@ const {
   validatorPersonUpdate,
   validatorPersonIndexLikeName,
 } = require("./validators/routesPerson");
+// #endregion
 
 // #region Client
 const {
@@ -194,12 +196,12 @@ routes.post(
   clientController.store
 );
 
-routes.post(
-  "/clients/active",
-  validatorClientCreate,
+routes.put(
+  "/client/update",
+  // validatorClientCreate,
   verifySession,
   permissionAdminAttendance,
-  clientController.store
+  clientController.update
 );
 
 routes.get(

@@ -19,7 +19,6 @@ module.exports = {
         order: [["id", "ASC"]],
       });
 
-      console.log(people);
       return res.json(people);
     } catch (error) {
       console.log(error);

@@ -15,6 +15,7 @@ import {
   RiArrowLeftLine,
   RiCheckboxMultipleLine,
   RiSearchEyeLine,
+  RiFileUserLine,
 } from "react-icons/ri";
 
 import LateralMenu from "../components/LateralMenu/LateralMenu";
@@ -500,7 +501,7 @@ export default function PersonUser(props) {
                   }
                 >
                   <div className="form-title">
-                    <RiCheckDoubleLine size={30} />
+                    <RiFileUserLine size={30} />
                     <h1>
                       {titleUpdate}
                       DADOS DE USUÁRIO

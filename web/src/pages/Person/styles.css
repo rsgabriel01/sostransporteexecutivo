@@ -227,6 +227,29 @@
 .person-container
   .input-group-person
   .input-label-group-row
+  .checkbox-block#cbBlockDriver {
+  cursor: default;
+}
+
+.person-container
+  .input-group-person
+  .input-label-group-row
+  .checkbox-block#cbBlockDriver
+  input {
+  cursor: default;
+}
+
+.person-container
+  .input-group-person
+  .input-label-group-row
+  .checkbox-block#cbBlockDriver
+  label {
+  cursor: default;
+}
+
+.person-container
+  .input-group-person
+  .input-label-group-row
   .checkbox-block
   + .checkbox-block {
   margin-left: 10px;

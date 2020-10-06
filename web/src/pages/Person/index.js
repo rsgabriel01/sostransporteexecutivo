@@ -66,6 +66,7 @@ export default function Person() {
   const [active, setActive] = useState(false);
   const [checkedTypeAdmin, setCheckedTypeAdmin] = useState(false);
   const [checkedTypeAttendance, setCheckedTypeAttendance] = useState(false);
+  const [checkedTypeDriver, setCheckedTypeDriver] = useState(false);
 
   const useStyles = makeStyles((theme) => jsonClassesModal(theme));
   const ClassesModal = useStyles();
@@ -103,7 +104,7 @@ export default function Person() {
     console.log(response.peopleType);
     const typeIds = response.peopleType.map((index) => {
       if (index.Type_people.active) {
-        return index.id;
+        return index.Type_people.id_type;
       }
     });
 
@@ -130,6 +131,10 @@ export default function Person() {
     typeIds.includes(2) || typeIds.includes("2")
       ? setCheckedTypeAttendance(true)
       : setCheckedTypeAttendance(false);
+
+    typeIds.includes(3) || typeIds.includes("3")
+      ? setCheckedTypeDriver(true)
+      : setCheckedTypeDriver(false);
   }
   // #endregion
 
@@ -149,6 +154,7 @@ export default function Person() {
     setActive(false);
     setCheckedTypeAdmin(false);
     setCheckedTypeAttendance(false);
+    setCheckedTypeDriver(false);
   }
 
   // #endregion
@@ -842,7 +848,6 @@ export default function Person() {
                             type="checkbox"
                             id="cbAdmin"
                             disabled={isReadonly}
-                            value="1"
                             checked={checkedTypeAdmin}
                             onClick={() => {
                               handleCheckBox("cbAdmin");
@@ -856,13 +861,22 @@ export default function Person() {
                             type="checkbox"
                             id="cbAttendance"
                             disabled={isReadonly}
-                            value="2"
                             checked={checkedTypeAttendance}
                             onClick={() => {
                               handleCheckBox("cbAttendance");
                             }}
                           />
                           <label htmlFor="cbAttendance">Atendente</label>
+                        </div>
+
+                        <div className="checkbox-block" id="cbBlockDriver">
+                          <input
+                            type="checkbox"
+                            id="cbDriver"
+                            disabled
+                            checked={checkedTypeDriver}
+                          />
+                          <label htmlFor="cbDriver">Motorista</label>
                         </div>
                       </div>
                     </div>

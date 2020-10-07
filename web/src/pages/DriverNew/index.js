@@ -517,13 +517,7 @@ export default function DriverNew() {
                         />
                       </div>
                     </div>
-                  </div>
 
-                  <div className="input-group-driver-new">
-                    <h1>
-                      <RiUserLocationLine size={30} />
-                      Motorista
-                    </h1>
                     <div className="input-label-group-row">
                       <div className="input-label-block-column">
                         <label htmlFor="cnh">CNH:</label>

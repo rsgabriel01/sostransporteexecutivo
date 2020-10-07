@@ -4,7 +4,7 @@ const routes = express.Router();
 
 // #region Controllers
 const PersonController = require("./controllers/PersonController");
-const PersonLikeNameController = require("./controllers/PersonLikeNameController");
+const PeopleLikeNameController = require("./controllers/PeopleLikeNameController");
 
 const clientController = require("./controllers/ClientController");
 
@@ -50,7 +50,7 @@ const {
   validatorPersonShow,
   validatorPersonUpdate,
   validatorPersonIndexLikeName,
-} = require("./validators/routesPerson");
+} = require("./validators/routesPersonPeople");
 // #endregion
 
 // #region Client
@@ -145,7 +145,7 @@ routes.post("/acess/login", validatorLogin, SessionsController.store);
 routes.get("/acess/logout", validatorLogout, SessionsController.destroy);
 // #endregion
 
-// #region Person
+// #region Person/People
 routes.post(
   "/person/create",
   validatorPersonCreate,
@@ -171,19 +171,19 @@ routes.put(
 );
 
 routes.get(
-  "/person/",
+  "/people/",
   validatorPersonIndexLikeName,
   verifySession,
   permissionAdminAttendance,
-  PersonLikeNameController.indexLikeName
+  PeopleLikeNameController.indexLikeName
 );
 
 routes.get(
-  "/person/active/",
+  "/people/active/",
   validatorPersonIndexLikeName,
   verifySession,
   permissionAdminAttendance,
-  PersonLikeNameController.indexActiveLikeName
+  PeopleLikeNameController.indexActiveLikeName
 );
 // #endregion
 

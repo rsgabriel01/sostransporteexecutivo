@@ -55,7 +55,7 @@ export default function Person() {
   const [loadingButton, setLoadingButton] = useState(false);
   const [textButtonSaveUpdate, setTextButtonSaveUpdate] = useState("Salvar");
   const [btnInactive, setBtnInactive] = useState("");
-  const [searchPersonInactive, setSearchPersonInactive] = useState(false);
+  const [searchPersonBtnInactive, setSearchPersonBtnInactive] = useState(false);
 
   const [idPeople, setIdPeople] = useState("");
   const [name, setName] = useState("");
@@ -165,7 +165,7 @@ export default function Person() {
     setTitleUpdate("");
     setUpdateRegister(false);
     setIsReadonly(true);
-    setSearchPersonInactive(false);
+    setSearchPersonBtnInactive(false);
   }
   // #endregion
 
@@ -439,7 +439,7 @@ export default function Person() {
     if (personFinded) {
       setTitleUpdate("ALTERAR ");
 
-      setSearchPersonInactive(true);
+      setSearchPersonBtnInactive(true);
       setUpdateRegister(true);
       setIsReadonly(false);
     } else if (idPeople.length === 0) {
@@ -494,7 +494,7 @@ export default function Person() {
 
     try {
       const response = await api.get(
-        `/person/?name=${searchPerson.toUpperCase()}`
+        `/people/?name=${searchPerson.toUpperCase()}`
       );
 
       if (response) {
@@ -710,7 +710,7 @@ export default function Person() {
                             required
                             autoFocus
                             value={idPeople}
-                            readOnly={searchPersonInactive}
+                            readOnly={searchPersonBtnInactive}
                             onChange={(e) => {
                               setIdPeople(e.target.value);
                               clearFields();
@@ -729,9 +729,9 @@ export default function Person() {
 
                           <button
                             type="button"
-                            disabled={searchPersonInactive}
+                            disabled={searchPersonBtnInactive}
                             className={`button btnDefault ${
-                              searchPersonInactive ? "btnInactive" : ""
+                              searchPersonBtnInactive ? "btnInactive" : ""
                             }`}
                             onClick={() => {
                               clearFields();

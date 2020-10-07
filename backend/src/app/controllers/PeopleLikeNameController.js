@@ -14,6 +14,7 @@ module.exports = {
           [Op.or]: [
             { "$People_Type.Type_people.id_type$": 1 },
             { "$People_Type.Type_people.id_type$": 2 },
+            { "$People_Type.Type_people.id_type$": 3 },
           ],
         },
         include: ["People_Type"],
@@ -31,7 +32,6 @@ module.exports = {
 
     try {
       const people = await People.findAll({
-        // attributes: ["People_type.id_type"],
         where: {
           name: {
             [Op.like]: `${name.toUpperCase()}%`,
@@ -40,6 +40,7 @@ module.exports = {
           [Op.or]: [
             { "$People_Type.Type_people.id_type$": 1 },
             { "$People_Type.Type_people.id_type$": 2 },
+            { "$People_Type.Type_people.id_type$": 3 },
           ],
         },
         include: ["People_Type"],
@@ -65,6 +66,7 @@ module.exports = {
           [Op.or]: [
             { "$People_Type.Type_people.id_type$": 1 },
             { "$People_Type.Type_people.id_type$": 2 },
+            { "$People_Type.Type_people.id_type$": 3 },
           ],
         },
         include: ["People_Type"],

@@ -21,7 +21,13 @@ app.use(cors());
 app.use("/api", routes);
 app.use(errors());
 
+console.log("Server is loading.");
+
+console.log("Server is loading..");
+
 db.sequelize.sync().then(() => {
+  console.log("Server is loading...");
+
   app.listen(process.env.PORT || 3333, () => {
     console.log("Server is running. Lintening on port 3333.");
   });

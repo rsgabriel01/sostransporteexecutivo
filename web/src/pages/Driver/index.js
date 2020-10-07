@@ -1,8 +1,12 @@
 /* eslint-disable camelcase */
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { Link, useHistory } from "react-router-dom";
 import { confirmAlert } from "react-confirm-alert";
 import { ToastContainer } from "react-toastify";
+import { makeStyles } from "@material-ui/core/styles";
+import Modal from "@material-ui/core/Modal";
+import Backdrop from "@material-ui/core/Backdrop";
+import Fade from "@material-ui/core/Fade";
 import {
   RiSearchLine,
   RiAddLine,
@@ -17,6 +21,7 @@ import {
   RiUserLocationLine,
   RiUserLine,
   RiBook2Line,
+  RiArrowRightUpLine,
 } from "react-icons/ri";
 import LateralMenu from "../components/LateralMenu/LateralMenu";
 import Header from "../components/Header/Header";
@@ -30,11 +35,13 @@ import { isAuthenticated, logout } from "../../services/auth";
 import "./styles.css";
 import "react-toastify/dist/ReactToastify.css";
 import "react-confirm-alert/src/react-confirm-alert.css";
+import jsonClassesModal from "../../helpers/stylesModal";
 
 export default function Driver() {
   // #region Definitions
   const history = useHistory();
   const [loading, setLoading] = useState(true);
+  const [loadingModal, setLoadingModal] = useState(true);
 
   const [isReadonly, setIsReadonly] = useState(false);
 
@@ -47,6 +54,7 @@ export default function Driver() {
   const [loadingButton, setLoadingButton] = useState(false);
   const [textButtonSaveUpdate, setTextButtonSaveUpdate] = useState("Salvar");
   const [btnInactive, setBtnInactive] = useState("");
+  const [searchPersonBtnInactive, setSearchPersonBtnInactive] = useState(false);
 
   const [idPerson, setIdPerson] = useState("");
   const [companyName, setCompanyName] = useState("");
@@ -59,8 +67,17 @@ export default function Driver() {
   const [complement, setComplement] = useState("");
   const [phone, setPhone] = useState("");
   const [email, setEmail] = useState("");
-
   const [checkedStatus, setCheckedStatus] = useState(false);
+
+  const useStyles = makeStyles((theme) => jsonClassesModal(theme));
+  const ClassesModal = useStyles();
+
+  const [titleModal, setTitleModal] = useState("");
+  const [titleIconModal, setTitleIconModal] = useState();
+  const [openModalSearchPerson, setOpenModalSearchPerson] = useState(false);
+  const idPersonInputRef = useRef(null);
+  const [searchPerson, setSearchPerson] = useState("");
+  const [searchPersonList, setSearchPersonList] = useState([]);
 
   // #endregion
 
@@ -407,9 +424,183 @@ export default function Driver() {
   }
   // #endregion
 
+  // #region Handle Open Modal Search Person
+  const handleOpenModalSearchPersonEdit = () => {
+    setLoadingModal(true);
+    loadSearchPersonList();
+
+    setTitleIconModal(<RiUserLine size={30} />);
+    setTitleModal("PESQUISAR PESSOA");
+    setOpenModalSearchPerson(true);
+  };
+
+  const handleCloseModalSearchPersonEdit = () => {
+    setTitleModal("");
+    setSearchPerson("");
+    setOpenModalSearchPerson(false);
+  };
+  // #endregion
+
+  // #region Handle Select Search Person
+  function handleSelectPersonInSearch(id) {
+    clearFields();
+    setIdPerson(id);
+    handleCloseModalSearchPersonEdit();
+    inputFocusIdPerson();
+  }
+
+  function inputFocusIdPerson() {
+    setTimeout(() => {
+      idPersonInputRef.current.focus();
+    }, 1);
+  }
+  // #endregion
+
+  // #region Load Search Person List
+  async function loadSearchPersonList() {
+    setLoadingModal(true);
+
+    try {
+      const response = await api.get(
+        `/people/active/?name=${searchPerson.toUpperCase()}`
+      );
+
+      if (response) {
+        console.log(response.data);
+
+        setSearchPersonList(response.data);
+        setLoadingModal(false);
+      }
+    } catch (error) {
+      setLoadingModal(false);
+
+      if (error.response) {
+        const dataError = error.response.data;
+        const statusError = error.response.status;
+        console.error(dataError);
+        console.error(statusError);
+
+        if (statusError === 400 && dataError.message) {
+          console.log(dataError.message);
+          switch (dataError.message) {
+            case '"name" is required':
+              notify(
+                "error",
+                "Oops, algo deu errado, entre em contato com o suporte de TI. Erro: o QUERY PARAM 'name' não foi encontrado no endereço da rota."
+              );
+              break;
+
+            default:
+              notify("warning", dataError.message);
+          }
+        }
+
+        if (statusError === 401) {
+          switch (dataError.message) {
+            default:
+              notify("warning", dataError.message);
+          }
+        }
+      } else if (error.request) {
+        notify(
+          "error",
+          `Oops, algo deu errado, entre em contato com o suporte de TI. ${error}`
+        );
+        console.log(error.request);
+      } else {
+        notify(
+          "error",
+          `Oops, algo deu errado, entre em contato com o suporte de TI. ${error}`
+        );
+        console.log("Error", error.message);
+      }
+    }
+  }
+  // #endregion
   return (
     <div className="main-container">
+      <Modal
+        id="modalSearchPerson"
+        aria-labelledby="transition-modal-title"
+        aria-describedby="transition-modal-description"
+        className={ClassesModal.modal}
+        open={openModalSearchPerson}
+        onClose={handleCloseModalSearchPersonEdit}
+        closeAfterTransition
+        BackdropComponent={Backdrop}
+        BackdropProps={{
+          timeout: 500,
+        }}
+      >
+        <Fade in={openModalSearchPerson}>
+          <div className={ClassesModal.paper}>
+            <h1 className="modal-search-title">
+              {titleIconModal} {titleModal}
+            </h1>
+            <div className="modal-search-content">
+              <div className="modal-search-input-button">
+                <div className="input-label-block-colum">
+                  <label htmlFor="inputSearchPerson">Nome:</label>
+                  <input
+                    id="inputSearchPerson"
+                    type="text"
+                    value={searchPerson}
+                    onChange={(e) => setSearchPerson(e.target.value)}
+                    onKeyUp={loadSearchPersonList}
+                  ></input>
+                </div>
+
+                <button
+                  type="button"
+                  className="button btnDefault btnSearchModal"
+                  onClick={loadSearchPersonList}
+                >
+                  <RiSearchLine size={24} />
+                  Buscar
+                </button>
+              </div>
+
+              <div className="modal-search-list">
+                {loadingModal ? (
+                  <Loading type="bars" color="#0f4c82" />
+                ) : (
+                  searchPersonList.map((person) => (
+                    <div
+                      className="searchListIten"
+                      key={person.id}
+                      onDoubleClick={() =>
+                        handleSelectPersonInSearch(person.id)
+                      }
+                    >
+                      <div className="searchItenData">
+                        <strong>Código: {person.id}</strong>
+                        <section id="searchPersonData">
+                          <p id="searchNamePerson">Nome: {person.name}</p>
+                          <p id="searchCpfPerson">CPF: {person.cpf_cnpj}</p>
+
+                          <p id="searchRgPerson">RG: {person.rg}</p>
+                        </section>
+                      </div>
+                      <div className="clientBtnSelect">
+                        <button
+                          type="button"
+                          className="button btnSuccess"
+                          onClick={() => handleSelectPersonInSearch(person.id)}
+                        >
+                          <RiArrowRightUpLine />
+                        </button>
+                      </div>
+                    </div>
+                  ))
+                )}
+              </div>
+            </div>
+          </div>
+        </Fade>
+      </Modal>
+
       <LateralMenu />
+
       <>
         {loading ? (
           <Loading type="bars" color="#0f4c82" />
@@ -453,8 +644,8 @@ export default function Driver() {
 
                   <div className="input-group-driver">
                     <h1>
-                      <RiUserLine size={30} />
-                      Pessoa
+                      <RiUserLocationLine size={30} />
+                      Motorista
                     </h1>
 
                     <div className="input-label-group-row">
@@ -466,6 +657,7 @@ export default function Driver() {
 
                         <div className="input-button-block-row">
                           <input
+                            ref={idPersonInputRef}
                             id="idPerson"
                             type="number"
                             min="1"
@@ -483,7 +675,62 @@ export default function Driver() {
                             }}
                           />
 
-                          <button type="button" className="button btnDefault">
+                          <button
+                            type="button"
+                            className="button btnDefault"
+                            onClick={() => {
+                              clearFields();
+                              handleOpenModalSearchPersonEdit();
+                            }}
+                          >
+                            <RiSearchLine size={24} />
+                          </button>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className="input-group-driver">
+                    <h1>
+                      <RiUserLine size={30} />
+                      Pessoa
+                    </h1>
+
+                    <div className="input-label-group-row">
+                      <div
+                        className="input-label-block-column"
+                        id="input-label-block-column-cod"
+                      >
+                        <label htmlFor="idPerson">Código:</label>
+
+                        <div className="input-button-block-row">
+                          <input
+                            ref={idPersonInputRef}
+                            id="idPerson"
+                            type="number"
+                            min="1"
+                            required
+                            value={idPerson}
+                            onChange={(e) => setIdPerson(e.target.value)}
+                            onBlur={() => {
+                              handleSearchPerson(idPerson);
+                            }}
+                            onKeyUp={(e) => {
+                              if (idPerson.length === 0) {
+                                clearFields();
+                                clearFields();
+                              }
+                            }}
+                          />
+
+                          <button
+                            type="button"
+                            className="button btnDefault"
+                            onClick={() => {
+                              clearFields();
+                              handleOpenModalSearchPersonEdit();
+                            }}
+                          >
                             <RiSearchLine size={24} />
                           </button>
                         </div>
@@ -502,13 +749,7 @@ export default function Driver() {
                         />
                       </div>
                     </div>
-                  </div>
 
-                  <div className="input-group-driver">
-                    <h1>
-                      <RiUserLocationLine size={30} />
-                      Motorista
-                    </h1>
                     <div className="input-label-group-row">
                       <div className="input-label-block-column">
                         <label htmlFor="cnh">CNH:</label>

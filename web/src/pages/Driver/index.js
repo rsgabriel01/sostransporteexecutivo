@@ -49,24 +49,19 @@ export default function Driver() {
 
   const [titleUpdate, setTitleUpdate] = useState("");
 
-  const [personFinded, setPersonFinded] = useState(false);
+  const [personFinded, setDriverFinded] = useState(false);
 
   const [loadingButton, setLoadingButton] = useState(false);
   const [textButtonSaveUpdate, setTextButtonSaveUpdate] = useState("Salvar");
   const [btnInactive, setBtnInactive] = useState("");
   const [searchPersonBtnInactive, setSearchPersonBtnInactive] = useState(false);
 
+  const [idDriver, setIdDriver] = useState("");
   const [idPerson, setIdPerson] = useState("");
-  const [companyName, setCompanyName] = useState("");
-  const [fantasyName, setFantasyName] = useState("");
+  const [name, setName] = useState("");
   const [cnh, setCnh] = useState("");
-  const [idNeighborhood, setIdNeighborhood] = useState("");
-  const [neighborhood, setNeighborhood] = useState("");
-  const [street, setStreet] = useState("");
-  const [streetNumber, setStreetNumber] = useState("");
-  const [complement, setComplement] = useState("");
-  const [phone, setPhone] = useState("");
-  const [email, setEmail] = useState("");
+  const [numPermit, setNumPermit] = useState("");
+  const [businessPhone, setBusinessPhone] = useState("");
   const [checkedStatus, setCheckedStatus] = useState(false);
 
   const useStyles = makeStyles((theme) => jsonClassesModal(theme));
@@ -74,10 +69,15 @@ export default function Driver() {
 
   const [titleModal, setTitleModal] = useState("");
   const [titleIconModal, setTitleIconModal] = useState();
+  const idDriverInputRef = useRef(null);
+
   const [openModalSearchPerson, setOpenModalSearchPerson] = useState(false);
-  const idPersonInputRef = useRef(null);
   const [searchPerson, setSearchPerson] = useState("");
   const [searchPersonList, setSearchPersonList] = useState([]);
+
+  const [openModalSearchDriver, setOpenModalSearchDriver] = useState(false);
+  const [searchDriver, setSearchDriver] = useState("");
+  const [searchDriverList, setSearchDriverList] = useState([]);
 
   // #endregion
 
@@ -130,11 +130,14 @@ export default function Driver() {
   // #region Clear Fields
   function clearFields(withCode) {
     if (withCode) {
-      setIdPerson("");
+      setIdDriver("");
     }
 
-    setPhone("");
-    setEmail("");
+    setIdPerson("");
+    setName("");
+    setCnh("");
+    setNumPermit("");
+    setBusinessPhone("");
     setCheckedStatus(false);
   }
 
@@ -142,7 +145,7 @@ export default function Driver() {
 
   // #region alter page to consult
   function alterPageUpdateForConsult() {
-    setPersonFinded(false);
+    setDriverFinded(false);
     clearFields(true);
     setTitleUpdate("");
     setUpdateRegister(false);
@@ -164,24 +167,24 @@ export default function Driver() {
   }
   // #endregion
 
-  // #region Load Data Person
+  // #region Load Data Driver
   async function loadDataPerson(id) {
     try {
       clearFields();
 
-      setPersonFinded(false);
+      setDriverFinded(false);
 
       const response = await api.get(`/person/${id}`);
 
       if (response) {
-        setPersonFinded(true);
+        setDriverFinded(true);
         // fillFields(response.data);
       }
 
       console.log(response.data);
     } catch (error) {
       if (error.response) {
-        setPersonFinded(false);
+        setDriverFinded(false);
 
         const dataError = error.response.data;
         const statusError = error.response.status;
@@ -207,14 +210,14 @@ export default function Driver() {
           }
         }
       } else if (error.request) {
-        setPersonFinded(false);
+        setDriverFinded(false);
         notify(
           "error",
           `Oops, algo deu errado, entre em contato com o suporte de TI. ${error}`
         );
         console.log(error.request);
       } else {
-        setPersonFinded(false);
+        setDriverFinded(false);
         notify(
           "error",
           `Oops, algo deu errado, entre em contato com o suporte de TI. ${error}`
@@ -226,7 +229,7 @@ export default function Driver() {
 
   // #endregion
 
-  // #region Handle Search Person
+  // #region Handle Search Driver
   function handleSearchPerson(idPerson) {
     if (idPerson) {
       loadDataPerson(idPerson);
@@ -238,20 +241,14 @@ export default function Driver() {
   }
   // #endregion
 
-  // #region Update Person
+  // #region Update Driver
   async function updatePerson() {
     const dataPerson = {
       idPerson,
-      companyName,
-      fantasyName,
       cnh,
-      phone,
-      email,
-      idNeighborhood,
-      street,
-      streetNumber,
-      complement,
-      status: checkedStatus,
+      numPermit,
+      businessPhone,
+      active: checkedStatus,
     };
 
     setTextButtonSaveUpdate("Aguarde...");
@@ -424,6 +421,100 @@ export default function Driver() {
   }
   // #endregion
 
+  // #region Handle Open Modal Search Driver
+  const handleOpenModalSearchDriverEdit = () => {
+    setLoadingModal(true);
+    loadSearchDriverList();
+
+    setTitleIconModal(<RiUserLocationLine size={30} />);
+    setTitleModal("PESQUISAR MOTORISTA");
+    setOpenModalSearchDriver(true);
+  };
+
+  const handleCloseModalSearchDriverEdit = () => {
+    setTitleModal("");
+    setSearchDriver("");
+    setOpenModalSearchDriver(false);
+  };
+  // #endregion
+
+  // #region Handle Select Search Driver
+  function handleSelectDriverInSearch(id) {
+    clearFields();
+    setIdDriver(id);
+    handleCloseModalSearchDriverEdit();
+    inputFocusIdDriver();
+  }
+
+  function inputFocusIdDriver() {
+    setTimeout(() => {
+      idDriverInputRef.current.focus();
+    }, 1);
+  }
+  // #endregion
+
+  // #region Load Search Modal Driver List
+  async function loadSearchDriverList() {
+    setLoadingModal(true);
+
+    try {
+      const response = await api.get(
+        `/people/active/?name=${searchDriver.toUpperCase()}`
+      );
+
+      if (response) {
+        console.log(response.data);
+
+        setSearchDriverList(response.data);
+        setLoadingModal(false);
+      }
+    } catch (error) {
+      setLoadingModal(false);
+
+      if (error.response) {
+        const dataError = error.response.data;
+        const statusError = error.response.status;
+        console.error(dataError);
+        console.error(statusError);
+
+        if (statusError === 400 && dataError.message) {
+          console.log(dataError.message);
+          switch (dataError.message) {
+            case '"name" is required':
+              notify(
+                "error",
+                "Oops, algo deu errado, entre em contato com o suporte de TI. Erro: o QUERY PARAM 'name' não foi encontrado no endereço da rota."
+              );
+              break;
+
+            default:
+              notify("warning", dataError.message);
+          }
+        }
+
+        if (statusError === 401) {
+          switch (dataError.message) {
+            default:
+              notify("warning", dataError.message);
+          }
+        }
+      } else if (error.request) {
+        notify(
+          "error",
+          `Oops, algo deu errado, entre em contato com o suporte de TI. ${error}`
+        );
+        console.log(error.request);
+      } else {
+        notify(
+          "error",
+          `Oops, algo deu errado, entre em contato com o suporte de TI. ${error}`
+        );
+        console.log("Error", error.message);
+      }
+    }
+  }
+  // #endregion
+
   // #region Handle Open Modal Search Person
   const handleOpenModalSearchPersonEdit = () => {
     setLoadingModal(true);
@@ -451,12 +542,12 @@ export default function Driver() {
 
   function inputFocusIdPerson() {
     setTimeout(() => {
-      idPersonInputRef.current.focus();
+      idDriverInputRef.current.focus();
     }, 1);
   }
   // #endregion
 
-  // #region Load Search Person List
+  // #region Load Search Modal Person List
   async function loadSearchPersonList() {
     setLoadingModal(true);
 
@@ -517,8 +608,86 @@ export default function Driver() {
     }
   }
   // #endregion
+
   return (
     <div className="main-container">
+      <Modal
+        id="modalSearchDriver"
+        aria-labelledby="transition-modal-title"
+        aria-describedby="transition-modal-description"
+        className={ClassesModal.modal}
+        open={openModalSearchDriver}
+        onClose={handleCloseModalSearchDriverEdit}
+        closeAfterTransition
+        BackdropComponent={Backdrop}
+        BackdropProps={{
+          timeout: 500,
+        }}
+      >
+        <Fade in={openModalSearchDriver}>
+          <div className={ClassesModal.paper}>
+            <h1 className="modal-search-title">
+              {titleIconModal} {titleModal}
+            </h1>
+            <div className="modal-search-content">
+              <div className="modal-search-input-button">
+                <div className="input-label-block-colum">
+                  <label htmlFor="inputSearchDriver">Nome:</label>
+                  <input
+                    id="inputSearchDriver"
+                    type="text"
+                    value={searchDriver}
+                    onChange={(e) => setSearchDriver(e.target.value)}
+                    onKeyUp={loadSearchDriverList}
+                  ></input>
+                </div>
+
+                <button
+                  type="button"
+                  className="button btnDefault btnSearchModal"
+                  onClick={loadSearchDriverList}
+                >
+                  <RiSearchLine size={24} />
+                  Buscar
+                </button>
+              </div>
+
+              <div className="modal-search-list">
+                {loadingModal ? (
+                  <Loading type="bars" color="#0f4c82" />
+                ) : (
+                  searchDriverList.map((driver) => (
+                    <div
+                      className="searchListIten"
+                      key={driver.id}
+                      onDoubleClick={() =>
+                        handleSelectDriverInSearch(driver.id)
+                      }
+                    >
+                      <div className="searchItenData">
+                        <strong>Código: {driver.id}</strong>
+                        <section id="searchDriverData">
+                          <p id="searchNameDriver">Nome: {driver.name}</p>
+                        </section>
+                      </div>
+                      <div className="clientBtnSelect">
+                        <button
+                          type="button"
+                          className="button btnSuccess"
+                          onClick={() => handleSelectDriverInSearch(driver.id)}
+                        >
+                          <RiArrowRightUpLine />
+                        </button>
+                      </div>
+                    </div>
+                  ))
+                )}
+              </div>
+            </div>
+          </div>
+        </Fade>
+      </Modal>
+
       <Modal
         id="modalSearchPerson"
         aria-labelledby="transition-modal-title"
@@ -577,7 +746,6 @@ export default function Driver() {
                         <section id="searchPersonData">
                           <p id="searchNamePerson">Nome: {person.name}</p>
                           <p id="searchCpfPerson">CPF: {person.cpf_cnpj}</p>
-
                           <p id="searchRgPerson">RG: {person.rg}</p>
                         </section>
                       </div>
@@ -651,24 +819,24 @@ export default function Driver() {
                     <div className="input-label-group-row">
                       <div
                         className="input-label-block-column"
-                        id="input-label-block-column-cod"
+                        id="input-label-block-column-cod-driver"
                       >
                         <label htmlFor="idPerson">Código:</label>
 
                         <div className="input-button-block-row">
                           <input
-                            ref={idPersonInputRef}
-                            id="idPerson"
+                            ref={idDriverInputRef}
+                            id="idDriver"
                             type="number"
                             min="1"
                             required
-                            value={idPerson}
-                            onChange={(e) => setIdPerson(e.target.value)}
+                            value={idDriver}
+                            onChange={(e) => setIdDriver(e.target.value)}
                             onBlur={() => {
-                              handleSearchPerson(idPerson);
+                              handleSearchPerson(idDriver);
                             }}
                             onKeyUp={(e) => {
-                              if (idPerson.length === 0) {
+                              if (idDriver.length === 0) {
                                 clearFields();
                                 clearFields();
                               }
@@ -680,7 +848,7 @@ export default function Driver() {
                             className="button btnDefault"
                             onClick={() => {
                               clearFields();
-                              handleOpenModalSearchPersonEdit();
+                              handleOpenModalSearchDriverEdit();
                             }}
                           >
                             <RiSearchLine size={24} />
@@ -705,7 +873,6 @@ export default function Driver() {
 
                         <div className="input-button-block-row">
                           <input
-                            ref={idPersonInputRef}
                             id="idPerson"
                             type="number"
                             min="1"
@@ -727,7 +894,6 @@ export default function Driver() {
                             type="button"
                             className="button btnDefault"
                             onClick={() => {
-                              clearFields();
                               handleOpenModalSearchPersonEdit();
                             }}
                           >
@@ -737,15 +903,15 @@ export default function Driver() {
                       </div>
 
                       <div className="input-label-block-column">
-                        <label htmlFor="companyName">Nome:</label>
+                        <label htmlFor="name">Nome:</label>
 
                         <input
-                          id="companyName"
+                          id="name"
                           type="text"
                           readOnly={isReadonly}
                           required
-                          value={companyName}
-                          onChange={(e) => setCompanyName(e.target.value)}
+                          value={name}
+                          onChange={(e) => setName(e.target.value)}
                         />
                       </div>
                     </div>
@@ -779,25 +945,27 @@ export default function Driver() {
                           maxLength="11"
                           readOnly={isReadonly}
                           type="text"
-                          value={phone}
-                          onChange={(e) => setPhone(e.target.value)}
+                          value={numPermit}
+                          onChange={(e) => setNumPermit(e.target.value)}
                           required
                         />
                       </div>
 
                       <div className="input-label-block-column">
-                        <label htmlFor="phone">Telefone Empresarial:</label>
+                        <label htmlFor="businessPhone">
+                          Telefone Empresarial:
+                        </label>
 
                         <input
-                          id="phone"
+                          id="businessPhone"
                           title="Esse campo aceita apenas números"
                           pattern="[0-9]+"
                           minLength="10"
                           maxLength="11"
                           readOnly={isReadonly}
                           type="text"
-                          value={phone}
-                          onChange={(e) => setPhone(e.target.value)}
+                          value={businessPhone}
+                          onChange={(e) => setBusinessPhone(e.target.value)}
                           required
                         />
                       </div>

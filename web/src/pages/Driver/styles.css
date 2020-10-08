@@ -187,6 +187,10 @@
   margin-left: 10px;
 }
 
+.driver-container section.form form #input-label-block-column-cod-driver {
+  width: 17.223%;
+}
+
 .driver-container section.form form #input-label-block-column-cod {
   width: 21%;
 }

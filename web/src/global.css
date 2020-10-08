@@ -379,6 +379,7 @@ input[type="date"]::-webkit-calendar-picker-indicator:hover {
   height: 45px;
   width: 150px;
 }
+
 /* Animation Loading */
 @keyframes spin-animation {
   0% {

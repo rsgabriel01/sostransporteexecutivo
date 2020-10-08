@@ -28,7 +28,7 @@ module.exports = {
 
   async store(req, res) {
     try {
-      const { id_people, cnh, num_permit, business_phone } = req.body;
+      const { id_people, cnh, num_permit, business_phone, active } = req.body;
       const { id_executingperson } = req.headers;
 
       const personFinded = await People.findOne({

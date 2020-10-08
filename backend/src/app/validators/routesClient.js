@@ -20,7 +20,7 @@ const validatorClientCreate = celebrate({
   }),
 });
 
-const validatorClientIndexLikeNameFantasy = celebrate({
+const validatorClientsIndexLikeNameFantasy = celebrate({
   [Segments.HEADERS]: Joi.object({
     authorization: Joi.string().required(),
     id_executingperson: Joi.number().positive().integer().required(),
@@ -30,20 +30,7 @@ const validatorClientIndexLikeNameFantasy = celebrate({
   },
 });
 
-// const validatorLogin = celebrate({
-//   [Segments.BODY]: Joi.object().keys({
-//     user: Joi.string().required(),
-//     password: Joi.string().required().min(8).max(16),
-//   }),
-// });
-
-// const validatorLogout = celebrate({
-//   [Segments.HEADERS]: Joi.object({
-//     token: Joi.string().required(),
-//   }).unknown(),
-// });
-
 module.exports = {
   validatorClientCreate,
-  validatorClientIndexLikeNameFantasy,
+  validatorClientsIndexLikeNameFantasy,
 };

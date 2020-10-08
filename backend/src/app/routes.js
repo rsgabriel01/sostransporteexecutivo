@@ -7,10 +7,10 @@ const PersonController = require("./controllers/PersonController");
 const PeopleLikeNameController = require("./controllers/PeopleLikeNameController");
 
 const clientController = require("./controllers/ClientController");
-
 const clientLikeNameFantasyController = require("./controllers/ClientLikeNameFantasyController");
 
-const DriversController = require("./controllers/DriversController");
+const DriverController = require("./controllers/DriverController");
+const DriversLikeNameFantasyController = require("./controllers/DriversLikeNameController");
 
 const TypesController = require("./controllers/TypesController");
 
@@ -56,13 +56,16 @@ const {
 // #region Client
 const {
   validatorClientCreate,
-  validatorClientIndexLikeNameFantasy,
+  validatorClientsIndexLikeNameFantasy,
 } = require("./validators/routesClient");
 
 // #endregion
 
 // #region Driver
-const { validatorDriversCreate } = require("./validators/routesDrivers");
+const {
+  validatorDriverCreate,
+  validatorDriversIndexLikeName,
+} = require("./validators/routesDrivers");
 // #endregion
 
 // #region Types
@@ -205,29 +208,45 @@ routes.put(
 );
 
 routes.get(
-  "/clients/",
-  validatorClientIndexLikeNameFantasy,
-  verifySession,
-  permissionAdminAttendance,
-  clientLikeNameFantasyController.indexLikeNameFantsy
-);
-
-routes.get(
   "/client/:idClient",
   verifySession,
   permissionAdminAttendance,
   clientController.show
 );
 
+routes.get(
+  "/clients/",
+  validatorClientsIndexLikeNameFantasy,
+  verifySession,
+  permissionAdminAttendance,
+  clientLikeNameFantasyController.indexLikeNameFantsy
+);
+
 // #endregion
 
 // #region Driver
 routes.post(
-  "/drivers/create",
-  validatorDriversCreate,
+  "/driver/create",
+  validatorDriverCreate,
   verifySession,
   permissionAdminAttendance,
-  DriversController.store
+  DriverController.store
+);
+
+routes.get(
+  "/drivers/",
+  validatorDriversIndexLikeName,
+  verifySession,
+  permissionAdminAttendance,
+  DriversLikeNameFantasyController.indexLikeName
+);
+
+routes.get(
+  "/drivers/active/",
+  validatorDriversIndexLikeName,
+  verifySession,
+  permissionAdminAttendance,
+  DriversLikeNameFantasyController.indexActiveLikeName
 );
 // #endregion
 
@@ -335,9 +354,5 @@ routes.post(
 // #endregion
 
 //#endregion Routes
-
-// #region Clients
-
-// #endregion
 
 module.exports = routes;

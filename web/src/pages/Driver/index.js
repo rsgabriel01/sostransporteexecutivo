@@ -459,7 +459,7 @@ export default function Driver() {
 
     try {
       const response = await api.get(
-        `/people/active/?name=${searchDriver.toUpperCase()}`
+        `/drivers/?name=${searchDriver.toUpperCase()}`
       );
 
       if (response) {

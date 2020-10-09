@@ -276,3 +276,26 @@
   height: 19px;
   width: 19px;
 }
+
+.modal-search-list .searchListIten .searchItenData strong {
+  margin-bottom: 5px;
+}
+
+.modal-search-list
+  .searchListIten
+  .searchItenData
+  #searchPersonDataInDriverUpdate {
+  width: 100%;
+
+  display: flex;
+  flex-direction: row;
+}
+
+.modal-search-list
+  .searchListIten
+  .searchItenData
+  #searchPersonDataInDriverUpdate
+  p
+  + p {
+  margin-left: 30px;
+}

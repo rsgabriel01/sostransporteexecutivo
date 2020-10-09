@@ -43,18 +43,18 @@ export default function Driver() {
   const [loading, setLoading] = useState(true);
   const [loadingModal, setLoadingModal] = useState(true);
 
-  const [isReadonly, setIsReadonly] = useState(false);
+  const [isReadonly, setIsReadonly] = useState(true);
 
   const [updateRegister, setUpdateRegister] = useState(false);
 
   const [titleUpdate, setTitleUpdate] = useState("");
 
-  const [personFinded, setDriverFinded] = useState(false);
+  const [driverFinded, setDriverFinded] = useState(false);
 
   const [loadingButton, setLoadingButton] = useState(false);
   const [textButtonSaveUpdate, setTextButtonSaveUpdate] = useState("Salvar");
   const [btnInactive, setBtnInactive] = useState("");
-  const [searchPersonBtnInactive, setSearchPersonBtnInactive] = useState(false);
+  const [searchDriverInactive, setSearchDriverInactive] = useState(false);
 
   const [idDriver, setIdDriver] = useState("");
   const [idPerson, setIdPerson] = useState("");
@@ -70,6 +70,7 @@ export default function Driver() {
   const [titleModal, setTitleModal] = useState("");
   const [titleIconModal, setTitleIconModal] = useState();
   const idDriverInputRef = useRef(null);
+  const cnhInputRef = useRef(null);
 
   const [openModalSearchPerson, setOpenModalSearchPerson] = useState(false);
   const [searchPerson, setSearchPerson] = useState("");
@@ -116,7 +117,7 @@ export default function Driver() {
 
     active ? setCheckedStatus(true) : setCheckedStatus(false);
   }
-  // #endregion;
+  // #endregion
 
   // #region Clear Fields
   function clearFields(withCode) {
@@ -141,6 +142,7 @@ export default function Driver() {
     setTitleUpdate("");
     setUpdateRegister(false);
     setIsReadonly(true);
+    setSearchDriverInactive(false);
   }
   // #endregion
 
@@ -222,12 +224,10 @@ export default function Driver() {
 
   // #region Handle Search Driver
   function handleSearchDriver(idDriver) {
-    if (idDriver) {
+    if (idDriver && !updateRegister) {
       loadDataDriver(idDriver);
       setUpdateRegister(false);
       setTitleUpdate("");
-    } else {
-      clearFields();
     }
   }
   // #endregion
@@ -393,27 +393,27 @@ export default function Driver() {
 
   // #region Handle Update Register
   function handleUpdateRegister() {
-    if (personFinded) {
+    if (driverFinded) {
       setTitleUpdate("ALTERAR ");
-
       setUpdateRegister(true);
       setIsReadonly(false);
-    } else if (idPerson.length === 0) {
+      setSearchDriverInactive(true);
+    } else if (idDriver.length === 0) {
       notify(
         "warning",
-        "Para acessar a alteração de dados primeiro selecione a pessoa desejada."
+        "Para acessar a alteração de dados primeiro selecione o motorista desejado."
       );
     } else {
       notify(
         "warning",
-        "Não foi possível acessar a alteração de dados, pois nenhuma pessoa foi encontrada."
+        "Não foi possível acessar a alteração de dados, pois nenhum motorista foi encontrado."
       );
     }
   }
   // #endregion
 
   // #region Handle Open Modal Search Driver
-  const handleOpenModalSearchDriverEdit = () => {
+  const handleOpenModalSearchDriver = () => {
     setLoadingModal(true);
     loadSearchDriverList();
 
@@ -524,16 +524,16 @@ export default function Driver() {
   // #endregion
 
   // #region Handle Select Search Person
-  function handleSelectPersonInSearch(id) {
-    clearFields();
+  function handleSelectPersonInSearch(id, name) {
     setIdPerson(id);
+    setName(name);
     handleCloseModalSearchPersonEdit();
-    inputFocusIdPerson();
+    inputFocusCnh();
   }
 
-  function inputFocusIdPerson() {
+  function inputFocusCnh() {
     setTimeout(() => {
-      idDriverInputRef.current.focus();
+      cnhInputRef.current.focus();
     }, 1);
   }
   // #endregion
@@ -731,12 +731,12 @@ export default function Driver() {
                       className="searchListIten"
                       key={person.id}
                       onDoubleClick={() =>
-                        handleSelectPersonInSearch(person.id)
+                        handleSelectPersonInSearch(person.id, person.name)
                       }
                     >
                       <div className="searchItenData">
                         <strong>Código: {person.id}</strong>
-                        <section id="searchPersonData">
+                        <section id="searchPersonDataInDriverUpdate">
                           <p id="searchNamePerson">Nome: {person.name}</p>
                           <p id="searchCpfPerson">CPF: {person.cpf_cnpj}</p>
                           <p id="searchRgPerson">RG: {person.rg}</p>
@@ -746,7 +746,9 @@ export default function Driver() {
                         <button
                           type="button"
                           className="button btnSuccess"
-                          onClick={() => handleSelectPersonInSearch(person.id)}
+                          onClick={() =>
+                            handleSelectPersonInSearch(person.id, person.name)
+                          }
                         >
                           <RiArrowRightUpLine />
                         </button>
@@ -814,7 +816,7 @@ export default function Driver() {
                         className="input-label-block-column"
                         id="input-label-block-column-cod-driver"
                       >
-                        <label htmlFor="idPerson">Código:</label>
+                        <label htmlFor="idDriver">Código:</label>
 
                         <div className="input-button-block-row">
                           <input
@@ -822,6 +824,7 @@ export default function Driver() {
                             id="idDriver"
                             type="number"
                             min="1"
+                            readOnly={searchDriverInactive}
                             required
                             value={idDriver}
                             onChange={(e) => setIdDriver(e.target.value)}
@@ -838,10 +841,13 @@ export default function Driver() {
 
                           <button
                             type="button"
-                            className="button btnDefault"
+                            disabled={searchDriverInactive}
+                            className={`button btnDefault ${
+                              searchDriverInactive ? "btnInactive" : ""
+                            }`}
                             onClick={() => {
                               clearFields();
-                              handleOpenModalSearchDriverEdit();
+                              handleOpenModalSearchDriver();
                             }}
                           >
                             <RiSearchLine size={24} />
@@ -871,21 +877,17 @@ export default function Driver() {
                             min="1"
                             required
                             value={idPerson}
+                            readOnly
                             onChange={(e) => setIdPerson(e.target.value)}
-                            onBlur={() => {
-                              handleSearchDriver(idPerson);
-                            }}
-                            onKeyUp={(e) => {
-                              if (idPerson.length === 0) {
-                                clearFields();
-                                clearFields();
-                              }
-                            }}
                           />
 
                           <button
                             type="button"
-                            className="button btnDefault"
+                            className={`button btnDefault ${
+                              isReadonly ? "btnInactive" : ""
+                            }`}
+                            id="btnPerson"
+                            disabled={isReadonly}
                             onClick={() => {
                               handleOpenModalSearchPersonEdit();
                             }}
@@ -901,7 +903,7 @@ export default function Driver() {
                         <input
                           id="name"
                           type="text"
-                          readOnly={isReadonly}
+                          readOnly
                           required
                           value={name}
                           onChange={(e) => setName(e.target.value)}
@@ -914,6 +916,7 @@ export default function Driver() {
                         <label htmlFor="cnh">CNH:</label>
 
                         <input
+                          ref={cnhInputRef}
                           id="cnh"
                           type="text"
                           minLength="10"
@@ -978,9 +981,8 @@ export default function Driver() {
                             type="checkbox"
                             id="cbStatus"
                             disabled={isReadonly}
-                            value="1"
                             checked={checkedStatus}
-                            onClick={() => {
+                            onChange={() => {
                               handleCheckBox("cbStatus");
                             }}
                           />

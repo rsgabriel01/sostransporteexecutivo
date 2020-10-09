@@ -1,8 +1,12 @@
 /* eslint-disable camelcase */
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { Link, useHistory } from "react-router-dom";
 import { confirmAlert } from "react-confirm-alert";
 import { ToastContainer } from "react-toastify";
+import { makeStyles } from "@material-ui/core/styles";
+import Modal from "@material-ui/core/Modal";
+import Backdrop from "@material-ui/core/Backdrop";
+import Fade from "@material-ui/core/Fade";
 import {
   RiSearchLine,
   RiAddLine,
@@ -18,6 +22,8 @@ import {
   RiUserLocationLine,
   RiCarLine,
   RiBook2Line,
+  RiUserLine,
+  RiArrowRightUpLine,
 } from "react-icons/ri";
 import LateralMenu from "../components/LateralMenu/LateralMenu";
 import Header from "../components/Header/Header";
@@ -31,11 +37,13 @@ import { isAuthenticated, logout } from "../../services/auth";
 import "./styles.css";
 import "react-toastify/dist/ReactToastify.css";
 import "react-confirm-alert/src/react-confirm-alert.css";
+import jsonClassesModal from "../../helpers/stylesModal";
 
 export default function Vehicles(props) {
   // #region Definitions
   const history = useHistory();
   const [loading, setLoading] = useState(true);
+  const [loadingModal, setLoadingModal] = useState(true);
 
   const [isReadonly, setIsReadonly] = useState(true);
 
@@ -43,17 +51,18 @@ export default function Vehicles(props) {
 
   const [titleUpdate, setTitleUpdate] = useState("");
 
-  const [personFinded, setPersonFinded] = useState(false);
+  const [vehicleFinded, setVehicleFinded] = useState(false);
 
   const [loadingButton, setLoadingButton] = useState(false);
   const [textButtonSaveUpdate, setTextButtonSaveUpdate] = useState("Salvar");
   const [btnInactive, setBtnInactive] = useState("");
-  const [searchDriverBtnInactive, setSearchDriverBtnInactive] = useState(false);
-
+  const [searchVehicleBtnInactive, setSearchVehicleBtnInactive] = useState(
+    false
+  );
 
   const [idVehicle, setIdVehicle] = useState("");
   const [registrationNumber, setRegistrationNumber] = useState("");
-  // const [idModel, setIdModel] = useState("");
+  const [idModel, setIdModel] = useState("");
   const [model, setModel] = useState("");
   const [brand, setBrand] = useState("");
   const [color, setColor] = useState("");
@@ -61,6 +70,21 @@ export default function Vehicles(props) {
   const [name, setName] = useState("");
   const [checkedStatus, setCheckedStatus] = useState(false);
 
+  const useStyles = makeStyles((theme) => jsonClassesModal(theme));
+  const ClassesModal = useStyles();
+
+  const [titleModal, setTitleModal] = useState("");
+  const [titleIconModal, setTitleIconModal] = useState();
+  const idVehicleInputRef = useRef(null);
+  const cnhInputRef = useRef(null);
+
+  const [openModalSearchPerson, setOpenModalSearchPerson] = useState(false);
+  const [searchPerson, setSearchPerson] = useState("");
+  const [searchPersonList, setSearchPersonList] = useState([]);
+
+  const [openModalSearchDriver, setOpenModalSearchVehicles] = useState(false);
+  const [searchDriver, setSearchVehicles] = useState("");
+  const [searchVehiclesList, setSearchVehiclesList] = useState([]);
   // #endregion
 
   // #region Verify Session
@@ -122,12 +146,12 @@ export default function Vehicles(props) {
 
   // #region alter page to consult
   function alterPageUpdateForConsult() {
-    setPersonFinded(false);
+    setVehicleFinded(false);
     clearFields(true);
     setTitleUpdate("");
     setUpdateRegister(false);
     setIsReadonly(true);
-    setSearchDriverBtnInactive(false);
+    setSearchVehicleBtnInactive(false);
   }
   // #endregion
 
@@ -150,19 +174,19 @@ export default function Vehicles(props) {
     try {
       clearFields();
 
-      setPersonFinded(false);
+      setVehicleFinded(false);
 
       const response = await api.get(`/person/${id}`);
 
       if (response) {
-        setPersonFinded(true);
+        setVehicleFinded(true);
         // fillFields(response.data);
       }
 
       console.log(response.data);
     } catch (error) {
       if (error.response) {
-        setPersonFinded(false);
+        setVehicleFinded(false);
 
         const dataError = error.response.data;
         const statusError = error.response.status;
@@ -188,14 +212,14 @@ export default function Vehicles(props) {
           }
         }
       } else if (error.request) {
-        setPersonFinded(false);
+        setVehicleFinded(false);
         notify(
           "error",
           `Oops, algo deu errado, entre em contato com o suporte de TI. ${error}`
         );
         console.log(error.request);
       } else {
-        setPersonFinded(false);
+        setVehicleFinded(false);
         notify(
           "error",
           `Oops, algo deu errado, entre em contato com o suporte de TI. ${error}`
@@ -381,10 +405,10 @@ export default function Vehicles(props) {
 
   // #region Handle Update Register
   function handleUpdateRegister() {
-    if (personFinded) {
+    if (vehicleFinded) {
       setTitleUpdate("ALTERAR ");
 
-      setSearchDriverBtnInactive(true);
+      setSearchVehicleBtnInactive(true);
       setUpdateRegister(true);
       setIsReadonly(false);
     } else if (idVehicle.length === 0) {
@@ -401,318 +425,673 @@ export default function Vehicles(props) {
   }
   // #endregion
 
+  // #region Handle Open Modal Search Driver
+  const handleOpenModalSearchVehicles = () => {
+    setLoadingModal(true);
+    loadSearchVehiclesList();
+
+    setTitleIconModal(<RiCarLine size={30} />);
+    setTitleModal("PESQUISAR VEÍCULOS");
+    setOpenModalSearchVehicles(true);
+  };
+
+  const handleCloseModalSearchVehicles = () => {
+    setTitleModal("");
+    setSearchVehicles("");
+    setOpenModalSearchVehicles(false);
+  };
+  // #endregion
+
+  // #region Handle Select Search Driver
+  function handleSelectVehicleInSearch(id) {
+    clearFields();
+    setIdVehicle(id);
+    handleCloseModalSearchVehicles();
+    inputFocusIdVehicles();
+  }
+
+  function inputFocusIdVehicles() {
+    setTimeout(() => {
+      idVehicleInputRef.current.focus();
+    }, 1);
+  }
+  // #endregion
+
+  // #region Load Search Modal Vehicle List
+  async function loadSearchVehiclesList() {
+    setLoadingModal(true);
+
+    try {
+      const response = await api.get(`/vehicles`);
+
+      if (response) {
+        console.log(response.data);
+
+        setSearchVehiclesList(response.data);
+        setLoadingModal(false);
+      }
+    } catch (error) {
+      setLoadingModal(false);
+
+      if (error.response) {
+        const dataError = error.response.data;
+        const statusError = error.response.status;
+        console.error(dataError);
+        console.error(statusError);
+
+        if (statusError === 400 && dataError.message) {
+          console.log(dataError.message);
+          switch (dataError.message) {
+            case '"name" is required':
+              notify(
+                "error",
+                "Oops, algo deu errado, entre em contato com o suporte de TI. Erro: o QUERY PARAM 'name' não foi encontrado no endereço da rota."
+              );
+              break;
+
+            default:
+              notify("warning", dataError.message);
+          }
+        }
+
+        if (statusError === 401) {
+          switch (dataError.message) {
+            default:
+              notify("warning", dataError.message);
+          }
+        }
+      } else if (error.request) {
+        notify(
+          "error",
+          `Oops, algo deu errado, entre em contato com o suporte de TI. ${error}`
+        );
+        console.log(error.request);
+      } else {
+        notify(
+          "error",
+          `Oops, algo deu errado, entre em contato com o suporte de TI. ${error}`
+        );
+        console.log("Error", error.message);
+      }
+    }
+  }
+  // #endregion
+
+  // #region Handle Open Modal Search Person
+  const handleOpenModalSearchPersonEdit = () => {
+    setLoadingModal(true);
+    loadSearchPersonList();
+
+    setTitleIconModal(<RiUserLine size={30} />);
+    setTitleModal("PESQUISAR PESSOA");
+    setOpenModalSearchPerson(true);
+  };
+
+  const handleCloseModalSearchPersonEdit = () => {
+    setTitleModal("");
+    setSearchPerson("");
+    setOpenModalSearchPerson(false);
+  };
+  // #endregion
+
+  // #region Handle Select Search Person
+  function handleSelectPersonInSearch(id, name) {
+    setIdDriver(id);
+    setName(name);
+    handleCloseModalSearchPersonEdit();
+    inputFocusCnh();
+  }
+
+  function inputFocusCnh() {
+    setTimeout(() => {
+      cnhInputRef.current.focus();
+    }, 1);
+  }
+  // #endregion
+
+  // #region Load Search Modal Person List
+  async function loadSearchPersonList() {
+    setLoadingModal(true);
+
+    try {
+      const response = await api.get(
+        `/people/active/?name=${searchPerson.toUpperCase()}`
+      );
+
+      if (response) {
+        console.log(response.data);
+
+        setSearchPersonList(response.data);
+        setLoadingModal(false);
+      }
+    } catch (error) {
+      setLoadingModal(false);
+
+      if (error.response) {
+        const dataError = error.response.data;
+        const statusError = error.response.status;
+        console.error(dataError);
+        console.error(statusError);
+
+        if (statusError === 400 && dataError.message) {
+          console.log(dataError.message);
+          switch (dataError.message) {
+            case '"name" is required':
+              notify(
+                "error",
+                "Oops, algo deu errado, entre em contato com o suporte de TI. Erro: o QUERY PARAM 'name' não foi encontrado no endereço da rota."
+              );
+              break;
+
+            default:
+              notify("warning", dataError.message);
+          }
+        }
+
+        if (statusError === 401) {
+          switch (dataError.message) {
+            default:
+              notify("warning", dataError.message);
+          }
+        }
+      } else if (error.request) {
+        notify(
+          "error",
+          `Oops, algo deu errado, entre em contato com o suporte de TI. ${error}`
+        );
+        console.log(error.request);
+      } else {
+        notify(
+          "error",
+          `Oops, algo deu errado, entre em contato com o suporte de TI. ${error}`
+        );
+        console.log("Error", error.message);
+      }
+    }
+  }
+  // #endregion
+
   return (
     <div className="main-container">
+      <Modal
+        id="modalSearchDriver"
+        aria-labelledby="transition-modal-title"
+        aria-describedby="transition-modal-description"
+        className={ClassesModal.modal}
+        open={openModalSearchDriver}
+        onClose={handleCloseModalSearchVehicles}
+        closeAfterTransition
+        BackdropComponent={Backdrop}
+        BackdropProps={{
+          timeout: 500,
+        }}
+      >
+        <Fade in={openModalSearchDriver}>
+          <div className={ClassesModal.paper}>
+            <h1 className="modal-search-title">
+              {titleIconModal} {titleModal}
+            </h1>
+            <div className="modal-search-content">
+              <div className="modal-search-input-button">
+                <div className="input-label-block-colum">
+                  <label htmlFor="inputSearchDriver">Nome:</label>
+                  <input
+                    id="inputSearchDriver"
+                    type="text"
+                    value={searchDriver}
+                    onChange={(e) => setSearchVehicles(e.target.value)}
+                    onKeyUp={loadSearchVehiclesList}
+                  ></input>
+                </div>
+
+                <button
+                  type="button"
+                  className="button btnDefault btnSearchModal"
+                  onClick={loadSearchVehiclesList}
+                >
+                  <RiSearchLine size={24} />
+                  Buscar
+                </button>
+              </div>
+
+              <div className="modal-search-list">
+                {loadingModal ? (
+                  <Loading type="bars" color="#0f4c82" />
+                ) : (
+                  searchVehiclesList.map((driver) => (
+                    <div
+                      className="searchListIten"
+                      key={driver.id}
+                      onDoubleClick={() =>
+                        handleSelectVehicleInSearch(driver.id)
+                      }
+                    >
+                      <div className="searchItenData">
+                        <strong>Código: {driver.id}</strong>
+                        <section id="searchDriverData">
+                          <p id="searchNameDriver">
+                            Nome: {driver.People.name}
+                          </p>
+                        </section>
+                      </div>
+                      <div className="clientBtnSelect">
+                        <button
+                          type="button"
+                          className="button btnSuccess"
+                          onClick={() => handleSelectVehicleInSearch(driver.id)}
+                        >
+                          <RiArrowRightUpLine />
+                        </button>
+                      </div>
+                    </div>
+                  ))
+                )}
+              </div>
+            </div>
+          </div>
+        </Fade>
+      </Modal>
+
+      <Modal
+        id="modalSearchPerson"
+        aria-labelledby="transition-modal-title"
+        aria-describedby="transition-modal-description"
+        className={ClassesModal.modal}
+        open={openModalSearchPerson}
+        onClose={handleCloseModalSearchPersonEdit}
+        closeAfterTransition
+        BackdropComponent={Backdrop}
+        BackdropProps={{
+          timeout: 500,
+        }}
+      >
+        <Fade in={openModalSearchPerson}>
+          <div className={ClassesModal.paper}>
+            <h1 className="modal-search-title">
+              {titleIconModal} {titleModal}
+            </h1>
+            <div className="modal-search-content">
+              <div className="modal-search-input-button">
+                <div className="input-label-block-colum">
+                  <label htmlFor="inputSearchPerson">Nome:</label>
+                  <input
+                    id="inputSearchPerson"
+                    type="text"
+                    value={searchPerson}
+                    onChange={(e) => setSearchPerson(e.target.value)}
+                    onKeyUp={loadSearchPersonList}
+                  ></input>
+                </div>
+
+                <button
+                  type="button"
+                  className="button btnDefault btnSearchModal"
+                  onClick={loadSearchPersonList}
+                >
+                  <RiSearchLine size={24} />
+                  Buscar
+                </button>
+              </div>
+
+              <div className="modal-search-list">
+                {loadingModal ? (
+                  <Loading type="bars" color="#0f4c82" />
+                ) : (
+                  searchPersonList.map((person) => (
+                    <div
+                      className="searchListIten"
+                      key={person.id}
+                      onDoubleClick={() =>
+                        handleSelectPersonInSearch(person.id, person.name)
+                      }
+                    >
+                      <div className="searchItenData">
+                        <strong>Código: {person.id}</strong>
+                        <section id="searchPersonDataInDriverUpdate">
+                          <p id="searchNamePerson">Nome: {person.name}</p>
+                          <p id="searchCpfPerson">CPF: {person.cpf_cnpj}</p>
+                          <p id="searchRgPerson">RG: {person.rg}</p>
+                        </section>
+                      </div>
+                      <div className="clientBtnSelect">
+                        <button
+                          type="button"
+                          className="button btnSuccess"
+                          onClick={() =>
+                            handleSelectPersonInSearch(person.id, person.name)
+                          }
+                        >
+                          <RiArrowRightUpLine />
+                        </button>
+                      </div>
+                    </div>
+                  ))
+                )}
+              </div>
+            </div>
+          </div>
+        </Fade>
+      </Modal>
+
       <LateralMenu />
       <>
         {loading ? (
           <Loading type="bars" color="#0f4c82" />
         ) : (
-            <div className="content-container">
-              <ToastContainer />
+          <div className="content-container">
+            <ToastContainer />
 
-              <Header title="Veículos" icon={<RiTaxiLine size={40} />} />
-              <div className="vehicles-container">
-                <div className="tab-bar">
-                  <div className="group-tabs">
-                    <Link to="/people/person">
-                      <button type="button" className="button tab-active">
-                        <RiSearchEyeLine size={24} />
+            <Header title="Veículos" icon={<RiTaxiLine size={40} />} />
+            <div className="vehicles-container">
+              <div className="tab-bar">
+                <div className="group-tabs">
+                  <Link to="/people/person">
+                    <button type="button" className="button tab-active">
+                      <RiSearchEyeLine size={24} />
                       Consultar
                     </button>
-                    </Link>
+                  </Link>
 
-                    <Link to="/vehicles/new">
-                      <button
-                        type="button"
-                        className="button add"
-                        title="Cadastro de nova pessoa física."
-                      >
-                        <RiAddLine size={24} />
+                  <Link to="/vehicles/new">
+                    <button
+                      type="button"
+                      className="button add"
+                      title="Cadastro de nova pessoa física."
+                    >
+                      <RiAddLine size={24} />
                       Criar
                     </button>
-                    </Link>
-                  </div>
+                  </Link>
                 </div>
+              </div>
 
-                <section className="form" >
-                  <form onSubmit={handleSubmitUpdate} >
-                    <div className="form-title">
-                      <RiBook2Line size={30} />
-                      <h1>
-                        {titleUpdate}
+              <section className="form">
+                <form onSubmit={handleSubmitUpdate}>
+                  <div className="form-title">
+                    <RiBook2Line size={30} />
+                    <h1>
+                      {titleUpdate}
                       DADOS DE VEÍCULO
                     </h1>
-                    </div>
+                  </div>
 
-                    <div className="input-group-vehicles">
-                      <h1>
-                        <RiCarLine size={30} />
+                  <div className="input-group-vehicles">
+                    <h1>
+                      <RiCarLine size={30} />
                       Veículo
                     </h1>
 
-                      <div className="input-label-group-row">
-                        <div
-                          className="input-label-block-column"
-                          id="input-label-block-column-cod"
-                        >
-                          <label htmlFor="idVehicle">Código:</label>
+                    <div className="input-label-group-row">
+                      <div
+                        className="input-label-block-column"
+                        id="input-label-block-column-cod"
+                      >
+                        <label htmlFor="idVehicle">Código:</label>
 
-                          <div className="input-button-block-row">
-                            <input
-                              id="idVehicle"
-                              type="number"
-                              min="1"
-                              required
-                              value={idVehicle}
-                              onChange={(e) => setIdVehicle(e.target.value)}
-                              onBlur={() => {
-                                handleSearchPerson(idVehicle);
-                              }}
-                              onKeyUp={(e) => {
-                                if (idVehicle.length === 0) {
-                                  clearFields();
-                                  clearFields();
-                                }
-                              }}
-                            />
-
-                            <button type="button" disabled={searchDriverBtnInactive}
-                            className={`button btnDefault ${
-                              searchDriverBtnInactive ? "btnInactive" : ""
-                            }`}>
-                              <RiSearchLine size={24} />
-                            </button>
-                          </div>
-                        </div>
-
-                        <div
-                          className="input-label-block-column"
-                          id="input-label-block-column"
-                        >
-                          <label
-                          >Número de registro:</label>
-
+                        <div className="input-button-block-row">
                           <input
-                            id="registrationNumber"
-                            type="text"
-                            minLength="9"
-                            maxLength="11"
-                            title="Esse campo aceita apenas números"
-                            pattern="[0-9]+"
-                            readOnly={isReadonly}
+                            id="idVehicle"
+                            type="number"
+                            min="1"
                             required
-                            autoComplete="cc-csc"
-                            value={registrationNumber}
-                            onChange={(e) => {
-                              console.log(e.charCode);
-                              let regex = /^[0-9.]+$/;
-                              if (e.target.value !== '') {
-                                if(!regex.test(e.target.value)) {
-                                  return
-                                }
-
+                            value={idVehicle}
+                            onChange={(e) => setIdVehicle(e.target.value)}
+                            onBlur={() => {
+                              handleSearchPerson(idVehicle);
+                            }}
+                            onKeyUp={(e) => {
+                              if (idVehicle.length === 0) {
+                                clearFields();
+                                clearFields();
                               }
-                              setRegistrationNumber(e.target.value);
-                              console.log(model);
                             }}
                           />
-                        </div>
 
-                        <div
-                          className="input-label-block-column"
-                          id="input-label-block-column"
-                        >
-                          <label htmlFor="model">Modelo:</label>
-
-                          <div className="input-button-block-row">
-                            <input
-                              id="model"
-                              type="text"
-                              required
-                              readOnly
-                              value={model}
-                              onChange={(e) => setModel(e.target.value)}
-                            />
-
-                            <button type="button" className={`button btnDefault ${
-                              isReadonly ? "btnInactive" : ""
+                          <button
+                            type="button"
+                            disabled={searchVehicleBtnInactive}
+                            className={`button btnDefault ${
+                              searchVehicleBtnInactive ? "btnInactive" : ""
                             }`}
-                            disabled={isReadonly}>
-                              <RiSearchLine size={24} />
-                            </button>
-                          </div>
+                            onClick={() => {
+                              handleOpenModalSearchVehicles();
+                            }}
+                          >
+                            <RiSearchLine size={24} />
+                          </button>
                         </div>
+                      </div>
 
-                        <div
-                          className="input-label-block-column"
-                          id="input-label-block-column"
-                        >
-                          <label htmlFor="registrationNumber">Marca:</label>
+                      <div
+                        className="input-label-block-column"
+                        id="input-label-block-column"
+                      >
+                        <label htmlFor="registrationNumber">
+                          Número de registro:
+                        </label>
 
-                          <input
-                            id="registrationNumber"
-                            type="text"
-                            readOnly
-                            required
-                            value={brand}
-                            onChange={(e) => setBrand(e.target.value)}
-                          />
-                        </div>
+                        <input
+                          id="registrationNumber"
+                          type="text"
+                          minLength="9"
+                          maxLength="11"
+                          title="Esse campo aceita apenas números"
+                          pattern="[0-9]+"
+                          readOnly={isReadonly}
+                          required
+                          autoComplete="cc-csc"
+                          value={registrationNumber}
+                          onChange={(e) => {
+                            console.log(e.charCode);
+                            let regex = /^[0-9.]+$/;
+                            if (e.target.value !== "") {
+                              if (!regex.test(e.target.value)) {
+                                return;
+                              }
+                            }
+                            setRegistrationNumber(e.target.value);
+                            console.log(model);
+                          }}
+                        />
+                      </div>
 
-                        <div
-                          className="input-label-block-column"
-                          id="input-label-block-column"
-                        >
-                          <label htmlFor="model">Cor:</label>
+                      <div
+                        className="input-label-block-column"
+                        id="input-label-block-column"
+                      >
+                        <label htmlFor="model">Modelo:</label>
 
+                        <div className="input-button-block-row">
                           <input
                             id="model"
                             type="text"
-                            readOnly={isReadonly}
                             required
-                            value={color}
-                            onChange={(e) => setColor(e.target.value)}
+                            readOnly
+                            value={model}
+                            onChange={(e) => setModel(e.target.value)}
                           />
+
+                          <button
+                            type="button"
+                            className={`button btnDefault ${
+                              isReadonly ? "btnInactive" : ""
+                            }`}
+                            disabled={isReadonly}
+                          >
+                            <RiSearchLine size={24} />
+                          </button>
                         </div>
                       </div>
-                    </div>
 
-                    <div className="input-group-vehicles">
-                      <h1>
-                        <RiUserLocationLine size={30} />
+                      <div
+                        className="input-label-block-column"
+                        id="input-label-block-column"
+                      >
+                        <label htmlFor="brand">Marca:</label>
+
+                        <input
+                          id="brand"
+                          type="text"
+                          readOnly
+                          required
+                          value={brand}
+                          onChange={(e) => setBrand(e.target.value)}
+                        />
+                      </div>
+
+                      <div
+                        className="input-label-block-column"
+                        id="input-label-block-column"
+                      >
+                        <label htmlFor="color">Cor:</label>
+
+                        <input
+                          id="color"
+                          type="text"
+                          readOnly={isReadonly}
+                          required
+                          value={color}
+                          onChange={(e) => setColor(e.target.value)}
+                        />
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className="input-group-vehicles">
+                    <h1>
+                      <RiUserLocationLine size={30} />
                       Motorista
                     </h1>
 
-                      <div className="input-label-group-row">
-                        <div
-                          className="input-label-block-column"
-                          id="input-label-block-column-cod-driver"
-                        >
-                          <label htmlFor="idDriver">Código:</label>
+                    <div className="input-label-group-row">
+                      <div
+                        className="input-label-block-column"
+                        id="input-label-block-column-cod-driver"
+                      >
+                        <label htmlFor="idDriver">Código:</label>
 
-                          <div className="input-button-block-row">
-                            <input
-                              id="idDriver"
-                              type="text"
-                              required
-                              value={idDriver}
-                              readOnly
-                              onChange={(e) => setIdDriver(e.target.value)}
-                            />
-
-                            <button
-                              type="button"
-                              className={`button btnDefault ${
-                                isReadonly ? "btnInactive" : ""
-                              }`}
-                              disabled={isReadonly}
-                              id="btnidDriver"
-                            >
-                              <RiSearchLine size={24} />
-                            </button>
-                          </div>
-                        </div>
-
-                        <div className="input-label-block-column">
-                          <label htmlFor="name">Nome:</label>
-
+                        <div className="input-button-block-row">
                           <input
-                            id="name"
-                            readOnly
+                            id="idDriver"
                             type="text"
-                            value={name}
-                            onChange={(e) => setName(e.target.value)}
                             required
+                            value={idDriver}
+                            readOnly
+                            onChange={(e) => setIdDriver(e.target.value)}
                           />
+
+                          <button
+                            type="button"
+                            className={`button btnDefault ${
+                              isReadonly ? "btnInactive" : ""
+                            }`}
+                            disabled={isReadonly}
+                            id="btnidDriver"
+                          >
+                            <RiSearchLine size={24} />
+                          </button>
                         </div>
                       </div>
-                    </div>
 
-                    <div className="input-group-vehicles">
-                      <h1>
-                        <RiCheckboxMultipleLine size={30} />
+                      <div className="input-label-block-column">
+                        <label htmlFor="name">Nome:</label>
+
+                        <input
+                          id="name"
+                          readOnly
+                          type="text"
+                          value={name}
+                          onChange={(e) => setName(e.target.value)}
+                          required
+                        />
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className="input-group-vehicles">
+                    <h1>
+                      <RiCheckboxMultipleLine size={30} />
                       Status
                     </h1>
 
+                    <div className="input-label-group-row">
                       <div className="input-label-group-row">
-                        <div className="input-label-group-row">
-                          <div className="checkbox-block">
-                            <input
-                              type="checkbox"
-                              id="cbStatus"
-                              disabled={isReadonly}
-                              checked={checkedStatus}
-                              onChange={() => {
-                                handleCheckBox("cbStatus");
-                              }}
-                            />
-                            <label htmlFor="cbStatus">Ativo</label>
-                          </div>
+                        <div className="checkbox-block">
+                          <input
+                            type="checkbox"
+                            id="cbStatus"
+                            disabled={isReadonly}
+                            checked={checkedStatus}
+                            onChange={() => {
+                              handleCheckBox("cbStatus");
+                            }}
+                          />
+                          <label htmlFor="cbStatus">Ativo</label>
                         </div>
                       </div>
                     </div>
+                  </div>
 
-                    <div className="button-group-forms">
-                      {updateRegister ? (
-                        <>
-                          <button
-                            type="button"
-                            className={`button btnCancel ${btnInactive}`}
-                            disabled={loadingButton}
-                            onClick={() => {
-                              handleCancelUpdate();
-                            }}
-                          >
-                            <RiCloseLine size={30} />
+                  <div className="button-group-forms">
+                    {updateRegister ? (
+                      <>
+                        <button
+                          type="button"
+                          className={`button btnCancel ${btnInactive}`}
+                          disabled={loadingButton}
+                          onClick={() => {
+                            handleCancelUpdate();
+                          }}
+                        >
+                          <RiCloseLine size={30} />
                           Cancelar
                         </button>
-                          <button
-                            type="submit"
-                            className={`button btnSuccess ${btnInactive}`}
-                            disabled={loadingButton}
-                          >
-                            {!loadingButton ? (
-                              <RiCheckLine size={25} />
-                            ) : (
-                                <RiLoader4Line
-                                  size={25}
-                                  className="load-spinner-button"
-                                />
-                              )}
-                            {textButtonSaveUpdate}
-                          </button>
-                        </>
-                      ) : (
-                          <div>
-                            <button
-                              type="button"
-                              className="button btnReturn"
-                              onClick={() => {
-                                clearFields(true);
-                              }}
-                            >
-                              <RiBrushLine size={25} />
+                        <button
+                          type="submit"
+                          className={`button btnSuccess ${btnInactive}`}
+                          disabled={loadingButton}
+                        >
+                          {!loadingButton ? (
+                            <RiCheckLine size={25} />
+                          ) : (
+                            <RiLoader4Line
+                              size={25}
+                              className="load-spinner-button"
+                            />
+                          )}
+                          {textButtonSaveUpdate}
+                        </button>
+                      </>
+                    ) : (
+                      <div>
+                        <button
+                          type="button"
+                          className="button btnReturn"
+                          onClick={() => {
+                            clearFields(true);
+                          }}
+                        >
+                          <RiBrushLine size={25} />
                           Limpar
                         </button>
-                            <button
-                              type="button"
-                              className="button btnDefault"
-                              onClick={() => {
-                                handleUpdateRegister();
-                              }}
-                            >
-                              <RiPencilLine size={25} />
+                        <button
+                          type="button"
+                          className="button btnDefault"
+                          onClick={() => {
+                            handleUpdateRegister();
+                          }}
+                        >
+                          <RiPencilLine size={25} />
                           Alterar
                         </button>
-                          </div>
-                        )}
-                    </div>
-                  </form>
-                </section>
-              </div>
+                      </div>
+                    )}
+                  </div>
+                </form>
+              </section>
             </div>
-          )}
+          </div>
+        )}
       </>
     </div>
   );

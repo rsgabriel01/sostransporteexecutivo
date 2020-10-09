@@ -100,32 +100,23 @@ export default function Driver() {
   // #endregion
 
   // #region Fill Fields
-  // function fillFields(response) {
-  //   const { name, cpf_cnpj, rg, phone, email, active } = response.person;
+  function fillFields(response) {
+    const { id_people, active } = response;
+    const { name, cnh, numPermit, businessPhone } = response.People;
 
-  //   const typeIds = response.peopleType.map((index) => index.id);
+    id_people ? setIdPerson(id_people) : setIdPerson("");
 
-  //   console.log(typeIds);
+    name ? setName(name) : setName("");
 
-  //   console.log(typeIds.includes("1"));
+    cnh ? setCnh(cnh) : setCnh("");
 
-  //   name ? setName(name) : setName("");
+    numPermit ? setNumPermit(numPermit) : setNumPermit("");
 
-  //   cpf_cnpj ? setCpf_cnpj(cpf_cnpj) : setCpf_cnpj("");
+    businessPhone ? setBusinessPhone(businessPhone) : setBusinessPhone("");
 
-  //   rg ? setRg(rg) : setRg("");
-
-  //   phone ? setPhone(phone) : setPhone("");
-
-  //   email ? setEmail(email) : setEmail("");
-
-  //   typeIds.includes("1") ? setCheckedStatus(true) : setCheckedStatus(false);
-
-  //   typeIds.includes("2")
-  //     ? setCheckedTypeAttendance("true")
-  //     : setCheckedTypeAttendance(false);
-  // }
-  // #endregion
+    active ? setCheckedStatus(true) : setCheckedStatus(false);
+  }
+  // #endregion;
 
   // #region Clear Fields
   function clearFields(withCode) {
@@ -178,7 +169,7 @@ export default function Driver() {
 
       if (response) {
         setDriverFinded(true);
-        // fillFields(response.data);
+        fillFields(response.data);
       }
 
       console.log(response.data);

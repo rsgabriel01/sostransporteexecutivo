@@ -95,6 +95,7 @@ module.exports = {
       const driver = await Type_people.findOne({
         where: {
           id: idDriver,
+          id_type: 3,
         },
         include: ["People"],
         order: [["id", "ASC"]],
@@ -102,7 +103,7 @@ module.exports = {
       if (!driver) {
         return res.status(400).json({
           message:
-            "Nenhum cadastro de motorista foi encontrada com o código fornecido.",
+            "Nenhum cadastro de motorista foi encontrado com o código fornecido.",
         });
       }
 

@@ -10,7 +10,7 @@ const clientController = require("./controllers/ClientController");
 const clientLikeNameFantasyController = require("./controllers/ClientLikeNameFantasyController");
 
 const DriverController = require("./controllers/DriverController");
-const DriversLikeNameFantasyController = require("./controllers/DriversLikeNameController");
+const DriversLikeNameController = require("./controllers/DriversLikeNameController");
 
 const TypesController = require("./controllers/TypesController");
 
@@ -234,11 +234,18 @@ routes.post(
 );
 
 routes.get(
+  "/driver/:idDriver",
+  verifySession,
+  permissionAdminAttendance,
+  DriverController.show
+);
+
+routes.get(
   "/drivers/",
   validatorDriversIndexLikeName,
   verifySession,
   permissionAdminAttendance,
-  DriversLikeNameFantasyController.indexLikeName
+  DriversLikeNameController.indexLikeName
 );
 
 routes.get(
@@ -246,7 +253,7 @@ routes.get(
   validatorDriversIndexLikeName,
   verifySession,
   permissionAdminAttendance,
-  DriversLikeNameFantasyController.indexActiveLikeName
+  DriversLikeNameController.indexActiveLikeName
 );
 // #endregion
 

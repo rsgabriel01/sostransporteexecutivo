@@ -168,13 +168,13 @@ export default function Driver() {
   // #endregion
 
   // #region Load Data Driver
-  async function loadDataPerson(id) {
+  async function loadDataDriver(id) {
     try {
       clearFields();
 
       setDriverFinded(false);
 
-      const response = await api.get(`/person/${id}`);
+      const response = await api.get(`/driver/${id}`);
 
       if (response) {
         setDriverFinded(true);
@@ -195,10 +195,10 @@ export default function Driver() {
         if (statusError === 400 && dataError.message) {
           console.log(dataError.message);
           switch (dataError.message) {
-            case '"idPerson" must be a number':
+            case '"idDriver" must be a number':
               notify("warning", "O código da pessoa precisa ser um número.");
               break;
-            case '"idPerson" must be a positive number':
+            case '"idDriver" must be a positive number':
               notify(
                 "warning",
                 "O código de pessoa deve ser maior ou igual a 1."
@@ -230,9 +230,9 @@ export default function Driver() {
   // #endregion
 
   // #region Handle Search Driver
-  function handleSearchPerson(idPerson) {
-    if (idPerson) {
-      loadDataPerson(idPerson);
+  function handleSearchDriver(idDriver) {
+    if (idDriver) {
+      loadDataDriver(idDriver);
       setUpdateRegister(false);
       setTitleUpdate("");
     } else {
@@ -667,7 +667,9 @@ export default function Driver() {
                       <div className="searchItenData">
                         <strong>Código: {driver.id}</strong>
                         <section id="searchDriverData">
-                          <p id="searchNameDriver">Nome: {driver.name}</p>
+                          <p id="searchNameDriver">
+                            Nome: {driver.People.name}
+                          </p>
                         </section>
                       </div>
                       <div className="clientBtnSelect">
@@ -833,7 +835,7 @@ export default function Driver() {
                             value={idDriver}
                             onChange={(e) => setIdDriver(e.target.value)}
                             onBlur={() => {
-                              handleSearchPerson(idDriver);
+                              handleSearchDriver(idDriver);
                             }}
                             onKeyUp={(e) => {
                               if (idDriver.length === 0) {
@@ -880,7 +882,7 @@ export default function Driver() {
                             value={idPerson}
                             onChange={(e) => setIdPerson(e.target.value)}
                             onBlur={() => {
-                              handleSearchPerson(idPerson);
+                              handleSearchDriver(idPerson);
                             }}
                             onKeyUp={(e) => {
                               if (idPerson.length === 0) {

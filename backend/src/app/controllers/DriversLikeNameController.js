@@ -1,23 +1,23 @@
-const { People } = require("../models");
+const { Type_people } = require("../models");
 const { Op, fn, col, literal, QueryTypes, Sequelize } = require("sequelize");
 
 module.exports = {
   async indexLikeName(req, res) {
     const { name } = req.query;
+    console.log("aq");
 
     try {
-      const people = await People.findAll({
+      const driver = await Type_people.findAll({
         where: {
-          name: {
-            [Op.like]: `${name.toUpperCase()}%`,
-          },
-          [Op.or]: [{ "$People_Type.Type_people.id_type$": 3 }],
+          id_type: 3,
+          "$People.name$": { [Op.like]: `${name.toUpperCase()}%` },
         },
-        include: ["People_Type"],
+        attributes: ["id"],
+        include: ["People"],
         order: [["id", "ASC"]],
       });
 
-      return res.json(people);
+      return res.json(driver);
     } catch (error) {
       console.log(error);
     }
@@ -27,19 +27,19 @@ module.exports = {
     const { name } = req.query;
 
     try {
-      const people = await People.findAll({
+      const driver = await Type_people.findAll({
         where: {
-          name: {
-            [Op.like]: `${name.toUpperCase()}%`,
-          },
+          id_type: 3,
           active: true,
-          [Op.or]: [{ "$People_Type.Type_people.id_type$": 3 }],
+          "$People.name$": { [Op.like]: `${name.toUpperCase()}%` },
+          "$People.active$": true,
         },
-        include: ["People_Type"],
+        attributes: ["id"],
+        include: ["People"],
         order: [["id", "ASC"]],
       });
 
-      return res.json(people);
+      return res.json(driver);
     } catch (error) {
       console.log(error);
     }
@@ -49,19 +49,17 @@ module.exports = {
     const { name } = req.query;
 
     try {
-      const people = await People.findAll({
+      const driver = await Type_people.findAll({
         where: {
-          name: {
-            [Op.like]: `${name.toUpperCase()}%`,
-          },
+          id_type: 3,
           active: false,
-          [Op.or]: [{ "$People_Type.Type_people.id_type$": 3 }],
+          "$People.name$": { [Op.like]: `${name.toUpperCase()}%` },
+          "$People.active$": false,
         },
-        include: ["People_Type"],
+        attributes: ["id"],
+        include: ["People"],
         order: [["id", "ASC"]],
       });
-
-      return res.json(people);
     } catch (error) {
       console.log(error);
     }

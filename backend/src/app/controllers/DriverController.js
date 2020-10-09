@@ -1,10 +1,6 @@
 const { People, Type_people } = require("../models");
 const { Op, fn, col, literal, QueryTypes, Sequelize } = require("sequelize");
 
-const moment = require("moment");
-
-var CpfValidation = require("../helpers/CpfValidation");
-
 module.exports = {
   async store(req, res) {
     try {
@@ -89,6 +85,30 @@ module.exports = {
     } catch (error) {
       console.log(error);
       return res.status(500);
+    }
+  },
+
+  async show(req, res) {
+    try {
+      const { idDriver } = req.params;
+
+      const driver = await Type_people.findOne({
+        where: {
+          id: idDriver,
+        },
+        include: ["People"],
+        order: [["id", "ASC"]],
+      });
+      if (!driver) {
+        return res.status(400).json({
+          message:
+            "Nenhum cadastro de motorista foi encontrada com o código fornecido.",
+        });
+      }
+
+      return res.json(driver);
+    } catch (error) {
+      console.log(error);
     }
   },
 };

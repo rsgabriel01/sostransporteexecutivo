@@ -86,7 +86,7 @@ input {
 }
 
 .btnInactive {
-  filter: brightness(70%) !important;
+  filter: brightness(60%) !important;
   cursor: default;
 }
 

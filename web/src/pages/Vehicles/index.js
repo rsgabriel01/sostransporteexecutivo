@@ -6,7 +6,6 @@ import { ToastContainer } from "react-toastify";
 import {
   RiSearchLine,
   RiAddLine,
-  RiCheckDoubleLine,
   RiPencilLine,
   RiCloseLine,
   RiCheckLine,
@@ -15,12 +14,10 @@ import {
   RiLoader4Line,
   RiSearchEyeLine,
   RiCheckboxMultipleLine,
-  RiMapPinLine,
   RiTaxiLine,
   RiUserLocationLine,
   RiCarLine,
   RiBook2Line,
-  RiBook3Line,
 } from "react-icons/ri";
 import LateralMenu from "../components/LateralMenu/LateralMenu";
 import Header from "../components/Header/Header";
@@ -40,7 +37,7 @@ export default function Vehicles() {
   const history = useHistory();
   const [loading, setLoading] = useState(true);
 
-  const [isReadonly, setIsReadonly] = useState(false);
+  const [isReadonly, setIsReadonly] = useState(true);
 
   const [updateRegister, setUpdateRegister] = useState(false);
 
@@ -51,19 +48,17 @@ export default function Vehicles() {
   const [loadingButton, setLoadingButton] = useState(false);
   const [textButtonSaveUpdate, setTextButtonSaveUpdate] = useState("Salvar");
   const [btnInactive, setBtnInactive] = useState("");
+  const [searchDriverBtnInactive, setSearchDriverBtnInactive] = useState(false);
 
-  const [idClient, setIdClient] = useState("");
-  const [companyName, setCompanyName] = useState("");
-  const [fantasyName, setFantasyName] = useState("");
-  const [cpfCnpj, setCpfCnpj] = useState("");
-  const [idNeighborhood, setIdNeighborhood] = useState("");
-  const [neighborhood, setNeighborhood] = useState("");
-  const [street, setStreet] = useState("");
-  const [streetNumber, setStreetNumber] = useState("");
-  const [complement, setComplement] = useState("");
-  const [phone, setPhone] = useState("");
-  const [email, setEmail] = useState("");
 
+  const [idVehicle, setIdVehicle] = useState("");
+  const [registrationNumber, setRegistrationNumber] = useState("");
+  const [idModel, setIdModel] = useState("");
+  const [model, setModel] = useState("");
+  const [brand, setBrand] = useState("");
+  const [color, setColor] = useState("");
+  const [idDriver, setIdDriver] = useState("");
+  const [name, setName] = useState("");
   const [checkedStatus, setCheckedStatus] = useState(false);
 
   // #endregion
@@ -84,6 +79,10 @@ export default function Vehicles() {
   useEffect(() => {
     virifyAuthorization();
   }, []);
+  // #endregion
+
+  // #region Only Number
+
   // #endregion
 
   // #region Fill Fields
@@ -117,11 +116,9 @@ export default function Vehicles() {
   // #region Clear Fields
   function clearFields(withCode) {
     if (withCode) {
-      setIdClient("");
+      setIdVehicle("");
     }
 
-    setPhone("");
-    setEmail("");
     setCheckedStatus(false);
   }
 
@@ -134,6 +131,7 @@ export default function Vehicles() {
     setTitleUpdate("");
     setUpdateRegister(false);
     setIsReadonly(true);
+    setSearchDriverBtnInactive(false);
   }
   // #endregion
 
@@ -228,16 +226,11 @@ export default function Vehicles() {
   // #region Update Person
   async function updatePerson() {
     const dataPerson = {
-      idClient,
-      companyName,
-      fantasyName,
-      cpfCnpj,
-      phone,
-      email,
-      idNeighborhood,
-      street,
-      streetNumber,
-      complement,
+      idVehicle,
+      registrationNumber,
+      model,
+      color,
+      name,
       status: checkedStatus,
     };
 
@@ -395,9 +388,10 @@ export default function Vehicles() {
     if (personFinded) {
       setTitleUpdate("ALTERAR ");
 
+      setSearchDriverBtnInactive(true);
       setUpdateRegister(true);
       setIsReadonly(false);
-    } else if (idClient.length === 0) {
+    } else if (idVehicle.length === 0) {
       notify(
         "warning",
         "Para acessar a alteração de dados primeiro selecione a pessoa desejada."
@@ -418,304 +412,311 @@ export default function Vehicles() {
         {loading ? (
           <Loading type="bars" color="#0f4c82" />
         ) : (
-          <div className="content-container">
-            <ToastContainer />
+            <div className="content-container">
+              <ToastContainer />
 
-            <Header title="Veículos" icon={<RiTaxiLine size={40} />} />
-            <div className="vehicles-container">
-              <div className="tab-bar">
-                <div className="group-tabs">
-                  <Link to="/people/person">
-                    <button type="button" className="button tab-active">
-                      <RiSearchEyeLine size={24} />
+              <Header title="Veículos" icon={<RiTaxiLine size={40} />} />
+              <div className="vehicles-container">
+                <div className="tab-bar">
+                  <div className="group-tabs">
+                    <Link to="/people/person">
+                      <button type="button" className="button tab-active">
+                        <RiSearchEyeLine size={24} />
                       Consultar
                     </button>
-                  </Link>
+                    </Link>
 
-                  <Link to="/vehicles/new">
-                    <button
-                      type="button"
-                      className="button add"
-                      title="Cadastro de nova pessoa física."
-                    >
-                      <RiAddLine size={24} />
+                    <Link to="/vehicles/new">
+                      <button
+                        type="button"
+                        className="button add"
+                        title="Cadastro de nova pessoa física."
+                      >
+                        <RiAddLine size={24} />
                       Criar
                     </button>
-                  </Link>
+                    </Link>
+                  </div>
                 </div>
-              </div>
 
-              <section className="form">
-                <form onSubmit={handleSubmitUpdate}>
-                  <div className="form-title">
-                    <RiBook2Line size={30} />
-                    <h1>
-                      {titleUpdate}
+                <section className="form" >
+                  <form onSubmit={handleSubmitUpdate} >
+                    <div className="form-title">
+                      <RiBook2Line size={30} />
+                      <h1>
+                        {titleUpdate}
                       DADOS DE VEÍCULO
                     </h1>
-                  </div>
+                    </div>
 
-                  <div className="input-group-vehicles">
-                    <h1>
-                      <RiCarLine size={30} />
+                    <div className="input-group-vehicles">
+                      <h1>
+                        <RiCarLine size={30} />
                       Veículo
                     </h1>
 
-                    <div className="input-label-group-row">
-                      <div
-                        className="input-label-block-column"
-                        id="input-label-block-column-cod"
-                      >
-                        <label htmlFor="idClient">Código:</label>
+                      <div className="input-label-group-row">
+                        <div
+                          className="input-label-block-column"
+                          id="input-label-block-column-cod"
+                        >
+                          <label htmlFor="idVehicle">Código:</label>
 
-                        <div className="input-button-block-row">
+                          <div className="input-button-block-row">
+                            <input
+                              id="idVehicle"
+                              type="number"
+                              min="1"
+                              required
+                              value={idVehicle}
+                              onChange={(e) => setIdVehicle(e.target.value)}
+                              onBlur={() => {
+                                handleSearchPerson(idVehicle);
+                              }}
+                              onKeyUp={(e) => {
+                                if (idVehicle.length === 0) {
+                                  clearFields();
+                                  clearFields();
+                                }
+                              }}
+                            />
+
+                            <button type="button" disabled={searchDriverBtnInactive}
+                            className={`button btnDefault ${
+                              searchDriverBtnInactive ? "btnInactive" : ""
+                            }`}>
+                              <RiSearchLine size={24} />
+                            </button>
+                          </div>
+                        </div>
+
+                        <div
+                          className="input-label-block-column"
+                          id="input-label-block-column"
+                        >
+                          <label
+                          >Número de registro:</label>
+
                           <input
-                            id="idClient"
-                            type="number"
-                            min="1"
+                            id="registrationNumber"
+                            type="text"
+                            minLength="9"
+                            maxLength="11"
+                            title="Esse campo aceita apenas números"
+                            pattern="[0-9]+"
+                            readOnly={isReadonly}
                             required
-                            value={idClient}
-                            onChange={(e) => setIdClient(e.target.value)}
-                            onBlur={() => {
-                              handleSearchPerson(idClient);
-                            }}
-                            onKeyUp={(e) => {
-                              if (idClient.length === 0) {
-                                clearFields();
-                                clearFields();
+                            autoComplete="cc-csc"
+                            value={registrationNumber}
+                            onChange={(e) => {
+                              console.log(e.charCode);
+                              let regex = /^[0-9.]+$/;
+                              if (e.target.value !== '') {
+                                if(!regex.test(e.target.value)) {
+                                  return
+                                }
+
                               }
+                              setRegistrationNumber(e.target.value);
+                              console.log(model);
                             }}
                           />
-
-                          <button type="button" className="button btnDefault">
-                            <RiSearchLine size={24} />
-                          </button>
                         </div>
-                      </div>
 
-                      <div
-                        className="input-label-block-column"
-                        id="input-label-block-column"
-                      >
-                        <label htmlFor="fantasyName">Número de registro:</label>
+                        <div
+                          className="input-label-block-column"
+                          id="input-label-block-column"
+                        >
+                          <label htmlFor="model">Modelo:</label>
 
-                        <input
-                          id="fantasyName"
-                          type="text"
-                          readOnly={isReadonly}
-                          required
-                          value={fantasyName}
-                          onChange={(e) => setFantasyName(e.target.value)}
-                        />
-                      </div>
+                          <div className="input-button-block-row">
+                            <input
+                              id="model"
+                              type="text"
+                              required
+                              readOnly
+                              value={model}
+                              onChange={(e) => setModel(e.target.value)}
+                            />
 
-                      <div
-                        className="input-label-block-column"
-                        id="input-label-block-column"
-                      >
-                        <label htmlFor="idClient">Modelo:</label>
+                            <button type="button" className={`button btnDefault ${
+                              isReadonly ? "btnInactive" : ""
+                            }`}
+                            disabled={isReadonly}>
+                              <RiSearchLine size={24} />
+                            </button>
+                          </div>
+                        </div>
 
-                        <div className="input-button-block-row">
+                        <div
+                          className="input-label-block-column"
+                          id="input-label-block-column"
+                        >
+                          <label htmlFor="registrationNumber">Marca:</label>
+
                           <input
-                            id="idClient"
-                            type="number"
-                            min="1"
+                            id="registrationNumber"
+                            type="text"
+                            readOnly
                             required
-                            value={idClient}
-                            onChange={(e) => setIdClient(e.target.value)}
-                            onBlur={() => {
-                              handleSearchPerson(idClient);
-                            }}
-                            onKeyUp={(e) => {
-                              if (idClient.length === 0) {
-                                clearFields();
-                                clearFields();
-                              }
-                            }}
+                            value={brand}
+                            onChange={(e) => setBrand(e.target.value)}
                           />
-
-                          <button type="button" className="button btnDefault">
-                            <RiSearchLine size={24} />
-                          </button>
                         </div>
-                      </div>
 
-                      <div
-                        className="input-label-block-column"
-                        id="input-label-block-column"
-                      >
-                        <label htmlFor="companyName">Marca:</label>
+                        <div
+                          className="input-label-block-column"
+                          id="input-label-block-column"
+                        >
+                          <label htmlFor="model">Cor:</label>
 
-                        <input
-                          id="companyName"
-                          type="text"
-                          readOnly={isReadonly}
-                          required
-                          value={companyName}
-                          onChange={(e) => setCompanyName(e.target.value)}
-                        />
-                      </div>
-
-                      <div
-                        className="input-label-block-column"
-                        id="input-label-block-column"
-                      >
-                        <label htmlFor="fantasyName">Cor:</label>
-
-                        <input
-                          id="fantasyName"
-                          type="text"
-                          readOnly={isReadonly}
-                          required
-                          value={fantasyName}
-                          onChange={(e) => setFantasyName(e.target.value)}
-                        />
+                          <input
+                            id="model"
+                            type="text"
+                            readOnly={isReadonly}
+                            required
+                            value={color}
+                            onChange={(e) => setColor(e.target.value)}
+                          />
+                        </div>
                       </div>
                     </div>
-                  </div>
 
-                  <div className="input-group-vehicles">
-                    <h1>
-                      <RiUserLocationLine size={30} />
+                    <div className="input-group-vehicles">
+                      <h1>
+                        <RiUserLocationLine size={30} />
                       Motorista
                     </h1>
 
-                    <div className="input-label-group-row">
-                      <div
-                        className="input-label-block-column"
-                        id="input-label-block-column-cod-driver"
-                      >
-                        <label htmlFor="neighborhood">Código:</label>
+                      <div className="input-label-group-row">
+                        <div
+                          className="input-label-block-column"
+                          id="input-label-block-column-cod-driver"
+                        >
+                          <label htmlFor="idDriver">Código:</label>
 
-                        <div className="input-button-block-row">
+                          <div className="input-button-block-row">
+                            <input
+                              id="idDriver"
+                              type="text"
+                              required
+                              value={idDriver}
+                              readOnly
+                              onChange={(e) => setIdDriver(e.target.value)}
+                            />
+
+                            <button
+                              type="button"
+                              className={`button btnDefault ${
+                                isReadonly ? "btnInactive" : ""
+                              }`}
+                              disabled={isReadonly}
+                              id="btnidDriver"
+                            >
+                              <RiSearchLine size={24} />
+                            </button>
+                          </div>
+                        </div>
+
+                        <div className="input-label-block-column">
+                          <label htmlFor="name">Nome:</label>
+
                           <input
-                            id="neighborhood"
-                            type="text"
-                            required
-                            value={neighborhood}
+                            id="name"
                             readOnly
-                            onChange={(e) => setNeighborhood(e.target.value)}
-                            onBlur={() => {
-                              // handleSearchPerson(idNeighborhood);
-                            }}
-                            onKeyUp={(e) => {
-                              if (neighborhood.length === 0) {
-                                clearFields();
-                                clearFields();
-                              }
-                            }}
+                            type="text"
+                            value={name}
+                            onChange={(e) => setName(e.target.value)}
+                            required
                           />
-
-                          <button
-                            type="button"
-                            className="button btnDefault"
-                            id="btnNeighborhood"
-                          >
-                            <RiSearchLine size={24} />
-                          </button>
                         </div>
                       </div>
-
-                      <div className="input-label-block-column">
-                        <label htmlFor="street">Nome:</label>
-
-                        <input
-                          id="street"
-                          readOnly={isReadonly}
-                          type="text"
-                          value={street}
-                          onChange={(e) => setStreet(e.target.value)}
-                          required
-                        />
-                      </div>
                     </div>
-                  </div>
 
-                  <div className="input-group-vehicles">
-                    <h1>
-                      <RiCheckboxMultipleLine size={30} />
+                    <div className="input-group-vehicles">
+                      <h1>
+                        <RiCheckboxMultipleLine size={30} />
                       Status
                     </h1>
 
-                    <div className="input-label-group-row">
                       <div className="input-label-group-row">
-                        <div className="checkbox-block">
-                          <input
-                            type="checkbox"
-                            id="cbStatus"
-                            disabled={isReadonly}
-                            value="1"
-                            checked={checkedStatus}
-                            onClick={() => {
-                              handleCheckBox("cbStatus");
-                            }}
-                          />
-                          <label htmlFor="cbStatus">Ativo</label>
+                        <div className="input-label-group-row">
+                          <div className="checkbox-block">
+                            <input
+                              type="checkbox"
+                              id="cbStatus"
+                              disabled={isReadonly}
+                              checked={checkedStatus}
+                              onChange={() => {
+                                handleCheckBox("cbStatus");
+                              }}
+                            />
+                            <label htmlFor="cbStatus">Ativo</label>
+                          </div>
                         </div>
                       </div>
                     </div>
-                  </div>
 
-                  <div className="button-group-forms">
-                    {updateRegister ? (
-                      <>
-                        <button
-                          type="button"
-                          className={`button btnCancel ${btnInactive}`}
-                          disabled={loadingButton}
-                          onClick={() => {
-                            handleCancelUpdate();
-                          }}
-                        >
-                          <RiCloseLine size={30} />
+                    <div className="button-group-forms">
+                      {updateRegister ? (
+                        <>
+                          <button
+                            type="button"
+                            className={`button btnCancel ${btnInactive}`}
+                            disabled={loadingButton}
+                            onClick={() => {
+                              handleCancelUpdate();
+                            }}
+                          >
+                            <RiCloseLine size={30} />
                           Cancelar
                         </button>
-                        <button
-                          type="submit"
-                          className={`button btnSuccess ${btnInactive}`}
-                          disabled={loadingButton}
-                        >
-                          {!loadingButton ? (
-                            <RiCheckLine size={25} />
-                          ) : (
-                            <RiLoader4Line
-                              size={25}
-                              className="load-spinner-button"
-                            />
-                          )}
-                          {textButtonSaveUpdate}
-                        </button>
-                      </>
-                    ) : (
-                      <div>
-                        <button
-                          type="button"
-                          className="button btnReturn"
-                          onClick={() => {
-                            clearFields(true);
-                          }}
-                        >
-                          <RiBrushLine size={25} />
+                          <button
+                            type="submit"
+                            className={`button btnSuccess ${btnInactive}`}
+                            disabled={loadingButton}
+                          >
+                            {!loadingButton ? (
+                              <RiCheckLine size={25} />
+                            ) : (
+                                <RiLoader4Line
+                                  size={25}
+                                  className="load-spinner-button"
+                                />
+                              )}
+                            {textButtonSaveUpdate}
+                          </button>
+                        </>
+                      ) : (
+                          <div>
+                            <button
+                              type="button"
+                              className="button btnReturn"
+                              onClick={() => {
+                                clearFields(true);
+                              }}
+                            >
+                              <RiBrushLine size={25} />
                           Limpar
                         </button>
-                        <button
-                          type="button"
-                          className="button btnDefault"
-                          onClick={() => {
-                            handleUpdateRegister();
-                          }}
-                        >
-                          <RiPencilLine size={25} />
+                            <button
+                              type="button"
+                              className="button btnDefault"
+                              onClick={() => {
+                                handleUpdateRegister();
+                              }}
+                            >
+                              <RiPencilLine size={25} />
                           Alterar
                         </button>
-                      </div>
-                    )}
-                  </div>
-                </form>
-              </section>
+                          </div>
+                        )}
+                    </div>
+                  </form>
+                </section>
+              </div>
             </div>
-          </div>
-        )}
+          )}
       </>
     </div>
   );

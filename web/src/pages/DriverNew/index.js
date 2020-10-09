@@ -1,6 +1,6 @@
 /* eslint-disable camelcase */
 import React, { useState, useEffect } from "react";
-import { Link, useHistory } from "react-router-dom";
+import { useHistory } from "react-router-dom";
 import { confirmAlert } from "react-confirm-alert";
 import { ToastContainer } from "react-toastify";
 import {
@@ -35,7 +35,7 @@ export default function DriverNew() {
 
   const [isReadonly, setIsReadonly] = useState(false);
 
-  const [personFinded, setPersonFinded] = useState(false);
+  // const [personFinded, setPersonFinded] = useState(false);
 
   const [loadingButton, setLoadingButton] = useState(false);
   const [textButtonSave, setTextButtonSave] = useState("Salvar");
@@ -43,16 +43,9 @@ export default function DriverNew() {
 
   const [idPerson, setIdPerson] = useState("");
   const [companyName, setCompanyName] = useState("");
-  const [fantasyName, setFantasyName] = useState("");
   const [cnh, setCnh] = useState("");
-  const [idNeighborhood, setIdNeighborhood] = useState("");
-  const [neighborhood, setNeighborhood] = useState("");
-  const [street, setStreet] = useState("");
-  const [streetNumber, setStreetNumber] = useState("");
-  const [complement, setComplement] = useState("");
   const [phone, setPhone] = useState("");
   const [email, setEmail] = useState("");
-
   const [checkedStatus, setCheckedStatus] = useState(false);
 
   // #endregion
@@ -118,7 +111,7 @@ export default function DriverNew() {
 
   // #region alter page to consult
   function alterPageUpdateForConsult() {
-    setPersonFinded(false);
+    // setPersonFinded(false);
     clearFields(true);
     setIsReadonly(true);
   }
@@ -143,19 +136,19 @@ export default function DriverNew() {
     try {
       clearFields();
 
-      setPersonFinded(false);
+      // setPersonFinded(false);
 
       const response = await api.get(`/person/${id}`);
 
       if (response) {
-        setPersonFinded(true);
+        // setPersonFinded(true);
         // fillFields(response.data);
       }
 
       console.log(response.data);
     } catch (error) {
       if (error.response) {
-        setPersonFinded(false);
+        // setPersonFinded(false);
 
         const dataError = error.response.data;
         const statusError = error.response.status;
@@ -181,14 +174,14 @@ export default function DriverNew() {
           }
         }
       } else if (error.request) {
-        setPersonFinded(false);
+        // setPersonFinded(false);
         notify(
           "error",
           `Oops, algo deu errado, entre em contato com o suporte de TI. ${error}`
         );
         console.log(error.request);
       } else {
-        setPersonFinded(false);
+        // setPersonFinded(false);
         notify(
           "error",
           `Oops, algo deu errado, entre em contato com o suporte de TI. ${error}`
@@ -211,96 +204,96 @@ export default function DriverNew() {
   // #endregion
 
   // #region Update Person
-  async function updatePerson() {
-    const dataPerson = {
-      idPerson,
-      companyName,
-      fantasyName,
-      cnh,
-      phone,
-      email,
-      idNeighborhood,
-      street,
-      streetNumber,
-      complement,
-      status: checkedStatus,
-    };
+  // async function updatePerson() {
+  //   const dataPerson = {
+  //     idPerson,
+  //     companyName,
+  //     // fantasyName,
+  //     cnh,
+  //     phone,
+  //     email,
+  //     // idNeighborhood,
+  //     // street,
+  //     // streetNumber,
+  //     // complement,
+  //     status: checkedStatus,
+  //   };
 
-    setTextButtonSave("Aguarde...");
-    setLoadingButton(true);
-    setBtnInactive("btnInactive");
+  //   setTextButtonSave("Aguarde...");
+  //   setLoadingButton(true);
+  //   setBtnInactive("btnInactive");
 
-    console.log(dataPerson);
+  //   console.log(dataPerson);
 
-    try {
-      const response = await api.put("/person/update", dataPerson);
+  //   try {
+  //     const response = await api.put("/person/update", dataPerson);
 
-      if (response) {
-        console.log(response.data);
-        alterPageUpdateForConsult();
+  //     if (response) {
+  //       console.log(response.data);
+  //       alterPageUpdateForConsult();
 
-        notify("success", response.data.message);
+  //       notify("success", response.data.message);
 
-        setTextButtonSave("Salvar");
-        setLoadingButton(false);
-        setBtnInactive("");
-      }
-    } catch (error) {
-      setTextButtonSave("Salvar");
-      setLoadingButton(false);
-      setBtnInactive("");
+  //       setTextButtonSave("Salvar");
+  //       setLoadingButton(false);
+  //       setBtnInactive("");
+  //     }
+  //   } catch (error) {
+  //     setTextButtonSave("Salvar");
+  //     setLoadingButton(false);
+  //     setBtnInactive("");
 
-      if (error.response) {
-        const dataError = error.response.data;
-        const statusError = error.response.status;
-        console.error(dataError);
-        console.error(statusError);
+  //     if (error.response) {
+  //       const dataError = error.response.data;
+  //       const statusError = error.response.status;
+  //       console.error(dataError);
+  //       console.error(statusError);
 
-        if (statusError === 400 && dataError.message) {
-          console.log(dataError.message);
-          switch (dataError.message) {
-            case '"email" must be a valid email':
-              notify("warning", "O e-mail informado precisa ser válido.");
-              break;
-            case '"cpf_cnpj" length must be at least 9 characters long':
-              notify(
-                "warning",
-                "O CPF informado precisa ter no mínimo 9 caracteres"
-              );
-              break;
-            case '"cpf_cnpj" length must be less than or equal to 11 characters long':
-              notify(
-                "warning",
-                "O CPF informado pode ter no máximo 11 caracteres"
-              );
-              break;
+  //       if (statusError === 400 && dataError.message) {
+  //         console.log(dataError.message);
+  //         switch (dataError.message) {
+  //           case '"email" must be a valid email':
+  //             notify("warning", "O e-mail informado precisa ser válido.");
+  //             break;
+  //           case '"cpf_cnpj" length must be at least 9 characters long':
+  //             notify(
+  //               "warning",
+  //               "O CPF informado precisa ter no mínimo 9 caracteres"
+  //             );
+  //             break;
+  //           case '"cpf_cnpj" length must be less than or equal to 11 characters long':
+  //             notify(
+  //               "warning",
+  //               "O CPF informado pode ter no máximo 11 caracteres"
+  //             );
+  //             break;
 
-            default:
-              notify("warning", dataError.message);
-          }
-        }
+  //           default:
+  //             notify("warning", dataError.message);
+  //         }
+  //       }
 
-        if (statusError === 401) {
-          switch (dataError.message) {
-            default:
-              notify("warning", dataError.message);
-          }
-        }
-      } else if (error.request) {
-        notify(
-          "error",
-          `Oops, algo deu errado, entre em contato com o suporte de TI. ${error}`
-        );
-        console.log(error.request);
-      } else {
-        notify(
-          "error",
-          `Oops, algo deu errado, entre em contato com o suporte de TI. ${error}`
-        );
-        console.log("Error", error.message);
-      }
-    }
-  }
+  //       if (statusError === 401) {
+  //         switch (dataError.message) {
+  //           default:
+  //             notify("warning", dataError.message);
+  //         }
+  //       }
+  //     } else if (error.request) {
+  //       notify(
+  //         "error",
+  //         `Oops, algo deu errado, entre em contato com o suporte de TI. ${error}`
+  //       );
+  //       console.log(error.request);
+  //     } else {
+  //       notify(
+  //         "error",
+  //         `Oops, algo deu errado, entre em contato com o suporte de TI. ${error}`
+  //       );
+  //       console.log("Error", error.message);
+  //     }
+  //   }
+  // }
   // #endregion
 
   // #region Alert confirmation
@@ -363,43 +356,43 @@ export default function DriverNew() {
   // #endregion
 
   // #region Handle Cancel Update
-  async function handleCancelUpdate() {
-    confirmationAlert(
-      "Atenção!",
-      "Deseja realmente CANCELAR essa alteração? Os dados não salvos serão perdidos.",
-      "alterPageUpdateForConsult"
-    );
-  }
+  // async function handleCancelUpdate() {
+  //   confirmationAlert(
+  //     "Atenção!",
+  //     "Deseja realmente CANCELAR essa alteração? Os dados não salvos serão perdidos.",
+  //     "alterPageUpdateForConsult"
+  //   );
+  // }
   // #endregion
 
   // #region Handle Update Register
-  function handleUpdateRegister() {
-    if (personFinded) {
-      setIsReadonly(false);
-    } else if (idPerson.length === 0) {
-      notify(
-        "warning",
-        "Para acessar a alteração de dados primeiro selecione a pessoa desejada."
-      );
-    } else {
-      notify(
-        "warning",
-        "Não foi possível acessar a alteração de dados, pois nenhuma pessoa foi encontrada."
-      );
-    }
-  }
+  // function handleUpdateRegister() {
+  //   if (personFinded) {
+  //     setIsReadonly(false);
+  //   } else if (idPerson.length === 0) {
+  //     notify(
+  //       "warning",
+  //       "Para acessar a alteração de dados primeiro selecione a pessoa desejada."
+  //     );
+  //   } else {
+  //     notify(
+  //       "warning",
+  //       "Não foi possível acessar a alteração de dados, pois nenhuma pessoa foi encontrada."
+  //     );
+  //   }
+  // }
   // #endregion
 
   // #region Handle Cancel Create
   async function handleCancel() {
     if (
       companyName !== "" ||
-      fantasyName !== "" ||
-      idNeighborhood !== "" ||
-      neighborhood !== "" ||
-      street !== "" ||
-      streetNumber !== "" ||
-      complement !== "" ||
+      // fantasyName !== "" ||
+      // idNeighborhood !== "" ||
+      // neighborhood !== "" ||
+      // street !== "" ||
+      // streetNumber !== "" ||
+      // complement !== "" ||
       phone !== "" ||
       email !== ""
     ) {
@@ -420,12 +413,12 @@ export default function DriverNew() {
   async function handleReturn() {
     if (
       companyName !== "" ||
-      fantasyName !== "" ||
-      idNeighborhood !== "" ||
-      neighborhood !== "" ||
-      street !== "" ||
-      streetNumber !== "" ||
-      complement !== "" ||
+      // fantasyName !== "" ||
+      // idNeighborhood !== "" ||
+      // neighborhood !== "" ||
+      // street !== "" ||
+      // streetNumber !== "" ||
+      // complement !== "" ||
       phone !== "" ||
       email !== ""
     ) {

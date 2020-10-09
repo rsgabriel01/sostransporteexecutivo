@@ -1,11 +1,10 @@
 /* eslint-disable camelcase */
 import React, { useState, useEffect } from "react";
-import { Link, useHistory } from "react-router-dom";
+import { useHistory } from "react-router-dom";
 import { confirmAlert } from "react-confirm-alert";
 import { ToastContainer } from "react-toastify";
 import {
   RiSearchLine,
-  RiCheckDoubleLine,
   RiCloseLine,
   RiCheckLine,
   RiQuestionLine,
@@ -37,11 +36,11 @@ export default function VehiclesNew() {
 
   const [isReadonly, setIsReadonly] = useState(false);
 
-  const [updateRegister, setUpdateRegister] = useState(false);
+  // const [updateRegister, setUpdateRegister] = useState(false);
 
-  const [titleUpdate, setTitleUpdate] = useState("");
+  // const [titleUpdate, setTitleUpdate] = useState("");
 
-  const [personFinded, setPersonFinded] = useState(false);
+  // const [personFinded, // // setPersonFinded] = useState(false);
 
   const [loadingButton, setLoadingButton] = useState(false);
   const [textButtonSave, setTextButtonSave] = useState("Salvar");
@@ -50,15 +49,14 @@ export default function VehiclesNew() {
   const [idClient, setIdClient] = useState("");
   const [companyName, setCompanyName] = useState("");
   const [fantasyName, setFantasyName] = useState("");
-  const [cpfCnpj, setCpfCnpj] = useState("");
-  const [idNeighborhood, setIdNeighborhood] = useState("");
+  // const [cpfCnpj, setCpfCnpj] = useState("");
+  // const [idNeighborhood, setIdNeighborhood] = useState("");
   const [neighborhood, setNeighborhood] = useState("");
   const [street, setStreet] = useState("");
-  const [streetNumber, setStreetNumber] = useState("");
-  const [complement, setComplement] = useState("");
+  // const [streetNumber, setStreetNumber] = useState("");
+  // const [complement, setComplement] = useState("");
   const [phone, setPhone] = useState("");
   const [email, setEmail] = useState("");
-
   const [checkedStatus, setCheckedStatus] = useState(false);
 
   // #endregion
@@ -124,10 +122,10 @@ export default function VehiclesNew() {
 
   // #region alter page to consult
   function alterPageUpdateForConsult() {
-    setPersonFinded(false);
+    // // setPersonFinded(false);
     clearFields(true);
-    setTitleUpdate("");
-    setUpdateRegister(false);
+    // setTitleUpdate("");
+    // setUpdateRegister(false);
     setIsReadonly(true);
   }
   // #endregion
@@ -151,19 +149,19 @@ export default function VehiclesNew() {
     try {
       clearFields();
 
-      setPersonFinded(false);
+      // // setPersonFinded(false);
 
       const response = await api.get(`/person/${id}`);
 
       if (response) {
-        setPersonFinded(true);
+        // // setPersonFinded(true);
         // fillFields(response.data);
       }
 
       console.log(response.data);
     } catch (error) {
       if (error.response) {
-        setPersonFinded(false);
+        // // setPersonFinded(false);
 
         const dataError = error.response.data;
         const statusError = error.response.status;
@@ -189,14 +187,14 @@ export default function VehiclesNew() {
           }
         }
       } else if (error.request) {
-        setPersonFinded(false);
+        // // setPersonFinded(false);
         notify(
           "error",
           `Oops, algo deu errado, entre em contato com o suporte de TI. ${error}`
         );
         console.log(error.request);
       } else {
-        setPersonFinded(false);
+        // // setPersonFinded(false);
         notify(
           "error",
           `Oops, algo deu errado, entre em contato com o suporte de TI. ${error}`
@@ -212,8 +210,8 @@ export default function VehiclesNew() {
   function handleSearchPerson(idPerson) {
     if (idPerson) {
       loadDataPerson(idPerson);
-      setUpdateRegister(false);
-      setTitleUpdate("");
+      // setUpdateRegister(false);
+      // setTitleUpdate("");
     } else {
       clearFields();
     }
@@ -226,13 +224,13 @@ export default function VehiclesNew() {
       idClient,
       companyName,
       fantasyName,
-      cpfCnpj,
+      // cpfCnpj,
       phone,
       email,
-      idNeighborhood,
-      street,
-      streetNumber,
-      complement,
+      // idNeighborhood,
+      // street,
+      // streetNumber,
+      // complement,
       status: checkedStatus,
     };
 
@@ -386,24 +384,24 @@ export default function VehiclesNew() {
   // #endregion
 
   // #region Handle Update Register
-  function handleUpdateRegister() {
-    if (personFinded) {
-      setTitleUpdate("ALTERAR ");
+  // function handleUpdateRegister() {
+  //   if (personFinded) {
+  //     setTitleUpdate("ALTERAR ");
 
-      setUpdateRegister(true);
-      setIsReadonly(false);
-    } else if (idClient.length === 0) {
-      notify(
-        "warning",
-        "Para acessar a alteração de dados primeiro selecione a pessoa desejada."
-      );
-    } else {
-      notify(
-        "warning",
-        "Não foi possível acessar a alteração de dados, pois nenhuma pessoa foi encontrada."
-      );
-    }
-  }
+  //     setUpdateRegister(true);
+  //     setIsReadonly(false);
+  //   } else if (idClient.length === 0) {
+  //     notify(
+  //       "warning",
+  //       "Para acessar a alteração de dados primeiro selecione a pessoa desejada."
+  //     );
+  //   } else {
+  //     notify(
+  //       "warning",
+  //       "Não foi possível acessar a alteração de dados, pois nenhuma pessoa foi encontrada."
+  //     );
+  //   }
+  // }
   // #endregion
 
   function returnPageConsult() {
@@ -415,12 +413,12 @@ export default function VehiclesNew() {
     if (
       companyName !== "" ||
       fantasyName !== "" ||
-      cpfCnpj !== "" ||
-      idNeighborhood !== "" ||
+      // cpfCnpj !== "" ||
+      // idNeighborhood !== "" ||
       neighborhood !== "" ||
       street !== "" ||
-      streetNumber !== "" ||
-      complement !== "" ||
+      // streetNumber !== "" ||
+      // complement !== "" ||
       phone !== "" ||
       email !== ""
     ) {
@@ -438,12 +436,12 @@ export default function VehiclesNew() {
     if (
       companyName !== "" ||
       fantasyName !== "" ||
-      cpfCnpj !== "" ||
-      idNeighborhood !== "" ||
+      // cpfCnpj !== "" ||
+      // idNeighborhood !== "" ||
       neighborhood !== "" ||
       street !== "" ||
-      streetNumber !== "" ||
-      complement !== "" ||
+      // streetNumber !== "" ||
+      // complement !== "" ||
       phone !== "" ||
       email !== ""
     ) {

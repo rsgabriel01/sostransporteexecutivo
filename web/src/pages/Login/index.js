@@ -138,9 +138,6 @@ export default function Login() {
             case '"password" length must be at least 8 characters long':
               notify("warning", "A senha deve conter no mínimo 8 caracteres.");
               break;
-            case '"password" length must be at least 8 characters long':
-              notify("warning", "A senha deve conter no mínimo 8 caracteres.");
-              break;
             case '"password" length must be less than or equal to 16 characters long':
               notify("warning", "A senha deve conter no máximo 16 caracteres.");
 

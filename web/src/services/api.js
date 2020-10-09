@@ -2,10 +2,10 @@ import axios from "axios";
 
 import { getToken, getIdExecutingPerson } from "./auth";
 
-const apiUrl = process.env.REACT_APP_API_URL;
+// const { REACT_APP_API_URL } = process.env
 
 const api = axios.create({
-  baseURL: "http://localhost:3333/api",
+  baseURL: `${process.env.REACT_APP_API_URL ? process.env.REACT_APP_API_URL : 'http://localhost:3333/api'}`,
 });
 
 api.interceptors.request.use(async (config) => {

@@ -32,7 +32,7 @@ import "./styles.css";
 import "react-toastify/dist/ReactToastify.css";
 import "react-confirm-alert/src/react-confirm-alert.css";
 
-export default function Vehicles() {
+export default function Vehicles(props) {
   // #region Definitions
   const history = useHistory();
   const [loading, setLoading] = useState(true);
@@ -53,7 +53,7 @@ export default function Vehicles() {
 
   const [idVehicle, setIdVehicle] = useState("");
   const [registrationNumber, setRegistrationNumber] = useState("");
-  const [idModel, setIdModel] = useState("");
+  // const [idModel, setIdModel] = useState("");
   const [model, setModel] = useState("");
   const [brand, setBrand] = useState("");
   const [color, setColor] = useState("");
@@ -78,11 +78,7 @@ export default function Vehicles() {
   // #region useEffect
   useEffect(() => {
     virifyAuthorization();
-  }, []);
-  // #endregion
-
-  // #region Only Number
-
+  }, [props]);
   // #endregion
 
   // #region Fill Fields

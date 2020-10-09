@@ -257,9 +257,6 @@ routes.get(
 );
 // #endregion
 
-// #region Types
-// #endregion
-
 // #region TypePeople
 routes.post(
   "/typepeople/create",
@@ -308,12 +305,6 @@ routes.put(
 // #region Sessions
 // #endregion
 
-// #region States
-// #endregion
-
-// #region Citys
-// #endregion
-
 // #region Neighborhood
 routes.get("/neighborhoods", NeighborhoodsController.index);
 
@@ -330,14 +321,8 @@ routes.get(
 routes.get("/travelFee", TravelFeeController.index);
 // #endregion
 
-// #region Status
-// #endregion
-
 // #region ServiceOrders
 routes.get("/serviceOrders", ServiceOrdersController.index);
-// #endregion
-
-// #region VehicleBrands
 // #endregion
 
 // #region VehicleModels

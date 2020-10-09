@@ -129,12 +129,12 @@ module.exports = {
 
         if (typesPersonOfUser.includes("4")) {
           return res.status(400).json({
-            message: "Nenhum cadastro foi encontrada com o código informado.",
+            message: "Nenhum cadastro foi encontrado com o código informado.",
           });
         }
       } else {
         return res.status(400).json({
-          message: "Nenhum cadastro foi encontrada com o código informado.",
+          message: "Nenhum cadastro foi encontrado com o código informado.",
         });
       }
 

@@ -203,7 +203,7 @@ module.exports = {
 
         if (typesPersonId.includes("4")) {
           return res.status(400).json({
-            message: "Nenhum cadastro foi encontrada com o código informado.",
+            message: "Nenhum cadastro foi encontrado com o código informado.",
           });
         }
 
@@ -218,7 +218,7 @@ module.exports = {
         typeAttendanceOld = typesPersonId.includes("2") ? true : false;
       } else {
         return res.status(400).json({
-          message: "Nenhum cadastro foi encontrada com o código informado.",
+          message: "Nenhum cadastro foi encontrado com o código informado.",
         });
       }
 

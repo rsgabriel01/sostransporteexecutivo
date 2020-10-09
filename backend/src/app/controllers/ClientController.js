@@ -132,7 +132,7 @@ module.exports = {
       if (!client) {
         return res.status(400).json({
           message:
-            "Nenhum cadastro de cliente foi encontrada com o código fornecido.",
+            "Nenhum cadastro de cliente foi encontrado com o código fornecido.",
         });
       }
 
@@ -145,7 +145,7 @@ module.exports = {
       if (!typesClientId.includes("4")) {
         return res.status(400).json({
           message:
-            "Nenhum cadastro de cliente foi encontrada com o código informado.",
+            "Nenhum cadastro de cliente foi encontrado com o código informado.",
         });
       }
 
@@ -239,7 +239,7 @@ module.exports = {
 
         if (!typesPersonId.includes("4")) {
           return res.status(400).json({
-            message: "Nenhum cadastro foi encontrada com o código informado.",
+            message: "Nenhum cadastro foi encontrado com o código informado.",
           });
         }
 
@@ -251,7 +251,7 @@ module.exports = {
         activeOld = oldClientFinded.active;
       } else {
         return res.status(400).json({
-          message: "Nenhum cadastro foi encontrada com o código informado.",
+          message: "Nenhum cadastro foi encontrado com o código informado.",
         });
       }
 

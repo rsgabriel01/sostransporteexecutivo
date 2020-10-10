@@ -1078,6 +1078,28 @@ export default function Vehicles(props) {
                           </button>
                         </div>
                       </div>
+                    </div>
+
+                    <div className="input-label-group-row">
+                      <div
+                        className="input-label-block-column"
+                        id="input-label-block-column"
+                      >
+                        <label htmlFor="carPlate">Placa:</label>
+
+                        <input
+                          id="carPlate"
+                          type="text"
+                          minLength="7"
+                          maxLength="7"
+                          readOnly={isReadonly}
+                          required
+                          value={carPlate}
+                          onChange={(e) => {
+                            setCarPlate(e.target.value);
+                          }}
+                        />
+                      </div>
 
                       <div
                         className="input-label-block-column"

@@ -63,9 +63,9 @@ export default function Vehicles(props) {
 
   const [idVehicle, setIdVehicle] = useState("");
   const [registrationNumber, setRegistrationNumber] = useState("");
-  const [idModel, setIdModel] = useState("");
-  const [model, setModel] = useState("");
-  const [brand, setBrand] = useState("");
+  const [idVehicleModel, setIdVehicleModel] = useState("");
+  const [vehicleModel, setVehicleModel] = useState("");
+  const [modelBrand, setModelBrand] = useState("");
   const [color, setColor] = useState("");
   const [idDriver, setIdDriver] = useState("");
   const [name, setName] = useState("");
@@ -257,7 +257,7 @@ export default function Vehicles(props) {
     const dataPerson = {
       idVehicle,
       registrationNumber,
-      model,
+      idVehicleModel,
       color,
       name,
       status: checkedStatus,
@@ -546,9 +546,10 @@ export default function Vehicles(props) {
   // #endregion
 
   // #region Handle Select Search Vehicle Model
-  function handleSelectModelInSearch(id, name) {
-    setIdDriver(id);
-    setName(name);
+  function handleSelectModelInSearch(id, model, brand) {
+    setIdVehicleModel(id);
+    setVehicleModel(model);
+    setModelBrand(brand);
     handleCloseModalSearchVehicleModel();
     inputFocusColor();
   }
@@ -760,7 +761,8 @@ export default function Vehicles(props) {
                       onDoubleClick={() =>
                         handleSelectModelInSearch(
                           vehicleModel.id,
-                          vehicleModel.name
+                          vehicleModel.description,
+                          vehicleModel.ModelBrand.description
                         )
                       }
                     >
@@ -781,6 +783,7 @@ export default function Vehicles(props) {
                           className="button btnSuccess"
                           onClick={() =>
                             handleSelectModelInSearch(
+                              vehicleModel.id,
                               vehicleModel.description,
                               vehicleModel.ModelBrand.description
                             )
@@ -916,7 +919,6 @@ export default function Vehicles(props) {
                               }
                             }
                             setRegistrationNumber(e.target.value);
-                            console.log(model);
                           }}
                         />
                       </div>
@@ -933,8 +935,8 @@ export default function Vehicles(props) {
                             type="text"
                             required
                             readOnly
-                            value={model}
-                            onChange={(e) => setModel(e.target.value)}
+                            value={vehicleModel}
+                            onChange={(e) => setVehicleModel(e.target.value)}
                           />
 
                           <button
@@ -963,8 +965,8 @@ export default function Vehicles(props) {
                           type="text"
                           readOnly
                           required
-                          value={brand}
-                          onChange={(e) => setBrand(e.target.value)}
+                          value={modelBrand}
+                          onChange={(e) => setModelBrand(e.target.value)}
                         />
                       </div>
 

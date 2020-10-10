@@ -62,11 +62,12 @@ export default function Vehicles(props) {
   );
 
   const [idVehicle, setIdVehicle] = useState("");
+  const [carPlate, setCarPlate] = useState("");
   const [registrationNumber, setRegistrationNumber] = useState("");
   const [idVehicleModel, setIdVehicleModel] = useState("");
   const [vehicleModel, setVehicleModel] = useState("");
-  const [modelBrand, setModelBrand] = useState("");
-  const [color, setColor] = useState("");
+  const [vehicleBrand, setVehicleBrand] = useState("");
+  const [vehicleColor, setVehicleColor] = useState("");
   const [idDriver, setIdDriver] = useState("");
   const [nameDriver, setNameDriver] = useState("");
   const [checkedStatus, setCheckedStatus] = useState(false);
@@ -77,7 +78,7 @@ export default function Vehicles(props) {
   const [titleModal, setTitleModal] = useState("");
   const [titleIconModal, setTitleIconModal] = useState();
   const idVehicleInputRef = useRef(null);
-  const colorInputRef = useRef(null);
+  const vehicleColorInputRef = useRef(null);
 
   const [openModalSearchVehicle, setOpenModalSearchVehicle] = useState(false);
   const [searchVehicle, setSearchVehicle] = useState("");
@@ -115,39 +116,49 @@ export default function Vehicles(props) {
   // #endregion
 
   // #region Fill Fields
-  // function fillFields(response) {
-  //   const { name, cpf_cnpj, rg, phone, email, active } = response.person;
+  function fillFields(response) {
+    const {
+      id,
+      car_plate,
+      registration_number,
+      id_model,
+      model,
+      brand,
+      color,
+      active,
+    } = response.vehicle;
 
-  //   const typeIds = response.peopleType.map((index) => index.id);
+    const idDriver = response.driver.id;
+    const name = response.driver.name;
 
-  //   console.log(typeIds);
-
-  //   console.log(typeIds.includes("1"));
-
-  //   name ? setName(name) : setName("");
-
-  //   cpf_cnpj ? setCpf_cnpj(cpf_cnpj) : setCpf_cnpj("");
-
-  //   rg ? setRg(rg) : setRg("");
-
-  //   phone ? setPhone(phone) : setPhone("");
-
-  //   email ? setEmail(email) : setEmail("");
-
-  //   typeIds.includes("1") ? setCheckedStatus(true) : setCheckedStatus(false);
-
-  //   typeIds.includes("2")
-  //     ? setCheckedTypeAttendance("true")
-  //     : setCheckedTypeAttendance(false);
-  // }
-  // #endregion
+    id ? setIdVehicle(id) : setIdVehicle("");
+    car_plate ? setCarPlate(car_plate) : setCarPlate("");
+    registration_number
+      ? setRegistrationNumber(registration_number)
+      : setRegistrationNumber("");
+    id_model ? setIdVehicleModel(id_model) : setIdVehicleModel("");
+    model ? setVehicleModel(model) : setVehicleModel("");
+    brand ? setVehicleBrand(brand) : setVehicleBrand("");
+    color ? setVehicleColor(color) : setVehicleColor("");
+    idDriver ? setIdDriver(idDriver) : setIdDriver("");
+    name ? setNameDriver(name) : setNameDriver("");
+    setCheckedStatus(active);
+  }
+  // #endregion Fill Fields
 
   // #region Clear Fields
   function clearFields(withCode) {
     if (withCode) {
       setIdVehicle("");
     }
-
+    setCarPlate("");
+    setRegistrationNumber("");
+    setIdVehicleModel("");
+    setVehicleModel("");
+    setVehicleBrand("");
+    setVehicleColor("");
+    setIdDriver("");
+    setNameDriver("");
     setCheckedStatus(false);
   }
 
@@ -189,7 +200,7 @@ export default function Vehicles(props) {
 
       if (response) {
         setVehicleFinded(true);
-        // fillFields(response.data);
+        fillFields(response.data);
       }
 
       console.log(response.data);
@@ -206,13 +217,13 @@ export default function Vehicles(props) {
         if (statusError === 400 && dataError.message) {
           console.log(dataError.message);
           switch (dataError.message) {
-            case '"idPerson" must be a number':
-              notify("warning", "O código da pessoa precisa ser um número.");
+            case '"idVehicle" must be a number':
+              notify("warning", "O código do veículo precisa ser um número.");
               break;
-            case '"idPerson" must be a positive number':
+            case '"idVehicle" must be a positive number':
               notify(
                 "warning",
-                "O código de pessoa deve ser maior ou igual a 1."
+                "O código de veículo deve ser maior ou igual a 1."
               );
               break;
 
@@ -241,13 +252,11 @@ export default function Vehicles(props) {
   // #endregion
 
   // #region Handle Search Person
-  function handleSearchVehicle(idPerson) {
-    if (idPerson) {
-      loadDataVehicle(idPerson);
+  function handleSearchVehicle(idVehicle) {
+    if (idVehicle && !updateRegister) {
+      loadDataVehicle(idVehicle);
       setUpdateRegister(false);
       setTitleUpdate("");
-    } else {
-      clearFields();
     }
   }
   // #endregion
@@ -258,7 +267,7 @@ export default function Vehicles(props) {
       idVehicle,
       registrationNumber,
       idVehicleModel,
-      color,
+      vehicleColor,
       nameDriver,
       status: checkedStatus,
     };
@@ -549,14 +558,14 @@ export default function Vehicles(props) {
   function handleSelectModelInSearch(id, model, brand) {
     setIdVehicleModel(id);
     setVehicleModel(model);
-    setModelBrand(brand);
+    setVehicleBrand(brand);
     handleCloseModalSearchVehicleModel();
-    inputFocusColor();
+    inputFocusvehicleColor();
   }
 
-  function inputFocusColor() {
+  function inputFocusvehicleColor() {
     setTimeout(() => {
-      colorInputRef.current.focus();
+      vehicleColorInputRef.current.focus();
     }, 1);
   }
   // #endregion
@@ -755,7 +764,7 @@ export default function Vehicles(props) {
 
               <div className="modal-search-list">
                 {loadingModal ? (
-                  <Loading type="bars" color="#0f4c82" />
+                  <Loading type="bars" vehicleColor="#0f4c82" />
                 ) : (
                   searchVehicleList.map((vehicle) => (
                     <div
@@ -839,7 +848,7 @@ export default function Vehicles(props) {
 
               <div className="modal-search-list">
                 {loadingModal ? (
-                  <Loading type="bars" color="#0f4c82" />
+                  <Loading type="bars" vehicleColor="#0f4c82" />
                 ) : (
                   searchVehicleModelList.map((vehicleModel) => (
                     <div
@@ -849,7 +858,7 @@ export default function Vehicles(props) {
                         handleSelectModelInSearch(
                           vehicleModel.id,
                           vehicleModel.description,
-                          vehicleModel.ModelBrand.description
+                          vehicleModel.vehicleBrand.description
                         )
                       }
                     >
@@ -859,8 +868,8 @@ export default function Vehicles(props) {
                           <p id="searchDescriptionModel">
                             Modelo: {vehicleModel.description}
                           </p>
-                          <p id="searcDescriptionModelBrand">
-                            Marca: {vehicleModel.ModelBrand.description}
+                          <p id="searcDescriptionvehicleBrand">
+                            Marca: {vehicleModel.vehicleBrand.description}
                           </p>
                         </section>
                       </div>
@@ -872,7 +881,7 @@ export default function Vehicles(props) {
                             handleSelectModelInSearch(
                               vehicleModel.id,
                               vehicleModel.description,
-                              vehicleModel.ModelBrand.description
+                              vehicleModel.vehicleBrand.description
                             )
                           }
                         >
@@ -931,7 +940,7 @@ export default function Vehicles(props) {
 
               <div className="modal-search-list">
                 {loadingModal ? (
-                  <Loading type="bars" color="#0f4c82" />
+                  <Loading type="bars" vehicleColor="#0f4c82" />
                 ) : (
                   searchDriverList.map((driver) => (
                     <div
@@ -981,7 +990,7 @@ export default function Vehicles(props) {
       <LateralMenu />
       <>
         {loading ? (
-          <Loading type="bars" color="#0f4c82" />
+          <Loading type="bars" vehicleColor="#0f4c82" />
         ) : (
           <div className="content-container">
             <ToastContainer />
@@ -1040,6 +1049,7 @@ export default function Vehicles(props) {
                             type="number"
                             min="1"
                             required
+                            readOnly={searchVehicleBtnInactive}
                             value={idVehicle}
                             onChange={(e) => setIdVehicle(e.target.value)}
                             onBlur={() => {
@@ -1060,6 +1070,7 @@ export default function Vehicles(props) {
                               searchVehicleBtnInactive ? "btnInactive" : ""
                             }`}
                             onClick={() => {
+                              clearFields();
                               handleOpenModalSearchVehicles();
                             }}
                           >
@@ -1142,8 +1153,8 @@ export default function Vehicles(props) {
                           type="text"
                           readOnly
                           required
-                          value={modelBrand}
-                          onChange={(e) => setModelBrand(e.target.value)}
+                          value={vehicleBrand}
+                          onChange={(e) => setVehicleBrand(e.target.value)}
                         />
                       </div>
 
@@ -1151,16 +1162,16 @@ export default function Vehicles(props) {
                         className="input-label-block-column"
                         id="input-label-block-column"
                       >
-                        <label htmlFor="color">Cor:</label>
+                        <label htmlFor="vehicleColor">Cor:</label>
 
                         <input
-                          ref={colorInputRef}
-                          id="color"
+                          ref={vehicleColorInputRef}
+                          id="vehicleColor"
                           type="text"
                           readOnly={isReadonly}
                           required
-                          value={color}
-                          onChange={(e) => setColor(e.target.value)}
+                          value={vehicleColor}
+                          onChange={(e) => setVehicleColor(e.target.value)}
                         />
                       </div>
                     </div>

@@ -14,19 +14,17 @@ const validatorVehiclesCreate = celebrate({
   }),
 });
 
-// const validatorLogin = celebrate({
-//   [Segments.BODY]: Joi.object().keys({
-//     user: Joi.string().required(),
-//     password: Joi.string().required().min(8).max(16),
-//   }),
-// });
-
-// const validatorLogout = celebrate({
-//   [Segments.HEADERS]: Joi.object({
-//     token: Joi.string().required(),
-//   }).unknown(),
-// });
+const validatorVehiclesLikeModel = celebrate({
+  [Segments.HEADERS]: Joi.object({
+    authorization: Joi.string().required(),
+    id_executingperson: Joi.number().positive().integer().required(),
+  }).unknown(),
+  [Segments.QUERY]: {
+    vehicleModel: Joi.string().required().allow("", null),
+  },
+});
 
 module.exports = {
   validatorVehiclesCreate,
+  validatorVehiclesLikeModel,
 };

@@ -235,7 +235,15 @@ routes.get(
   validatorDriversIndexLikeName,
   verifySession,
   permissionAdminAttendance,
-  DriversLikeNameController.indexActiveLikeName
+  DriversLikeNameController.indexInactiveLikeName
+);
+
+routes.get(
+  "/drivers/active/vehicle/no/",
+  validatorDriversIndexLikeName,
+  verifySession,
+  permissionAdminAttendance,
+  DriversLikeNameController.indexActiveVehicleNoLikeName
 );
 // #endregion
 

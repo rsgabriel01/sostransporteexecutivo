@@ -68,7 +68,7 @@ export default function Vehicles(props) {
   const [modelBrand, setModelBrand] = useState("");
   const [color, setColor] = useState("");
   const [idDriver, setIdDriver] = useState("");
-  const [name, setName] = useState("");
+  const [nameDriver, setNameDriver] = useState("");
   const [checkedStatus, setCheckedStatus] = useState(false);
 
   const useStyles = makeStyles((theme) => jsonClassesModal(theme));
@@ -259,7 +259,7 @@ export default function Vehicles(props) {
       registrationNumber,
       idVehicleModel,
       color,
-      name,
+      nameDriver,
       status: checkedStatus,
     };
 
@@ -623,6 +623,93 @@ export default function Vehicles(props) {
   }
   // #endregion
 
+  // #region Handle Open Modal Search Driver Active
+  const handleOpenModalSearchDriver = () => {
+    setLoadingModal(true);
+    loadSearchDriverList();
+
+    setTitleIconModal(<RiUserLocationLine size={30} />);
+    setTitleModal("PESQUISAR MOTORISTAS");
+    setOpenModalSearchDriver(true);
+  };
+
+  const handleCloseModalSearchDriver = () => {
+    setTitleModal("");
+    setSearchDriver("");
+    setOpenModalSearchDriver(false);
+  };
+  // #endregion
+
+  // #region Handle Select Search Driver Active
+  function handleSelectDriverInSearch(id, name) {
+    setIdDriver(id);
+    setNameDriver(name);
+    handleCloseModalSearchDriver();
+  }
+  // #endregion
+
+  // #region Load Search Modal Driver Active List
+  async function loadSearchDriverList() {
+    setLoadingModal(true);
+
+    try {
+      const response = await api.get(
+        `/drivers/active/vehicle/no/?name=${searchDriver.toUpperCase()}`
+      );
+
+      if (response) {
+        console.log(response.data);
+
+        setSearchDriverList(response.data);
+        setLoadingModal(false);
+      }
+    } catch (error) {
+      setLoadingModal(false);
+
+      if (error.response) {
+        const dataError = error.response.data;
+        const statusError = error.response.status;
+        console.error(dataError);
+        console.error(statusError);
+
+        if (statusError === 400 && dataError.message) {
+          console.log(dataError.message);
+          switch (dataError.message) {
+            case '"name" is required':
+              notify(
+                "error",
+                "Oops, algo deu errado, entre em contato com o suporte de TI. Erro: o QUERY PARAM 'name' não foi encontrado no endereço da rota."
+              );
+              break;
+
+            default:
+              notify("warning", dataError.message);
+          }
+        }
+
+        if (statusError === 401) {
+          switch (dataError.message) {
+            default:
+              notify("warning", dataError.message);
+          }
+        }
+      } else if (error.request) {
+        notify(
+          "error",
+          `Oops, algo deu errado, entre em contato com o suporte de TI. ${error}`
+        );
+        console.log(error.request);
+      } else {
+        notify(
+          "error",
+          `Oops, algo deu errado, entre em contato com o suporte de TI. ${error}`
+        );
+        console.log("Error", error.message);
+      }
+    }
+  }
+  // #endregion
+
   return (
     <div className="main-container">
       <Modal
@@ -682,7 +769,7 @@ export default function Vehicles(props) {
                         <strong>Código: {vehicle.id}</strong>
                         <section id="searchVehicleData">
                           <p id="searchVehicleModel">
-                            Modelo: {vehicle.VehiclevehicleModel.description}
+                            Modelo: {vehicle.VehicleModel.description}
                           </p>
                           <p id="searchVehicleCarPlate">
                             Placa: {vehicle.car_plate}
@@ -786,6 +873,93 @@ export default function Vehicles(props) {
                               vehicleModel.id,
                               vehicleModel.description,
                               vehicleModel.ModelBrand.description
+                            )
+                          }
+                        >
+                          <RiArrowRightUpLine />
+                        </button>
+                      </div>
+                    </div>
+                  ))
+                )}
+              </div>
+            </div>
+          </div>
+        </Fade>
+      </Modal>
+
+      <Modal
+        id="modalSearchDriver"
+        aria-labelledby="transition-modal-title"
+        aria-describedby="transition-modal-description"
+        className={ClassesModal.modal}
+        open={openModalSearchDriver}
+        onClose={handleCloseModalSearchDriver}
+        closeAfterTransition
+        BackdropComponent={Backdrop}
+        BackdropProps={{
+          timeout: 500,
+        }}
+      >
+        <Fade in={openModalSearchDriver}>
+          <div className={ClassesModal.paper}>
+            <h1 className="modal-search-title">
+              {titleIconModal} {titleModal}
+            </h1>
+            <div className="modal-search-content">
+              <div className="modal-search-input-button">
+                <div className="input-label-block-colum">
+                  <label htmlFor="inputSearchDriver">Nome:</label>
+                  <input
+                    id="inputSearchDriver"
+                    type="text"
+                    value={searchDriver}
+                    onChange={(e) => setSearchDriver(e.target.value)}
+                    onKeyUp={loadSearchDriverList}
+                  ></input>
+                </div>
+
+                <button
+                  type="button"
+                  className="button btnDefault btnSearchModal"
+                  onClick={loadSearchDriverList}
+                >
+                  <RiSearchLine size={24} />
+                  Buscar
+                </button>
+              </div>
+
+              <div className="modal-search-list">
+                {loadingModal ? (
+                  <Loading type="bars" color="#0f4c82" />
+                ) : (
+                  searchDriverList.map((driver) => (
+                    <div
+                      className="searchListIten"
+                      key={driver.id}
+                      onDoubleClick={() =>
+                        handleSelectModelInSearch(driver.id, driver.People.name)
+                      }
+                    >
+                      <div className="searchItenData">
+                        <strong>Código: {driver.id}</strong>
+                        <section id="searchDriverDataInVehicleUpdate">
+                          <p id="searchVehicleDriverName">
+                            Nome: {driver.People.name}
+                          </p>
+                          <p id="searchVehicleDriveCpf">
+                            CPF: {driver.People.cpf_cnpj}
+                          </p>
+                        </section>
+                      </div>
+                      <div className="DriverBtnSelect">
+                        <button
+                          type="button"
+                          className="button btnSuccess"
+                          onClick={() =>
+                            handleSelectModelInSearch(
+                              driver.id,
+                              driver.driver.People.name
                             )
                           }
                         >
@@ -1019,6 +1193,9 @@ export default function Vehicles(props) {
                             }`}
                             disabled={isReadonly}
                             id="btnidDriver"
+                            onClick={() => {
+                              handleOpenModalSearchDriver();
+                            }}
                           >
                             <RiSearchLine size={24} />
                           </button>
@@ -1026,14 +1203,14 @@ export default function Vehicles(props) {
                       </div>
 
                       <div className="input-label-block-column">
-                        <label htmlFor="name">Nome:</label>
+                        <label htmlFor="nameDriver">Nome:</label>
 
                         <input
-                          id="name"
+                          id="nameDriver"
                           readOnly
                           type="text"
-                          value={name}
-                          onChange={(e) => setName(e.target.value)}
+                          value={nameDriver}
+                          onChange={(e) => setNameDriver(e.target.value)}
                           required
                         />
                       </div>

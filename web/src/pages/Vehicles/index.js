@@ -938,7 +938,10 @@ export default function Vehicles(props) {
                       className="searchListIten"
                       key={driver.id}
                       onDoubleClick={() =>
-                        handleSelectModelInSearch(driver.id, driver.People.name)
+                        handleSelectDriverInSearch(
+                          driver.id,
+                          driver.People.name
+                        )
                       }
                     >
                       <div className="searchItenData">
@@ -957,9 +960,9 @@ export default function Vehicles(props) {
                           type="button"
                           className="button btnSuccess"
                           onClick={() =>
-                            handleSelectModelInSearch(
+                            handleSelectDriverInSearch(
                               driver.id,
-                              driver.driver.People.name
+                              driver.People.name
                             )
                           }
                         >

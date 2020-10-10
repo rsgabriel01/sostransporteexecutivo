@@ -6,6 +6,8 @@ module.exports = (sequelize, DataTypes) => {
     {
       id_people: DataTypes.BIGINT,
       id_model: DataTypes.BIGINT,
+      id_model: DataTypes.BIGINT,
+      car_plate: DataTypes.STRING,
       registration_number: DataTypes.STRING,
       color: DataTypes.STRING,
       active: DataTypes.BOOLEAN,
@@ -19,7 +21,7 @@ module.exports = (sequelize, DataTypes) => {
   Vehicles.associate = (models) => {
     Vehicles.belongsTo(models.Vehicle_models, {
       foreignKey: "id_model",
-      as: "Vehicle_model",
+      as: "VehicleModel",
     });
     Vehicles.belongsTo(models.People, {
       foreignKey: "id_people",

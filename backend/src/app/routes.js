@@ -39,7 +39,8 @@ const VehicleBrandsController = require("./controllers/VehicleBrandsController")
 
 const VehicleModelsController = require("./controllers/VehicleModelsController");
 
-const VehiclesController = require("./controllers/VehiclesController");
+const VehicleController = require("./controllers/VehicleController");
+const VehiclesLikeModelController = require("./controllers/VehiclesLikeModelController");
 // #endregion
 
 // #region Validators
@@ -68,13 +69,6 @@ const {
 } = require("./validators/routesDrivers");
 // #endregion
 
-// #region Types
-// #endregion
-
-// #region TypePeople
-
-// #endregion
-
 // #region PeopleAddress
 const { validatorTypePeopleCreate } = require("./validators/routesTypePeople");
 
@@ -96,43 +90,22 @@ const {
 } = require("./validators/routesAcess");
 // #endregion
 
-// #region States
-// #endregion
-
-// #region Citys
-// #endregion
-
 // #region Neighborhood
 const {
   validatorNeighborhoodIndexLikeName,
 } = require("./validators/routesNeighborhood");
 // #endregion
 
-// #region TravelFee
-// #endregion
-
-// #region Status
-// #endregion
-
-// #region ServiceOrders
-// #endregion
-
-// #region VehicleBrands
-// #endregion
-
-// #region VehicleModels
-// #endregion
-
 // #region Vehicle
 const { validatorVehiclesCreate } = require("./validators/routesVehicles");
 // #endregion
 
-// #endregion
+// #endregion Validator
 
 // #region Middlewares
 const { verifySession } = require("./middlewares/sessions");
 const { permissionAdminAttendance } = require("./middlewares/permissions");
-// #endregion
+// #endregion Middlewares
 
 routes.get("/", (req, res) => {
   return res.json("Server is running...");
@@ -221,7 +194,6 @@ routes.get(
   permissionAdminAttendance,
   clientLikeNameFantasyController.indexLikeNameFantsy
 );
-
 // #endregion
 
 // #region Driver
@@ -302,9 +274,6 @@ routes.put(
 );
 // #endregion
 
-// #region Sessions
-// #endregion
-
 // #region Neighborhood
 routes.get("/neighborhoods", NeighborhoodsController.index);
 
@@ -325,15 +294,12 @@ routes.get("/travelFee", TravelFeeController.index);
 routes.get("/serviceOrders", ServiceOrdersController.index);
 // #endregion
 
-// #region VehicleModels
-// #endregion
-
 // #region Vehicle
 routes.get(
-  "/vehicles",
+  "/vehicle",
   verifySession,
   permissionAdminAttendance,
-  VehiclesController.index
+  VehicleController.index
 );
 
 routes.post(
@@ -341,7 +307,14 @@ routes.post(
   validatorVehiclesCreate,
   verifySession,
   permissionAdminAttendance,
-  VehiclesController.store
+  VehicleController.store
+);
+
+routes.get(
+  "/vehicles/",
+  verifySession,
+  permissionAdminAttendance,
+  VehiclesLikeModelController.indexLikeModel
 );
 // #endregion
 

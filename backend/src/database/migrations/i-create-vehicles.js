@@ -27,6 +27,10 @@ module.exports = {
             key: "id",
           },
         },
+        car_plate: {
+          allowNull: false,
+          type: DataTypes.STRING,
+        },
         registration_number: {
           allowNull: false,
           type: DataTypes.BIGINT,

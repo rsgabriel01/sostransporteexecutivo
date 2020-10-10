@@ -24,6 +24,7 @@ import {
   RiBook2Line,
   RiUserLine,
   RiArrowRightUpLine,
+  RiCarWashingLine,
 } from "react-icons/ri";
 import LateralMenu from "../components/LateralMenu/LateralMenu";
 import Header from "../components/Header/Header";
@@ -76,15 +77,20 @@ export default function Vehicles(props) {
   const [titleModal, setTitleModal] = useState("");
   const [titleIconModal, setTitleIconModal] = useState();
   const idVehicleInputRef = useRef(null);
-  const cnhInputRef = useRef(null);
+  const colorInputRef = useRef(null);
 
-  const [openModalSearchPerson, setOpenModalSearchPerson] = useState(false);
-  const [searchPerson, setSearchPerson] = useState("");
-  const [searchPersonList, setSearchPersonList] = useState([]);
+  const [openModalSearchVehicle, setOpenModalSearchVehicle] = useState(false);
+  const [searchVehicle, setSearchVehicle] = useState("");
+  const [searchVehicleList, setSearchVehicleList] = useState([]);
 
-  const [openModalSearchDriver, setOpenModalSearchVehicles] = useState(false);
-  const [searchDriver, setSearchVehicles] = useState("");
-  const [searchVehiclesList, setSearchVehiclesList] = useState([]);
+  const [openModalSearchModel, setOpenModalSearchModel] = useState(false);
+  const [searchModel, setSearchModel] = useState("");
+  const [searchModelList, setSearchModelList] = useState([]);
+
+  const [openModalSearchDriver, setOpenModalSearchDriver] = useState(false);
+  const [searchDriver, setSearchDriver] = useState("");
+  const [searchDriverList, setSearchDriverList] = useState([]);
+
   // #endregion
 
   // #region Verify Session
@@ -232,7 +238,7 @@ export default function Vehicles(props) {
   // #endregion
 
   // #region Handle Search Person
-  function handleSearchPerson(idPerson) {
+  function handleSearchVehicle(idPerson) {
     if (idPerson) {
       loadDataPerson(idPerson);
       setUpdateRegister(false);
@@ -425,24 +431,24 @@ export default function Vehicles(props) {
   }
   // #endregion
 
-  // #region Handle Open Modal Search Driver
-  const handleOpenModalSearchVehicles = () => {
+  // #region Handle Open Modal Search Vehicle
+  function handleOpenModalSearchVehicles() {
     setLoadingModal(true);
-    loadSearchVehiclesList();
+    loadSearchVehicleList();
 
     setTitleIconModal(<RiCarLine size={30} />);
     setTitleModal("PESQUISAR VEÍCULOS");
-    setOpenModalSearchVehicles(true);
-  };
+    setOpenModalSearchVehicle(true);
+  }
 
-  const handleCloseModalSearchVehicles = () => {
+  function handleCloseModalSearchVehicles() {
     setTitleModal("");
-    setSearchVehicles("");
-    setOpenModalSearchVehicles(false);
-  };
+    setSearchVehicle("");
+    setOpenModalSearchVehicle(false);
+  }
   // #endregion
 
-  // #region Handle Select Search Driver
+  // #region Handle Select Search Vehicle
   function handleSelectVehicleInSearch(id) {
     clearFields();
     setIdVehicle(id);
@@ -458,16 +464,18 @@ export default function Vehicles(props) {
   // #endregion
 
   // #region Load Search Modal Vehicle List
-  async function loadSearchVehiclesList() {
+  async function loadSearchVehicleList() {
     setLoadingModal(true);
 
     try {
-      const response = await api.get(`/vehicles`);
+      const response = await api.get(
+        `/vehicles/?vehicleModel=${searchVehicle.toUpperCase()}`
+      );
 
       if (response) {
         console.log(response.data);
 
-        setSearchVehiclesList(response.data);
+        setSearchVehicleList(response.data);
         setLoadingModal(false);
       }
     } catch (error) {
@@ -517,51 +525,51 @@ export default function Vehicles(props) {
   }
   // #endregion
 
-  // #region Handle Open Modal Search Person
-  const handleOpenModalSearchPersonEdit = () => {
+  // #region Handle Open Modal Search Model
+  const handleOpenModalSearchModel = () => {
     setLoadingModal(true);
-    loadSearchPersonList();
+    loadSearchModelList();
 
-    setTitleIconModal(<RiUserLine size={30} />);
-    setTitleModal("PESQUISAR PESSOA");
-    setOpenModalSearchPerson(true);
+    setTitleIconModal(<RiCarWashingLine size={30} />);
+    setTitleModal("PESQUISAR MODELO DE VEÍCULO");
+    setOpenModalSearchModel(true);
   };
 
-  const handleCloseModalSearchPersonEdit = () => {
+  const handleCloseModalSearchModel = () => {
     setTitleModal("");
-    setSearchPerson("");
-    setOpenModalSearchPerson(false);
+    setSearchModel("");
+    setOpenModalSearchModel(false);
   };
   // #endregion
 
-  // #region Handle Select Search Person
-  function handleSelectPersonInSearch(id, name) {
+  // #region Handle Select Search Model
+  function handleSelectModelInSearch(id, name) {
     setIdDriver(id);
     setName(name);
-    handleCloseModalSearchPersonEdit();
-    inputFocusCnh();
+    handleCloseModalSearchModel();
+    inputFocusColor();
   }
 
-  function inputFocusCnh() {
+  function inputFocusColor() {
     setTimeout(() => {
-      cnhInputRef.current.focus();
+      colorInputRef.current.focus();
     }, 1);
   }
   // #endregion
 
-  // #region Load Search Modal Person List
-  async function loadSearchPersonList() {
+  // #region Load Search Modal Model List
+  async function loadSearchModelList() {
     setLoadingModal(true);
 
     try {
       const response = await api.get(
-        `/people/active/?name=${searchPerson.toUpperCase()}`
+        `/people/active/?name=${searchModel.toUpperCase()}`
       );
 
       if (response) {
         console.log(response.data);
 
-        setSearchPersonList(response.data);
+        setSearchModelList(response.data);
         setLoadingModal(false);
       }
     } catch (error) {
@@ -614,11 +622,11 @@ export default function Vehicles(props) {
   return (
     <div className="main-container">
       <Modal
-        id="modalSearchDriver"
+        id="modalSearchVehicle"
         aria-labelledby="transition-modal-title"
         aria-describedby="transition-modal-description"
         className={ClassesModal.modal}
-        open={openModalSearchDriver}
+        open={openModalSearchVehicle}
         onClose={handleCloseModalSearchVehicles}
         closeAfterTransition
         BackdropComponent={Backdrop}
@@ -626,7 +634,7 @@ export default function Vehicles(props) {
           timeout: 500,
         }}
       >
-        <Fade in={openModalSearchDriver}>
+        <Fade in={openModalSearchVehicle}>
           <div className={ClassesModal.paper}>
             <h1 className="modal-search-title">
               {titleIconModal} {titleModal}
@@ -634,20 +642,20 @@ export default function Vehicles(props) {
             <div className="modal-search-content">
               <div className="modal-search-input-button">
                 <div className="input-label-block-colum">
-                  <label htmlFor="inputSearchDriver">Nome:</label>
+                  <label htmlFor="inputSearchVehicle">Modelo:</label>
                   <input
-                    id="inputSearchDriver"
+                    id="inputSearchVehicle"
                     type="text"
-                    value={searchDriver}
-                    onChange={(e) => setSearchVehicles(e.target.value)}
-                    onKeyUp={loadSearchVehiclesList}
+                    value={searchVehicle}
+                    onChange={(e) => setSearchVehicle(e.target.value)}
+                    onKeyUp={loadSearchVehicleList}
                   ></input>
                 </div>
 
                 <button
                   type="button"
                   className="button btnDefault btnSearchModal"
-                  onClick={loadSearchVehiclesList}
+                  onClick={loadSearchVehicleList}
                 >
                   <RiSearchLine size={24} />
                   Buscar
@@ -658,27 +666,32 @@ export default function Vehicles(props) {
                 {loadingModal ? (
                   <Loading type="bars" color="#0f4c82" />
                 ) : (
-                  searchVehiclesList.map((driver) => (
+                  searchVehicleList.map((vehicle) => (
                     <div
                       className="searchListIten"
-                      key={driver.id}
+                      key={vehicle.id}
                       onDoubleClick={() =>
-                        handleSelectVehicleInSearch(driver.id)
+                        handleSelectVehicleInSearch(vehicle.id)
                       }
                     >
                       <div className="searchItenData">
-                        <strong>Código: {driver.id}</strong>
-                        <section id="searchDriverData">
-                          <p id="searchNameDriver">
-                            Nome: {driver.People.name}
+                        <strong>Código: {vehicle.id}</strong>
+                        <section id="searchVehicleData">
+                          <p id="searchVehicleModel">
+                            Modelo: {vehicle.VehicleModel.description}
+                          </p>
+                          <p id="searchVehicleCarPlate">
+                            Placa: {vehicle.car_plate}
                           </p>
                         </section>
                       </div>
-                      <div className="clientBtnSelect">
+                      <div className="vehicleBtnSelect">
                         <button
                           type="button"
                           className="button btnSuccess"
-                          onClick={() => handleSelectVehicleInSearch(driver.id)}
+                          onClick={() =>
+                            handleSelectVehicleInSearch(vehicle.id)
+                          }
                         >
                           <RiArrowRightUpLine />
                         </button>
@@ -693,19 +706,19 @@ export default function Vehicles(props) {
       </Modal>
 
       <Modal
-        id="modalSearchPerson"
+        id="modalSearchModel"
         aria-labelledby="transition-modal-title"
         aria-describedby="transition-modal-description"
         className={ClassesModal.modal}
-        open={openModalSearchPerson}
-        onClose={handleCloseModalSearchPersonEdit}
+        open={openModalSearchModel}
+        onClose={handleCloseModalSearchModel}
         closeAfterTransition
         BackdropComponent={Backdrop}
         BackdropProps={{
           timeout: 500,
         }}
       >
-        <Fade in={openModalSearchPerson}>
+        <Fade in={openModalSearchModel}>
           <div className={ClassesModal.paper}>
             <h1 className="modal-search-title">
               {titleIconModal} {titleModal}
@@ -713,20 +726,20 @@ export default function Vehicles(props) {
             <div className="modal-search-content">
               <div className="modal-search-input-button">
                 <div className="input-label-block-colum">
-                  <label htmlFor="inputSearchPerson">Nome:</label>
+                  <label htmlFor="inputSearchModel">Nome:</label>
                   <input
-                    id="inputSearchPerson"
+                    id="inputSearchModel"
                     type="text"
-                    value={searchPerson}
-                    onChange={(e) => setSearchPerson(e.target.value)}
-                    onKeyUp={loadSearchPersonList}
+                    value={searchModel}
+                    onChange={(e) => setSearchModel(e.target.value)}
+                    onKeyUp={loadSearchModelList}
                   ></input>
                 </div>
 
                 <button
                   type="button"
                   className="button btnDefault btnSearchModal"
-                  onClick={loadSearchPersonList}
+                  onClick={loadSearchModelList}
                 >
                   <RiSearchLine size={24} />
                   Buscar
@@ -737,20 +750,20 @@ export default function Vehicles(props) {
                 {loadingModal ? (
                   <Loading type="bars" color="#0f4c82" />
                 ) : (
-                  searchPersonList.map((person) => (
+                  searchModelList.map((model) => (
                     <div
                       className="searchListIten"
-                      key={person.id}
+                      key={model.id}
                       onDoubleClick={() =>
-                        handleSelectPersonInSearch(person.id, person.name)
+                        handleSelectModelInSearch(model.id, model.name)
                       }
                     >
                       <div className="searchItenData">
-                        <strong>Código: {person.id}</strong>
-                        <section id="searchPersonDataInDriverUpdate">
-                          <p id="searchNamePerson">Nome: {person.name}</p>
-                          <p id="searchCpfPerson">CPF: {person.cpf_cnpj}</p>
-                          <p id="searchRgPerson">RG: {person.rg}</p>
+                        <strong>Código: {model.id}</strong>
+                        <section id="searchModelDataInVehicleUpdate">
+                          <p id="searchNameModel">Nome: {model.name}</p>
+                          <p id="searchCpfModel">CPF: {model.cpf_cnpj}</p>
+                          <p id="searchRgModel">RG: {model.rg}</p>
                         </section>
                       </div>
                       <div className="clientBtnSelect">
@@ -758,7 +771,7 @@ export default function Vehicles(props) {
                           type="button"
                           className="button btnSuccess"
                           onClick={() =>
-                            handleSelectPersonInSearch(person.id, person.name)
+                            handleSelectModelInSearch(model.id, model.name)
                           }
                         >
                           <RiArrowRightUpLine />
@@ -830,6 +843,7 @@ export default function Vehicles(props) {
 
                         <div className="input-button-block-row">
                           <input
+                            ref={idVehicleInputRef}
                             id="idVehicle"
                             type="number"
                             min="1"
@@ -837,7 +851,7 @@ export default function Vehicles(props) {
                             value={idVehicle}
                             onChange={(e) => setIdVehicle(e.target.value)}
                             onBlur={() => {
-                              handleSearchPerson(idVehicle);
+                              handleSearchVehicle(idVehicle);
                             }}
                             onKeyUp={(e) => {
                               if (idVehicle.length === 0) {
@@ -917,6 +931,9 @@ export default function Vehicles(props) {
                               isReadonly ? "btnInactive" : ""
                             }`}
                             disabled={isReadonly}
+                            onClick={() => {
+                              handleOpenModalSearchModel();
+                            }}
                           >
                             <RiSearchLine size={24} />
                           </button>
@@ -946,6 +963,7 @@ export default function Vehicles(props) {
                         <label htmlFor="color">Cor:</label>
 
                         <input
+                          ref={colorInputRef}
                           id="color"
                           type="text"
                           readOnly={isReadonly}

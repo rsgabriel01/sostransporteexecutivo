@@ -178,14 +178,14 @@ export default function Vehicles(props) {
   }
   // #endregion
 
-  // #region Load Data Person
-  async function loadDataPerson(id) {
+  // #region Load Vehicle data
+  async function loadDataVehicle(id) {
     try {
       clearFields();
 
       setVehicleFinded(false);
 
-      const response = await api.get(`/person/${id}`);
+      const response = await api.get(`/vehicle/${id}`);
 
       if (response) {
         setVehicleFinded(true);
@@ -243,7 +243,7 @@ export default function Vehicles(props) {
   // #region Handle Search Person
   function handleSearchVehicle(idPerson) {
     if (idPerson) {
-      loadDataPerson(idPerson);
+      loadDataVehicle(idPerson);
       setUpdateRegister(false);
       setTitleUpdate("");
     } else {

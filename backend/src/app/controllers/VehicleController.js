@@ -1,4 +1,4 @@
-const { Vehicles, People, Vehicle_models } = require("../models");
+const { Vehicles, People, Vehicle_models, Type_people } = require("../models");
 const { Op, fn, col, literal, QueryTypes, Sequelize } = require("sequelize");
 
 const moment = require("moment");
@@ -6,8 +6,7 @@ const moment = require("moment");
 module.exports = {
   async index(req, res) {
     try {
-      const vehicles = await Vehicles.findAll({
-      });
+      const vehicles = await Vehicles.findAll({});
 
       return res.json(vehicles);
     } catch (error) {
@@ -132,6 +131,71 @@ module.exports = {
     } catch (error) {
       console.log(error);
       return res.status(500);
+    }
+  },
+
+  async show(req, res) {
+    try {
+      const { idVehicle } = req.params;
+
+      const vehicleData = await Vehicles.findByPk(idVehicle, {
+        include: ["People"],
+      });
+
+      if (!vehicleData) {
+        return res.status(400).json({
+          message:
+            "Nenhum cadastro de veículo foi encontrado com o código fornecido.",
+        });
+      }
+
+      const driverData = await Type_people.findOne({
+        attributes: ["id"],
+        where: {
+          id_people: vehicleData.People.id,
+          id_type: 3,
+        },
+      });
+
+      const vehicleModelData = await Vehicle_models.findByPk(
+        vehicleData.id_model,
+        { include: ["ModelBrand"] }
+      );
+
+      const {
+        id,
+        id_model,
+        registration_number,
+        car_plate,
+        color,
+        active,
+      } = vehicleData;
+
+      const model = vehicleModelData.description;
+
+      const brand = vehicleModelData.ModelBrand.description;
+
+      const driverName = vehicleData.People.name;
+
+      const idDriver = driverData.id;
+
+      const responseData = {
+        vehicle: {
+          id,
+          id_model,
+          car_plate,
+          registration_number,
+          model,
+          brand,
+          color,
+          active,
+        },
+        driver: { id: idDriver, name: driverName },
+      };
+
+      return res.json(responseData);
+    } catch (error) {
+      console.log(error);
     }
   },
 };

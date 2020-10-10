@@ -99,7 +99,8 @@ const {
 
 // #region Vehicle
 const {
-  validatorVehiclesCreate,
+  validatorVehicleCreate,
+  validatorVehicleShow,
   validatorVehiclesLikeModel,
 } = require("./validators/routesVehicles");
 // #endregion
@@ -322,10 +323,18 @@ routes.get(
 
 routes.post(
   "/vehicles/create",
-  validatorVehiclesCreate,
+  validatorVehicleCreate,
   verifySession,
   permissionAdminAttendance,
   VehicleController.store
+);
+
+routes.get(
+  "/vehicle/:idVehicle",
+  validatorVehicleShow,
+  verifySession,
+  permissionAdminAttendance,
+  VehicleController.show
 );
 
 routes.get(

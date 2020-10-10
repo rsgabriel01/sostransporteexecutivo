@@ -1,7 +1,7 @@
 // const express = require("express");
 const { celebrate, Segments, Joi } = require("celebrate");
 
-const validatorVehiclesCreate = celebrate({
+const validatorVehicleCreate = celebrate({
   [Segments.HEADERS]: Joi.object({
     authorization: Joi.string().required(),
     id_executingperson: Joi.number().positive().integer().required(),
@@ -11,6 +11,16 @@ const validatorVehiclesCreate = celebrate({
     id_model: Joi.number().positive().integer().required(),
     registration_number: Joi.string().regex(/^\d+$/).required().min(8).max(15),
     color: Joi.string().required(),
+  }),
+});
+
+const validatorVehicleShow = celebrate({
+  [Segments.HEADERS]: Joi.object({
+    authorization: Joi.string().required(),
+    id_executingperson: Joi.number().positive().integer().required(),
+  }).unknown(),
+  [Segments.PARAMS]: Joi.object().keys({
+    idVehicle: Joi.number().positive().integer().required(),
   }),
 });
 
@@ -25,6 +35,7 @@ const validatorVehiclesLikeModel = celebrate({
 });
 
 module.exports = {
-  validatorVehiclesCreate,
+  validatorVehicleCreate,
+  validatorVehicleShow,
   validatorVehiclesLikeModel,
 };

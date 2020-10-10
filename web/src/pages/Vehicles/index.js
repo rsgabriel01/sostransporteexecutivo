@@ -83,9 +83,12 @@ export default function Vehicles(props) {
   const [searchVehicle, setSearchVehicle] = useState("");
   const [searchVehicleList, setSearchVehicleList] = useState([]);
 
-  const [openModalSearchModel, setOpenModalSearchModel] = useState(false);
-  const [searchModel, setSearchModel] = useState("");
-  const [searchModelList, setSearchModelList] = useState([]);
+  const [
+    openModalSearchVehicleModel,
+    setOpenModalSearchVehicleModel,
+  ] = useState(false);
+  const [searchVehicleModel, setSearchVehicleModel] = useState("");
+  const [searchVehicleModelList, setSearchVehicleModelList] = useState([]);
 
   const [openModalSearchDriver, setOpenModalSearchDriver] = useState(false);
   const [searchDriver, setSearchDriver] = useState("");
@@ -525,28 +528,28 @@ export default function Vehicles(props) {
   }
   // #endregion
 
-  // #region Handle Open Modal Search Model
-  const handleOpenModalSearchModel = () => {
+  // #region Handle Open Modal Search Vehicle Model
+  const handleOpenModalSearchVehicleModel = () => {
     setLoadingModal(true);
-    loadSearchModelList();
+    loadSearchVehicleModelList();
 
     setTitleIconModal(<RiCarWashingLine size={30} />);
     setTitleModal("PESQUISAR MODELO DE VEÍCULO");
-    setOpenModalSearchModel(true);
+    setOpenModalSearchVehicleModel(true);
   };
 
-  const handleCloseModalSearchModel = () => {
+  const handleCloseModalSearchVehicleModel = () => {
     setTitleModal("");
-    setSearchModel("");
-    setOpenModalSearchModel(false);
+    setSearchVehicleModel("");
+    setOpenModalSearchVehicleModel(false);
   };
   // #endregion
 
-  // #region Handle Select Search Model
+  // #region Handle Select Search Vehicle Model
   function handleSelectModelInSearch(id, name) {
     setIdDriver(id);
     setName(name);
-    handleCloseModalSearchModel();
+    handleCloseModalSearchVehicleModel();
     inputFocusColor();
   }
 
@@ -557,19 +560,19 @@ export default function Vehicles(props) {
   }
   // #endregion
 
-  // #region Load Search Modal Model List
-  async function loadSearchModelList() {
+  // #region Load Search Modal Vehicle Model List
+  async function loadSearchVehicleModelList() {
     setLoadingModal(true);
 
     try {
       const response = await api.get(
-        `/people/active/?name=${searchModel.toUpperCase()}`
+        `/vehicleModels/?vehicleModel=${searchVehicleModel.toUpperCase()}`
       );
 
       if (response) {
         console.log(response.data);
 
-        setSearchModelList(response.data);
+        setSearchVehicleModelList(response.data);
         setLoadingModal(false);
       }
     } catch (error) {
@@ -584,10 +587,10 @@ export default function Vehicles(props) {
         if (statusError === 400 && dataError.message) {
           console.log(dataError.message);
           switch (dataError.message) {
-            case '"name" is required':
+            case '"vehicleModel" is required':
               notify(
                 "error",
-                "Oops, algo deu errado, entre em contato com o suporte de TI. Erro: o QUERY PARAM 'name' não foi encontrado no endereço da rota."
+                "Oops, algo deu errado, entre em contato com o suporte de TI. Erro: o QUERY PARAM 'vehicleModel' não foi encontrado no endereço da rota."
               );
               break;
 
@@ -678,7 +681,7 @@ export default function Vehicles(props) {
                         <strong>Código: {vehicle.id}</strong>
                         <section id="searchVehicleData">
                           <p id="searchVehicleModel">
-                            Modelo: {vehicle.VehicleModel.description}
+                            Modelo: {vehicle.VehiclevehicleModel.description}
                           </p>
                           <p id="searchVehicleCarPlate">
                             Placa: {vehicle.car_plate}
@@ -706,19 +709,19 @@ export default function Vehicles(props) {
       </Modal>
 
       <Modal
-        id="modalSearchModel"
+        id="modalSearchVehicleModel"
         aria-labelledby="transition-modal-title"
         aria-describedby="transition-modal-description"
         className={ClassesModal.modal}
-        open={openModalSearchModel}
-        onClose={handleCloseModalSearchModel}
+        open={openModalSearchVehicleModel}
+        onClose={handleCloseModalSearchVehicleModel}
         closeAfterTransition
         BackdropComponent={Backdrop}
         BackdropProps={{
           timeout: 500,
         }}
       >
-        <Fade in={openModalSearchModel}>
+        <Fade in={openModalSearchVehicleModel}>
           <div className={ClassesModal.paper}>
             <h1 className="modal-search-title">
               {titleIconModal} {titleModal}
@@ -726,20 +729,20 @@ export default function Vehicles(props) {
             <div className="modal-search-content">
               <div className="modal-search-input-button">
                 <div className="input-label-block-colum">
-                  <label htmlFor="inputSearchModel">Nome:</label>
+                  <label htmlFor="inputSearchVehicleModel">Modelo:</label>
                   <input
-                    id="inputSearchModel"
+                    id="inputSearchVehicleModel"
                     type="text"
-                    value={searchModel}
-                    onChange={(e) => setSearchModel(e.target.value)}
-                    onKeyUp={loadSearchModelList}
+                    value={searchVehicleModel}
+                    onChange={(e) => setSearchVehicleModel(e.target.value)}
+                    onKeyUp={loadSearchVehicleModelList}
                   ></input>
                 </div>
 
                 <button
                   type="button"
                   className="button btnDefault btnSearchModal"
-                  onClick={loadSearchModelList}
+                  onClick={loadSearchVehicleModelList}
                 >
                   <RiSearchLine size={24} />
                   Buscar
@@ -750,28 +753,37 @@ export default function Vehicles(props) {
                 {loadingModal ? (
                   <Loading type="bars" color="#0f4c82" />
                 ) : (
-                  searchModelList.map((model) => (
+                  searchVehicleModelList.map((vehicleModel) => (
                     <div
                       className="searchListIten"
-                      key={model.id}
+                      key={vehicleModel.id}
                       onDoubleClick={() =>
-                        handleSelectModelInSearch(model.id, model.name)
+                        handleSelectModelInSearch(
+                          vehicleModel.id,
+                          vehicleModel.name
+                        )
                       }
                     >
                       <div className="searchItenData">
-                        <strong>Código: {model.id}</strong>
-                        <section id="searchModelDataInVehicleUpdate">
-                          <p id="searchNameModel">Nome: {model.name}</p>
-                          <p id="searchCpfModel">CPF: {model.cpf_cnpj}</p>
-                          <p id="searchRgModel">RG: {model.rg}</p>
+                        <strong>Código: {vehicleModel.id}</strong>
+                        <section id="searchVehicleModelDataInVehicleUpdate">
+                          <p id="searchDescriptionModel">
+                            Modelo: {vehicleModel.description}
+                          </p>
+                          <p id="searcDescriptionModelBrand">
+                            Marca: {vehicleModel.ModelBrand.description}
+                          </p>
                         </section>
                       </div>
-                      <div className="clientBtnSelect">
+                      <div className="vehicleModelBtnSelect">
                         <button
                           type="button"
                           className="button btnSuccess"
                           onClick={() =>
-                            handleSelectModelInSearch(model.id, model.name)
+                            handleSelectModelInSearch(
+                              vehicleModel.description,
+                              vehicleModel.ModelBrand.description
+                            )
                           }
                         >
                           <RiArrowRightUpLine />
@@ -932,7 +944,7 @@ export default function Vehicles(props) {
                             }`}
                             disabled={isReadonly}
                             onClick={() => {
-                              handleOpenModalSearchModel();
+                              handleOpenModalSearchVehicleModel();
                             }}
                           >
                             <RiSearchLine size={24} />

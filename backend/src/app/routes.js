@@ -38,6 +38,7 @@ const ServiceOrdersController = require("./controllers/ServiceOrdersController")
 const VehicleBrandsController = require("./controllers/VehicleBrandsController");
 
 const VehicleModelsController = require("./controllers/VehicleModelsController");
+const VehicleModelsLikeDescriptionController = require("./controllers/VehicleModelsLikeDescriptionController");
 
 const VehicleController = require("./controllers/VehicleController");
 const VehiclesLikeModelController = require("./controllers/VehiclesLikeModelController");
@@ -317,6 +318,15 @@ routes.get(
   VehiclesLikeModelController.indexLikeModel
 );
 // #endregion
+
+// #region Vehicle Models
+routes.get(
+  "/vehicleModels/",
+  verifySession,
+  permissionAdminAttendance,
+  VehicleModelsLikeDescriptionController.indexLikeDescription
+);
+//#endregion Vehicle Models
 
 //#endregion Routes
 

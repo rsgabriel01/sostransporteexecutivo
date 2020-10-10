@@ -1,65 +1,63 @@
-const { Vehicles } = require("../models");
+const { Vehicle_models } = require("../models");
 const { Op, fn, col, literal, QueryTypes, Sequelize } = require("sequelize");
 
 module.exports = {
-  async indexLikeModel(req, res) {
+  async indexLikeDescription(req, res) {
     const { vehicleModel } = req.query;
 
-    console.log("vehicleLikeModel");
+    console.log("vehicleLikeDescription");
     try {
-      const vehicles = await Vehicles.findAll({
+      const vehicleModels = await Vehicle_models.findAll({
         where: {
-          "$VehicleModel.description$": {
+          description: {
             [Op.like]: `${vehicleModel.toUpperCase()}%`,
           },
         },
-        include: ["VehicleModel"],
+        include: ["ModelBrand"],
         order: [["id", "ASC"]],
       });
 
-      return res.json(vehicles);
+      return res.json(vehicleModels);
     } catch (error) {
       console.log(error);
     }
   },
 
-  async indexActiveLikeModel(req, res) {
+  async indexActiveLikeDescription(req, res) {
     const { vehicleModel } = req.query;
 
     try {
-      const vehicles = await Vehicles.findAll({
+      const vehicleModels = await Vehicle_models.findAll({
         where: {
-          "$VehicleModel.description$": {
+          description: {
             [Op.like]: `${vehicleModel.toUpperCase()}%`,
           },
-          active: true,
         },
-        include: ["VehicleModel"],
+        include: ["ModelBrand"],
         order: [["id", "ASC"]],
       });
 
-      return res.json(vehicles);
+      return res.json(vehicleModels);
     } catch (error) {
       console.log(error);
     }
   },
 
-  async indexInactiveLikeModel(req, res) {
+  async indexInactiveLikeDescription(req, res) {
     const { vehicleModel } = req.query;
 
     try {
-      const vehicles = await Vehicles.findAll({
+      const vehicleModels = await Vehicle_models.findAll({
         where: {
-          "$VehicleModel.description$": {
+          description: {
             [Op.like]: `${vehicleModel.toUpperCase()}%`,
           },
-          active: false,
         },
-        include: ["VehicleModel"],
+        include: ["ModelBrand"],
         order: [["id", "ASC"]],
       });
 
-      return res.json(vehicles);
+      return res.json(vehicleModels);
     } catch (error) {
       console.log(error);
     }

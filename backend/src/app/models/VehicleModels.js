@@ -21,7 +21,7 @@ module.exports = (sequelize, DataTypes) => {
     });
     Vehicle_models.belongsTo(models.Vehicle_brands, {
       foreignKey: "id_brand",
-      as: "Vehicle_model",
+      as: "ModelBrand",
     });
   };
 

@@ -47,6 +47,7 @@ export default function VehiclesNew() {
   const [btnInactive, setBtnInactive] = useState("");
 
   const [idClient, setIdClient] = useState("");
+  const [carPlate, setCarPlate] = useState("");
   const [companyName, setCompanyName] = useState("");
   const [fantasyName, setFantasyName] = useState("");
   // const [cpfCnpj, setCpfCnpj] = useState("");
@@ -486,6 +487,26 @@ export default function VehiclesNew() {
                     </h1>
 
                     <div className="input-label-group-row">
+                      <div
+                        className="input-label-block-column"
+                        id="input-label-block-column"
+                      >
+                        <label htmlFor="carPlate">Placa:</label>
+
+                        <input
+                          id="carPlate"
+                          type="text"
+                          minLength="7"
+                          maxLength="7"
+                          readOnly={isReadonly}
+                          required
+                          value={carPlate}
+                          onChange={(e) => {
+                            setCarPlate(e.target.value);
+                          }}
+                        />
+                      </div>
+
                       <div
                         className="input-label-block-column"
                         id="input-label-block-column"

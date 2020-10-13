@@ -405,12 +405,12 @@ export default function DriverNew() {
   }
   // #endregion
 
+  // #region Handle Return Page Consult
   function returnPageConsult() {
     history.push("/people/driver");
   }
 
-  // #region Handle Return Page Consult
-  async function handleReturn() {
+  function handleReturn() {
     if (
       companyName !== "" ||
       // fantasyName !== "" ||

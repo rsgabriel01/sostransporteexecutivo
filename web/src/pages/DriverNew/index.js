@@ -33,19 +33,15 @@ export default function DriverNew() {
   const history = useHistory();
   const [loading, setLoading] = useState(true);
 
-  const [isReadonly, setIsReadonly] = useState(false);
-
-  // const [personFinded, setPersonFinded] = useState(false);
-
   const [loadingButton, setLoadingButton] = useState(false);
   const [textButtonSave, setTextButtonSave] = useState("Salvar");
   const [btnInactive, setBtnInactive] = useState("");
 
   const [idPerson, setIdPerson] = useState("");
-  const [companyName, setCompanyName] = useState("");
+  const [namePerson, setNamePerson] = useState("");
   const [cnh, setCnh] = useState("");
-  const [phone, setPhone] = useState("");
-  const [email, setEmail] = useState("");
+  const [numPermit, setNumPermit] = useState("");
+  const [businessPhone, setBusinessPhone] = useState("");
   const [checkedStatus, setCheckedStatus] = useState(false);
 
   // #endregion
@@ -101,20 +97,13 @@ export default function DriverNew() {
     if (withCode) {
       setIdPerson("");
     }
-
-    setPhone("");
-    setEmail("");
+    setNamePerson("");
+    setCnh("");
+    setNumPermit("");
+    setBusinessPhone("");
     setCheckedStatus(false);
   }
 
-  // #endregion
-
-  // #region alter page to consult
-  function alterPageUpdateForConsult() {
-    // setPersonFinded(false);
-    clearFields(true);
-    setIsReadonly(true);
-  }
   // #endregion
 
   // #region Handle Check Checkbox
@@ -131,41 +120,61 @@ export default function DriverNew() {
   }
   // #endregion
 
-  // #region Load Data Person
-  async function loadDataPerson(id) {
+  // #region Creare Driver
+  async function createDriver() {
+    const dataDriver = {
+      idPerson,
+      cnh,
+      numPermit,
+      businessPhone,
+      active: checkedStatus,
+    };
+
+    setTextButtonSave("Aguarde...");
+    setLoadingButton(true);
+    setBtnInactive("btnInactive");
+
+    console.log(dataDriver);
+
     try {
-      clearFields();
-
-      // setPersonFinded(false);
-
-      const response = await api.get(`/person/${id}`);
+      const response = await api.post("/driver/create", dataDriver);
 
       if (response) {
-        // setPersonFinded(true);
-        // fillFields(response.data);
+        console.log(response.data);
+
+        notify("success", response.data.message);
+
+        setTextButtonSave("Salvar");
+        setLoadingButton(false);
+        setBtnInactive("");
       }
-
-      console.log(response.data);
     } catch (error) {
-      if (error.response) {
-        // setPersonFinded(false);
+      setTextButtonSave("Salvar");
+      setLoadingButton(false);
+      setBtnInactive("");
 
+      if (error.response) {
         const dataError = error.response.data;
         const statusError = error.response.status;
-
         console.error(dataError);
         console.error(statusError);
 
         if (statusError === 400 && dataError.message) {
           console.log(dataError.message);
           switch (dataError.message) {
-            case '"idPerson" must be a number':
-              notify("warning", "O código da pessoa precisa ser um número.");
+            case '"email" must be a valid email':
+              notify("warning", "O e-mail informado precisa ser válido.");
               break;
-            case '"idPerson" must be a positive number':
+            case '"cpf_cnpj" length must be at least 9 characters long':
               notify(
                 "warning",
-                "O código de pessoa deve ser maior ou igual a 1."
+                "O CPF informado precisa ter no mínimo 9 caracteres"
+              );
+              break;
+            case '"cpf_cnpj" length must be less than or equal to 11 characters long':
+              notify(
+                "warning",
+                "O CPF informado pode ter no máximo 11 caracteres"
               );
               break;
 
@@ -173,15 +182,20 @@ export default function DriverNew() {
               notify("warning", dataError.message);
           }
         }
+
+        if (statusError === 401) {
+          switch (dataError.message) {
+            default:
+              notify("warning", dataError.message);
+          }
+        }
       } else if (error.request) {
-        // setPersonFinded(false);
         notify(
           "error",
           `Oops, algo deu errado, entre em contato com o suporte de TI. ${error}`
         );
         console.log(error.request);
       } else {
-        // setPersonFinded(false);
         notify(
           "error",
           `Oops, algo deu errado, entre em contato com o suporte de TI. ${error}`
@@ -190,110 +204,6 @@ export default function DriverNew() {
       }
     }
   }
-
-  // #endregion
-
-  // #region Handle Search Person
-  function handleSearchPerson(idPerson) {
-    if (idPerson) {
-      loadDataPerson(idPerson);
-    } else {
-      clearFields();
-    }
-  }
-  // #endregion
-
-  // #region Update Person
-  // async function updatePerson() {
-  //   const dataPerson = {
-  //     idPerson,
-  //     companyName,
-  //     // fantasyName,
-  //     cnh,
-  //     phone,
-  //     email,
-  //     // idNeighborhood,
-  //     // street,
-  //     // streetNumber,
-  //     // complement,
-  //     status: checkedStatus,
-  //   };
-
-  //   setTextButtonSave("Aguarde...");
-  //   setLoadingButton(true);
-  //   setBtnInactive("btnInactive");
-
-  //   console.log(dataPerson);
-
-  //   try {
-  //     const response = await api.put("/person/update", dataPerson);
-
-  //     if (response) {
-  //       console.log(response.data);
-  //       alterPageUpdateForConsult();
-
-  //       notify("success", response.data.message);
-
-  //       setTextButtonSave("Salvar");
-  //       setLoadingButton(false);
-  //       setBtnInactive("");
-  //     }
-  //   } catch (error) {
-  //     setTextButtonSave("Salvar");
-  //     setLoadingButton(false);
-  //     setBtnInactive("");
-
-  //     if (error.response) {
-  //       const dataError = error.response.data;
-  //       const statusError = error.response.status;
-  //       console.error(dataError);
-  //       console.error(statusError);
-
-  //       if (statusError === 400 && dataError.message) {
-  //         console.log(dataError.message);
-  //         switch (dataError.message) {
-  //           case '"email" must be a valid email':
-  //             notify("warning", "O e-mail informado precisa ser válido.");
-  //             break;
-  //           case '"cpf_cnpj" length must be at least 9 characters long':
-  //             notify(
-  //               "warning",
-  //               "O CPF informado precisa ter no mínimo 9 caracteres"
-  //             );
-  //             break;
-  //           case '"cpf_cnpj" length must be less than or equal to 11 characters long':
-  //             notify(
-  //               "warning",
-  //               "O CPF informado pode ter no máximo 11 caracteres"
-  //             );
-  //             break;
-
-  //           default:
-  //             notify("warning", dataError.message);
-  //         }
-  //       }
-
-  //       if (statusError === 401) {
-  //         switch (dataError.message) {
-  //           default:
-  //             notify("warning", dataError.message);
-  //         }
-  //       }
-  //     } else if (error.request) {
-  //       notify(
-  //         "error",
-  //         `Oops, algo deu errado, entre em contato com o suporte de TI. ${error}`
-  //       );
-  //       console.log(error.request);
-  //     } else {
-  //       notify(
-  //         "error",
-  //         `Oops, algo deu errado, entre em contato com o suporte de TI. ${error}`
-  //       );
-  //       console.log("Error", error.message);
-  //     }
-  //   }
-  // }
   // #endregion
 
   // #region Alert confirmation
@@ -324,7 +234,12 @@ export default function DriverNew() {
                       case "returnPageConsult":
                         returnPageConsult();
                         break;
-
+                      case "clearFields":
+                        clearFields();
+                        break;
+                      case "createDriver":
+                        createDriver();
+                        break;
                       default:
                         break;
                     }
@@ -343,59 +258,37 @@ export default function DriverNew() {
   }
   // #endregion
 
-  // #region Handle Submit Update
-  function handleSubmitUpdate(e) {
+  // #region Handle Submit
+  function handleSubmit(e) {
     e.preventDefault();
 
     confirmationAlert(
       "Atenção!",
-      "Deseja realmente SALVAR essa alteração?",
-      "updatePerson"
+      "Deseja realmente SALVAR esse cadastro?",
+      "createDriver"
     );
   }
   // #endregion
 
-  // #region Handle Cancel Update
-  // async function handleCancelUpdate() {
-  //   confirmationAlert(
-  //     "Atenção!",
-  //     "Deseja realmente CANCELAR essa alteração? Os dados não salvos serão perdidos.",
-  //     "alterPageUpdateForConsult"
-  //   );
-  // }
-  // #endregion
-
-  // #region Handle Update Register
-  // function handleUpdateRegister() {
-  //   if (personFinded) {
-  //     setIsReadonly(false);
-  //   } else if (idPerson.length === 0) {
-  //     notify(
-  //       "warning",
-  //       "Para acessar a alteração de dados primeiro selecione a pessoa desejada."
-  //     );
-  //   } else {
-  //     notify(
-  //       "warning",
-  //       "Não foi possível acessar a alteração de dados, pois nenhuma pessoa foi encontrada."
-  //     );
-  //   }
-  // }
+  //#region Verify Field Filled
+  const fieldsIsFilled = () => {
+    if (
+      idPerson !== "" ||
+      namePerson !== "" ||
+      cnh !== "" ||
+      numPermit !== "" ||
+      businessPhone !== ""
+    ) {
+      return true;
+    } else {
+      return false;
+    }
+  };
   // #endregion
 
   // #region Handle Cancel Create
   async function handleCancel() {
-    if (
-      companyName !== "" ||
-      // fantasyName !== "" ||
-      // idNeighborhood !== "" ||
-      // neighborhood !== "" ||
-      // street !== "" ||
-      // streetNumber !== "" ||
-      // complement !== "" ||
-      phone !== "" ||
-      email !== ""
-    ) {
+    if (fieldsIsFilled()) {
       confirmationAlert(
         "Atenção!",
         "Deseja realmente CANCELAR esse cadastro? Os dados não salvos serão perdidos.",
@@ -411,17 +304,7 @@ export default function DriverNew() {
   }
 
   function handleReturn() {
-    if (
-      companyName !== "" ||
-      // fantasyName !== "" ||
-      // idNeighborhood !== "" ||
-      // neighborhood !== "" ||
-      // street !== "" ||
-      // streetNumber !== "" ||
-      // complement !== "" ||
-      phone !== "" ||
-      email !== ""
-    ) {
+    if (fieldsIsFilled()) {
       confirmationAlert(
         "Atenção!",
         "Deseja realmente VOLTAR para a página de consulta de motoristas? Os dados não salvos serão perdidos.",
@@ -450,7 +333,7 @@ export default function DriverNew() {
               </div>
 
               <section className="form">
-                <form onSubmit={handleSubmitUpdate}>
+                <form onSubmit={handleSubmit}>
                   <div className="form-title">
                     <RiAddCircleLine size={30} />
                     <h1>NOVO MOTORISTA</h1>
@@ -474,18 +357,10 @@ export default function DriverNew() {
                             id="idPerson"
                             type="number"
                             min="1"
+                            readOnly
                             required
                             value={idPerson}
                             onChange={(e) => setIdPerson(e.target.value)}
-                            onBlur={() => {
-                              handleSearchPerson(idPerson);
-                            }}
-                            onKeyUp={(e) => {
-                              if (idPerson.length === 0) {
-                                clearFields();
-                                clearFields();
-                              }
-                            }}
                           />
 
                           <button type="button" className="button btnDefault">
@@ -498,15 +373,15 @@ export default function DriverNew() {
                         className="input-label-block-column"
                         id="input-label-block-column"
                       >
-                        <label htmlFor="companyName">Nome:</label>
+                        <label htmlFor="namePerson">Nome:</label>
 
                         <input
-                          id="companyName"
+                          id="namePerson"
                           type="text"
-                          readOnly={isReadonly}
+                          readOnly
                           required
-                          value={companyName}
-                          onChange={(e) => setCompanyName(e.target.value)}
+                          value={namePerson}
+                          onChange={(e) => setNamePerson(e.target.value)}
                         />
                       </div>
                     </div>
@@ -522,7 +397,6 @@ export default function DriverNew() {
                           maxLength="11"
                           title="Esse campo aceita apenas números"
                           pattern="[0-9]+"
-                          readOnly={isReadonly}
                           required
                           value={cnh}
                           onChange={(e) => setCnh(e.target.value)}
@@ -538,27 +412,27 @@ export default function DriverNew() {
                           pattern="[0-9]+"
                           minLength="10"
                           maxLength="11"
-                          readOnly={isReadonly}
                           type="text"
-                          value={phone}
-                          onChange={(e) => setPhone(e.target.value)}
+                          value={numPermit}
+                          onChange={(e) => setNumPermit(e.target.value)}
                           required
                         />
                       </div>
 
                       <div className="input-label-block-column">
-                        <label htmlFor="phone">Telefone Empresarial:</label>
+                        <label htmlFor="businessPhone">
+                          Telefone Empresarial:
+                        </label>
 
                         <input
-                          id="phone"
+                          id="businessPhone"
                           title="Esse campo aceita apenas números"
                           pattern="[0-9]+"
                           minLength="10"
                           maxLength="11"
-                          readOnly={isReadonly}
                           type="text"
-                          value={phone}
-                          onChange={(e) => setPhone(e.target.value)}
+                          value={businessPhone}
+                          onChange={(e) => setBusinessPhone(e.target.value)}
                           required
                         />
                       </div>
@@ -577,10 +451,8 @@ export default function DriverNew() {
                           <input
                             type="checkbox"
                             id="cbStatus"
-                            disabled={isReadonly}
-                            value="1"
                             checked={checkedStatus}
-                            onClick={() => {
+                            onChange={() => {
                               handleCheckBox("cbStatus");
                             }}
                           />

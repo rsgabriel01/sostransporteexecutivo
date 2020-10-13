@@ -4,12 +4,11 @@ const { Op, fn, col, literal, QueryTypes, Sequelize } = require("sequelize");
 module.exports = {
   async store(req, res) {
     try {
-      const { id_people, cnh, num_permit, business_phone, active } = req.body;
-      const { id_executingperson } = req.headers;
+      const { idPerson, cnh, numPermit, businessPhone, active } = req.body;
 
       const personFinded = await People.findOne({
         where: {
-          id: id_people,
+          id: idPerson,
         },
       });
 
@@ -17,20 +16,6 @@ module.exports = {
         return res.status(400).json({
           message:
             "O pessoa informada não foi encontrado em nosso banco de dados, por favor verifique.",
-        });
-      }
-
-      const driverFinded = await Type_people.findOne({
-        where: {
-          id_people,
-          id_type: 3,
-        },
-      });
-
-      if (driverFinded) {
-        return res.status(401).json({
-          message:
-            "A pessoa informada já está cadastrada como motorista, por favor verifique.",
         });
       }
 
@@ -49,7 +34,7 @@ module.exports = {
 
       const numPermitFinded = await People.findOne({
         where: {
-          num_permit,
+          num_permit: numPermit,
         },
       });
 
@@ -60,20 +45,38 @@ module.exports = {
         });
       }
 
+      const driverFinded = await Type_people.findOne({
+        where: {
+          id_people: idPerson,
+          id_type: 3,
+        },
+      });
+
+      if (driverFinded) {
+        return res.status(401).json({
+          message:
+            "A pessoa informada já está cadastrada como motorista, por favor verifique.",
+        });
+      }
+
       const createdTypeDriver = await Type_people.create({
-        id_people,
+        id_people: idPerson,
         id_type: 3,
+        active: active,
       });
 
       if (!createdTypeDriver) {
-        return res.status(500);
+        return res.json(
+          500,
+          "Erro: Problema na criação do tipo de usuario motorista."
+        );
       }
 
       const createdDriver = await People.update(
-        { cnh, num_permit, business_phone },
+        { cnh, num_permit: numPermit, business_phone: businessPhone },
         {
           where: {
-            id: id_people,
+            id: idPerson,
           },
         }
       );

@@ -545,7 +545,7 @@ export default function Driver() {
 
     try {
       const response = await api.get(
-        `/people/active/?name=${searchPerson.toUpperCase()}`
+        `/people/active/nondriver/?name=${searchPerson.toUpperCase()}`
       );
 
       if (response) {

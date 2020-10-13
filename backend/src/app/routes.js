@@ -172,6 +172,14 @@ routes.get(
   permissionAdminAttendance,
   PeopleLikeNameController.indexActiveLikeName
 );
+
+routes.get(
+  "/people/active/nondriver/",
+  validatorPersonIndexLikeName,
+  verifySession,
+  permissionAdminAttendance,
+  PeopleLikeNameController.indexActiveNoDriverLikeName
+);
 // #endregion
 
 // #region Client

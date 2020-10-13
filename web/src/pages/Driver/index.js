@@ -27,6 +27,7 @@ import LateralMenu from "../components/LateralMenu/LateralMenu";
 import Header from "../components/Header/Header";
 import Loading from "../components/Loading/Loading";
 import notify from "../../helpers/notifys";
+import { onlyNumber } from "../../helpers/onlyNumber";
 
 import api from "../../services/api";
 
@@ -926,7 +927,14 @@ export default function Driver() {
                           readOnly={isReadonly}
                           required
                           value={cnh}
-                          onChange={(e) => setCnh(e.target.value)}
+                          onChange={(e) => {
+                            if (e.target.value !== "") {
+                              if (!onlyNumber(e.target.value)) {
+                                return;
+                              }
+                            }
+                            setCnh(e.target.value);
+                          }}
                         />
                       </div>
 
@@ -942,7 +950,14 @@ export default function Driver() {
                           readOnly={isReadonly}
                           type="text"
                           value={numPermit}
-                          onChange={(e) => setNumPermit(e.target.value)}
+                          onChange={(e) => {
+                            if (e.target.value !== "") {
+                              if (!onlyNumber(e.target.value)) {
+                                return;
+                              }
+                            }
+                            setNumPermit(e.target.value);
+                          }}
                           required
                         />
                       </div>
@@ -961,7 +976,14 @@ export default function Driver() {
                           readOnly={isReadonly}
                           type="text"
                           value={businessPhone}
-                          onChange={(e) => setBusinessPhone(e.target.value)}
+                          onChange={(e) => {
+                            if (e.target.value !== "") {
+                              if (!onlyNumber(e.target.value)) {
+                                return;
+                              }
+                            }
+                            setBusinessPhone(e.target.value);
+                          }}
                           required
                         />
                       </div>

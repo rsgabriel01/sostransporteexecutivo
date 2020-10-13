@@ -19,6 +19,7 @@ import LateralMenu from "../components/LateralMenu/LateralMenu";
 import Header from "../components/Header/Header";
 import Loading from "../components/Loading/Loading";
 import notify from "../../helpers/notifys";
+import { onlyNumber } from "../../helpers/onlyNumber";
 
 import api from "../../services/api";
 
@@ -30,6 +31,7 @@ import "react-confirm-alert/src/react-confirm-alert.css";
 
 export default function DriverNew() {
   // #region Definitions
+
   const history = useHistory();
   const [loading, setLoading] = useState(true);
 
@@ -261,6 +263,13 @@ export default function DriverNew() {
   // #region Handle Submit
   function handleSubmit(e) {
     e.preventDefault();
+    if (idPerson === "" || namePerson == "") {
+      notify(
+        "warning",
+        "A pessoa a ser cadastrada como motorista deve ser informada, por favor verifique."
+      );
+      return;
+    }
 
     confirmationAlert(
       "Atenção!",
@@ -399,7 +408,14 @@ export default function DriverNew() {
                           pattern="[0-9]+"
                           required
                           value={cnh}
-                          onChange={(e) => setCnh(e.target.value)}
+                          onChange={(e) => {
+                            if (e.target.value !== "") {
+                              if (!onlyNumber(e.target.value)) {
+                                return;
+                              }
+                            }
+                            setCnh(e.target.value);
+                          }}
                         />
                       </div>
 
@@ -414,7 +430,14 @@ export default function DriverNew() {
                           maxLength="11"
                           type="text"
                           value={numPermit}
-                          onChange={(e) => setNumPermit(e.target.value)}
+                          onChange={(e) => {
+                            if (e.target.value !== "") {
+                              if (!onlyNumber(e.target.value)) {
+                                return;
+                              }
+                            }
+                            setNumPermit(e.target.value);
+                          }}
                           required
                         />
                       </div>
@@ -432,7 +455,14 @@ export default function DriverNew() {
                           maxLength="11"
                           type="text"
                           value={businessPhone}
-                          onChange={(e) => setBusinessPhone(e.target.value)}
+                          onChange={(e) => {
+                            if (e.target.value !== "") {
+                              if (!onlyNumber(e.target.value)) {
+                                return;
+                              }
+                            }
+                            setBusinessPhone(e.target.value);
+                          }}
                           required
                         />
                       </div>

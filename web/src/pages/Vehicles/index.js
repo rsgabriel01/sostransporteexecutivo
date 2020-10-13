@@ -30,6 +30,7 @@ import LateralMenu from "../components/LateralMenu/LateralMenu";
 import Header from "../components/Header/Header";
 import Loading from "../components/Loading/Loading";
 import notify from "../../helpers/notifys";
+import { onlyNumber } from "../../helpers/onlyNumber";
 
 import api from "../../services/api";
 
@@ -1121,10 +1122,8 @@ export default function Vehicles(props) {
                           autoComplete="cc-csc"
                           value={registrationNumber}
                           onChange={(e) => {
-                            console.log(e.charCode);
-                            let regex = /^[0-9.]+$/;
                             if (e.target.value !== "") {
-                              if (!regex.test(e.target.value)) {
+                              if (!onlyNumber(e.target.value)) {
                                 return;
                               }
                             }

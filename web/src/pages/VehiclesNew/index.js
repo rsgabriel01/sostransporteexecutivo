@@ -20,6 +20,7 @@ import LateralMenu from "../components/LateralMenu/LateralMenu";
 import Header from "../components/Header/Header";
 import Loading from "../components/Loading/Loading";
 import notify from "../../helpers/notifys";
+import { onlyNumber } from "../../helpers/onlyNumber";
 
 import api from "../../services/api";
 
@@ -519,7 +520,14 @@ export default function VehiclesNew() {
                           readOnly={isReadonly}
                           required
                           value={fantasyName}
-                          onChange={(e) => setFantasyName(e.target.value)}
+                          onChange={(e) => {
+                            if (e.target.value !== "") {
+                              if (!onlyNumber(e.target.value)) {
+                                return;
+                              }
+                            }
+                            setFantasyName(e.target.value);
+                          }}
                         />
                       </div>
 

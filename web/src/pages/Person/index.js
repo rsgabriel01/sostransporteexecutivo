@@ -28,6 +28,7 @@ import LateralMenu from "../components/LateralMenu/LateralMenu";
 import Header from "../components/Header/Header";
 import Loading from "../components/Loading/Loading";
 import notify from "../../helpers/notifys";
+import { onlyNumber } from "../../helpers/onlyNumber";
 
 import api from "../../services/api";
 
@@ -775,7 +776,14 @@ export default function Person() {
                           readOnly={isReadonly}
                           required
                           value={cpf_cnpj}
-                          onChange={(e) => setCpf_cnpj(e.target.value)}
+                          onChange={(e) => {
+                            if (e.target.value !== "") {
+                              if (!onlyNumber(e.target.value)) {
+                                return;
+                              }
+                            }
+                            setCpf_cnpj(e.target.value);
+                          }}
                         />
                       </div>
 
@@ -795,7 +803,14 @@ export default function Person() {
                           readOnly={isReadonly}
                           required
                           value={rg}
-                          onChange={(e) => setRg(e.target.value)}
+                          onChange={(e) => {
+                            if (e.target.value !== "") {
+                              if (!onlyNumber(e.target.value)) {
+                                return;
+                              }
+                            }
+                            setRg(e.target.value);
+                          }}
                         />
                       </div>
                     </div>
@@ -816,7 +831,14 @@ export default function Person() {
                           readOnly={isReadonly}
                           type="text"
                           value={phone}
-                          onChange={(e) => setPhone(e.target.value)}
+                          onChange={(e) => {
+                            if (e.target.value !== "") {
+                              if (!onlyNumber(e.target.value)) {
+                                return;
+                              }
+                            }
+                            setPhone(e.target.value);
+                          }}
                           required
                         />
                       </div>

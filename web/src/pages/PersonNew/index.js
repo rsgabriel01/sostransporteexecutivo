@@ -4,6 +4,7 @@ import LateralMenu from "../components/LateralMenu/LateralMenu";
 import Header from "../components/Header/Header";
 import Loading from "../components/Loading/Loading";
 import notify from "../../helpers/notifys";
+import { onlyNumber } from "../../helpers/onlyNumber";
 import { ToastContainer } from "react-toastify";
 import { confirmAlert } from "react-confirm-alert";
 
@@ -366,7 +367,14 @@ export default function PersonNew() {
                           pattern="[0-9]+"
                           required
                           value={cpf_cnpj}
-                          onChange={(e) => setCpf_cnpj(e.target.value)}
+                          onChange={(e) => {
+                            if (e.target.value !== "") {
+                              if (!onlyNumber(e.target.value)) {
+                                return;
+                              }
+                            }
+                            setCpf_cnpj(e.target.value);
+                          }}
                         />
                       </div>
 
@@ -385,7 +393,14 @@ export default function PersonNew() {
                           pattern="[0-9]+"
                           required
                           value={rg}
-                          onChange={(e) => setRg(e.target.value)}
+                          onChange={(e) => {
+                            if (e.target.value !== "") {
+                              if (!onlyNumber(e.target.value)) {
+                                return;
+                              }
+                            }
+                            setRg(e.target.value);
+                          }}
                         />
                       </div>
                     </div>
@@ -405,7 +420,14 @@ export default function PersonNew() {
                           maxLength="11"
                           type="text"
                           value={phone}
-                          onChange={(e) => setPhone(e.target.value)}
+                          onChange={(e) => {
+                            if (e.target.value !== "") {
+                              if (!onlyNumber(e.target.value)) {
+                                return;
+                              }
+                            }
+                            setPhone(e.target.value);
+                          }}
                           required
                         />
                       </div>

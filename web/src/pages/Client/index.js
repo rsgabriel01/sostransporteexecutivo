@@ -28,6 +28,7 @@ import LateralMenu from "../components/LateralMenu/LateralMenu";
 import Header from "../components/Header/Header";
 import Loading from "../components/Loading/Loading";
 import notify from "../../helpers/notifys";
+import { onlyNumber } from "../../helpers/onlyNumber";
 
 import api from "../../services/api";
 
@@ -1000,7 +1001,14 @@ export default function Client() {
                           readOnly={isReadonly}
                           required
                           value={cpfCnpj}
-                          onChange={(e) => setCpfCnpj(e.target.value)}
+                          onChange={(e) => {
+                            if (e.target.value !== "") {
+                              if (!onlyNumber(e.target.value)) {
+                                return;
+                              }
+                            }
+                            setCpfCnpj(e.target.value);
+                          }}
                         />
                       </div>
 
@@ -1019,7 +1027,14 @@ export default function Client() {
                           readOnly={isReadonly}
                           type="text"
                           value={phone}
-                          onChange={(e) => setPhone(e.target.value)}
+                          onChange={(e) => {
+                            if (e.target.value !== "") {
+                              if (!onlyNumber(e.target.value)) {
+                                return;
+                              }
+                            }
+                            setPhone(e.target.value);
+                          }}
                           required
                         />
                       </div>

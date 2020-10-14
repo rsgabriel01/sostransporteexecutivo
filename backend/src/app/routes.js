@@ -330,7 +330,7 @@ routes.get(
 );
 
 routes.post(
-  "/vehicles/create",
+  "/vehicle/create",
   validatorVehicleCreate,
   verifySession,
   permissionAdminAttendance,

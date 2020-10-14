@@ -54,7 +54,7 @@ export default function VehiclesNew() {
   const [vehicleBrand, setVehicleBrand] = useState("");
   const [vehicleColor, setVehicleColor] = useState("");
   const [idDriver, setIdDriver] = useState("");
-  const [idPeopleDriver, setIdPeopleDriver] = useState("");
+  const [idPeopleDriver, setIdPeopleDriver] = useState(null);
   const [nameDriver, setNameDriver] = useState("");
   const [checkedStatus, setCheckedStatus] = useState(false);
 
@@ -102,16 +102,35 @@ export default function VehiclesNew() {
   // #endregion
 
   // #region Clear Fields
-  function clearFields() {
-    setCarPlate("");
-    setRegistrationNumber("");
-    setIdVehicleModel("");
-    setVehicleModel("");
-    setVehicleBrand("");
-    setVehicleColor("");
-    setIdDriver("");
-    setNameDriver("");
-    setCheckedStatus(false);
+  function clearFields(inputs) {
+    switch (inputs) {
+      case "all":
+        setCarPlate("");
+        setRegistrationNumber("");
+        setIdVehicleModel("");
+        setVehicleModel("");
+        setVehicleBrand("");
+        setVehicleColor("");
+        setIdDriver("");
+        setIdPeopleDriver(null);
+        setNameDriver("");
+        setCheckedStatus(false);
+        break;
+
+      case "driver":
+        setIdDriver("");
+        setIdPeopleDriver(null);
+        setNameDriver("");
+        break;
+
+      case "vehicleModel":
+        setIdVehicleModel("");
+        setVehicleModel("");
+        setVehicleBrand("");
+        break;
+      default:
+        break;
+    }
   }
   // #endregion
 
@@ -136,7 +155,7 @@ export default function VehiclesNew() {
       registrationNumber,
       idVehicleModel,
       vehicleColor: vehicleColor.toUpperCase(),
-      idDriver: idPeopleDriver,
+      idDriver: idPeopleDriver || idPeopleDriver !== "" ? idPeopleDriver : null,
       active: checkedStatus,
     };
 
@@ -147,14 +166,17 @@ export default function VehiclesNew() {
     console.log(dataVehicle);
 
     try {
-      const response = await api.put("/vehicle/create", dataVehicle);
+      const response = await api.post("/vehicle/create", dataVehicle);
 
       if (response) {
         console.log(response.data);
 
-        notify("success", response.data.message);
+        notify(
+          "success",
+          `${response.data.message} Código do veículo: ${response.data.createdVehicle.id}`
+        );
 
-        clearFields();
+        clearFields("all");
         inputFocus("carPlate");
         setTextButtonSave("Salvar");
         setLoadingButton(false);
@@ -233,8 +255,8 @@ export default function VehiclesNew() {
                       case "returnPageConsult":
                         returnPageConsult();
                         break;
-                      case "clearFields":
-                        clearFields();
+                      case "clearFieldsAll":
+                        clearFields("all");
                         break;
                       default:
                         break;
@@ -268,16 +290,6 @@ export default function VehiclesNew() {
       return;
     }
 
-    if (idDriver === "" || nameDriver === "" || idPeopleDriver === "") {
-      notify(
-        "warning",
-        "Os dados do motorista devem ser informados, por favor verifique."
-      );
-      inputFocus("idDriver");
-
-      return;
-    }
-
     confirmationAlert(
       "Atenção!",
       "Deseja realmente SALVAR esse cadastro?",
@@ -296,7 +308,8 @@ export default function VehiclesNew() {
       vehicleBrand !== "" ||
       vehicleColor !== "" ||
       idDriver !== "" ||
-      idPeopleDriver !== "" ||
+      // idPeopleDriver !== "" ||
+      idPeopleDriver !== null ||
       nameDriver !== ""
     ) {
       return true;
@@ -316,7 +329,7 @@ export default function VehiclesNew() {
       confirmationAlert(
         "Atenção!",
         "Deseja realmente CANCELAR esse cadastro? Os dados não salvos serão perdidos.",
-        "clearFields"
+        "clearFieldsAll"
       );
 
       inputFocus("carPlate");
@@ -778,6 +791,7 @@ export default function VehiclesNew() {
                         <label htmlFor="carPlate">Placa:</label>
 
                         <input
+                          ref={carPlateInputRef}
                           id="carPlate"
                           type="text"
                           minLength="7"
@@ -837,6 +851,7 @@ export default function VehiclesNew() {
                             type="button"
                             className="button btnDefault"
                             onClick={() => {
+                              clearFields("vehicleModel");
                               handleOpenModalSearchVehicleModel();
                             }}
                           >
@@ -908,6 +923,7 @@ export default function VehiclesNew() {
                             className="button btnDefault"
                             id="btnIdDriver"
                             onClick={() => {
+                              clearFields("driver");
                               handleOpenModalSearchDriver();
                             }}
                           >

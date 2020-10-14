@@ -16,50 +16,20 @@ module.exports = {
 
   async store(req, res) {
     try {
-      // let typeExecutingPersonIdAllowed = false;
-      let typeExecutingPersonIds = [];
+      const {
+        idDriver,
+        carPlate,
+        registrationNumber,
+        idVehicleModel,
+        vehicleColor,
+        active,
+      } = req.body;
 
-      const { id_people, id_model, registration_number, color } = req.body;
-      const { id_executingperson } = req.headers;
-
-      const executingPersonData = await People.findOne({
-        where: {
-          id: id_executingperson,
-        },
-        include: ["People_Type"],
-      });
-
-      if (executingPersonData) {
-        typeExecutingPersonIds = executingPersonData.People_Type.map(function (
-          index
-        ) {
-          if (!index.active) {
-            return index.id;
-          }
-        });
-      } else {
-        return res.status(401).json({
-          message:
-            "Esse usuário não tem permissao para realizar essa operação.",
-        });
-      }
-
-      if (
-        !(
-          typeExecutingPersonIds.includes("1") ||
-          typeExecutingPersonIds.includes("2")
-        )
-      ) {
-        return res.status(401).json({
-          message:
-            "Esse usuário não tem permissao para realizar essa operação.",
-        });
-      }
-
-      if (id_people) {
+      console.log(idDriver);
+      if (idDriver !== null && idDriver !== "") {
         const personFinded = await People.findOne({
           where: {
-            id: id_people,
+            id: idDriver,
           },
         });
 
@@ -69,11 +39,25 @@ module.exports = {
               "O pessoa informada não foi encontrado em nosso banco de dados, por favor verifique.",
           });
         }
+
+        const driverFinded = await Type_people.findOne({
+          where: {
+            id_people: idDriver,
+            id_type: 3,
+          },
+        });
+
+        if (!driverFinded) {
+          return res.status(400).json({
+            message:
+              "O motorista informado não foi encontrado em nosso banco de dados, por favor verifique.",
+          });
+        }
       }
 
       const modelFinded = await Vehicle_models.findOne({
         where: {
-          id: id_model,
+          id: idVehicleModel,
         },
       });
 
@@ -84,44 +68,58 @@ module.exports = {
         });
       }
 
-      if (id_people) {
+      if (idDriver !== null && idDriver !== "") {
         const vehicleDriverFinded = await Vehicles.findOne({
           where: {
-            id_people,
+            id_people: idDriver,
           },
         });
 
         if (vehicleDriverFinded) {
-          return res.status(401).json({
+          return res.status(400).json({
             message:
               "A pessoa informada já é motorista de outro veiculo, por favor verifique.",
           });
         }
       }
 
+      const carPlateFinded = await Vehicles.findOne({
+        where: {
+          car_plate: carPlate,
+        },
+      });
+
+      if (carPlateFinded) {
+        return res.status(400).json({
+          message:
+            "A placa do veículo informada já está vinculado a outro veiculo, por favor verifique.",
+        });
+      }
+
       const registrationNumberFinded = await Vehicles.findOne({
         where: {
-          registration_number,
+          registration_number: registrationNumber,
         },
       });
 
       if (registrationNumberFinded) {
-        return res.status(401).json({
+        return res.status(400).json({
           message:
             "O número de registro informado já está vinculado a outro veiculo, por favor verifique.",
         });
       }
 
       const createdVehicle = await Vehicles.create({
-        id_people: id_people ? id_people : null,
-        id_model,
-        registration_number,
-        color,
-        active: true,
+        id_people: idDriver !== null && idDriver !== "" ? idDriver : null,
+        id_model: idVehicleModel,
+        car_plate: carPlate.toUpperCase(),
+        registration_number: registrationNumber,
+        color: vehicleColor.toUpperCase(),
+        active,
       });
 
       if (!createdVehicle) {
-        return res.status(500);
+        return res.json(500, "Erro: Problema ao criar veículo.");
       }
 
       return res.json({

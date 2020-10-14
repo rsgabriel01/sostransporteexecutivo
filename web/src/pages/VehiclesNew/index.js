@@ -54,6 +54,7 @@ export default function VehiclesNew() {
   const [vehicleBrand, setVehicleBrand] = useState("");
   const [vehicleColor, setVehicleColor] = useState("");
   const [idDriver, setIdDriver] = useState("");
+  const [idPeopleDriver, setIdPeopleDriver] = useState("");
   const [nameDriver, setNameDriver] = useState("");
   const [checkedStatus, setCheckedStatus] = useState(false);
 
@@ -131,11 +132,11 @@ export default function VehiclesNew() {
   // #region Create Vehicle
   async function createVehicle() {
     const dataVehicle = {
-      carPlate,
+      carPlate: carPlate.toUpperCase(),
       registrationNumber,
       idVehicleModel,
-      vehicleColor,
-      idDriver,
+      vehicleColor: vehicleColor.toUpperCase(),
+      idDriver: idPeopleDriver,
       active: checkedStatus,
     };
 
@@ -267,7 +268,7 @@ export default function VehiclesNew() {
       return;
     }
 
-    if (idDriver === "" || nameDriver === "") {
+    if (idDriver === "" || nameDriver === "" || idPeopleDriver === "") {
       notify(
         "warning",
         "Os dados do motorista devem ser informados, por favor verifique."
@@ -280,7 +281,7 @@ export default function VehiclesNew() {
     confirmationAlert(
       "Atenção!",
       "Deseja realmente SALVAR esse cadastro?",
-      "createDriver"
+      "createVehicle"
     );
   }
   // #endregion
@@ -294,6 +295,8 @@ export default function VehiclesNew() {
       vehicleModel !== "" ||
       vehicleBrand !== "" ||
       vehicleColor !== "" ||
+      idDriver !== "" ||
+      idPeopleDriver !== "" ||
       nameDriver !== ""
     ) {
       return true;
@@ -483,9 +486,10 @@ export default function VehiclesNew() {
   // #endregion
 
   // #region Handle Select Search Driver Active
-  function handleSelectDriverInSearch(id, name) {
-    setIdDriver(id);
-    setNameDriver(name);
+  function handleSelectDriverInSearch(idDriver, idPeopleDriver, nameDriver) {
+    setIdDriver(idDriver);
+    setIdPeopleDriver(idPeopleDriver);
+    setNameDriver(nameDriver);
     handleCloseModalSearchDriver();
   }
   // #endregion
@@ -698,6 +702,7 @@ export default function VehiclesNew() {
                       onDoubleClick={() =>
                         handleSelectDriverInSearch(
                           driver.id,
+                          driver.id_people,
                           driver.People.name
                         )
                       }
@@ -720,6 +725,7 @@ export default function VehiclesNew() {
                           onClick={() =>
                             handleSelectDriverInSearch(
                               driver.id,
+                              driver.id_people,
                               driver.People.name
                             )
                           }
@@ -820,8 +826,7 @@ export default function VehiclesNew() {
                           <input
                             ref={vehicleModelInputRef}
                             id="vehicleModel"
-                            type="number"
-                            min="1"
+                            type="text"
                             readOnly
                             required
                             value={vehicleModel}

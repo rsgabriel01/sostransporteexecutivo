@@ -104,7 +104,7 @@ export default function Driver() {
   // #region Fill Fields
   function fillFields(response) {
     const { id_people, active } = response;
-    const { name, cnh, numPermit, businessPhone } = response.People;
+    const { name, cnh, num_permit, business_phone } = response.People;
 
     id_people ? setIdPerson(id_people) : setIdPerson("");
 
@@ -112,9 +112,9 @@ export default function Driver() {
 
     cnh ? setCnh(cnh) : setCnh("");
 
-    numPermit ? setNumPermit(numPermit) : setNumPermit("");
+    num_permit ? setNumPermit(num_permit) : setNumPermit("");
 
-    businessPhone ? setBusinessPhone(businessPhone) : setBusinessPhone("");
+    business_phone ? setBusinessPhone(business_phone) : setBusinessPhone("");
 
     active ? setCheckedStatus(true) : setCheckedStatus(false);
   }

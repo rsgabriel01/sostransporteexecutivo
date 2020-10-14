@@ -1,8 +1,12 @@
 /* eslint-disable camelcase */
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { useHistory } from "react-router-dom";
 import { confirmAlert } from "react-confirm-alert";
 import { ToastContainer } from "react-toastify";
+import { makeStyles } from "@material-ui/core/styles";
+import Modal from "@material-ui/core/Modal";
+import Backdrop from "@material-ui/core/Backdrop";
+import Fade from "@material-ui/core/Fade";
 import {
   RiSearchLine,
   RiCloseLine,
@@ -14,6 +18,7 @@ import {
   RiUserLine,
   RiAddCircleLine,
   RiArrowLeftLine,
+  RiArrowRightUpLine,
 } from "react-icons/ri";
 import LateralMenu from "../components/LateralMenu/LateralMenu";
 import Header from "../components/Header/Header";
@@ -28,12 +33,14 @@ import { isAuthenticated, logout } from "../../services/auth";
 import "./styles.css";
 import "react-toastify/dist/ReactToastify.css";
 import "react-confirm-alert/src/react-confirm-alert.css";
+import jsonClassesModal from "../../helpers/stylesModal";
 
 export default function DriverNew() {
   // #region Definitions
 
   const history = useHistory();
   const [loading, setLoading] = useState(true);
+  const [loadingModal, setLoadingModal] = useState(true);
 
   const [loadingButton, setLoadingButton] = useState(false);
   const [textButtonSave, setTextButtonSave] = useState("Salvar");
@@ -45,6 +52,17 @@ export default function DriverNew() {
   const [numPermit, setNumPermit] = useState("");
   const [businessPhone, setBusinessPhone] = useState("");
   const [checkedStatus, setCheckedStatus] = useState(false);
+
+  const useStyles = makeStyles((theme) => jsonClassesModal(theme));
+  const ClassesModal = useStyles();
+
+  const [titleModal, setTitleModal] = useState("");
+  const [titleIconModal, setTitleIconModal] = useState();
+  const cnhInputRef = useRef(null);
+
+  const [openModalSearchPerson, setOpenModalSearchPerson] = useState(false);
+  const [searchPerson, setSearchPerson] = useState("");
+  const [searchPersonList, setSearchPersonList] = useState([]);
 
   // #endregion
 
@@ -64,34 +82,6 @@ export default function DriverNew() {
   useEffect(() => {
     virifyAuthorization();
   }, []);
-  // #endregion
-
-  // #region Fill Fields
-  // function fillFields(response) {
-  //   const { name, cpf_cnpj, rg, phone, email, active } = response.person;
-
-  //   const typeIds = response.peopleType.map((index) => index.id);
-
-  //   console.log(typeIds);
-
-  //   console.log(typeIds.includes("1"));
-
-  //   name ? setName(name) : setName("");
-
-  //   cpf_cnpj ? setCpf_cnpj(cpf_cnpj) : setCpf_cnpj("");
-
-  //   rg ? setRg(rg) : setRg("");
-
-  //   phone ? setPhone(phone) : setPhone("");
-
-  //   email ? setEmail(email) : setEmail("");
-
-  //   typeIds.includes("1") ? setCheckedStatus(true) : setCheckedStatus(false);
-
-  //   typeIds.includes("2")
-  //     ? setCheckedTypeAttendance("true")
-  //     : setCheckedTypeAttendance(false);
-  // }
   // #endregion
 
   // #region Clear Fields
@@ -146,6 +136,7 @@ export default function DriverNew() {
 
         notify("success", response.data.message);
 
+        clearFields(true);
         setTextButtonSave("Salvar");
         setLoadingButton(false);
         setBtnInactive("");
@@ -325,9 +316,185 @@ export default function DriverNew() {
   }
   // #endregion
 
+  // #region Handle Open Modal Search Person
+  const handleOpenModalSearchPerson = () => {
+    setLoadingModal(true);
+    loadSearchPersonList();
+
+    setTitleIconModal(<RiUserLine size={30} />);
+    setTitleModal("PESQUISAR PESSOAS");
+    setOpenModalSearchPerson(true);
+  };
+
+  const handleCloseModalSearchPersonEdit = () => {
+    setTitleModal("");
+    setSearchPerson("");
+    setOpenModalSearchPerson(false);
+  };
+  // #endregion
+
+  // #region Handle Select Search Person
+  function handleSelectPersonInSearch(id, name) {
+    setIdPerson(id);
+    setNamePerson(name);
+    handleCloseModalSearchPersonEdit();
+    inputFocusCnh();
+  }
+
+  function inputFocusCnh() {
+    setTimeout(() => {
+      cnhInputRef.current.focus();
+    }, 1);
+  }
+  // #endregion
+
+  // #region Load Search Modal Person List
+  async function loadSearchPersonList() {
+    setLoadingModal(true);
+
+    try {
+      const response = await api.get(
+        `/people/active/nondriver/?name=${searchPerson.toUpperCase()}`
+      );
+
+      if (response) {
+        console.log(response.data);
+
+        setSearchPersonList(response.data);
+        setLoadingModal(false);
+      }
+    } catch (error) {
+      setLoadingModal(false);
+
+      if (error.response) {
+        const dataError = error.response.data;
+        const statusError = error.response.status;
+        console.error(dataError);
+        console.error(statusError);
+
+        if (statusError === 400 && dataError.message) {
+          console.log(dataError.message);
+          switch (dataError.message) {
+            case '"name" is required':
+              notify(
+                "error",
+                "Oops, algo deu errado, entre em contato com o suporte de TI. Erro: o QUERY PARAM 'name' não foi encontrado no endereço da rota."
+              );
+              break;
+
+            default:
+              notify("warning", dataError.message);
+          }
+        }
+
+        if (statusError === 401) {
+          switch (dataError.message) {
+            default:
+              notify("warning", dataError.message);
+          }
+        }
+      } else if (error.request) {
+        notify(
+          "error",
+          `Oops, algo deu errado, entre em contato com o suporte de TI. ${error}`
+        );
+        console.log(error.request);
+      } else {
+        notify(
+          "error",
+          `Oops, algo deu errado, entre em contato com o suporte de TI. ${error}`
+        );
+        console.log("Error", error.message);
+      }
+    }
+  }
+  // #endregion
+
   return (
     <div className="main-container">
+      <Modal
+        id="modalSearchPerson"
+        aria-labelledby="transition-modal-title"
+        aria-describedby="transition-modal-description"
+        className={ClassesModal.modal}
+        open={openModalSearchPerson}
+        onClose={handleCloseModalSearchPersonEdit}
+        closeAfterTransition
+        BackdropComponent={Backdrop}
+        BackdropProps={{
+          timeout: 500,
+        }}
+      >
+        <Fade in={openModalSearchPerson}>
+          <div className={ClassesModal.paper}>
+            <h1 className="modal-search-title">
+              {titleIconModal} {titleModal}
+            </h1>
+            <div className="modal-search-content">
+              <div className="modal-search-input-button">
+                <div className="input-label-block-colum">
+                  <label htmlFor="inputSearchPerson">Nome:</label>
+                  <input
+                    id="inputSearchPerson"
+                    type="text"
+                    value={searchPerson}
+                    onChange={(e) => setSearchPerson(e.target.value)}
+                    onKeyUp={loadSearchPersonList}
+                  ></input>
+                </div>
+
+                <button
+                  type="button"
+                  className="button btnDefault btnSearchModal"
+                  onClick={loadSearchPersonList}
+                >
+                  <RiSearchLine size={24} />
+                  Buscar
+                </button>
+              </div>
+
+              <div className="modal-search-list">
+                {loadingModal ? (
+                  <Loading type="bars" color="#0f4c82" />
+                ) : (
+                  searchPersonList.map((person) => (
+                    <div
+                      className="searchListIten"
+                      key={person.id}
+                      onDoubleClick={() =>
+                        handleSelectPersonInSearch(person.id, person.name)
+                      }
+                    >
+                      <div className="searchItenData">
+                        <strong>Código: {person.id}</strong>
+                        <section id="searchPersonDataInDriverUpdate">
+                          <p id="searchNamePerson">Nome: {person.name}</p>
+                          <p id="searchCpfPerson">CPF: {person.cpf_cnpj}</p>
+                          <p id="searchRgPerson">RG: {person.rg}</p>
+                        </section>
+                      </div>
+                      <div className="clientBtnSelect">
+                        <button
+                          type="button"
+                          className="button btnSuccess"
+                          onClick={() =>
+                            handleSelectPersonInSearch(person.id, person.name)
+                          }
+                        >
+                          <RiArrowRightUpLine />
+                        </button>
+                      </div>
+                    </div>
+                  ))
+                )}
+              </div>
+            </div>
+          </div>
+        </Fade>
+      </Modal>
+
       <LateralMenu />
+
       <>
         {loading ? (
           <Loading type="bars" color="#0f4c82" />
@@ -372,7 +539,13 @@ export default function DriverNew() {
                             onChange={(e) => setIdPerson(e.target.value)}
                           />
 
-                          <button type="button" className="button btnDefault">
+                          <button
+                            type="button"
+                            className="button btnDefault"
+                            onClick={() => {
+                              handleOpenModalSearchPerson();
+                            }}
+                          >
                             <RiSearchLine size={24} />
                           </button>
                         </div>
@@ -400,6 +573,7 @@ export default function DriverNew() {
                         <label htmlFor="cnh">CNH:</label>
 
                         <input
+                          ref={cnhInputRef}
                           id="cnh"
                           type="text"
                           minLength="10"

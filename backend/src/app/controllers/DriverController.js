@@ -81,6 +81,13 @@ module.exports = {
         }
       );
 
+      if (!createdDriver) {
+        return res.json(
+          500,
+          "Erro: Problema na inserção dos dados do motorista."
+        );
+      }
+
       return res.json({
         createdDriver,
         message: "Cadastro de motorista efetuado com sucesso!",

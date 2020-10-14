@@ -859,7 +859,7 @@ export default function Vehicles(props) {
                         handleSelectModelInSearch(
                           vehicleModel.id,
                           vehicleModel.description,
-                          vehicleModel.vehicleBrand.description
+                          vehicleModel.ModelBrand.description
                         )
                       }
                     >
@@ -869,8 +869,8 @@ export default function Vehicles(props) {
                           <p id="searchDescriptionModel">
                             Modelo: {vehicleModel.description}
                           </p>
-                          <p id="searcDescriptionvehicleBrand">
-                            Marca: {vehicleModel.vehicleBrand.description}
+                          <p id="searcDescriptionModelBrand">
+                            Marca: {vehicleModel.ModelBrand.description}
                           </p>
                         </section>
                       </div>
@@ -882,7 +882,7 @@ export default function Vehicles(props) {
                             handleSelectModelInSearch(
                               vehicleModel.id,
                               vehicleModel.description,
-                              vehicleModel.vehicleBrand.description
+                              vehicleModel.ModelBrand.description
                             )
                           }
                         >

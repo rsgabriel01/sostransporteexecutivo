@@ -1,5 +1,5 @@
 /* eslint-disable camelcase */
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { useHistory } from "react-router-dom";
 import { confirmAlert } from "react-confirm-alert";
 import { ToastContainer } from "react-toastify";
@@ -35,31 +35,24 @@ export default function VehiclesNew() {
   const history = useHistory();
   const [loading, setLoading] = useState(true);
 
-  const [isReadonly, setIsReadonly] = useState(false);
-
-  // const [updateRegister, setUpdateRegister] = useState(false);
-
-  // const [titleUpdate, setTitleUpdate] = useState("");
-
-  // const [personFinded, // // setPersonFinded] = useState(false);
-
   const [loadingButton, setLoadingButton] = useState(false);
   const [textButtonSave, setTextButtonSave] = useState("Salvar");
   const [btnInactive, setBtnInactive] = useState("");
 
-  const [idClient, setIdClient] = useState("");
   const [carPlate, setCarPlate] = useState("");
-  const [companyName, setCompanyName] = useState("");
-  const [fantasyName, setFantasyName] = useState("");
-  // const [cpfCnpj, setCpfCnpj] = useState("");
-  // const [idNeighborhood, setIdNeighborhood] = useState("");
-  const [neighborhood, setNeighborhood] = useState("");
-  const [street, setStreet] = useState("");
-  // const [streetNumber, setStreetNumber] = useState("");
-  // const [complement, setComplement] = useState("");
-  const [phone, setPhone] = useState("");
-  const [email, setEmail] = useState("");
+  const [registrationNumber, setRegistrationNumber] = useState("");
+  const [idVehicleModel, setIdVehicleModel] = useState("");
+  const [vehicleModel, setVehicleModel] = useState("");
+  const [vehicleBrand, setVehicleBrand] = useState("");
+  const [vehicleColor, setVehicleColor] = useState("");
+  const [idDriver, setIdDriver] = useState("");
+  const [nameDriver, setNameDriver] = useState("");
   const [checkedStatus, setCheckedStatus] = useState(false);
+
+  const carPlateInputRef = useRef(null);
+  const vehicleModelInputRef = useRef(null);
+  const idDriverInputRef = useRef(null);
+  const nameDriverInputRef = useRef(null);
 
   // #endregion
 
@@ -81,54 +74,17 @@ export default function VehiclesNew() {
   }, []);
   // #endregion
 
-  // #region Fill Fields
-  // function fillFields(response) {
-  //   const { name, cpf_cnpj, rg, phone, email, active } = response.person;
-
-  //   const typeIds = response.peopleType.map((index) => index.id);
-
-  //   console.log(typeIds);
-
-  //   console.log(typeIds.includes("1"));
-
-  //   name ? setName(name) : setName("");
-
-  //   cpf_cnpj ? setCpf_cnpj(cpf_cnpj) : setCpf_cnpj("");
-
-  //   rg ? setRg(rg) : setRg("");
-
-  //   phone ? setPhone(phone) : setPhone("");
-
-  //   email ? setEmail(email) : setEmail("");
-
-  //   typeIds.includes("1") ? setCheckedStatus(true) : setCheckedStatus(false);
-
-  //   typeIds.includes("2")
-  //     ? setCheckedTypeAttendance("true")
-  //     : setCheckedTypeAttendance(false);
-  // }
-  // #endregion
-
   // #region Clear Fields
-  function clearFields(withCode) {
-    if (withCode) {
-      setIdClient("");
-    }
-
-    setPhone("");
-    setEmail("");
+  function clearFields() {
+    setCarPlate("");
+    setRegistrationNumber("");
+    setIdVehicleModel("");
+    setVehicleModel("");
+    setVehicleBrand("");
+    setVehicleColor("");
+    setIdDriver("");
+    setNameDriver("");
     setCheckedStatus(false);
-  }
-
-  // #endregion
-
-  // #region alter page to consult
-  function alterPageUpdateForConsult() {
-    // // setPersonFinded(false);
-    clearFields(true);
-    // setTitleUpdate("");
-    // setUpdateRegister(false);
-    setIsReadonly(true);
   }
   // #endregion
 
@@ -146,111 +102,33 @@ export default function VehiclesNew() {
   }
   // #endregion
 
-  // #region Load Data Person
-  async function loadDataPerson(id) {
-    try {
-      clearFields();
-
-      // // setPersonFinded(false);
-
-      const response = await api.get(`/person/${id}`);
-
-      if (response) {
-        // // setPersonFinded(true);
-        // fillFields(response.data);
-      }
-
-      console.log(response.data);
-    } catch (error) {
-      if (error.response) {
-        // // setPersonFinded(false);
-
-        const dataError = error.response.data;
-        const statusError = error.response.status;
-
-        console.error(dataError);
-        console.error(statusError);
-
-        if (statusError === 400 && dataError.message) {
-          console.log(dataError.message);
-          switch (dataError.message) {
-            case '"idPerson" must be a number':
-              notify("warning", "O código da pessoa precisa ser um número.");
-              break;
-            case '"idPerson" must be a positive number':
-              notify(
-                "warning",
-                "O código de pessoa deve ser maior ou igual a 1."
-              );
-              break;
-
-            default:
-              notify("warning", dataError.message);
-          }
-        }
-      } else if (error.request) {
-        // // setPersonFinded(false);
-        notify(
-          "error",
-          `Oops, algo deu errado, entre em contato com o suporte de TI. ${error}`
-        );
-        console.log(error.request);
-      } else {
-        // // setPersonFinded(false);
-        notify(
-          "error",
-          `Oops, algo deu errado, entre em contato com o suporte de TI. ${error}`
-        );
-        console.log("Error", error.message);
-      }
-    }
-  }
-
-  // #endregion
-
-  // #region Handle Search Person
-  function handleSearchPerson(idPerson) {
-    if (idPerson) {
-      loadDataPerson(idPerson);
-      // setUpdateRegister(false);
-      // setTitleUpdate("");
-    } else {
-      clearFields();
-    }
-  }
-  // #endregion
-
-  // #region Update Person
-  async function updatePerson() {
-    const dataPerson = {
-      idClient,
-      companyName,
-      fantasyName,
-      // cpfCnpj,
-      phone,
-      email,
-      // idNeighborhood,
-      // street,
-      // streetNumber,
-      // complement,
-      status: checkedStatus,
+  // #region Create Vehicle
+  async function createVehicle() {
+    const dataVehicle = {
+      carPlate,
+      registrationNumber,
+      idVehicleModel,
+      vehicleColor,
+      idDriver,
+      active: checkedStatus,
     };
 
     setTextButtonSave("Aguarde...");
     setLoadingButton(true);
     setBtnInactive("btnInactive");
 
-    console.log(dataPerson);
+    console.log(dataVehicle);
 
     try {
-      const response = await api.put("/person/update", dataPerson);
+      const response = await api.put("/vehicle/create", dataVehicle);
 
       if (response) {
         console.log(response.data);
-        alterPageUpdateForConsult();
 
         notify("success", response.data.message);
 
+        clearFields();
+        inputFocus("carPlate");
         setTextButtonSave("Salvar");
         setLoadingButton(false);
         setBtnInactive("");
@@ -269,22 +147,6 @@ export default function VehiclesNew() {
         if (statusError === 400 && dataError.message) {
           console.log(dataError.message);
           switch (dataError.message) {
-            case '"email" must be a valid email':
-              notify("warning", "O e-mail informado precisa ser válido.");
-              break;
-            case '"cpf_cnpj" length must be at least 9 characters long':
-              notify(
-                "warning",
-                "O CPF informado precisa ter no mínimo 9 caracteres"
-              );
-              break;
-            case '"cpf_cnpj" length must be less than or equal to 11 characters long':
-              notify(
-                "warning",
-                "O CPF informado pode ter no máximo 11 caracteres"
-              );
-              break;
-
             default:
               notify("warning", dataError.message);
           }
@@ -338,13 +200,15 @@ export default function VehiclesNew() {
                   className="button btnSuccess"
                   onClick={() => {
                     switch (functionExecute) {
-                      case "alterPageUpdateForConsult":
-                        alterPageUpdateForConsult();
+                      case "createVehicle":
+                        createVehicle();
                         break;
-                      case "updatePerson":
-                        updatePerson();
+                      case "returnPageConsult":
+                        returnPageConsult();
                         break;
-
+                      case "clearFields":
+                        clearFields();
+                        break;
                       default:
                         break;
                     }
@@ -363,93 +227,80 @@ export default function VehiclesNew() {
   }
   // #endregion
 
-  // #region Handle Submit Update
-  function handleSubmitUpdate(e) {
+  // #region Handle Submit
+  function handleSubmit(e) {
     e.preventDefault();
 
+    if (idVehicleModel === "" || vehicleModel === "" || vehicleBrand === "") {
+      notify(
+        "warning",
+        "Os dados do modelo do veículo devem ser informados, por favor verifique."
+      );
+
+      inputFocus("idVehicleModel");
+      return;
+    }
+
+    if (idDriver === "" || nameDriver === "") {
+      notify(
+        "warning",
+        "Os dados do motorista devem ser informados, por favor verifique."
+      );
+      inputFocus("idDriver");
+
+      return;
+    }
+
     confirmationAlert(
       "Atenção!",
-      "Deseja realmente SALVAR essa alteração?",
-      "updatePerson"
+      "Deseja realmente SALVAR esse cadastro?",
+      "createDriver"
     );
   }
   // #endregion
 
-  // #region Handle Cancel Update
-  async function handleCancelUpdate() {
-    confirmationAlert(
-      "Atenção!",
-      "Deseja realmente CANCELAR essa alteração? Os dados não salvos serão perdidos.",
-      "alterPageUpdateForConsult"
-    );
-  }
+  //#region Verify Field Filled
+  const fieldsIsFilled = () => {
+    if (
+      carPlate !== "" ||
+      registrationNumber !== "" ||
+      idVehicleModel !== "" ||
+      vehicleModel !== "" ||
+      vehicleBrand !== "" ||
+      vehicleColor !== "" ||
+      nameDriver !== ""
+    ) {
+      return true;
+    } else {
+      return false;
+    }
+  };
   // #endregion
 
-  // #region Handle Update Register
-  // function handleUpdateRegister() {
-  //   if (personFinded) {
-  //     setTitleUpdate("ALTERAR ");
-
-  //     setUpdateRegister(true);
-  //     setIsReadonly(false);
-  //   } else if (idClient.length === 0) {
-  //     notify(
-  //       "warning",
-  //       "Para acessar a alteração de dados primeiro selecione a pessoa desejada."
-  //     );
-  //   } else {
-  //     notify(
-  //       "warning",
-  //       "Não foi possível acessar a alteração de dados, pois nenhuma pessoa foi encontrada."
-  //     );
-  //   }
-  // }
-  // #endregion
-
+  // #region Handle Cancel Create
   function returnPageConsult() {
     history.push("/vehicles");
   }
 
-  // #region Handle Cancel Create
   async function handleCancel() {
-    if (
-      companyName !== "" ||
-      fantasyName !== "" ||
-      // cpfCnpj !== "" ||
-      // idNeighborhood !== "" ||
-      neighborhood !== "" ||
-      street !== "" ||
-      // streetNumber !== "" ||
-      // complement !== "" ||
-      phone !== "" ||
-      email !== ""
-    ) {
+    if (fieldsIsFilled()) {
       confirmationAlert(
         "Atenção!",
         "Deseja realmente CANCELAR esse cadastro? Os dados não salvos serão perdidos.",
         "clearFields"
       );
+
+      inputFocus("carPlate");
     }
   }
   // #endregion
 
   // #region Handle Return Page Consult
-  async function handleReturn() {
-    if (
-      companyName !== "" ||
-      fantasyName !== "" ||
-      // cpfCnpj !== "" ||
-      // idNeighborhood !== "" ||
-      neighborhood !== "" ||
-      street !== "" ||
-      // streetNumber !== "" ||
-      // complement !== "" ||
-      phone !== "" ||
-      email !== ""
-    ) {
+  function handleReturn() {
+    if (fieldsIsFilled()) {
       confirmationAlert(
         "Atenção!",
-        "Deseja realmente VOLTAR para a página de consulta de clientes? Os dados não salvos serão perdidos.",
+        "Deseja realmente VOLTAR para a página de consulta de veículos? Os dados não salvos serão perdidos.",
         "returnPageConsult"
       );
     } else {
@@ -458,6 +309,39 @@ export default function VehiclesNew() {
   }
   // #endregion
 
+  // #region Focus Fields
+  function inputFocus(input) {
+    switch (input) {
+      case "carPlate":
+        setTimeout(() => {
+          carPlateInputRef.current.focus();
+        }, 1);
+        break;
+
+      case "idVehicleModel":
+        setTimeout(() => {
+          vehicleModelInputRef.current.focus();
+        }, 1);
+        break;
+
+      case "idDriver":
+        setTimeout(() => {
+          idDriverInputRef.current.focus();
+        }, 1);
+        break;
+
+      case "nameDriver":
+        setTimeout(() => {
+          nameDriverInputRef.current.focus();
+        }, 1);
+        break;
+
+      default:
+        break;
+    }
+  }
+
+  //#endregion Focus Fields
   return (
     <div className="main-container">
       <LateralMenu />
@@ -475,7 +359,7 @@ export default function VehiclesNew() {
               </div>
 
               <section className="form">
-                <form onSubmit={handleSubmitUpdate}>
+                <form onSubmit={handleSubmit}>
                   <div className="form-title">
                     <RiAddCircleLine size={30} />
                     <h1>NOVO VEÍCULO</h1>
@@ -499,7 +383,6 @@ export default function VehiclesNew() {
                           type="text"
                           minLength="7"
                           maxLength="7"
-                          readOnly={isReadonly}
                           required
                           value={carPlate}
                           onChange={(e) => {
@@ -512,21 +395,24 @@ export default function VehiclesNew() {
                         className="input-label-block-column"
                         id="input-label-block-column"
                       >
-                        <label htmlFor="fantasyName">Número de registro:</label>
+                        <label htmlFor="registrationNumber">
+                          Número de registro:
+                        </label>
 
                         <input
-                          id="fantasyName"
+                          id="registrationNumber"
                           type="text"
-                          readOnly={isReadonly}
+                          minLength="11"
+                          maxLength="11"
                           required
-                          value={fantasyName}
+                          value={registrationNumber}
                           onChange={(e) => {
                             if (e.target.value !== "") {
                               if (!onlyNumber(e.target.value)) {
                                 return;
                               }
                             }
-                            setFantasyName(e.target.value);
+                            setRegistrationNumber(e.target.value);
                           }}
                         />
                       </div>
@@ -535,25 +421,18 @@ export default function VehiclesNew() {
                         className="input-label-block-column"
                         id="input-label-block-column"
                       >
-                        <label htmlFor="idClient">Modelo:</label>
+                        <label htmlFor="vehicleModel">Modelo:</label>
 
                         <div className="input-button-block-row">
                           <input
-                            id="idClient"
+                            ref={vehicleModelInputRef}
+                            id="vehicleModel"
                             type="number"
                             min="1"
+                            readOnly
                             required
-                            value={idClient}
-                            onChange={(e) => setIdClient(e.target.value)}
-                            onBlur={() => {
-                              handleSearchPerson(idClient);
-                            }}
-                            onKeyUp={(e) => {
-                              if (idClient.length === 0) {
-                                clearFields();
-                                clearFields();
-                              }
-                            }}
+                            value={vehicleModel}
+                            onChange={(e) => setVehicleModel(e.target.value)}
                           />
 
                           <button type="button" className="button btnDefault">
@@ -566,15 +445,15 @@ export default function VehiclesNew() {
                         className="input-label-block-column"
                         id="input-label-block-column"
                       >
-                        <label htmlFor="companyName">Marca:</label>
+                        <label htmlFor="vehicleBrand">Marca:</label>
 
                         <input
-                          id="companyName"
+                          id="vehicleBrand"
                           type="text"
-                          readOnly={isReadonly}
+                          readOnly
                           required
-                          value={companyName}
-                          onChange={(e) => setCompanyName(e.target.value)}
+                          value={vehicleBrand}
+                          onChange={(e) => setVehicleBrand(e.target.value)}
                         />
                       </div>
 
@@ -582,15 +461,14 @@ export default function VehiclesNew() {
                         className="input-label-block-column"
                         id="input-label-block-column"
                       >
-                        <label htmlFor="fantasyName">Cor:</label>
+                        <label htmlFor="vehicleColor">Cor:</label>
 
                         <input
-                          id="fantasyName"
+                          id="vehicleColor"
                           type="text"
-                          readOnly={isReadonly}
                           required
-                          value={fantasyName}
-                          onChange={(e) => setFantasyName(e.target.value)}
+                          value={vehicleColor}
+                          onChange={(e) => setVehicleColor(e.target.value)}
                         />
                       </div>
                     </div>
@@ -607,31 +485,23 @@ export default function VehiclesNew() {
                         className="input-label-block-column"
                         id="input-label-block-column-cod-driver"
                       >
-                        <label htmlFor="neighborhood">Código:</label>
+                        <label htmlFor="idDriver">Código:</label>
 
                         <div className="input-button-block-row">
                           <input
-                            id="neighborhood"
+                            ref={idDriverInputRef}
+                            id="idDriver"
                             type="text"
                             required
-                            value={neighborhood}
+                            value={idDriver}
                             readOnly
-                            onChange={(e) => setNeighborhood(e.target.value)}
-                            onBlur={() => {
-                              // handleSearchPerson(idNeighborhood);
-                            }}
-                            onKeyUp={(e) => {
-                              if (neighborhood.length === 0) {
-                                clearFields();
-                                clearFields();
-                              }
-                            }}
+                            onChange={(e) => setIdDriver(e.target.value)}
                           />
 
                           <button
                             type="button"
                             className="button btnDefault"
-                            id="btnNeighborhood"
+                            id="btnIdDriver"
                           >
                             <RiSearchLine size={24} />
                           </button>
@@ -639,14 +509,15 @@ export default function VehiclesNew() {
                       </div>
 
                       <div className="input-label-block-column">
-                        <label htmlFor="street">Nome:</label>
+                        <label htmlFor="nameDriver">Nome:</label>
 
                         <input
-                          id="street"
-                          readOnly={isReadonly}
+                          ref={nameDriverInputRef}
+                          id="nameDriver"
+                          readOnly
                           type="text"
-                          value={street}
-                          onChange={(e) => setStreet(e.target.value)}
+                          value={nameDriver}
+                          onChange={(e) => setNameDriver(e.target.value)}
                           required
                         />
                       </div>
@@ -665,10 +536,9 @@ export default function VehiclesNew() {
                           <input
                             type="checkbox"
                             id="cbStatus"
-                            disabled={isReadonly}
                             value="1"
                             checked={checkedStatus}
-                            onClick={() => {
+                            onChange={() => {
                               handleCheckBox("cbStatus");
                             }}
                           />

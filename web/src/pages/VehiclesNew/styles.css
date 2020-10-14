@@ -164,7 +164,7 @@
   flex-direction: row;
 }
 
-.vehicles-new-container section.form form .input-label-group-row input#name {
+.vehicles-new-container section.form form .input-label-group-row input {
   text-transform: uppercase;
 }
 

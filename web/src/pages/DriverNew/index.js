@@ -85,10 +85,9 @@ export default function DriverNew() {
   // #endregion
 
   // #region Clear Fields
-  function clearFields(withCode) {
-    if (withCode) {
-      setIdPerson("");
-    }
+  function clearFields() {
+    setIdPerson("");
+
     setNamePerson("");
     setCnh("");
     setNumPermit("");
@@ -136,7 +135,7 @@ export default function DriverNew() {
 
         notify("success", response.data.message);
 
-        clearFields(true);
+        clearFields();
         setTextButtonSave("Salvar");
         setLoadingButton(false);
         setBtnInactive("");
@@ -254,7 +253,7 @@ export default function DriverNew() {
   // #region Handle Submit
   function handleSubmit(e) {
     e.preventDefault();
-    if (idPerson === "" || namePerson == "") {
+    if (idPerson === "" || namePerson === "") {
       notify(
         "warning",
         "A pessoa a ser cadastrada como motorista deve ser informada, por favor verifique."

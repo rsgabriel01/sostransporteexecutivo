@@ -234,9 +234,9 @@ export default function Driver() {
   // #endregion
 
   // #region Update Driver
-  async function updatePerson() {
-    const dataPerson = {
-      idPerson,
+  async function updateDriver() {
+    const dataDriver = {
+      idPeopleDriver: idPerson,
       cnh,
       numPermit,
       businessPhone,
@@ -247,10 +247,10 @@ export default function Driver() {
     setLoadingButton(true);
     setBtnInactive("btnInactive");
 
-    console.log(dataPerson);
+    console.log(dataDriver);
 
     try {
-      const response = await api.put("/person/update", dataPerson);
+      const response = await api.put("/driver/update", dataDriver);
 
       if (response) {
         console.log(response.data);
@@ -276,22 +276,6 @@ export default function Driver() {
         if (statusError === 400 && dataError.message) {
           console.log(dataError.message);
           switch (dataError.message) {
-            case '"email" must be a valid email':
-              notify("warning", "O e-mail informado precisa ser válido.");
-              break;
-            case '"cpf_cnpj" length must be at least 9 characters long':
-              notify(
-                "warning",
-                "O CPF informado precisa ter no mínimo 9 caracteres"
-              );
-              break;
-            case '"cpf_cnpj" length must be less than or equal to 11 characters long':
-              notify(
-                "warning",
-                "O CPF informado pode ter no máximo 11 caracteres"
-              );
-              break;
-
             default:
               notify("warning", dataError.message);
           }
@@ -348,8 +332,8 @@ export default function Driver() {
                       case "alterPageUpdateForConsult":
                         alterPageUpdateForConsult();
                         break;
-                      case "updatePerson":
-                        updatePerson();
+                      case "updateDriver":
+                        updateDriver();
                         break;
 
                       default:
@@ -377,7 +361,7 @@ export default function Driver() {
     confirmationAlert(
       "Atenção!",
       "Deseja realmente SALVAR essa alteração?",
-      "updatePerson"
+      "updateDriver"
     );
   }
   // #endregion

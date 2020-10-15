@@ -1,4 +1,4 @@
-const { People, Type_people } = require("../models");
+const { People, Type_people, Service_orders, Vehicles } = require("../models");
 const { Op, fn, col, literal, QueryTypes, Sequelize } = require("sequelize");
 
 module.exports = {
@@ -105,22 +105,6 @@ module.exports = {
       const driver = await Type_people.findOne({
         where: {
           id: idDriver,
-          id_type: 4,
-        },
-        include: ["People"],
-        order: [["id", "ASC"]],
-      });
-
-      if (driver) {
-        return res.status(400).json({
-          message:
-            "Nenhum cadastro de motorista foi encontrado com o código fornecido, por favor verifique.",
-        });
-      }
-
-      const driver = await Type_people.findOne({
-        where: {
-          id: idDriver,
           id_type: 3,
         },
         include: ["People"],
@@ -146,6 +130,12 @@ module.exports = {
       let columnsUpdateDriver = {};
       let columnsUpdatePeople = {};
 
+      let columnsUpdateDataPeopleOfUpdateDriver = {
+        cnh: null,
+        num_permit: null,
+        business_phone: null,
+      };
+
       let idPeopleDriverOld = "";
       let cnhOld = "";
       let numPermitOld = "";
@@ -153,6 +143,7 @@ module.exports = {
       let activeOld = false;
 
       const {
+        idDriver,
         idPeopleDriver,
         cnh,
         numPermit,
@@ -160,16 +151,12 @@ module.exports = {
         active,
       } = req.body;
 
-      console.log(req.body);
-
       const oldPeoplDriverFinded = await People.findOne({
         where: {
           id: idPeopleDriver,
         },
         include: ["People_Type"],
       });
-
-      // console.log(JSON.stringify(oldClientFinded));
 
       if (oldPeoplDriverFinded) {
         typesPeopleDriverId = oldPeoplDriverFinded.People_Type.map(function (
@@ -189,7 +176,7 @@ module.exports = {
 
         cnhOld = oldPeoplDriverFinded.cnh;
         numPermitOld = oldPeoplDriverFinded.num_permit;
-        businessPhoneOld = oldPeoplDriverFinded.phone;
+        businessPhoneOld = oldPeoplDriverFinded.business_phone;
       } else {
         return res.status(400).json({
           message:
@@ -199,127 +186,149 @@ module.exports = {
 
       const oldDriverFinded = await Type_people.findOne({
         where: {
-          id_people: idPeopleDriver,
+          id: idDriver,
         },
       });
 
       if (oldDriverFinded) {
-        idPeopleDriverOld = oldDriverFinded.id_people;
+        idPeopleDriverOld = Number(oldDriverFinded.id_people);
         activeOld = oldDriverFinded.active;
+      } else {
+        return res.status(400).json({
+          message:
+            "Nenhum cadastro de motorista foi encontrado com o código informado, por favor verifique.",
+        });
       }
 
-      if (companyNameOld.toUpperCase() !== companyName.toUpperCase()) {
-        columnsUpdateClient["company_name"] = companyName.toUpperCase();
-      }
-
-      if (nameFantasyOld.toUpperCase() !== nameFantasy.toUpperCase()) {
-        columnsUpdateClient["name_fantasy"] = nameFantasy.toUpperCase();
-      }
-
-      if (cpfCnpjOld !== cpfCnpj) {
-        const cnpjFinded = await People.findOne({
+      if (cnhOld !== cnh) {
+        const cnhFinded = await People.findOne({
           where: {
-            cpf_cnpj: cpfCnpj,
+            cnh,
           },
         });
 
-        if (cnpjFinded) {
+        if (cnhFinded) {
           return res.status(400).json({
             message:
-              "O CNPJ informado para alteração já foi cadastrado, por favor verifique.",
+              "A CNH informada para alteração já foi cadastrada, por favor verifique.",
+          });
+        }
+        columnsUpdatePeople["cnh"] = cnh;
+      }
+
+      if (numPermitOld !== numPermit) {
+        const numPermitFinded = await People.findOne({
+          where: {
+            num_permit: numPermit,
+          },
+        });
+
+        if (numPermitFinded) {
+          return res.status(400).json({
+            message:
+              "O número de alvará informado para alteração já foi cadastrado, por favor verifique.",
           });
         }
 
-        columnsUpdateClient["cpf_cnpj"] = cpfCnpj;
+        columnsUpdatePeople["num_permit"] = numPermit;
       }
 
-      if (phoneOld !== phone) {
-        columnsUpdateClient["phone"] = phone;
+      if (businessPhoneOld !== businessPhone) {
+        columnsUpdatePeople["business_phone"] = businessPhone;
       }
 
-      if (emailOld !== email) {
-        if (email != "") {
-          const emailFinded = await People.findOne({
+      if (idPeopleDriverOld !== Number(idPeopleDriver)) {
+        const driverSOFinded = await Service_orders.findOne({
+          where: {
+            id_driver: idPeopleDriver,
+          },
+        });
+
+        if (driverSOFinded) {
+          return res.status(400).json({
+            message:
+              "Esse motorista já está vinculado a Ordens de Serviço, não é possivel alterar seus dados pessoais.",
+          });
+        }
+
+        const driverVehicleFinded = await Vehicles.findOne({
+          where: {
+            id_people: idPeopleDriver,
+            active: true,
+          },
+        });
+
+        if (driverVehicleFinded) {
+          return res.status(400).json({
+            message:
+              "Esse motorista já está vinculado a um veículo, não é possivel alterar seus dados pessoais.",
+          });
+        }
+
+        const idPeopleDriverFinded = await Type_people.findOne({
+          where: {
+            id_people: idPeopleDriver,
+          },
+        });
+
+        if (idPeopleDriverFinded) {
+          return res.status(400).json({
+            message:
+              "A pessoa informada já possui um cadastro de motorista, por favor verifique.",
+          });
+        }
+
+        columnsUpdateDriver["id_people"] = idPeopleDriver;
+      }
+
+      if (activeOld !== active) {
+        if (active === false) {
+          const driverVehicleFinded = await Vehicles.findOne({
             where: {
-              email,
+              id_people: idPeopleDriver,
             },
           });
 
-          if (emailFinded) {
+          if (driverVehicleFinded) {
             return res.status(400).json({
-              message:
-                "O email informado já foi cadastrado, por favor verifique.",
+              message: `Não foi possivel inativar esse motorista pois ele está vinculado a um veículo, para fazer isso é preciso desvinculá-lo do veículo de Código: ${driverVehicleFinded.id}.`,
             });
           }
         }
 
-        columnsUpdateClient["email"] = email;
+        columnsUpdateDriver["active"] = active;
       }
 
-      if (activeOld !== active) {
-        columnsUpdateClient["active"] = active;
-      }
-
-      if (idNeighborhoodOld !== idNeighborhood) {
-        const neighborhoodFinded = await Neighborhoods.findOne({
+      if (idPeopleDriverOld !== idPeopleDriver) {
+        await People.update(columnsUpdateDataPeopleOfUpdateDriver, {
           where: {
-            id: idNeighborhood,
+            id: idPeopleDriverOld,
           },
         });
-
-        if (!neighborhoodFinded) {
-          return res.status(400).json({
-            message:
-              "O email informado já foi cadastrado, por favor verifique.",
-          });
-        }
-
-        columnsUpdateClientAddress["id_neighborhood"] = idNeighborhood;
       }
 
-      if (streetOld !== street) {
-        columnsUpdateClientAddress["street"] = street;
-      }
-
-      if (streetNumberOld !== streetNumber) {
-        columnsUpdateClientAddress["street_number"] = streetNumber;
-      }
-
-      if (complementOld !== complement) {
-        columnsUpdateClientAddress["complement"] = complement;
-      }
-
-      console.log(columnsUpdateClient);
-      await People.update(columnsUpdateClient, {
+      await People.update(columnsUpdatePeople, {
         where: {
-          id: idClient,
+          id: idPeopleDriver,
         },
       });
 
-      console.log(columnsUpdateClientAddress);
-      await People_address.update(columnsUpdateClientAddress, {
+      await Type_people.update(columnsUpdateDriver, {
         where: {
-          id_people: idClient,
+          id: idDriver,
         },
       });
 
-      const dataClientUpdated = await People.findOne({
+      const driverUpdated = await Type_people.findOne({
         where: {
-          id: idClient,
+          id: idDriver,
         },
-        include: ["People_Type"],
-      });
-
-      const dataAddressClientUpdated = await People_address.findOne({
-        where: {
-          id_people: idClient,
-        },
-        include: ["Neighborhood"],
+        include: ["People"],
+        order: [["id", "ASC"]],
       });
 
       return res.json({
-        dataClientUpdated,
-        dataAddressClientUpdated,
+        driverUpdated,
         message: "Cadastro alterado com sucesso.",
       });
     } catch (error) {

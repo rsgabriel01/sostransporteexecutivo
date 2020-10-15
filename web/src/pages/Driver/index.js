@@ -236,6 +236,7 @@ export default function Driver() {
   // #region Update Driver
   async function updateDriver() {
     const dataDriver = {
+      idDriver,
       idPeopleDriver: idPerson,
       cnh,
       numPermit,

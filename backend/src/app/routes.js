@@ -66,6 +66,7 @@ const {
 // #region Driver
 const {
   validatorDriverCreate,
+  validatorDriverUpdate,
   validatorDriversIndexLikeName,
 } = require("./validators/routesDrivers");
 // #endregion
@@ -222,6 +223,14 @@ routes.post(
   verifySession,
   permissionAdminAttendance,
   DriverController.store
+);
+
+routes.put(
+  "/driver/update",
+  validatorDriverUpdate,
+  verifySession,
+  permissionAdminAttendance,
+  DriverController.update
 );
 
 routes.get(

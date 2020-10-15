@@ -21,6 +21,7 @@ const validatorDriverUpdate = celebrate({
     id_executingperson: Joi.number().positive().integer().required(),
   }).unknown(),
   [Segments.BODY]: Joi.object().keys({
+    idDriver: Joi.number().positive().integer().required(),
     idPeopleDriver: Joi.number().positive().integer().required(),
     cnh: Joi.string().regex(/^\d+$/).required().min(8).max(12),
     numPermit: Joi.string().regex(/^\d+$/).required().min(7).max(15),
@@ -41,5 +42,6 @@ const validatorDriversIndexLikeName = celebrate({
 
 module.exports = {
   validatorDriverCreate,
+  validatorDriverUpdate,
   validatorDriversIndexLikeName,
 };

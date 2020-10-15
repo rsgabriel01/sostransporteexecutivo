@@ -155,7 +155,8 @@ export default function VehiclesNew() {
       registrationNumber,
       idVehicleModel,
       vehicleColor: vehicleColor.toUpperCase(),
-      idDriver: idPeopleDriver || idPeopleDriver !== "" ? idPeopleDriver : null,
+      idDriver:
+        !idPeopleDriver || idPeopleDriver !== "" ? null : idPeopleDriver,
       active: checkedStatus,
     };
 

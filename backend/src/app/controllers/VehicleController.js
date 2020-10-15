@@ -135,6 +135,9 @@ module.exports = {
   async show(req, res) {
     try {
       const { idVehicle } = req.params;
+      let idDriver = null;
+      let idPeopleDriver = null;
+      let driverName = null;
 
       const vehicleData = await Vehicles.findByPk(idVehicle, {
         include: ["People"],
@@ -147,13 +150,21 @@ module.exports = {
         });
       }
 
-      const driverData = await Type_people.findOne({
-        attributes: ["id"],
-        where: {
-          id_people: vehicleData.People.id,
-          id_type: 3,
-        },
-      });
+      if (vehicleData.People) {
+        const driverData = await Type_people.findOne({
+          attributes: ["id"],
+          where: {
+            id_people: vehicleData.People.id,
+            id_type: 3,
+          },
+        });
+
+        idDriver = driverData.id;
+
+        idPeopleDriver = vehicleData.People.id;
+
+        driverName = vehicleData.People.name;
+      }
 
       const vehicleModelData = await Vehicle_models.findByPk(
         vehicleData.id_model,
@@ -173,10 +184,6 @@ module.exports = {
 
       const brand = vehicleModelData.ModelBrand.description;
 
-      const driverName = vehicleData.People.name;
-
-      const idDriver = driverData.id;
-
       const responseData = {
         vehicle: {
           id,
@@ -188,7 +195,7 @@ module.exports = {
           color,
           active,
         },
-        driver: { id: idDriver, name: driverName },
+        driver: { id: idDriver, idPeopleDriver, name: driverName },
       };
 
       return res.json(responseData);

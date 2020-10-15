@@ -70,6 +70,7 @@ export default function Vehicles(props) {
   const [vehicleBrand, setVehicleBrand] = useState("");
   const [vehicleColor, setVehicleColor] = useState("");
   const [idDriver, setIdDriver] = useState("");
+  const [idPeopleDriver, setIdPeopleDriver] = useState(null);
   const [nameDriver, setNameDriver] = useState("");
   const [checkedStatus, setCheckedStatus] = useState(false);
 
@@ -78,8 +79,13 @@ export default function Vehicles(props) {
 
   const [titleModal, setTitleModal] = useState("");
   const [titleIconModal, setTitleIconModal] = useState();
+
   const idVehicleInputRef = useRef(null);
+  const carPlateInputRef = useRef(null);
+  const vehicleModelInputRef = useRef(null);
   const vehicleColorInputRef = useRef(null);
+  const idDriverInputRef = useRef(null);
+  const nameDriverInputRef = useRef(null);
 
   const [openModalSearchVehicle, setOpenModalSearchVehicle] = useState(false);
   const [searchVehicle, setSearchVehicle] = useState("");
@@ -130,6 +136,7 @@ export default function Vehicles(props) {
     } = response.vehicle;
 
     const idDriver = response.driver.id;
+    const idPeopleDriver = response.driver.idPeopleDriver;
     const name = response.driver.name;
 
     id ? setIdVehicle(id) : setIdVehicle("");
@@ -142,25 +149,58 @@ export default function Vehicles(props) {
     brand ? setVehicleBrand(brand) : setVehicleBrand("");
     color ? setVehicleColor(color) : setVehicleColor("");
     idDriver ? setIdDriver(idDriver) : setIdDriver("");
+    idPeopleDriver
+      ? setIdPeopleDriver(idPeopleDriver)
+      : setIdPeopleDriver(null);
     name ? setNameDriver(name) : setNameDriver("");
     setCheckedStatus(active);
   }
   // #endregion Fill Fields
 
   // #region Clear Fields
-  function clearFields(withCode) {
-    if (withCode) {
-      setIdVehicle("");
+  function clearFields(inputs) {
+    switch (inputs) {
+      case "all":
+        setIdVehicle("");
+        setCarPlate("");
+        setRegistrationNumber("");
+        setIdVehicleModel("");
+        setVehicleModel("");
+        setVehicleBrand("");
+        setVehicleColor("");
+        setIdDriver("");
+        setIdPeopleDriver(null);
+        setNameDriver("");
+        setCheckedStatus(false);
+        break;
+
+      case "allNotIdVehicle":
+        setCarPlate("");
+        setRegistrationNumber("");
+        setIdVehicleModel("");
+        setVehicleModel("");
+        setVehicleBrand("");
+        setVehicleColor("");
+        setIdDriver("");
+        setIdPeopleDriver(null);
+        setNameDriver("");
+        setCheckedStatus(false);
+        break;
+
+      case "driver":
+        setIdDriver("");
+        setIdPeopleDriver(null);
+        setNameDriver("");
+        break;
+
+      case "vehicleModel":
+        setIdVehicleModel("");
+        setVehicleModel("");
+        setVehicleBrand("");
+        break;
+      default:
+        break;
     }
-    setCarPlate("");
-    setRegistrationNumber("");
-    setIdVehicleModel("");
-    setVehicleModel("");
-    setVehicleBrand("");
-    setVehicleColor("");
-    setIdDriver("");
-    setNameDriver("");
-    setCheckedStatus(false);
   }
 
   // #endregion
@@ -168,7 +208,7 @@ export default function Vehicles(props) {
   // #region alter page to consult
   function alterPageUpdateForConsult() {
     setVehicleFinded(false);
-    clearFields(true);
+    clearFields("all");
     setTitleUpdate("");
     setUpdateRegister(false);
     setIsReadonly(true);
@@ -193,9 +233,10 @@ export default function Vehicles(props) {
   // #region Load Vehicle data
   async function loadDataVehicle(id) {
     try {
-      clearFields();
+      clearFields("allNotIdVehicle");
 
       setVehicleFinded(false);
+      console.log(id);
 
       const response = await api.get(`/vehicle/${id}`);
 
@@ -252,6 +293,52 @@ export default function Vehicles(props) {
 
   // #endregion
 
+  // #region Focus Fields
+  function inputFocus(input) {
+    switch (input) {
+      case "idVehicle":
+        setTimeout(() => {
+          idVehicleInputRef.current.focus();
+        }, 1);
+        break;
+
+      case "carPlate":
+        setTimeout(() => {
+          carPlateInputRef.current.focus();
+        }, 1);
+        break;
+
+      case "idVehicleModel":
+        setTimeout(() => {
+          vehicleModelInputRef.current.focus();
+        }, 1);
+        break;
+
+      case "idDriver":
+        setTimeout(() => {
+          idDriverInputRef.current.focus();
+        }, 1);
+        break;
+
+      case "nameDriver":
+        setTimeout(() => {
+          nameDriverInputRef.current.focus();
+        }, 1);
+        break;
+
+      case "vehicleColor":
+        setTimeout(() => {
+          vehicleColorInputRef.current.focus();
+        }, 1);
+        break;
+
+      default:
+        break;
+    }
+  }
+
+  //#endregion Focus Fields
+
   // #region Handle Search Person
   function handleSearchVehicle(idVehicle) {
     if (idVehicle && !updateRegister) {
@@ -265,12 +352,13 @@ export default function Vehicles(props) {
   // #region Update Person
   async function updatePerson() {
     const dataPerson = {
-      idVehicle,
+      carPlate: carPlate.toUpperCase(),
       registrationNumber,
       idVehicleModel,
-      vehicleColor,
-      nameDriver,
-      status: checkedStatus,
+      vehicleColor: vehicleColor.toUpperCase(),
+      idDriver:
+        !idPeopleDriver || idPeopleDriver !== "" ? null : idPeopleDriver,
+      active: checkedStatus,
     };
 
     setTextButtonSaveUpdate("Aguarde...");
@@ -280,7 +368,7 @@ export default function Vehicles(props) {
     console.log(dataPerson);
 
     try {
-      const response = await api.put("/person/update", dataPerson);
+      const response = await api.put("/vehicle/update", dataPerson);
 
       if (response) {
         console.log(response.data);
@@ -433,12 +521,12 @@ export default function Vehicles(props) {
     } else if (idVehicle.length === 0) {
       notify(
         "warning",
-        "Para acessar a alteração de dados primeiro selecione a pessoa desejada."
+        "Para acessar a alteração de dados primeiro selecione o veículo desejado."
       );
     } else {
       notify(
         "warning",
-        "Não foi possível acessar a alteração de dados, pois nenhuma pessoa foi encontrada."
+        "Não foi possível acessar a alteração de dados, pois nenhum veículo foi encontrado."
       );
     }
   }
@@ -463,16 +551,10 @@ export default function Vehicles(props) {
 
   // #region Handle Select Search Vehicle
   function handleSelectVehicleInSearch(id) {
-    clearFields();
+    clearFields("allNotIdVehicle");
     setIdVehicle(id);
     handleCloseModalSearchVehicles();
-    inputFocusIdVehicles();
-  }
-
-  function inputFocusIdVehicles() {
-    setTimeout(() => {
-      idVehicleInputRef.current.focus();
-    }, 1);
+    inputFocus("idVehicle");
   }
   // #endregion
 
@@ -561,13 +643,7 @@ export default function Vehicles(props) {
     setVehicleModel(model);
     setVehicleBrand(brand);
     handleCloseModalSearchVehicleModel();
-    inputFocusvehicleColor();
-  }
-
-  function inputFocusvehicleColor() {
-    setTimeout(() => {
-      vehicleColorInputRef.current.focus();
-    }, 1);
+    inputFocus("vehicleColor");
   }
   // #endregion
 
@@ -1058,8 +1134,8 @@ export default function Vehicles(props) {
                             }}
                             onKeyUp={(e) => {
                               if (idVehicle.length === 0) {
-                                clearFields();
-                                clearFields();
+                                clearFields("allNotIdVehicle");
+                                clearFields("allNotIdVehicle");
                               }
                             }}
                           />
@@ -1071,7 +1147,7 @@ export default function Vehicles(props) {
                               searchVehicleBtnInactive ? "btnInactive" : ""
                             }`}
                             onClick={() => {
-                              clearFields();
+                              clearFields("allNotIdVehicle");
                               handleOpenModalSearchVehicles();
                             }}
                           >
@@ -1089,6 +1165,7 @@ export default function Vehicles(props) {
                         <label htmlFor="carPlate">Placa:</label>
 
                         <input
+                          ref={carPlateInputRef}
                           id="carPlate"
                           type="text"
                           minLength="7"
@@ -1140,6 +1217,7 @@ export default function Vehicles(props) {
 
                         <div className="input-button-block-row">
                           <input
+                            ref={vehicleModelInputRef}
                             id="model"
                             type="text"
                             required
@@ -1213,6 +1291,7 @@ export default function Vehicles(props) {
 
                         <div className="input-button-block-row">
                           <input
+                            ref={idDriverInputRef}
                             id="idDriver"
                             type="text"
                             required
@@ -1229,6 +1308,7 @@ export default function Vehicles(props) {
                             disabled={isReadonly}
                             id="btnidDriver"
                             onClick={() => {
+                              clearFields("driver");
                               handleOpenModalSearchDriver();
                             }}
                           >
@@ -1241,6 +1321,7 @@ export default function Vehicles(props) {
                         <label htmlFor="nameDriver">Nome:</label>
 
                         <input
+                          ref={nameDriverInputRef}
                           id="nameDriver"
                           readOnly
                           type="text"
@@ -1312,7 +1393,7 @@ export default function Vehicles(props) {
                           type="button"
                           className="button btnReturn"
                           onClick={() => {
-                            clearFields(true);
+                            clearFields("all");
                           }}
                         >
                           <RiBrushLine size={25} />

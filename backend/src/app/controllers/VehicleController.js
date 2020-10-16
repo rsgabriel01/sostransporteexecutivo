@@ -203,4 +203,182 @@ module.exports = {
       console.log(error);
     }
   },
+
+  async update(req, res) {
+    try {
+      let columnsUpdateVehicle = {};
+
+      let carPlateOld = "";
+      let registrationNumberOld = "";
+      let idVehicleModelOld = "";
+      let idDriverOld = "";
+      let vehicleColorOld = "";
+      let activeOld = false;
+
+      const {
+        idVehicle,
+        carPlate,
+        registrationNumber,
+        idVehicleModel,
+        vehicleColor,
+        idDriver,
+        active,
+      } = req.body;
+
+      console.log(req.body);
+      console.log("");
+
+      const oldVehicleFinded = await Vehicles.findOne({
+        where: {
+          id: idVehicle,
+        },
+      });
+
+      console.log(JSON.stringify(oldVehicleFinded));
+      console.log("");
+
+      if (!oldVehicleFinded) {
+        return res.status(400).json({
+          message:
+            "Nenhum cadastro de veículo foi encontrado com o código informado, por favor verifique.",
+        });
+      } else {
+        carPlateOld = oldVehicleFinded.car_plate;
+        registrationNumberOld = oldVehicleFinded.registration_number;
+        idVehicleModelOld = oldVehicleFinded.id_model;
+        idDriverOld = oldVehicleFinded.id_people;
+        vehicleColorOld = oldVehicleFinded.color;
+        activeOld = oldVehicleFinded.active;
+      }
+
+      if (carPlateOld !== carPlate) {
+        const carPlateFinded = await Vehicles.findOne({
+          where: {
+            car_plate: carPlate,
+          },
+        });
+
+        if (carPlateFinded) {
+          return res.status(400).json({
+            message:
+              "A placa do carro informada para alteração já foi cadastrada, por favor verifique.",
+          });
+        }
+        columnsUpdatePeople["car_plate"] = carPlate.toUpperCase();
+      }
+
+      if (registrationNumberOld !== registrationNumber) {
+        const registrationNumberFinded = await Vehicles.findOne({
+          where: {
+            registration_number: registrationNumber,
+          },
+        });
+
+        if (registrationNumberFinded) {
+          return res.status(400).json({
+            message:
+              "O número de registro do veículo informado para alteração já foi cadastrado, por favor verifique.",
+          });
+        }
+
+        columnsUpdatePeople["registration_number"] = registrationNumber;
+      }
+
+      if (idVehicleModelOld !== idVehicleModel) {
+        const oldVehicleModelFinded = await Vehicle_models.findOne({
+          where: {
+            id: idVehicleModel,
+          },
+        });
+
+        if (!oldVehicleModelFinded) {
+          return res.status(400).json({
+            message:
+              "Nenhum cadastro de modelo de veículo foi encontrado com o código informado, por favor verifique.",
+          });
+        }
+
+        columnsUpdateVehicle["id_model"] = idVehicleModel;
+      }
+
+      if (idDriverOld !== idDriver) {
+        if (idDriver !== null && idDriver !== "") {
+          const personFinded = await People.findOne({
+            where: {
+              id: idDriver,
+            },
+          });
+
+          if (!personFinded) {
+            return res.status(400).json({
+              message:
+                "O motorista informado não foi encontrado em nosso banco de dados, por favor verifique.",
+            });
+          }
+
+          const ClientFinded = await Type_people.findOne({
+            where: {
+              id_people: idDriver,
+              id_type: 4,
+            },
+          });
+
+          if (ClientFinded) {
+            return res.status(400).json({
+              message:
+                "O motorista informado não foi encontrado com o código informado, por favor verifique.",
+            });
+          }
+
+          const driverFinded = await Type_people.findOne({
+            where: {
+              id_people: idDriver,
+              id_type: 3,
+            },
+          });
+
+          if (!driverFinded) {
+            return res.status(400).json({
+              message:
+                "O motorista informado não foi encontrado em nosso banco de dados, por favor verifique.",
+            });
+          }
+        }
+
+        columnsUpdateVehicle["id_people"] =
+          idDriver !== null && idDriver !== "" ? idDriver : null;
+      }
+
+      if (vehicleColorOld !== vehicleColor) {
+        columnsUpdateVehicle["color"] = vehicleColor.toUpperCase();
+      }
+
+      if (activeOld !== active) {
+        columnsUpdateVehicle["active"] = active;
+      }
+
+      console.log(columnsUpdateVehicle);
+      console.log("");
+
+      await Vehicles.update(columnsUpdateVehicle, {
+        where: {
+          id: idVehicle,
+        },
+      });
+
+      const vehicleUpdated = await Vehicles.findOne({
+        where: {
+          id: idVehicle,
+        },
+      });
+
+      return res.json({
+        vehicleUpdated,
+        message: "Cadastro alterado com sucesso.",
+      });
+    } catch (error) {
+      console.log(error);
+      return res.status(500);
+    }
+  },
 };

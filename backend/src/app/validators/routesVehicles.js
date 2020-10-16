@@ -7,7 +7,7 @@ const validatorVehicleCreate = celebrate({
     id_executingperson: Joi.number().positive().integer().required(),
   }).unknown(),
   [Segments.BODY]: Joi.object().keys({
-    idDriver: Joi.number().positive().integer().allow(null),
+    idDriver: Joi.number().positive().integer().required().allow(null),
     carPlate: Joi.string().required(),
     registrationNumber: Joi.string().regex(/^\d+$/).required().min(8).max(15),
     idVehicleModel: Joi.number().positive().integer().required(),
@@ -26,6 +26,22 @@ const validatorVehicleShow = celebrate({
   }),
 });
 
+const validatorVehicleUpdate = celebrate({
+  [Segments.HEADERS]: Joi.object({
+    authorization: Joi.string().required(),
+    id_executingperson: Joi.number().positive().integer().required(),
+  }).unknown(),
+  [Segments.BODY]: Joi.object().keys({
+    idVehicle: Joi.number().positive().integer().required(),
+    carPlate: Joi.string().required(),
+    registrationNumber: Joi.string().regex(/^\d+$/).required().min(8).max(15),
+    idVehicleModel: Joi.number().positive().integer().required(),
+    idDriver: Joi.number().positive().integer().required().allow(null),
+    vehicleColor: Joi.string().required(),
+    active: Joi.boolean().required(),
+  }),
+});
+
 const validatorVehiclesLikeModel = celebrate({
   [Segments.HEADERS]: Joi.object({
     authorization: Joi.string().required(),
@@ -39,5 +55,6 @@ const validatorVehiclesLikeModel = celebrate({
 module.exports = {
   validatorVehicleCreate,
   validatorVehicleShow,
+  validatorVehicleUpdate,
   validatorVehiclesLikeModel,
 };

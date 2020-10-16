@@ -349,15 +349,18 @@ export default function Vehicles(props) {
   }
   // #endregion
 
-  // #region Update Person
-  async function updatePerson() {
-    const dataPerson = {
+  // #region Update Vehicle
+  async function updateVehicle() {
+    console.log(idPeopleDriver);
+
+    const dataVehicle = {
+      idVehicle,
       carPlate: carPlate.toUpperCase(),
       registrationNumber,
       idVehicleModel,
       vehicleColor: vehicleColor.toUpperCase(),
       idDriver:
-        !idPeopleDriver || idPeopleDriver !== "" ? null : idPeopleDriver,
+        !idPeopleDriver || idPeopleDriver === "" ? null : idPeopleDriver,
       active: checkedStatus,
     };
 
@@ -365,10 +368,10 @@ export default function Vehicles(props) {
     setLoadingButton(true);
     setBtnInactive("btnInactive");
 
-    console.log(dataPerson);
+    console.log(dataVehicle);
 
     try {
-      const response = await api.put("/vehicle/update", dataPerson);
+      const response = await api.put("/vehicle/update", dataVehicle);
 
       if (response) {
         console.log(response.data);
@@ -394,22 +397,6 @@ export default function Vehicles(props) {
         if (statusError === 400 && dataError.message) {
           console.log(dataError.message);
           switch (dataError.message) {
-            case '"email" must be a valid email':
-              notify("warning", "O e-mail informado precisa ser válido.");
-              break;
-            case '"cpf_cnpj" length must be at least 9 characters long':
-              notify(
-                "warning",
-                "O CPF informado precisa ter no mínimo 9 caracteres"
-              );
-              break;
-            case '"cpf_cnpj" length must be less than or equal to 11 characters long':
-              notify(
-                "warning",
-                "O CPF informado pode ter no máximo 11 caracteres"
-              );
-              break;
-
             default:
               notify("warning", dataError.message);
           }
@@ -466,8 +453,8 @@ export default function Vehicles(props) {
                       case "alterPageUpdateForConsult":
                         alterPageUpdateForConsult();
                         break;
-                      case "updatePerson":
-                        updatePerson();
+                      case "updateVehicle":
+                        updateVehicle();
                         break;
 
                       default:
@@ -495,7 +482,7 @@ export default function Vehicles(props) {
     confirmationAlert(
       "Atenção!",
       "Deseja realmente SALVAR essa alteração?",
-      "updatePerson"
+      "updateVehicle"
     );
   }
   // #endregion
@@ -727,9 +714,11 @@ export default function Vehicles(props) {
   // #endregion
 
   // #region Handle Select Search Driver Active
-  function handleSelectDriverInSearch(id, name) {
-    setIdDriver(id);
-    setNameDriver(name);
+  function handleSelectDriverInSearch(idDriver, idPeopleDriver, nameDriver) {
+    setIdDriver(idDriver);
+    console.log(`id peopleDriver: ${idPeopleDriver}`);
+    setIdPeopleDriver(idPeopleDriver);
+    setNameDriver(nameDriver);
     handleCloseModalSearchDriver();
   }
   // #endregion
@@ -1026,6 +1015,7 @@ export default function Vehicles(props) {
                       onDoubleClick={() =>
                         handleSelectDriverInSearch(
                           driver.id,
+                          driver.id_people,
                           driver.People.name
                         )
                       }
@@ -1048,6 +1038,7 @@ export default function Vehicles(props) {
                           onClick={() =>
                             handleSelectDriverInSearch(
                               driver.id,
+                              driver.id_people,
                               driver.People.name
                             )
                           }

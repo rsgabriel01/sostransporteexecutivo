@@ -156,7 +156,7 @@ export default function VehiclesNew() {
       idVehicleModel,
       vehicleColor: vehicleColor.toUpperCase(),
       idDriver:
-        !idPeopleDriver || idPeopleDriver !== "" ? null : idPeopleDriver,
+        !idPeopleDriver || idPeopleDriver === "" ? null : idPeopleDriver,
       active: checkedStatus,
     };
 

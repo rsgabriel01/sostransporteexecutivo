@@ -103,6 +103,7 @@ const {
   validatorVehicleCreate,
   validatorVehicleShow,
   validatorVehiclesLikeModel,
+  validatorVehicleUpdate,
 } = require("./validators/routesVehicles");
 // #endregion
 
@@ -352,6 +353,14 @@ routes.get(
   verifySession,
   permissionAdminAttendance,
   VehicleController.show
+);
+
+routes.put(
+  "/vehicle/update",
+  validatorVehicleUpdate,
+  verifySession,
+  permissionAdminAttendance,
+  VehicleController.update
 );
 
 routes.get(

@@ -456,7 +456,9 @@ export default function Vehicles(props) {
                       case "updateVehicle":
                         updateVehicle();
                         break;
-
+                      case "crearFieldsDriver":
+                        clearFields("driver");
+                        break;
                       default:
                         break;
                     }
@@ -488,12 +490,28 @@ export default function Vehicles(props) {
   // #endregion
 
   // #region Handle Cancel Update
-  async function handleCancelUpdate() {
+  function handleCancelUpdate() {
     confirmationAlert(
       "Atenção!",
       "Deseja realmente CANCELAR essa alteração? Os dados não salvos serão perdidos.",
       "alterPageUpdateForConsult"
     );
+  }
+  // #endregion
+
+  // #region Handle Cancel Update
+  async function handelRemoveDriver() {
+    if (
+      (idDriver && idDriver !== "") ||
+      (idPeopleDriver && idPeopleDriver !== "") ||
+      (nameDriver && nameDriver !== "")
+    ) {
+      confirmationAlert(
+        "Atenção!",
+        "Deseja realmente REMOVER o motorista desse cadastro?",
+        "crearFieldsDriver"
+      );
+    }
   }
   // #endregion
 
@@ -1299,7 +1317,6 @@ export default function Vehicles(props) {
                             disabled={isReadonly}
                             id="btnidDriver"
                             onClick={() => {
-                              clearFields("driver");
                               handleOpenModalSearchDriver();
                             }}
                           >
@@ -1311,15 +1328,31 @@ export default function Vehicles(props) {
                       <div className="input-label-block-column">
                         <label htmlFor="nameDriver">Nome:</label>
 
-                        <input
-                          ref={nameDriverInputRef}
-                          id="nameDriver"
-                          readOnly
-                          type="text"
-                          value={nameDriver}
-                          onChange={(e) => setNameDriver(e.target.value)}
-                          required
-                        />
+                        <div className="input-button-block-row">
+                          <input
+                            ref={nameDriverInputRef}
+                            id="nameDriver"
+                            readOnly
+                            type="text"
+                            value={nameDriver}
+                            onChange={(e) => setNameDriver(e.target.value)}
+                            required
+                          />
+
+                          <button
+                            type="button"
+                            className={`button btnCancel ${
+                              isReadonly ? "btnInactive" : ""
+                            }`}
+                            disabled={isReadonly}
+                            id="btnRemoveDriver"
+                            onClick={() => {
+                              handelRemoveDriver();
+                            }}
+                          >
+                            <RiCloseLine size={24} />
+                          </button>
+                        </div>
                       </div>
                     </div>
                   </div>

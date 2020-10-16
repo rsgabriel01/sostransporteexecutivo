@@ -264,7 +264,7 @@ module.exports = {
               "A placa do carro informada para alteração já foi cadastrada, por favor verifique.",
           });
         }
-        columnsUpdatePeople["car_plate"] = carPlate.toUpperCase();
+        columnsUpdateVehicle["car_plate"] = carPlate.toUpperCase();
       }
 
       if (registrationNumberOld !== registrationNumber) {
@@ -281,7 +281,7 @@ module.exports = {
           });
         }
 
-        columnsUpdatePeople["registration_number"] = registrationNumber;
+        columnsUpdateVehicle["registration_number"] = registrationNumber;
       }
 
       if (idVehicleModelOld !== idVehicleModel) {

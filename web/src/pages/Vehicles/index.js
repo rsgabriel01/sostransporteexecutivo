@@ -734,7 +734,6 @@ export default function Vehicles(props) {
   // #region Handle Select Search Driver Active
   function handleSelectDriverInSearch(idDriver, idPeopleDriver, nameDriver) {
     setIdDriver(idDriver);
-    console.log(`id peopleDriver: ${idPeopleDriver}`);
     setIdPeopleDriver(idPeopleDriver);
     setNameDriver(nameDriver);
     handleCloseModalSearchDriver();
@@ -1152,6 +1151,7 @@ export default function Vehicles(props) {
                           <button
                             type="button"
                             disabled={searchVehicleBtnInactive}
+                            title="Pesquisar veículos."
                             className={`button btnDefault ${
                               searchVehicleBtnInactive ? "btnInactive" : ""
                             }`}
@@ -1241,6 +1241,7 @@ export default function Vehicles(props) {
                               isReadonly ? "btnInactive" : ""
                             }`}
                             disabled={isReadonly}
+                            title="Pesquisar modelos de veículos."
                             onClick={() => {
                               handleOpenModalSearchVehicleModel();
                             }}
@@ -1315,6 +1316,7 @@ export default function Vehicles(props) {
                               isReadonly ? "btnInactive" : ""
                             }`}
                             disabled={isReadonly}
+                            title="Pesquisar motoristas."
                             id="btnidDriver"
                             onClick={() => {
                               handleOpenModalSearchDriver();
@@ -1346,6 +1348,7 @@ export default function Vehicles(props) {
                             }`}
                             disabled={isReadonly}
                             id="btnRemoveDriver"
+                            title="Remover dados de motorista."
                             onClick={() => {
                               handelRemoveDriver();
                             }}
@@ -1364,19 +1367,20 @@ export default function Vehicles(props) {
                     </h1>
 
                     <div className="input-label-group-row">
-                      <div className="input-label-group-row">
-                        <div className="checkbox-block">
-                          <input
-                            type="checkbox"
-                            id="cbStatus"
-                            disabled={isReadonly}
-                            checked={checkedStatus}
-                            onChange={() => {
-                              handleCheckBox("cbStatus");
-                            }}
-                          />
-                          <label htmlFor="cbStatus">Ativo</label>
-                        </div>
+                      <div
+                        className="checkbox-block"
+                        title="Ativar/Inativar veículo."
+                      >
+                        <input
+                          type="checkbox"
+                          id="cbStatus"
+                          disabled={isReadonly}
+                          checked={checkedStatus}
+                          onChange={() => {
+                            handleCheckBox("cbStatus");
+                          }}
+                        />
+                        <label htmlFor="cbStatus">Ativo</label>
                       </div>
                     </div>
                   </div>

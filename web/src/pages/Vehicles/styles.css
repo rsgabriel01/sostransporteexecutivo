@@ -206,9 +206,17 @@
 
 .vehicles-container section.form form .input-button-block-row button {
   height: 35px;
-  width: 50px !important;
+  width: 50px;
 
   margin: 0px 0px 0px 10px;
+}
+
+.vehicles-container
+  section.form
+  form
+  .input-button-block-row
+  button#btnRemoveDriver {
+  width: 40px !important;
 }
 
 .vehicles-container

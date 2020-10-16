@@ -1,5 +1,7 @@
 const express = require("express");
 
+require("express-async-errors");
+
 const db = require("./src/app/models");
 
 const cors = require("cors");

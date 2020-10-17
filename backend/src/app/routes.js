@@ -215,6 +215,14 @@ routes.get(
   permissionAdminAttendance,
   clientLikeNameFantasyController.indexLikeNameFantsy
 );
+
+routes.get(
+  "/clients/active/",
+  validatorClientsIndexLikeNameFantasy,
+  verifySession,
+  permissionAdminAttendance,
+  clientLikeNameFantasyController.indexActiveLikeNameFantasy
+);
 // #endregion
 
 // #region Driver

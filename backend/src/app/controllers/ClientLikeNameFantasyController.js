@@ -1,4 +1,4 @@
-const { People } = require("../models");
+const { People, People_address } = require("../models");
 const { Op, fn, col, literal, QueryTypes, Sequelize } = require("sequelize");
 
 const idTypeClient = 4;
@@ -30,7 +30,6 @@ module.exports = {
 
     try {
       const people = await People.findAll({
-        // attributes: ["People_type.id_type"],
         where: {
           name_fantasy: {
             [Op.like]: `${nameFantasy.toUpperCase()}%`,
@@ -38,7 +37,15 @@ module.exports = {
           active: true,
           "$People_Type.Type_people.id_type$": idTypeClient,
         },
-        include: ["People_Type"],
+        include: [
+          "People_Type",
+          {
+            model: People_address,
+            as: "People_address",
+            include: ["Neighborhood"],
+          },
+        ],
+
         order: [["id", "ASC"]],
       });
 

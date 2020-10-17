@@ -1,13 +1,11 @@
-import React, { useState, useEffect } from "react";
-import { useHistory } from "react-router-dom";
-import LateralMenu from "../components/LateralMenu/LateralMenu";
-import Header from "../components/Header/Header";
-import Loading from "../components/Loading/Loading";
-
-// import api from "../../services/api";
-
-import { isAuthenticated, logout } from "../../services/auth";
-
+import React, { useState, useEffect, useRef } from "react";
+import { Link, useHistory } from "react-router-dom";
+import { confirmAlert } from "react-confirm-alert";
+import { ToastContainer } from "react-toastify";
+import { makeStyles } from "@material-ui/core/styles";
+import Modal from "@material-ui/core/Modal";
+import Backdrop from "@material-ui/core/Backdrop";
+import Fade from "@material-ui/core/Fade";
 import {
   RiFileListLine,
   RiUser2Line,
@@ -17,25 +15,44 @@ import {
   RiCheckLine,
   RiCloseLine,
   RiArrowLeftLine,
+  RiArrowRightUpLine,
 } from "react-icons/ri";
 
+import LateralMenu from "../components/LateralMenu/LateralMenu";
+import Header from "../components/Header/Header";
+import Loading from "../components/Loading/Loading";
+import notify from "../../helpers/notifys";
+import { onlyNumber } from "../../helpers/onlyNumber";
+
+import api from "../../services/api";
+
+import { isAuthenticated, logout } from "../../services/auth";
+
 import "./styles.css";
+import "react-toastify/dist/ReactToastify.css";
+import "react-confirm-alert/src/react-confirm-alert.css";
+import jsonClassesModal from "../../helpers/stylesModal";
 
 export default function ServiceOrdersRequest() {
   //#region Definitions
   const history = useHistory();
 
   const [loading, setLoading] = useState(true);
+  const [loadingModal, setLoadingModal] = useState(true);
+
   const [isReadOnlyOrigin, setIsReadOnlyOrigin] = useState(true);
-  const [isReadOnlyDestiny, setIsReadOnlyDestiny] = useState(true);
+  const [isReadOnlyDestiny, setIsReadOnlyDestiny] = useState(false);
   const [isDisabledRbAddressClient, setIsDisabledRbAddressClient] = useState(
     true
   );
 
-  // const [idClient, setIdClient] = useState("");
-  const [client, setClient] = useState("");
+  const [loadingButton, setLoadingButton] = useState(false);
+  const [btnInactive, setBtnInactive] = useState("");
 
-  const [rbCheckedAddressOrigin, setRbCheckedAddressOrigin] = useState(false);
+  const [idClient, setIdClient] = useState("");
+  const [nameFantasyClient, setNameFantasyClient] = useState("");
+
+  const [rbCheckedAddressOrigin, setRbCheckedAddressOrigin] = useState(true);
   const [idNeighborhoodOrigin, setIdNeighborhoodOrigin] = useState("");
   const [neighborhoodOrigin, setNeighborhoodOrigin] = useState("");
   const [streetOrigin, setStreetOrigin] = useState("");
@@ -49,14 +66,16 @@ export default function ServiceOrdersRequest() {
   const [streetNumberDestiny, setStreetNumberDestiny] = useState("");
   const [complementDestiny, setComplementDestiny] = useState("");
 
-  const dataClient = {
-    fantasy_name: "HONDA ENJIN",
-    id_neighborhood: 1,
-    neighborhood: "SÃO CRISTOVÃO",
-    street: "AV BRASIL",
-    street_number: "1050",
-    complement: "NENHUM",
-  };
+  const useStyles = makeStyles((theme) => jsonClassesModal(theme));
+  const ClassesModal = useStyles();
+  const [titleModal, setTitleModal] = useState("");
+  const [titleIconModal, setTitleIconModal] = useState();
+
+  const [openModalSearchClient, setOpenModalSearchClient] = useState(false);
+  const neighborhoodOriginInputRef = useRef(null);
+  const neighborhoodDestinyInputRef = useRef(null);
+  const [searchClient, setSearchClient] = useState("");
+  const [searchClientList, setSearchClientList] = useState([]);
 
   //#endregion
 
@@ -78,69 +97,99 @@ export default function ServiceOrdersRequest() {
   }, []);
   //#endregion
 
-  //#region Request Service Order
-
   // #region Handle Address Check Client
   function handleAddressCheckClient(address) {
-    if (address === "origin") {
-      console.log("origin");
-      if (rbCheckedAddressOrigin === false) {
-        let idNeighborhoodOriginOld = idNeighborhoodOrigin;
-        let neighborhoodOriginOld = neighborhoodOrigin;
-        let streetOriginOld = streetOrigin;
-        let streetNumberOriginOld = streetNumberOrigin;
-        let complementOriginOld = complementOrigin;
+    if (idClient !== "") {
+      if (address === "origin") {
+        console.log("origin");
+        if (rbCheckedAddressOrigin === false) {
+          let idNeighborhoodOriginOld = idNeighborhoodOrigin;
+          let neighborhoodOriginOld = neighborhoodOrigin;
+          let streetOriginOld = streetOrigin;
+          let streetNumberOriginOld = streetNumberOrigin;
+          let complementOriginOld = complementOrigin;
 
-        setIdNeighborhoodOrigin(dataClient.id_neighborhood);
-        setIdNeighborhoodDestiny(idNeighborhoodOriginOld);
+          let idNeighborhoodDestinyOld = idNeighborhoodDestiny;
+          let neighborhoodDestinyOld = neighborhoodDestiny;
+          let streetDestinyOld = streetDestiny;
+          let streetNumberDestinyOld = streetNumberDestiny;
+          let complementDestinyOld = complementDestiny;
 
-        setNeighborhoodOrigin(dataClient.neighborhood);
-        setNeighborhoodDestiny(neighborhoodOriginOld);
+          setIdNeighborhoodOrigin(idNeighborhoodDestinyOld);
+          setIdNeighborhoodDestiny(idNeighborhoodOriginOld);
 
-        setStreetOrigin(dataClient.street);
-        setStreetDestiny(streetOriginOld);
+          setNeighborhoodOrigin(neighborhoodDestinyOld);
+          setNeighborhoodDestiny(neighborhoodOriginOld);
 
-        setStreetNumberOrigin(dataClient.street_number);
-        setStreetNumberDestiny(streetNumberOriginOld);
+          setStreetOrigin(streetDestinyOld);
+          setStreetDestiny(streetOriginOld);
 
-        setComplementOrigin(dataClient.complement);
-        setComplementDestiny(complementOriginOld);
+          setStreetNumberOrigin(streetNumberDestinyOld);
+          setStreetNumberDestiny(streetNumberOriginOld);
 
-        setRbCheckedAddressOrigin(true);
-        setRbCheckedAddressDestiny(false);
+          setComplementOrigin(complementDestinyOld);
+          setComplementDestiny(complementOriginOld);
 
-        setIsReadOnlyOrigin(true);
-        setIsReadOnlyDestiny(false);
+          setRbCheckedAddressOrigin(true);
+          setRbCheckedAddressDestiny(false);
+
+          setIsReadOnlyOrigin(true);
+          setIsReadOnlyDestiny(false);
+        }
+      } else if (address === "destiny") {
+        console.log("destiny");
+        if (rbCheckedAddressDestiny === false) {
+          let idNeighborhoodDestinyOld = idNeighborhoodDestiny;
+          let neighborhoodDestinyOld = neighborhoodDestiny;
+          let streetDestinyOld = streetDestiny;
+          let streetNumberDestinyOld = streetNumberDestiny;
+          let complementDestinyOld = complementDestiny;
+
+          let idNeighborhoodOriginOld = idNeighborhoodOrigin;
+          let neighborhoodOriginOld = neighborhoodOrigin;
+          let streetOriginOld = streetOrigin;
+          let streetNumberOriginOld = streetNumberOrigin;
+          let complementOriginOld = complementOrigin;
+
+          setIdNeighborhoodDestiny(idNeighborhoodOriginOld);
+          setIdNeighborhoodOrigin(idNeighborhoodDestinyOld);
+
+          setNeighborhoodDestiny(neighborhoodOriginOld);
+          setNeighborhoodOrigin(neighborhoodDestinyOld);
+
+          setStreetDestiny(streetOriginOld);
+          setStreetOrigin(streetDestinyOld);
+
+          setStreetNumberDestiny(streetNumberOriginOld);
+          setStreetNumberOrigin(streetNumberDestinyOld);
+
+          setComplementDestiny(complementOriginOld);
+          setComplementOrigin(complementDestinyOld);
+
+          setRbCheckedAddressOrigin(false);
+          setRbCheckedAddressDestiny(true);
+
+          setIsReadOnlyOrigin(false);
+          setIsReadOnlyDestiny(true);
+        }
       }
-    } else if (address === "destiny") {
-      console.log("destiny");
-      if (rbCheckedAddressDestiny === false) {
-        let idNeighborhoodDestinyOld = idNeighborhoodDestiny;
-        let neighborhoodDestinyOld = neighborhoodDestiny;
-        let streetDestinyOld = streetDestiny;
-        let streetNumberDestinyOld = streetNumberDestiny;
-        let complementDestinyOld = complementDestiny;
+    } else {
+      if (address === "origin") {
+        if (rbCheckedAddressOrigin === false) {
+          setRbCheckedAddressOrigin(true);
+          setRbCheckedAddressDestiny(false);
 
-        setIdNeighborhoodDestiny(dataClient.id_neighborhood);
-        setIdNeighborhoodOrigin(idNeighborhoodDestinyOld);
+          setIsReadOnlyOrigin(true);
+          setIsReadOnlyDestiny(false);
+        }
+      } else if (address === "destiny") {
+        if (rbCheckedAddressDestiny === false) {
+          setRbCheckedAddressOrigin(false);
+          setRbCheckedAddressDestiny(true);
 
-        setNeighborhoodDestiny(dataClient.neighborhood);
-        setNeighborhoodOrigin(neighborhoodDestinyOld);
-
-        setStreetDestiny(dataClient.street);
-        setStreetOrigin(streetDestinyOld);
-
-        setStreetNumberDestiny(dataClient.street_number);
-        setStreetNumberOrigin(streetNumberDestinyOld);
-
-        setComplementDestiny(dataClient.complement);
-        setComplementOrigin(complementDestinyOld);
-
-        setRbCheckedAddressOrigin(false);
-        setRbCheckedAddressDestiny(true);
-
-        setIsReadOnlyOrigin(false);
-        setIsReadOnlyDestiny(true);
+          setIsReadOnlyOrigin(false);
+          setIsReadOnlyDestiny(true);
+        }
       }
     }
   }
@@ -188,9 +237,265 @@ export default function ServiceOrdersRequest() {
   }
   //#endregion
 
+  // #region Clear Fields
+  function clearFields(inputs) {
+    switch (inputs) {
+      case "all":
+        setIdClient;
+        setNameFantasyClient;
+        setIdNeighborhoodOrigin;
+        setNeighborhoodOrigin;
+        setStreetOrigin;
+        setStreetNumberOrigin;
+        setComplementOrigin;
+        break;
+
+      default:
+        break;
+    }
+  }
+
+  // #endregion
+
+  // #region Handle Open Modal Search client
+  const handleOpenModalSearchClientEdit = () => {
+    setLoadingModal(true);
+    loadSearchClientList();
+
+    setTitleIconModal(<RiUser2Line size={30} />);
+    setTitleModal("PESQUISAR CLIENTE");
+    setOpenModalSearchClient(true);
+  };
+
+  const handleCloseModalSearchClientEdit = () => {
+    setTitleModal("");
+    setSearchClient("");
+    setOpenModalSearchClient(false);
+  };
+  // #endregion
+
+  // #region Handle Select Search Client
+  function handleSelectClientInSearch(
+    idClient,
+    nameFantasy,
+    idNeighborhood,
+    neighborhood,
+    street,
+    number,
+    complement
+  ) {
+    clearFields();
+
+    setIdClient(idClient);
+    setNameFantasyClient(nameFantasy);
+
+    if (rbCheckedAddressOrigin) {
+      setIdNeighborhoodOrigin(idNeighborhood);
+      setNeighborhoodOrigin(neighborhood);
+      setStreetOrigin(street);
+      setStreetNumberOrigin(number);
+      setComplementOrigin(complement);
+
+      inputFocus("neighborhoodDestiny");
+    } else if (rbCheckedAddressDestiny) {
+      setIdNeighborhoodDestiny(idNeighborhood);
+      setNeighborhoodDestiny(neighborhood);
+      setStreetDestiny(street);
+      setStreetNumberDestiny(number);
+      setComplementDestiny(complement);
+
+      inputFocus("neighborhoodOrigin");
+    }
+
+    handleCloseModalSearchClientEdit();
+  }
+
+  function inputFocus(input) {
+    switch (input) {
+      case "neighborhoodOrigin":
+        setTimeout(() => {
+          neighborhoodOriginInputRef.current.focus();
+        }, 1);
+        break;
+      case "neighborhoodDestiny":
+        setTimeout(() => {
+          neighborhoodDestinyInputRef.current.focus();
+        }, 1);
+        break;
+
+      default:
+        break;
+    }
+  }
+  // #endregion
+
+  // #region Load Search Client List
+  async function loadSearchClientList() {
+    setLoadingModal(true);
+
+    try {
+      const response = await api.get(
+        `/clients/active/?nameFantasy=${searchClient.toUpperCase()}`
+      );
+
+      if (response) {
+        console.log(response.data);
+
+        setSearchClientList(response.data);
+        setLoadingModal(false);
+      }
+    } catch (error) {
+      setLoadingModal(false);
+
+      if (error.response) {
+        const dataError = error.response.data;
+        const statusError = error.response.status;
+        console.error(dataError);
+        console.error(statusError);
+
+        if (statusError === 400 && dataError.message) {
+          console.log(dataError.message);
+          switch (dataError.message) {
+            case '"nameFantasy" is required':
+              notify(
+                "error",
+                "Oops, algo deu errado, entre em contato com o suporte de TI. Erro: o QUERY PARAM 'nameFantasy' não foi encontrado no endereço da rota."
+              );
+              break;
+
+            default:
+              notify("warning", dataError.message);
+          }
+        }
+
+        if (statusError === 401) {
+          switch (dataError.message) {
+            default:
+              notify("warning", dataError.message);
+          }
+        }
+      } else if (error.request) {
+        notify(
+          "error",
+          `Oops, algo deu errado, entre em contato com o suporte de TI. ${error}`
+        );
+        console.log(error.request);
+      } else {
+        notify(
+          "error",
+          `Oops, algo deu errado, entre em contato com o suporte de TI. ${error}`
+        );
+        console.log("Error", error.message);
+      }
+    }
+  }
+  // #endregion
+
   return (
     <div className="main-container">
-      <LateralMenu></LateralMenu>
+      <Modal
+        id="modalSearchClient"
+        aria-labelledby="transition-modal-title"
+        aria-describedby="transition-modal-description"
+        className={ClassesModal.modal}
+        open={openModalSearchClient}
+        onClose={handleCloseModalSearchClientEdit}
+        closeAfterTransition
+        BackdropComponent={Backdrop}
+        BackdropProps={{
+          timeout: 500,
+        }}
+      >
+        <Fade in={openModalSearchClient}>
+          <div className={ClassesModal.paper}>
+            <h1 className="modal-search-title">
+              {titleIconModal} {titleModal}
+            </h1>
+            <div className="modal-search-content">
+              <div className="modal-search-input-button">
+                <div className="input-label-block-colum">
+                  <label htmlFor="inputSearchClient">Nome fantasia:</label>
+                  <input
+                    id="inputSearchClient"
+                    type="text"
+                    value={searchClient}
+                    onChange={(e) => setSearchClient(e.target.value)}
+                    onKeyUp={loadSearchClientList}
+                  ></input>
+                </div>
+
+                <button
+                  type="button"
+                  className="button btnDefault btnSearchModal"
+                  onClick={loadSearchClientList}
+                >
+                  <RiSearchLine size={24} />
+                  Buscar
+                </button>
+              </div>
+
+              <div className="modal-search-list">
+                {loadingModal ? (
+                  <Loading type="bars" color="#0f4c82" />
+                ) : (
+                  searchClientList.map((client) => (
+                    <div
+                      className="searchListIten"
+                      key={client.id}
+                      onDoubleClick={() =>
+                        handleSelectClientInSearch(
+                          client.id,
+                          client.name_fantasy,
+                          client.People_address.id_neighborhood,
+                          client.People_address.Neighborhood.name,
+                          client.People_address.street,
+                          client.People_address.street_number,
+                          client.People_address.complement
+                        )
+                      }
+                    >
+                      <div className="searchItenData">
+                        <strong>Código: {client.id}</strong>
+                        <section id="searchClientData">
+                          <p id="searchCnpjClient">CNPJ: {client.cpf_cnpj}</p>
+                          <p id="searchCompanyNameClient">
+                            Razão Social: {client.company_name}
+                          </p>
+                          <p id="searchNameFantasyClient">
+                            Nome Fantasia: {client.name_fantasy}
+                          </p>
+                        </section>
+                      </div>
+                      <div className="clientBtnSelect">
+                        <button
+                          type="button"
+                          className="button btnSuccess"
+                          onClick={() =>
+                            handleSelectClientInSearch(
+                              client.id,
+                              client.name_fantasy,
+                              client.People_address.id_neighborhood,
+                              client.People_address.Neighborhood.name,
+                              client.People_address.street,
+                              client.People_address.street_number,
+                              client.People_address.complement
+                            )
+                          }
+                        >
+                          <RiArrowRightUpLine size={24} />
+                        </button>
+                      </div>
+                    </div>
+                  ))
+                )}
+              </div>
+            </div>
+          </div>
+        </Fade>
+      </Modal>
+
+      <LateralMenu />
+
       <>
         {loading ? (
           <Loading type="bars" color="#0f4c82" />
@@ -199,7 +504,7 @@ export default function ServiceOrdersRequest() {
             <Header
               title={"Ordens de Serviço"}
               icon={<RiFileListLine size={40} />}
-            ></Header>
+            />
             <div className="os-request-container">
               <div className="tab-bar">
                 <div className="group-tabs"></div>
@@ -220,8 +525,8 @@ export default function ServiceOrdersRequest() {
                     <div className="input-block">
                       <input
                         type="text"
-                        value={client}
-                        onChange={(e) => setClient(e.target.value)}
+                        value={nameFantasyClient}
+                        onChange={(e) => setNameFantasyClient(e.target.value)}
                         id="client"
                         readOnly={true}
                         required
@@ -230,7 +535,8 @@ export default function ServiceOrdersRequest() {
                         type="button"
                         className="button btnDefault"
                         onClick={() => {
-                          preencheStatesTest();
+                          clearFields();
+                          handleOpenModalSearchClientEdit();
                         }}
                       >
                         <RiSearchLine size={24} />
@@ -254,7 +560,7 @@ export default function ServiceOrdersRequest() {
                             type="radio"
                             name="rbAddressClient"
                             id="rbAddressClientOrigin"
-                            disabled={isDisabledRbAddressClient}
+                            defaultChecked={rbCheckedAddressOrigin}
                             onClick={() => {
                               handleAddressCheckClient("origin");
                             }}
@@ -268,6 +574,7 @@ export default function ServiceOrdersRequest() {
 
                         <div className="neighborhood-block">
                           <input
+                            ref={neighborhoodOriginInputRef}
                             type="text"
                             value={neighborhoodOrigin}
                             onChange={(e) =>
@@ -340,7 +647,8 @@ export default function ServiceOrdersRequest() {
                             type="radio"
                             name="rbAddressClient"
                             id="rbAddressClientDestiny"
-                            disabled={isDisabledRbAddressClient}
+                            defaultChecked={rbCheckedAddressDestiny}
+                            // disabled={isDisabledRbAddressClient}
                             onClick={() => {
                               handleAddressCheckClient("destiny");
                             }}
@@ -355,6 +663,7 @@ export default function ServiceOrdersRequest() {
                         <label htmlFor="neighborhood">Bairro:</label>
                         <div className="neighborhood-block">
                           <input
+                            ref={neighborhoodDestinyInputRef}
                             type="text"
                             value={neighborhoodDestiny}
                             onChange={(e) =>

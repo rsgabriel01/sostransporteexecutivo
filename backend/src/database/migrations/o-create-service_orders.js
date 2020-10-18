@@ -28,7 +28,7 @@ module.exports = {
           },
         },
         id_user_attendance: {
-          allowNull: false,
+          allowNull: true,
           type: DataTypes.BIGINT,
           references: {
             model: "People",
@@ -60,7 +60,7 @@ module.exports = {
           },
         },
         date_time_solicitation: {
-          allowNull: true,
+          allowNull: false,
           type: DataTypes.DATE,
         },
         date_time_attendance: {

@@ -337,6 +337,12 @@ routes.get("/travelFee", TravelFeeController.index);
 
 // #region ServiceOrders
 routes.get("/serviceOrders", ServiceOrdersController.index);
+routes.post(
+  "/serviceOrders",
+  verifySession,
+  permissionAdminAttendance,
+  ServiceOrdersController.store
+);
 // #endregion
 
 // #region Vehicle

@@ -4,7 +4,10 @@ const {
   People_type,
   Neighborhoods,
 } = require("../models");
+
 const { Op, fn, col, literal, QueryTypes, Sequelize } = require("sequelize");
+
+const moment = require("moment");
 
 module.exports = {
   async index(req, res) {
@@ -90,24 +93,27 @@ module.exports = {
       }
 
       const createdOs = await Service_orders.create({
+        id_user_solicitation: id_executingperson,
         id_client: idClient,
-        client_origin: clientOrigin,
+        id_status: 1,
+        date_time_solicitation: moment().format(),
         id_neighborhood_origin: idNeighborhoodOrigin,
-        street_origin: streetOrigin,
+        street_origin: streetOrigin.toUpperCase(),
         street_number_origin: streetNumberOrigin,
-        complement_origin: complementOrigin,
-        client_destiny: clientDestiny,
+        complement_origin: complementOrigin.toUpperCase(),
+        client_origin: clientOrigin,
         id_neighborhood_destiny: idNeighborhoodDestiny,
-        street_destiny: streetDestiny,
+        street_destiny: streetDestiny.toUpperCase(),
         street_number_destiny: streetNumberDestiny,
-        complement_destiny: complementDestiny,
-        observation_service: observationService,
+        complement_destiny: complementDestiny.toUpperCase(),
+        client_destiny: clientDestiny,
+        observation_service: observationService.toUpperCase(),
       });
 
       if (createdOs) {
         return res.status(201).json({
           createdOs,
-          message: "Cadastro de cliente efetuado com sucesso!",
+          message: `Cadastro de ordem de serviço efetuado com sucesso! Código: ${createdOs.id}`,
         });
       }
     } catch (error) {

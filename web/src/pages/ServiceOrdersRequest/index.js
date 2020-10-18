@@ -18,6 +18,7 @@ import {
   RiArrowRightUpLine,
   RiRoadMapLine,
   RiQuestionLine,
+  RiLoader4Line,
 } from "react-icons/ri";
 
 import LateralMenu from "../components/LateralMenu/LateralMenu";
@@ -45,6 +46,7 @@ export default function ServiceOrdersRequest() {
   const [isReadOnlyDestiny, setIsReadOnlyDestiny] = useState(false);
 
   const [loadingButton, setLoadingButton] = useState(false);
+  const [textButtonSave, setTextButtonSave] = useState("Salvar");
   const [btnInactive, setBtnInactive] = useState("");
 
   const [idClient, setIdClient] = useState("");
@@ -63,6 +65,8 @@ export default function ServiceOrdersRequest() {
   const [streetDestiny, setStreetDestiny] = useState("");
   const [streetNumberDestiny, setStreetNumberDestiny] = useState("");
   const [complementDestiny, setComplementDestiny] = useState("");
+
+  const [observationService, setObservationService] = useState("");
 
   const nameFantasyClientInputRef = useRef(null);
   const neighborhoodOriginInputRef = useRef(null);
@@ -218,9 +222,74 @@ export default function ServiceOrdersRequest() {
       streetDestiny: streetDestiny.toUpperCase(),
       streetNumberDestiny,
       complementDestiny: complementDestiny.toUpperCase(),
+      observationService: observationService.toUpperCase(),
     };
 
-    alert(JSON.stringify(dataOs));
+    setTextButtonSave("Aguarde...");
+    setLoadingButton(true);
+    setBtnInactive("btnInactive");
+
+    console.log(dataOs);
+
+    try {
+      const response = await api.post("/serviceOrders", dataOs);
+
+      if (response) {
+        console.log(response.data);
+
+        notify("success", response.data.message);
+
+        setTextButtonSave("Salvar");
+        setLoadingButton(false);
+        setBtnInactive("");
+        clearFields("all");
+      }
+    } catch (error) {
+      setTextButtonSave("Salvar");
+      setLoadingButton(false);
+      setBtnInactive("");
+
+      if (error.response) {
+        const dataError = error.response.data;
+        const statusError = error.response.status;
+        console.error(dataError);
+        console.error(statusError);
+
+        if (statusError === 400 && dataError.message) {
+          console.log(dataError.message);
+          switch (dataError.message) {
+            default:
+              notify("warning", dataError.message);
+          }
+        }
+
+        if (statusError === 401) {
+          switch (dataError.message) {
+            default:
+              notify("warning", dataError.message);
+          }
+        }
+
+        if (statusError === 500) {
+          notify(
+            "error",
+            "Ooops, erro interno do servidor, por favor entre em contato com setor de TI."
+          );
+        }
+      } else if (error.request) {
+        notify(
+          "error",
+          `Oops, algo deu errado, entre em contato com o suporte de TI. ${error}`
+        );
+        console.log("Error 1", error.request);
+      } else {
+        notify(
+          "error",
+          `Oops, algo deu errado, entre em contato com o suporte de TI. ${error}`
+        );
+        console.log("Error 2", error.message);
+      }
+    }
   }
   //#endregion
 
@@ -1108,23 +1177,40 @@ export default function ServiceOrdersRequest() {
                   <div className="button-group-forms">
                     <button
                       type="button"
-                      className="button btnReturn"
-                      onClick={() => handleReturn()}
+                      className={`button btnReturn ${btnInactive}`}
+                      disabled={loadingButton}
+                      onClick={() => {
+                        handleReturn();
+                      }}
                     >
-                      <RiArrowLeftLine size={25} />
+                      <RiArrowLeftLine size={30} />
                       Voltar
                     </button>
                     <button
                       type="button"
-                      className="button btnCancel"
-                      onClick={() => handleCancel()}
+                      className={`button btnCancel ${btnInactive}`}
+                      disabled={loadingButton}
+                      onClick={() => {
+                        handleCancel();
+                      }}
                     >
                       <RiCloseLine size={30} />
                       Cancelar
                     </button>
-                    <button type="submit" className="button btnSuccess">
-                      <RiCheckLine size={30} />
-                      Salvar
+                    <button
+                      type="submit"
+                      className={`button btnSuccess ${btnInactive}`}
+                      disabled={loadingButton}
+                    >
+                      {!loadingButton ? (
+                        <RiCheckLine size={25} />
+                      ) : (
+                        <RiLoader4Line
+                          size={25}
+                          className="load-spinner-button"
+                        />
+                      )}
+                      {textButtonSave}
                     </button>
                   </div>
                 </form>

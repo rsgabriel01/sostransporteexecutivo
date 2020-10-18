@@ -319,7 +319,7 @@ export default function ClientNew() {
   // #endregion
 
   // #region Handle Cancel Create
-  async function handleCancel() {
+  function handleCancel() {
     if (fieldsIsFilled()) {
       confirmationAlert(
         "Atenção!",
@@ -331,7 +331,7 @@ export default function ClientNew() {
   // #endregion
 
   // #region Handle Return Page Consult
-  async function handleReturn() {
+  function handleReturn() {
     if (fieldsIsFilled()) {
       confirmationAlert(
         "Atenção!",

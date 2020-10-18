@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from "react";
-import { Link, useHistory } from "react-router-dom";
+import { useHistory } from "react-router-dom";
 import { confirmAlert } from "react-confirm-alert";
 import { ToastContainer } from "react-toastify";
 import { makeStyles } from "@material-ui/core/styles";
@@ -17,13 +17,13 @@ import {
   RiArrowLeftLine,
   RiArrowRightUpLine,
   RiRoadMapLine,
+  RiQuestionLine,
 } from "react-icons/ri";
 
 import LateralMenu from "../components/LateralMenu/LateralMenu";
 import Header from "../components/Header/Header";
 import Loading from "../components/Loading/Loading";
 import notify from "../../helpers/notifys";
-import { onlyNumber } from "../../helpers/onlyNumber";
 
 import api from "../../services/api";
 
@@ -64,6 +64,7 @@ export default function ServiceOrdersRequest() {
   const [streetNumberDestiny, setStreetNumberDestiny] = useState("");
   const [complementDestiny, setComplementDestiny] = useState("");
 
+  const nameFantasyClientInputRef = useRef(null);
   const neighborhoodOriginInputRef = useRef(null);
   const neighborhoodDestinyInputRef = useRef(null);
   const streetOriginInputRef = useRef(null);
@@ -203,40 +204,201 @@ export default function ServiceOrdersRequest() {
   }
   // #endregion
 
-  // #region request OS
-  async function handleRequestOs(e) {
-    e.preventDefault();
+  // #region create OS
+  async function createOs() {
+    const dataOs = {
+      idClient,
+      clientOrigin: rbCheckedAddressOrigin,
+      idNeighborhoodOrigin,
+      streetOrigin: streetOrigin.toUpperCase(),
+      streetNumberOrigin,
+      complementOrigin: complementOrigin.toUpperCase(),
+      clientDestiny: rbCheckedAddressDestiny,
+      idNeighborhoodDestiny,
+      streetDestiny: streetDestiny.toUpperCase(),
+      streetNumberDestiny,
+      complementDestiny: complementDestiny.toUpperCase(),
+    };
 
-    // const data = {
-    //   user,
-    //   password,
-    // };
-
-    // try {
-    //   const response = await api.post("/acess/login", data);
-
-    //   console.log(response.data);
-
-    //   history.push("/main");
-    // } catch (error) {
-    //   if (error.response) {
-    //     const dataError = error.response.data;
-    //     const statusError = error.response.status;
-
-    //     if (statusError === 400 && dataError.message) {
-    //       alert(dataError.message);
-    //     }
-    //     console.log(error.response);
-    //     console.log(error.response.data);
-    //     console.log(statusError);
-    //   } else if (error.request) {
-    //     console.log(error.request);
-    //   } else {
-    //     console.log("Error", error.message);
-    //   }
-    // }
+    alert(JSON.stringify(dataOs));
   }
   //#endregion
+
+  // #region Return Page Consult
+  function returnPageConsult() {
+    history.push("/serviceorders");
+  }
+  // #endregion
+
+  // #region Alert confirmation
+  function confirmationAlert(title, message, functionExecute) {
+    confirmAlert({
+      customUI: ({ onClose }) => (
+        <div className="custom-ui">
+          <div className="content">
+            <div className="header">
+              <RiQuestionLine size={70} />
+              <h1>{title}</h1>
+            </div>
+
+            <p>{message}</p>
+          </div>
+
+          <div className="alert-button-group-column">
+            <div className="alert-button-group-row">
+              <div className="alert-button-block">
+                <button onClick={onClose} className="button btnCancel">
+                  <RiCloseLine size={25} />
+                  Não
+                </button>
+                <button
+                  className="button btnSuccess"
+                  onClick={() => {
+                    switch (functionExecute) {
+                      case "returnPageConsult":
+                        returnPageConsult();
+                        break;
+
+                      case "clearFieldsAll":
+                        clearFields("all");
+                        break;
+
+                      case "createOs":
+                        createOs();
+                        break;
+                      default:
+                        break;
+                    }
+                    onClose();
+                  }}
+                >
+                  <RiCheckLine size={25} />
+                  Sim
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      ),
+    });
+  }
+  // #endregion
+
+  //#region Verify Field Filled
+  const fieldsIsFilled = () => {
+    if (
+      idClient !== "" ||
+      nameFantasyClient !== "" ||
+      idNeighborhoodOrigin !== "" ||
+      neighborhoodOrigin !== "" ||
+      streetOrigin !== "" ||
+      streetNumberOrigin !== "" ||
+      complementOrigin !== "" ||
+      idNeighborhoodDestiny !== "" ||
+      neighborhoodDestiny !== "" ||
+      streetDestiny !== "" ||
+      streetNumberDestiny !== "" ||
+      complementDestiny !== ""
+    ) {
+      return true;
+    } else {
+      return false;
+    }
+  };
+  // #endregion
+
+  // #region Handle Submit
+  function handleSubmit(e) {
+    e.preventDefault();
+
+    if (idClient === "" || nameFantasyClient == "") {
+      notify(
+        "warning",
+        "Os dados do cliente devem estar preenchidos, por favor verifique."
+      );
+
+      inputFocus("nameFantasyClient");
+      return;
+    }
+
+    if (
+      idNeighborhoodOrigin === "" ||
+      neighborhoodOrigin === "" ||
+      streetOrigin === "" ||
+      streetNumberOrigin === ""
+    ) {
+      if (rbCheckedAddressOrigin) {
+        notify(
+          "warning",
+          "Os dados de endereço cliente devem estar preenchidos, por favor verifique."
+        );
+        inputFocus("nameFantasyClient");
+      } else {
+        notify(
+          "warning",
+          "Os dados de endereço de origem devem estar preenchidos, por favor verifique."
+        );
+        inputFocus("neighborhoodOrigin");
+      }
+
+      return;
+    }
+
+    if (
+      idNeighborhoodDestiny === "" ||
+      neighborhoodDestiny === "" ||
+      streetDestiny === "" ||
+      streetNumberDestiny === ""
+    ) {
+      if (rbCheckedAddressDestiny) {
+        notify(
+          "warning",
+          "Os dados de endereço cliente devem estar preenchidos, por favor verifique."
+        );
+        inputFocus("nameFantasyClient");
+      } else {
+        notify(
+          "warning",
+          "Os dados de endereço de destino devem estar preenchidos, por favor verifique."
+        );
+        inputFocus("neighborhoodDestiny");
+      }
+      return;
+    }
+
+    confirmationAlert(
+      "Atenção!",
+      "Deseja realmente SALVAR esse cadastro?",
+      "createOs"
+    );
+  }
+  // #endregion
+
+  // #region Handle Cancel Create
+  function handleCancel() {
+    if (fieldsIsFilled()) {
+      confirmationAlert(
+        "Atenção!",
+        "Deseja realmente CANCELAR esse cadastro? Os dados não salvos serão perdidos.",
+        "clearFieldsAll"
+      );
+    }
+  }
+  // #endregion
+
+  // #region Handle Return Page Consult
+  function handleReturn() {
+    if (fieldsIsFilled()) {
+      confirmationAlert(
+        "Atenção!",
+        "Deseja realmente VOLTAR para a página de consulta de Ordens de Serviço? Os dados não salvos serão perdidos.",
+        "returnPageConsult"
+      );
+    } else {
+      returnPageConsult();
+    }
+  }
+  // #endregion
 
   // #region Clear Fields
   function clearFields(inputs) {
@@ -256,6 +418,11 @@ export default function ServiceOrdersRequest() {
         setStreetDestiny("");
         setStreetNumberDestiny("");
         setComplementDestiny("");
+
+        setIsReadOnlyOrigin(true);
+        setIsReadOnlyDestiny(false);
+        setRbCheckedAddressOrigin(true);
+        setRbCheckedAddressDestiny(false);
         break;
 
       default:
@@ -320,6 +487,11 @@ export default function ServiceOrdersRequest() {
   //#region Input Focus
   function inputFocus(input) {
     switch (input) {
+      case "nameFantasyClient":
+        setTimeout(() => {
+          nameFantasyClientInputRef.current.focus();
+        }, 1);
+        break;
       case "neighborhoodOrigin":
         setTimeout(() => {
           neighborhoodOriginInputRef.current.focus();
@@ -704,6 +876,8 @@ export default function ServiceOrdersRequest() {
           <Loading type="bars" color="#0f4c82" />
         ) : (
           <div className="content-container">
+            <ToastContainer />
+
             <Header
               title={"Ordens de Serviço"}
               icon={<RiFileListLine size={40} />}
@@ -714,7 +888,7 @@ export default function ServiceOrdersRequest() {
               </div>
 
               <section className="form">
-                <form onSubmit={handleRequestOs}>
+                <form onSubmit={handleSubmit}>
                   <div className="form-title">
                     <RiDraftLine size={30} />
                     <h1>NOVA ORDEM DE SERVIÇO</h1>
@@ -727,6 +901,7 @@ export default function ServiceOrdersRequest() {
                     </h1>
                     <div className="input-block">
                       <input
+                        ref={nameFantasyClientInputRef}
                         type="text"
                         value={nameFantasyClient}
                         onChange={(e) => setNameFantasyClient(e.target.value)}
@@ -762,8 +937,8 @@ export default function ServiceOrdersRequest() {
                             type="radio"
                             name="rbAddressClient"
                             id="rbAddressClientOrigin"
-                            defaultChecked={rbCheckedAddressOrigin}
-                            onClick={() => {
+                            checked={rbCheckedAddressOrigin}
+                            onChange={() => {
                               handleAddressCheckClient("origin");
                             }}
                           />
@@ -853,8 +1028,8 @@ export default function ServiceOrdersRequest() {
                             type="radio"
                             name="rbAddressClient"
                             id="rbAddressClientDestiny"
-                            defaultChecked={rbCheckedAddressDestiny}
-                            onClick={() => {
+                            checked={rbCheckedAddressDestiny}
+                            onChange={() => {
                               handleAddressCheckClient("destiny");
                             }}
                           />
@@ -934,14 +1109,16 @@ export default function ServiceOrdersRequest() {
                     <button
                       type="button"
                       className="button btnReturn"
-                      onClick={() => {
-                        history.push("/serviceorders");
-                      }}
+                      onClick={() => handleReturn()}
                     >
                       <RiArrowLeftLine size={25} />
                       Voltar
                     </button>
-                    <button type="button" className="button btnCancel">
+                    <button
+                      type="button"
+                      className="button btnCancel"
+                      onClick={() => handleCancel()}
+                    >
                       <RiCloseLine size={30} />
                       Cancelar
                     </button>

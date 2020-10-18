@@ -121,6 +121,8 @@
 .os-request-container section.form form input {
   border: 0;
   padding: 0px 10px;
+
+  text-transform: uppercase;
 }
 
 .os-request-container section.form form input:hover {

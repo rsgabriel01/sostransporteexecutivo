@@ -1,1 +1,10 @@
-insert into "Status"(description) values ('');
+INSERT INTO "Status"("id", description) VALUES (1, 'AGUARDANDO ATENDIMENTO');
+INSERT INTO "Status"("id", description) VALUES (2, 'INICIADO ATENDIMENTO');
+INSERT INTO "Status"("id", description) VALUES (3, 'NA LISTA DE EXECUÇÃO DO MOTORISTA');
+INSERT INTO "Status"("id", description) VALUES (4, 'MOTORISTA A CAMINHO DO ENDEREÇO DE ORIGEM');
+INSERT INTO "Status"("id", description) VALUES (5, 'PASSAGEIRO COLETADO NO ENDEREÇO DE ORIGEM');
+INSERT INTO "Status"("id", description) VALUES (6, 'EM TRÂNSITO PARA O ENDEREÇO DE DESTINO');
+INSERT INTO "Status"("id", description) VALUES (7, 'PASSAGEIRO DEIXADO NO ENDEREÇO DE DESTINO');
+INSERT INTO "Status"("id", description) VALUES (8, 'FINALIZADO');
+INSERT INTO "Status"("id", description) VALUES (98, 'CANCELADO');
+INSERT INTO "Status"("id", description) VALUES (99, 'FINALIZADO (COM TAXA DE CANCELAMENTO)');

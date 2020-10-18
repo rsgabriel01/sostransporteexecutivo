@@ -43,6 +43,14 @@ module.exports = {
             key: "id",
           },
         },
+        id_vehicle: {
+          allowNull: true,
+          type: DataTypes.BIGINT,
+          references: {
+            model: "Vehicles",
+            key: "id",
+          },
+        },
         id_status: {
           allowNull: false,
           type: DataTypes.BIGINT,
@@ -83,6 +91,10 @@ module.exports = {
           allowNull: true,
           type: DataTypes.STRING,
         },
+        client_origin: {
+          allowNull: false,
+          type: DataTypes.BOOLEAN,
+        },
         id_neighborhood_destiny: {
           allowNull: false,
           type: DataTypes.BIGINT,
@@ -102,6 +114,10 @@ module.exports = {
         complement_destiny: {
           allowNull: true,
           type: DataTypes.STRING,
+        },
+        client_destiny: {
+          allowNull: false,
+          type: DataTypes.BOOLEAN,
         },
         date_time_completion: {
           allowNull: true,

@@ -16,6 +16,7 @@ import {
   RiCloseLine,
   RiArrowLeftLine,
   RiArrowRightUpLine,
+  RiRoadMapLine,
 } from "react-icons/ri";
 
 import LateralMenu from "../components/LateralMenu/LateralMenu";
@@ -42,9 +43,6 @@ export default function ServiceOrdersRequest() {
 
   const [isReadOnlyOrigin, setIsReadOnlyOrigin] = useState(true);
   const [isReadOnlyDestiny, setIsReadOnlyDestiny] = useState(false);
-  const [isDisabledRbAddressClient, setIsDisabledRbAddressClient] = useState(
-    true
-  );
 
   const [loadingButton, setLoadingButton] = useState(false);
   const [btnInactive, setBtnInactive] = useState("");
@@ -66,16 +64,26 @@ export default function ServiceOrdersRequest() {
   const [streetNumberDestiny, setStreetNumberDestiny] = useState("");
   const [complementDestiny, setComplementDestiny] = useState("");
 
+  const neighborhoodOriginInputRef = useRef(null);
+  const neighborhoodDestinyInputRef = useRef(null);
+  const streetOriginInputRef = useRef(null);
+  const streetDestinyInputRef = useRef(null);
+
   const useStyles = makeStyles((theme) => jsonClassesModal(theme));
   const ClassesModal = useStyles();
   const [titleModal, setTitleModal] = useState("");
   const [titleIconModal, setTitleIconModal] = useState();
 
   const [openModalSearchClient, setOpenModalSearchClient] = useState(false);
-  const neighborhoodOriginInputRef = useRef(null);
-  const neighborhoodDestinyInputRef = useRef(null);
   const [searchClient, setSearchClient] = useState("");
   const [searchClientList, setSearchClientList] = useState([]);
+
+  const [
+    openModalSearchNeighborhood,
+    setOpenModalSearchNeighborhood,
+  ] = useState(false);
+  const [searchNeighborhood, setSearchNeighborhood] = useState("");
+  const [searchNeighborhoodList, setSearchNeighborhoodList] = useState([]);
 
   //#endregion
 
@@ -195,13 +203,6 @@ export default function ServiceOrdersRequest() {
   }
   // #endregion
 
-  // #region object Client test
-
-  function preencheStatesTest() {
-    setIsDisabledRbAddressClient(false);
-  }
-  // #endregion
-
   // #region request OS
   async function handleRequestOs(e) {
     e.preventDefault();
@@ -241,13 +242,20 @@ export default function ServiceOrdersRequest() {
   function clearFields(inputs) {
     switch (inputs) {
       case "all":
-        setIdClient;
-        setNameFantasyClient;
-        setIdNeighborhoodOrigin;
-        setNeighborhoodOrigin;
-        setStreetOrigin;
-        setStreetNumberOrigin;
-        setComplementOrigin;
+        setIdClient("");
+        setNameFantasyClient("");
+
+        setIdNeighborhoodOrigin("");
+        setNeighborhoodOrigin("");
+        setStreetOrigin("");
+        setStreetNumberOrigin("");
+        setComplementOrigin("");
+
+        setIdNeighborhoodDestiny("");
+        setNeighborhoodDestiny("");
+        setStreetDestiny("");
+        setStreetNumberDestiny("");
+        setComplementDestiny("");
         break;
 
       default:
@@ -284,8 +292,6 @@ export default function ServiceOrdersRequest() {
     number,
     complement
   ) {
-    clearFields();
-
     setIdClient(idClient);
     setNameFantasyClient(nameFantasy);
 
@@ -309,7 +315,9 @@ export default function ServiceOrdersRequest() {
 
     handleCloseModalSearchClientEdit();
   }
+  // #endregion
 
+  //#region Input Focus
   function inputFocus(input) {
     switch (input) {
       case "neighborhoodOrigin":
@@ -322,12 +330,22 @@ export default function ServiceOrdersRequest() {
           neighborhoodDestinyInputRef.current.focus();
         }, 1);
         break;
+      case "streetOrigin":
+        setTimeout(() => {
+          streetOriginInputRef.current.focus();
+        }, 1);
+        break;
+      case "streetDestiny":
+        setTimeout(() => {
+          streetDestinyInputRef.current.focus();
+        }, 1);
+        break;
 
       default:
         break;
     }
   }
-  // #endregion
+  //#endregion Input Focus
 
   // #region Load Search Client List
   async function loadSearchClientList() {
@@ -360,6 +378,104 @@ export default function ServiceOrdersRequest() {
               notify(
                 "error",
                 "Oops, algo deu errado, entre em contato com o suporte de TI. Erro: o QUERY PARAM 'nameFantasy' não foi encontrado no endereço da rota."
+              );
+              break;
+
+            default:
+              notify("warning", dataError.message);
+          }
+        }
+
+        if (statusError === 401) {
+          switch (dataError.message) {
+            default:
+              notify("warning", dataError.message);
+          }
+        }
+      } else if (error.request) {
+        notify(
+          "error",
+          `Oops, algo deu errado, entre em contato com o suporte de TI. ${error}`
+        );
+        console.log(error.request);
+      } else {
+        notify(
+          "error",
+          `Oops, algo deu errado, entre em contato com o suporte de TI. ${error}`
+        );
+        console.log("Error", error.message);
+      }
+    }
+  }
+  // #endregion
+
+  // #region Handle Open Modal Search Neighborhood
+  const handleOpenModalSearchNeighborhood = () => {
+    setLoadingModal(true);
+    loadSearchNeighborhoodList();
+
+    setTitleIconModal(<RiRoadMapLine size={30} />);
+    setTitleModal("PESQUISAR BAIRRO");
+    setOpenModalSearchNeighborhood(true);
+  };
+
+  const handleCloseModalSearchNeighborhoodEdit = () => {
+    setTitleModal("");
+    setSearchNeighborhood("");
+    setOpenModalSearchNeighborhood(false);
+  };
+  // #endregion
+
+  // #region Handle Select Search Neighborhood
+  function handleSelectNeighborhoodInSearch(id, neighborhood) {
+    if (rbCheckedAddressOrigin) {
+      setIdNeighborhoodDestiny(id);
+      setNeighborhoodDestiny(neighborhood);
+
+      inputFocus("streetDestiny");
+    } else if (rbCheckedAddressDestiny) {
+      setIdNeighborhoodOrigin(id);
+      setNeighborhoodOrigin(neighborhood);
+
+      inputFocus("streetOrigin");
+    }
+
+    handleCloseModalSearchNeighborhoodEdit();
+  }
+
+  // #endregion
+
+  // #region Load Search Neighborhood List
+  async function loadSearchNeighborhoodList() {
+    setLoadingModal(true);
+
+    try {
+      const response = await api.get(
+        `/neighborhoods/like/?name=${searchNeighborhood.toUpperCase()}`
+      );
+
+      if (response) {
+        console.log(response.data);
+
+        setSearchNeighborhoodList(response.data);
+        setLoadingModal(false);
+      }
+    } catch (error) {
+      setLoadingModal(false);
+
+      if (error.response) {
+        const dataError = error.response.data;
+        const statusError = error.response.status;
+        console.error(dataError);
+        console.error(statusError);
+
+        if (statusError === 400 && dataError.message) {
+          console.log(dataError.message);
+          switch (dataError.message) {
+            case '"name" is required':
+              notify(
+                "error",
+                "Oops, algo deu errado, entre em contato com o suporte de TI. Erro: o QUERY PARAM 'name' não foi encontrado no endereço da rota."
               );
               break;
 
@@ -494,6 +610,93 @@ export default function ServiceOrdersRequest() {
         </Fade>
       </Modal>
 
+      <Modal
+        id="modalSearcNeighborhood"
+        aria-labelledby="transition-modal-title"
+        aria-describedby="transition-modal-description"
+        className={ClassesModal.modal}
+        open={openModalSearchNeighborhood}
+        onClose={handleCloseModalSearchNeighborhoodEdit}
+        closeAfterTransition
+        BackdropComponent={Backdrop}
+        BackdropProps={{
+          timeout: 500,
+        }}
+      >
+        <Fade in={openModalSearchNeighborhood}>
+          <div className={ClassesModal.paper}>
+            <h1 className="modal-search-title">
+              {titleIconModal} {titleModal}
+            </h1>
+            <div className="modal-search-content">
+              <div className="modal-search-input-button">
+                <div className="input-label-block-colum">
+                  <label htmlFor="inputSearchNeighborhood">Bairro:</label>
+                  <input
+                    id="inputSearchNeighborhood"
+                    type="text"
+                    value={searchNeighborhood}
+                    onChange={(e) => setSearchNeighborhood(e.target.value)}
+                    onKeyUp={loadSearchNeighborhoodList}
+                  ></input>
+                </div>
+
+                <button
+                  type="button"
+                  className="button btnDefault btnSearchModal"
+                  onClick={loadSearchNeighborhoodList}
+                >
+                  <RiSearchLine size={24} />
+                  Buscar
+                </button>
+              </div>
+
+              <div className="modal-search-list">
+                {loadingModal ? (
+                  <Loading type="bars" color="#0f4c82" />
+                ) : (
+                  searchNeighborhoodList.map((neighborhood) => (
+                    <div
+                      className="searchListIten"
+                      key={neighborhood.id}
+                      onDoubleClick={() =>
+                        handleSelectNeighborhoodInSearch(
+                          neighborhood.id,
+                          neighborhood.name
+                        )
+                      }
+                    >
+                      <div className="searchItenData">
+                        <strong>Código: {neighborhood.id}</strong>
+                        <section id="searchNeighborhoodData">
+                          <p id="searchNeighborhood">
+                            Bairro: {neighborhood.name}
+                          </p>
+                        </section>
+                      </div>
+                      <div className="neighborhoodBtnSelect">
+                        <button
+                          type="button"
+                          className="button btnSuccess"
+                          onClick={() =>
+                            handleSelectNeighborhoodInSearch(
+                              neighborhood.id,
+                              neighborhood.name
+                            )
+                          }
+                        >
+                          <RiArrowRightUpLine size={24} />
+                        </button>
+                      </div>
+                    </div>
+                  ))
+                )}
+              </div>
+            </div>
+          </div>
+        </Fade>
+      </Modal>
+
       <LateralMenu />
 
       <>
@@ -535,7 +738,6 @@ export default function ServiceOrdersRequest() {
                         type="button"
                         className="button btnDefault"
                         onClick={() => {
-                          clearFields();
                           handleOpenModalSearchClientEdit();
                         }}
                       >
@@ -589,6 +791,9 @@ export default function ServiceOrdersRequest() {
                               isReadOnlyOrigin ? "btnInactive" : ""
                             }`}
                             disabled={isReadOnlyOrigin}
+                            onClick={() => {
+                              handleOpenModalSearchNeighborhood();
+                            }}
                           >
                             <RiSearchLine size={24} />
                           </button>
@@ -598,6 +803,7 @@ export default function ServiceOrdersRequest() {
                         <div className="input-block">
                           <label htmlFor="street">Rua:</label>
                           <input
+                            ref={streetOriginInputRef}
                             type="text"
                             value={streetOrigin}
                             readOnly={isReadOnlyOrigin}
@@ -648,7 +854,6 @@ export default function ServiceOrdersRequest() {
                             name="rbAddressClient"
                             id="rbAddressClientDestiny"
                             defaultChecked={rbCheckedAddressDestiny}
-                            // disabled={isDisabledRbAddressClient}
                             onClick={() => {
                               handleAddressCheckClient("destiny");
                             }}
@@ -678,6 +883,9 @@ export default function ServiceOrdersRequest() {
                               isReadOnlyDestiny ? "btnInactive" : ""
                             }`}
                             disabled={isReadOnlyDestiny}
+                            onClick={() => {
+                              handleOpenModalSearchNeighborhood();
+                            }}
                           >
                             <RiSearchLine size={24} />
                           </button>
@@ -687,6 +895,7 @@ export default function ServiceOrdersRequest() {
                         <div className="input-block">
                           <label htmlFor="street">Rua:</label>
                           <input
+                            ref={streetDestinyInputRef}
                             type="text"
                             value={streetDestiny}
                             readOnly={isReadOnlyDestiny}

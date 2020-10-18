@@ -12,8 +12,6 @@ const clientLikeNameFantasyController = require("./controllers/ClientLikeNameFan
 const DriverController = require("./controllers/DriverController");
 const DriversLikeNameController = require("./controllers/DriversLikeNameController");
 
-const TypesController = require("./controllers/TypesController");
-
 const TypePeopleController = require("./controllers/TypePeopleController");
 
 const PeopleAddressController = require("./controllers/PeopleAddressController");
@@ -22,22 +20,13 @@ const UsersController = require("./controllers/UsersController");
 
 const SessionsController = require("./controllers/SessionsController");
 
-const StatesController = require("./controllers/StatesController");
-
-const CitysController = require("./controllers/CitysController");
-
 const NeighborhoodsController = require("./controllers/NeighborhoodsController");
 const NeighborhoodsLikeNameController = require("./controllers/NeighborhoodsLikeNameController");
 
 const TravelFeeController = require("./controllers/TravelFeeController");
 
-const StatusController = require("./controllers/StatusController");
-
 const ServiceOrdersController = require("./controllers/ServiceOrdersController");
 
-const VehicleBrandsController = require("./controllers/VehicleBrandsController");
-
-const VehicleModelsController = require("./controllers/VehicleModelsController");
 const VehicleModelsLikeDescriptionController = require("./controllers/VehicleModelsLikeDescriptionController");
 
 const VehicleController = require("./controllers/VehicleController");
@@ -96,6 +85,13 @@ const {
 const {
   validatorNeighborhoodIndexLikeName,
 } = require("./validators/routesNeighborhood");
+// #endregion
+
+// #region Vehicle Models
+const {
+  validatorOsCreate,
+  validatorOsIndexLike,
+} = require("./validators/routesServiceOrders");
 // #endregion
 
 // #region Vehicle
@@ -337,8 +333,10 @@ routes.get("/travelFee", TravelFeeController.index);
 
 // #region ServiceOrders
 routes.get("/serviceOrders", ServiceOrdersController.index);
+
 routes.post(
   "/serviceOrders",
+  validatorOsCreate,
   verifySession,
   permissionAdminAttendance,
   ServiceOrdersController.store

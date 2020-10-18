@@ -367,7 +367,8 @@ export default function ServiceOrdersRequest() {
       neighborhoodDestiny !== "" ||
       streetDestiny !== "" ||
       streetNumberDestiny !== "" ||
-      complementDestiny !== ""
+      complementDestiny !== "" ||
+      observationService !== ""
     ) {
       return true;
     } else {
@@ -487,6 +488,8 @@ export default function ServiceOrdersRequest() {
         setStreetDestiny("");
         setStreetNumberDestiny("");
         setComplementDestiny("");
+
+        setObservationService("");
 
         setIsReadOnlyOrigin(true);
         setIsReadOnlyDestiny(false);
@@ -1171,6 +1174,20 @@ export default function ServiceOrdersRequest() {
                           onChange={(e) => setComplementDestiny(e.target.value)}
                         />
                       </div>
+                    </div>
+                  </div>
+
+                  <div className="observation-group">
+                    <div className="input-block">
+                      <label htmlFor="observationService">Observações:</label>
+
+                      <textarea
+                        id="observationService"
+                        value={observationService}
+                        maxLength="254"
+                        placeholder="Informações úteis."
+                        onChange={(e) => setObservationService(e.target.value)}
+                      />
                     </div>
                   </div>
 

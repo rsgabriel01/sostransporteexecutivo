@@ -499,8 +499,8 @@ export default function Vehicles(props) {
   }
   // #endregion
 
-  // #region Handle Cancel Update
-  async function handelRemoveDriver() {
+  // #region Handle Remove Driver
+  async function handleRemoveDriver() {
     if (
       (idDriver && idDriver !== "") ||
       (idPeopleDriver && idPeopleDriver !== "") ||
@@ -515,7 +515,7 @@ export default function Vehicles(props) {
   }
   // #endregion
 
-  // #region Handle Update Register
+  // #region Handle Alter to Update Register
   function handleUpdateRegister() {
     if (vehicleFinded) {
       setTitleUpdate("ALTERAR ");
@@ -1350,7 +1350,7 @@ export default function Vehicles(props) {
                             id="btnRemoveDriver"
                             title="Remover dados de motorista."
                             onClick={() => {
-                              handelRemoveDriver();
+                              handleRemoveDriver();
                             }}
                           >
                             <RiCloseLine size={24} />

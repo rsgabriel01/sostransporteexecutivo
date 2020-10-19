@@ -96,7 +96,11 @@ textarea {
 
 .btnInactive {
   filter: brightness(60%) !important;
-  cursor: default;
+  cursor: default !important;
+}
+
+.inactive {
+  cursor: default !important;
 }
 
 .btn-tab-inactive {

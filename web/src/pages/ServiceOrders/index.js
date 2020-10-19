@@ -1160,7 +1160,7 @@ export default function ServiceOrdersRequest() {
                     </h1>
                   </div>
 
-                  <div className="input-group-os">
+                  <div className="input-group-oss">
                     <h1>
                       <RiFileListLine size={30} />
                       Ordem de Serviço
@@ -1442,18 +1442,228 @@ export default function ServiceOrdersRequest() {
                     </div>
                   </div>
 
-                  <div className="observation-group">
-                    <div className="input-block">
-                      <label htmlFor="observationService">Observações:</label>
+                  <div className="input-group-os">
+                    <h1>
+                      <RiFileListLine size={30} />
+                      Observações
+                    </h1>
 
-                      <textarea
-                        id="observationService"
-                        value={observationService}
-                        readOnly={isReadonly}
-                        maxLength="254"
-                        placeholder="Informações úteis."
-                        onChange={(e) => setObservationService(e.target.value)}
-                      />
+                    <div className="input-label-group-row">
+                      <div className="input-label-block-column">
+                        <label htmlFor="observationService">Solicitação:</label>
+
+                        <textarea
+                          id="observationService"
+                          value={observationService}
+                          readOnly={isReadonly}
+                          maxLength="254"
+                          onChange={(e) =>
+                            setObservationService(e.target.value)
+                          }
+                        />
+                      </div>
+
+                      <div className="input-label-block-column">
+                        <label htmlFor="observationCancelation">
+                          Cancelamento:
+                        </label>
+
+                        <textarea
+                          id="observationCancelation"
+                          value={observationService}
+                          readOnly={isReadonly}
+                          maxLength="254"
+                          onChange={(e) =>
+                            setObservationService(e.target.value)
+                          }
+                        />
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className="input-group-os">
+                    <h1>
+                      <RiFileListLine size={30} />
+                      Situação
+                    </h1>
+
+                    <div className="input-label-group-row">
+                      <div
+                        className="input-label-block-column"
+                        id="inputSituation"
+                        style={{ width: "50%" }}
+                      >
+                        <input
+                          // ref={carPlateInputRef}
+                          id="situation"
+                          type="text"
+                          readOnly
+                          required
+                          // value={carPlate}
+                          onChange={(e) => {
+                            // setCarPlate(e.target.value);
+                          }}
+                        />
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className="input-group-os">
+                    <h1>
+                      <RiFileListLine size={30} />
+                      Veículo
+                    </h1>
+
+                    <div className="input-label-group-row">
+                      <div className="input-label-block-column">
+                        <label htmlFor="idVehicle">Código:</label>
+
+                        <input
+                          // ref={carPlateInputRef}
+                          id="idVehicle"
+                          type="text"
+                          readOnly
+                          // required
+                          // value={carPlate}
+                          onChange={(e) => {
+                            // setCarPlate(e.target.value);
+                          }}
+                        />
+                      </div>
+
+                      <div className="input-label-block-column">
+                        <label htmlFor="carPlate">Placa:</label>
+
+                        <input
+                          // ref={carPlateInputRef}
+                          id="carPlate"
+                          type="text"
+                          minLength="7"
+                          maxLength="7"
+                          readOnly
+                          // value={carPlate}
+                          onChange={(e) => {
+                            // setCarPlate(e.target.value);
+                          }}
+                        />
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className="input-group-os">
+                    <h1>
+                      <RiFileListLine size={30} />
+                      Motorista
+                    </h1>
+
+                    <div className="input-label-group-row">
+                      <div className="input-label-block-column">
+                        <label htmlFor="idDriver">Código:</label>
+
+                        <input
+                          // ref={carPlateInputRef}
+                          id="idDriver"
+                          type="text"
+                          readOnly
+                          // value={carPlate}
+                          onChange={(e) => {
+                            // setCarPlate(e.target.value);
+                          }}
+                        />
+                      </div>
+
+                      <div className="input-label-block-column">
+                        <label htmlFor="nameDriver">Nome:</label>
+
+                        <input
+                          // ref={carPlateInputRef}
+                          id="nameDriver"
+                          type="text"
+                          readOnly
+                          // value={carPlate}
+                          onChange={(e) => {
+                            // setCarPlate(e.target.value);
+                          }}
+                        />
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className="input-group-os">
+                    <h1>
+                      <RiFileListLine size={30} />
+                      Data/Hora
+                    </h1>
+
+                    <div className="input-label-group-row">
+                      <div className="input-label-block-column">
+                        <label htmlFor="dateTimeSolicitation">
+                          Solicitação:
+                        </label>
+
+                        <input
+                          // ref={carPlateInputRef}
+                          id="dateTimeSolicitation"
+                          type="text"
+                          readOnly
+                          // value={carPlate}
+                          onChange={(e) => {
+                            // setCarPlate(e.target.value);
+                          }}
+                        />
+                      </div>
+
+                      <div className="input-label-block-column">
+                        <label htmlFor="dateTimeAttendance">Atendimento:</label>
+
+                        <input
+                          // ref={carPlateInputRef}
+                          id="dateTimeAttendance"
+                          type="text"
+                          readOnly
+                          // value={carPlate}
+                          onChange={(e) => {
+                            // setCarPlate(e.target.value);
+                          }}
+                        />
+                      </div>
+
+                      <div className="input-label-block-column">
+                        <label htmlFor="dateTimeFinished">Finalização:</label>
+
+                        <input
+                          // ref={carPlateInputRef}
+                          id="dateTimeFinished"
+                          type="text"
+                          readOnly
+                          // value={carPlate}
+                          onChange={(e) => {
+                            // setCarPlate(e.target.value);
+                          }}
+                        />
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className="input-group-os">
+                    <h1>
+                      <RiFileListLine size={30} />
+                      Cancelamento
+                    </h1>
+
+                    <div className="input-label-group-row">
+                      <div className="input-label-block-column"></div>
+                    </div>
+                  </div>
+
+                  <div className="input-group-os">
+                    <h1>
+                      <RiFileListLine size={30} />
+                      Valores
+                    </h1>
+
+                    <div className="input-label-group-row">
+                      <div className="input-label-block-column"></div>
                     </div>
                   </div>
 

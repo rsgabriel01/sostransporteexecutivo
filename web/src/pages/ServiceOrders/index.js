@@ -22,6 +22,11 @@ import {
   RiBook2Line,
   RiBrushLine,
   RiPencilLine,
+  RiFileList3Line,
+  RiTaxiLine,
+  RiUserLocationLine,
+  RiCalendar2Line,
+  RiCoinsLine,
 } from "react-icons/ri";
 
 import LateralMenu from "../components/LateralMenu/LateralMenu";
@@ -62,6 +67,8 @@ export default function ServiceOrdersRequest() {
   const [searchOsBtnInactive, setSearchOsBtnInactive] = useState(false);
 
   const [idServiceOrder, setIdServiceOrder] = useState("");
+  const [idSituation, setIdSituation] = useState("");
+  const [situation, setSituation] = useState("");
 
   const [idClient, setIdClient] = useState("");
   const [nameFantasyClient, setNameFantasyClient] = useState("");
@@ -81,6 +88,21 @@ export default function ServiceOrdersRequest() {
   const [complementDestiny, setComplementDestiny] = useState("");
 
   const [observationService, setObservationService] = useState("");
+  const [observationCancellation, setObservationCancellation] = useState("");
+
+  const [idVehicle, setIdVehicle] = useState("");
+  const [carPlate, setCarPlate] = useState("");
+
+  const [idDriver, setIdDriver] = useState("");
+  const [idPeopleDriver, setIdPeopleDriver] = useState("");
+  const [nameDriver, setNameDriver] = useState("");
+
+  const [dateTimeSolicitation, setDateTimeSolicitation] = useState("");
+  const [dateTimeAttendance, setDateTimeAttendance] = useState("");
+  const [dateTimeCompletion, setDateTimeCompletion] = useState("");
+
+  const [totalValue, setTotalValue] = useState("");
+  const [cancellationFee, setCancellationFee] = useState("");
 
   const idServiceOrderInputRef = useRef(null);
   const nameFantasyClientInputRef = useRef(null);
@@ -1160,49 +1182,76 @@ export default function ServiceOrdersRequest() {
                     </h1>
                   </div>
 
-                  <div className="input-group-oss">
+                  <div className="input-group-os">
                     <h1>
                       <RiFileListLine size={30} />
                       Ordem de Serviço
                     </h1>
 
-                    <div className="input-block">
-                      <label htmlFor="idServiceOrder">Código:</label>
+                    <div
+                      className="input-label-group-row"
+                      id="input-label-block-column-cod-os"
+                    >
+                      <div
+                        className="input-label-block-column"
+                        id="input-label-block-column-cod"
+                      >
+                        <label htmlFor="idServiceOrder">Código:</label>
 
-                      <div className="os-block">
+                        <div className="input-button-block-row">
+                          <input
+                            ref={idServiceOrderInputRef}
+                            id="idServiceOrder"
+                            type="number"
+                            min="1"
+                            required
+                            readOnly={searchOsBtnInactive}
+                            value={idServiceOrder}
+                            onChange={(e) => setIdServiceOrder(e.target.value)}
+                            onBlur={() => {
+                              handleSearchOs(idServiceOrder);
+                            }}
+                            onKeyUp={(e) => {
+                              if (idServiceOrder.length === 0) {
+                                clearFields("allWithoutIdServiceOrder");
+                                clearFields("allWithoutIdServiceOrder");
+                              }
+                            }}
+                          />
+
+                          <button
+                            type="button"
+                            disabled={searchOsBtnInactive}
+                            title="Pesquisar ordens de serviço."
+                            className={`button btnDefault ${
+                              searchOsBtnInactive ? "btnInactive" : ""
+                            }`}
+                            onClick={() => {
+                              clearFields("allNotIdVehicle");
+                              // handleOpenModalSearchVehicles();
+                            }}
+                          >
+                            <RiSearchLine size={24} />
+                          </button>
+                        </div>
+                      </div>
+
+                      <div
+                        className="input-label-block-column"
+                        id="inputSituation"
+                      >
+                        <label htmlFor="situation">Situação:</label>
+
                         <input
-                          ref={idServiceOrderInputRef}
-                          id="idServiceOrder"
-                          type="number"
-                          min="1"
+                          id="situation"
+                          type="text"
+                          readOnly
                           required
-                          readOnly={searchOsBtnInactive}
-                          value={idServiceOrder}
-                          onChange={(e) => setIdServiceOrder(e.target.value)}
-                          onBlur={() => {
-                            handleSearchOs(idServiceOrder);
-                          }}
-                          onKeyUp={(e) => {
-                            if (idServiceOrder.length === 0) {
-                              clearFields("allWithoutIdServiceOrder");
-                              clearFields("allWithoutIdServiceOrder");
-                            }
+                          value={situation}
+                          onChange={(e) => {
+                            setSituation(e.target.value);
                           }}
                         />
-                        <button
-                          type="button"
-                          disabled={searchOsBtnInactive}
-                          title="Pesquisar ordens de serviço."
-                          className={`button btnDefault ${
-                            searchOsBtnInactive ? "btnInactive" : ""
-                          }`}
-                          onClick={() => {
-                            clearFields("allNotIdVehicle");
-                            // handleOpenModalSearchVehicles();
-                          }}
-                        >
-                          <RiSearchLine size={24} />
-                        </button>
                       </div>
                     </div>
                   </div>
@@ -1444,7 +1493,7 @@ export default function ServiceOrdersRequest() {
 
                   <div className="input-group-os">
                     <h1>
-                      <RiFileListLine size={30} />
+                      <RiFileList3Line size={30} />
                       Observações
                     </h1>
 
@@ -1464,134 +1513,134 @@ export default function ServiceOrdersRequest() {
                       </div>
 
                       <div className="input-label-block-column">
-                        <label htmlFor="observationCancelation">
+                        <label htmlFor="observationCancellation">
                           Cancelamento:
                         </label>
 
                         <textarea
-                          id="observationCancelation"
-                          value={observationService}
-                          readOnly={isReadonly}
-                          maxLength="254"
+                          id="observationCancellation"
+                          value={observationCancellation}
+                          readOnly
                           onChange={(e) =>
-                            setObservationService(e.target.value)
+                            setObservationCancellation(e.target.value)
                           }
                         />
                       </div>
                     </div>
                   </div>
 
-                  <div className="input-group-os">
-                    <h1>
-                      <RiFileListLine size={30} />
-                      Situação
-                    </h1>
+                  <div className="input-group-os" id="groupVehicleDriver">
+                    <div className="row">
+                      <div className="column">
+                        <h1>
+                          <RiTaxiLine size={30} />
+                          Veículo
+                        </h1>
 
-                    <div className="input-label-group-row">
-                      <div
-                        className="input-label-block-column"
-                        id="inputSituation"
-                        style={{ width: "50%" }}
-                      >
-                        <input
-                          // ref={carPlateInputRef}
-                          id="situation"
-                          type="text"
-                          readOnly
-                          required
-                          // value={carPlate}
-                          onChange={(e) => {
-                            // setCarPlate(e.target.value);
-                          }}
-                        />
+                        <div className="row">
+                          <div className="column" id="columnIdVehicle">
+                            <label htmlFor="idVehicle">Código:</label>
+
+                            <input
+                              id="idVehicle"
+                              type="text"
+                              readOnly
+                              value={idVehicle}
+                              onChange={(e) => {
+                                setIdVehicle(e.target.value);
+                              }}
+                            />
+                          </div>
+
+                          <div className="column">
+                            <label htmlFor="carPlate">Placa:</label>
+
+                            <div className="row">
+                              <input
+                                id="carPlate"
+                                type="text"
+                                minLength="7"
+                                maxLength="7"
+                                readOnly
+                                value={carPlate}
+                                onChange={(e) => {
+                                  setCarPlate(e.target.value);
+                                }}
+                              />
+
+                              <button
+                                type="button"
+                                className={`button btnDefault ${
+                                  isReadOnlyDestiny ? "btnInactive" : ""
+                                }`}
+                                disabled={isReadOnlyDestiny}
+                                onClick={() => {
+                                  handleOpenModalSearchNeighborhood();
+                                }}
+                              >
+                                <RiSearchLine size={24} />
+                              </button>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+
+                      <div className="column">
+                        <h1>
+                          <RiUserLocationLine size={30} />
+                          Motorista
+                        </h1>
+
+                        <div className="row">
+                          <div className="column" id="columnIdDriver">
+                            <label htmlFor="idDriver">Código:</label>
+
+                            <input
+                              id="idDriver"
+                              type="text"
+                              readOnly
+                              value={idDriver}
+                              onChange={(e) => {
+                                setIdDriver(e.target.value);
+                              }}
+                            />
+                          </div>
+
+                          <div className="column">
+                            <label htmlFor="nameDriver">Nome:</label>
+                            <div className="row">
+                              <input
+                                id="nameDriver"
+                                type="text"
+                                readOnly
+                                value={nameDriver}
+                                onChange={(e) => {
+                                  setNameDriver(e.target.value);
+                                }}
+                              />
+
+                              <button
+                                type="button"
+                                className={`button btnDefault ${
+                                  isReadOnlyDestiny ? "btnInactive" : ""
+                                }`}
+                                disabled={isReadOnlyDestiny}
+                                onClick={() => {
+                                  handleOpenModalSearchNeighborhood();
+                                }}
+                              >
+                                <RiSearchLine size={24} />
+                              </button>
+                            </div>
+                          </div>
+                        </div>
                       </div>
                     </div>
                   </div>
 
                   <div className="input-group-os">
                     <h1>
-                      <RiFileListLine size={30} />
-                      Veículo
-                    </h1>
-
-                    <div className="input-label-group-row">
-                      <div className="input-label-block-column">
-                        <label htmlFor="idVehicle">Código:</label>
-
-                        <input
-                          // ref={carPlateInputRef}
-                          id="idVehicle"
-                          type="text"
-                          readOnly
-                          // required
-                          // value={carPlate}
-                          onChange={(e) => {
-                            // setCarPlate(e.target.value);
-                          }}
-                        />
-                      </div>
-
-                      <div className="input-label-block-column">
-                        <label htmlFor="carPlate">Placa:</label>
-
-                        <input
-                          // ref={carPlateInputRef}
-                          id="carPlate"
-                          type="text"
-                          minLength="7"
-                          maxLength="7"
-                          readOnly
-                          // value={carPlate}
-                          onChange={(e) => {
-                            // setCarPlate(e.target.value);
-                          }}
-                        />
-                      </div>
-                    </div>
-                  </div>
-
-                  <div className="input-group-os">
-                    <h1>
-                      <RiFileListLine size={30} />
-                      Motorista
-                    </h1>
-
-                    <div className="input-label-group-row">
-                      <div className="input-label-block-column">
-                        <label htmlFor="idDriver">Código:</label>
-
-                        <input
-                          // ref={carPlateInputRef}
-                          id="idDriver"
-                          type="text"
-                          readOnly
-                          // value={carPlate}
-                          onChange={(e) => {
-                            // setCarPlate(e.target.value);
-                          }}
-                        />
-                      </div>
-
-                      <div className="input-label-block-column">
-                        <label htmlFor="nameDriver">Nome:</label>
-
-                        <input
-                          // ref={carPlateInputRef}
-                          id="nameDriver"
-                          type="text"
-                          readOnly
-                          // value={carPlate}
-                          onChange={(e) => {
-                            // setCarPlate(e.target.value);
-                          }}
-                        />
-                      </div>
-                    </div>
-                  </div>
-
-                  <div className="input-group-os">
-                    <h1>
-                      <RiFileListLine size={30} />
+                      <RiCalendar2Line size={30} />
                       Data/Hora
                     </h1>
 
@@ -1602,13 +1651,13 @@ export default function ServiceOrdersRequest() {
                         </label>
 
                         <input
-                          // ref={carPlateInputRef}
                           id="dateTimeSolicitation"
                           type="text"
+                          placeholder="00/00/00 00:00:00"
                           readOnly
-                          // value={carPlate}
+                          value={dateTimeSolicitation}
                           onChange={(e) => {
-                            // setCarPlate(e.target.value);
+                            setDateTimeSolicitation(e.target.value);
                           }}
                         />
                       </div>
@@ -1617,13 +1666,13 @@ export default function ServiceOrdersRequest() {
                         <label htmlFor="dateTimeAttendance">Atendimento:</label>
 
                         <input
-                          // ref={carPlateInputRef}
                           id="dateTimeAttendance"
                           type="text"
+                          placeholder="00/00/00 00:00:00"
                           readOnly
-                          // value={carPlate}
+                          value={dateTimeAttendance}
                           onChange={(e) => {
-                            // setCarPlate(e.target.value);
+                            setDateTimeAttendance(e.target.value);
                           }}
                         />
                       </div>
@@ -1632,13 +1681,13 @@ export default function ServiceOrdersRequest() {
                         <label htmlFor="dateTimeFinished">Finalização:</label>
 
                         <input
-                          // ref={carPlateInputRef}
                           id="dateTimeFinished"
                           type="text"
+                          placeholder="00/00/00 00:00:00"
                           readOnly
-                          // value={carPlate}
+                          value={dateTimeCompletion}
                           onChange={(e) => {
-                            // setCarPlate(e.target.value);
+                            setDateTimeCompletion(e.target.value);
                           }}
                         />
                       </div>
@@ -1647,23 +1696,42 @@ export default function ServiceOrdersRequest() {
 
                   <div className="input-group-os">
                     <h1>
-                      <RiFileListLine size={30} />
-                      Cancelamento
-                    </h1>
-
-                    <div className="input-label-group-row">
-                      <div className="input-label-block-column"></div>
-                    </div>
-                  </div>
-
-                  <div className="input-group-os">
-                    <h1>
-                      <RiFileListLine size={30} />
+                      <RiCoinsLine size={30} />
                       Valores
                     </h1>
 
                     <div className="input-label-group-row">
-                      <div className="input-label-block-column"></div>
+                      <div className="input-label-block-column">
+                        <label htmlFor="totalValue">Total:</label>
+
+                        <input
+                          id="totalValue"
+                          type="text"
+                          placeholder="R$ 0,00"
+                          readOnly
+                          value={totalValue}
+                          onChange={(e) => {
+                            setTotalValue(e.target.value);
+                          }}
+                        />
+                      </div>
+
+                      <div className="input-label-block-column">
+                        <label htmlFor="cancellationFee">
+                          Taxa de cancelamento:
+                        </label>
+
+                        <input
+                          id="cancellationFee"
+                          type="text"
+                          placeholder="R$ 0,00"
+                          readOnly
+                          value={cancellationFee}
+                          onChange={(e) => {
+                            setCancellationFee(e.target.value);
+                          }}
+                        />
+                      </div>
                     </div>
                   </div>
 

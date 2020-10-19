@@ -439,9 +439,64 @@ form .input-block + .input-block {
   margin-left: 10px;
 }
 
-.vehicles-container section.form form .input-button-block-row button {
+.os-consult-container section.form form .input-button-block-row {
+  display: flex;
+  flex-direction: row;
+}
+.os-consult-container section.form form .input-button-block-row button {
   height: 35px;
   width: 50px;
 
   margin: 0px 0px 0px 10px;
+}
+
+.os-consult-container section.form form #input-label-block-column-cod {
+  width: 21%;
+}
+
+.os-consult-container section.form form #input-label-block-column-cod-os {
+  padding-bottom: 25px;
+}
+
+.os-consult-container section.form form #groupVehicleDriver .row {
+  width: 100%;
+
+  display: flex;
+  flex-direction: row;
+}
+
+.os-consult-container section.form form #groupVehicleDriver .column {
+  width: 100%;
+
+  display: flex;
+  flex-direction: column;
+}
+
+.os-consult-container section.form form #groupVehicleDriver .column button {
+  width: 41.54px;
+  height: 35px;
+  margin: 0px 0px 0px 10px;
+}
+
+.os-consult-container section.form form #groupVehicleDriver .column + .column {
+  padding-left: 10px;
+}
+
+.os-consult-container
+  section.form
+  form
+  #groupVehicleDriver
+  .column
+  .row
+  .column
+  + .column {
+  padding-left: 10px;
+}
+
+.os-consult-container section.form form #groupVehicleDriver #columnIdVehicle {
+  width: 35.11%;
+}
+
+.os-consult-container section.form form #groupVehicleDriver #columnIdDriver {
+  width: 35.11%;
 }

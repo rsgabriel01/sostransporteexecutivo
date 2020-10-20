@@ -50,16 +50,27 @@ export default function ServiceOrdersRequest() {
   const [loading, setLoading] = useState(true);
   const [loadingModal, setLoadingModal] = useState(true);
 
-  const [isReadonly, setIsReadonly] = useState(true);
-
   const [updateRegister, setUpdateRegister] = useState(false);
 
   const [titleUpdate, setTitleUpdate] = useState("");
 
   const [osFinded, setOsFinded] = useState(false);
 
+  const [isReadonly, setIsReadonly] = useState(true);
+  const [isReadOnlyClient, setIsReadOnlyClient] = useState(true);
+  const [isReadOnlyCbAddress, setIsReadOnlyCbAddress] = useState(true);
   const [isReadOnlyOrigin, setIsReadOnlyOrigin] = useState(true);
   const [isReadOnlyDestiny, setIsReadOnlyDestiny] = useState(true);
+  const [
+    isReadOnlyObservationService,
+    setIsReadOnlyObservationService,
+  ] = useState(true);
+  const [
+    isReadOnlyObservationUpdate,
+    setIsReadOnlyObservationUpdate,
+  ] = useState(true);
+  const [isReadOnlyVehicle, setIsReadOnlyVehicle] = useState(true);
+  const [isReadOnlyDriver, setIsReadOnlyDriver] = useState(true);
 
   const [loadingButton, setLoadingButton] = useState(false);
   const [textButtonSaveUpdate, setTextButtonSaveUpdate] = useState("Salvar");
@@ -67,7 +78,7 @@ export default function ServiceOrdersRequest() {
   const [searchOsBtnInactive, setSearchOsBtnInactive] = useState(false);
 
   const [idServiceOrder, setIdServiceOrder] = useState("");
-  const [idSituation, setIdSituation] = useState("");
+  const [idSituation, setIdSituation] = useState(9);
   const [situation, setSituation] = useState("");
 
   const [idClient, setIdClient] = useState("");
@@ -88,6 +99,7 @@ export default function ServiceOrdersRequest() {
   const [complementDestiny, setComplementDestiny] = useState("");
 
   const [observationService, setObservationService] = useState("");
+  const [observationUpdate, setObservationUpdate] = useState("");
   const [observationCancellation, setObservationCancellation] = useState("");
 
   const [idVehicle, setIdVehicle] = useState("");
@@ -258,18 +270,115 @@ export default function ServiceOrdersRequest() {
   // #region Handle Alter to Update Register
   function handleUpdateRegister() {
     if (osFinded) {
-      setTitleUpdate("ALTERAR ");
+      if (
+        idSituation === 98 ||
+        idSituation === "98" ||
+        idSituation === 99 ||
+        idSituation === "99"
+      ) {
+        notify(
+          "warning",
+          "Não foi possível acessar a alteração de dados, pois essa ordem de serviço encontra-se cancelada."
+        );
+      } else if (idSituation === 1 || idSituation === "1") {
+        setTitleUpdate("ALTERAR ");
 
-      setSearchOsBtnInactive(true);
-      setUpdateRegister(true);
-      setIsReadonly(false);
-      if (rbCheckedAddressOrigin) {
-        setIsReadOnlyOrigin(true);
-        setIsReadOnlyDestiny(false);
-      }
-      if (rbCheckedAddressDestiny) {
-        setIsReadOnlyOrigin(false);
-        setIsReadOnlyDestiny(true);
+        setSearchOsBtnInactive(true);
+        setUpdateRegister(true);
+        setIsReadonly(false);
+
+        setIsReadOnlyClient(false);
+        setIsReadOnlyCbAddress(false);
+
+        if (rbCheckedAddressOrigin) {
+          setIsReadOnlyOrigin(true);
+          setIsReadOnlyDestiny(false);
+        }
+
+        if (rbCheckedAddressDestiny) {
+          setIsReadOnlyOrigin(false);
+          setIsReadOnlyDestiny(true);
+        }
+
+        setIsReadOnlyObservationService(false);
+        setIsReadOnlyObservationUpdate(false);
+      } else if (idSituation === 2 || idSituation === "2") {
+        setTitleUpdate("ALTERAR ");
+
+        setSearchOsBtnInactive(true);
+        setUpdateRegister(true);
+        setIsReadonly(false);
+
+        setIsReadOnlyClient(false);
+        setIsReadOnlyCbAddress(false);
+
+        if (rbCheckedAddressOrigin) {
+          setIsReadOnlyOrigin(true);
+          setIsReadOnlyDestiny(false);
+        }
+
+        if (rbCheckedAddressDestiny) {
+          setIsReadOnlyOrigin(false);
+          setIsReadOnlyDestiny(true);
+        }
+
+        setIsReadOnlyObservationService(false);
+        setIsReadOnlyObservationUpdate(false);
+
+        setIsReadOnlyVehicle(false);
+        setIsReadOnlyDriver(false);
+      } else if (idSituation === 3 || idSituation === "3") {
+        setTitleUpdate("ALTERAR ");
+
+        setSearchOsBtnInactive(true);
+        setUpdateRegister(true);
+        setIsReadonly(false);
+
+        setIsReadOnlyCbAddress(false);
+
+        if (rbCheckedAddressOrigin) {
+          setIsReadOnlyOrigin(true);
+          setIsReadOnlyDestiny(false);
+        }
+
+        if (rbCheckedAddressDestiny) {
+          setIsReadOnlyOrigin(false);
+          setIsReadOnlyDestiny(true);
+        }
+      } else if (
+        idSituation === 7 ||
+        idSituation === "7" ||
+        idSituation === 8 ||
+        idSituation === "8"
+      ) {
+        setTitleUpdate("ALTERAR ");
+
+        setSearchOsBtnInactive(true);
+        setUpdateRegister(true);
+        setIsReadonly(false);
+
+        setIsReadOnlyClient(false);
+        setIsReadOnlyCbAddress(false);
+
+        if (rbCheckedAddressOrigin) {
+          setIsReadOnlyOrigin(true);
+          setIsReadOnlyDestiny(false);
+        }
+
+        if (rbCheckedAddressDestiny) {
+          setIsReadOnlyOrigin(false);
+          setIsReadOnlyDestiny(true);
+        }
+
+        setIsReadOnlyObservationUpdate(false);
+
+        setIsReadOnlyVehicle(false);
+        setIsReadOnlyDriver(false);
+      } else {
+        notify(
+          "warning",
+          `Não foi possível acessar a alteração de dados, pois essa ordem de serviço encontra-se na situação: ${situation}.`
+        );
       }
     } else if (idServiceOrder.length === 0) {
       notify(
@@ -1268,15 +1377,15 @@ export default function ServiceOrdersRequest() {
                         value={nameFantasyClient}
                         onChange={(e) => setNameFantasyClient(e.target.value)}
                         id="client"
-                        readOnly={true}
+                        readOnly
                         required
                       />
                       <button
                         type="button"
-                        disabled={isReadonly}
+                        disabled={isReadOnlyClient}
                         title="Pesquisar ordens de serviço."
                         className={`button btnDefault ${
-                          isReadonly ? "btnInactive" : ""
+                          isReadOnlyClient ? "btnInactive" : ""
                         }`}
                         onClick={() => {
                           handleOpenModalSearchClientEdit();
@@ -1300,15 +1409,17 @@ export default function ServiceOrdersRequest() {
 
                         <div
                           className={`checkbox-block ${
-                            isReadonly ? "inactive" : ""
+                            isReadOnlyCbAddress ? "inactive" : ""
                           }`}
                         >
                           <input
                             type="radio"
                             name="rbAddressClient"
                             id="rbAddressClientOrigin"
-                            className={`${isReadonly ? "inactive" : ""}`}
-                            disabled={isReadonly}
+                            className={`${
+                              isReadOnlyCbAddress ? "inactive" : ""
+                            }`}
+                            disabled={isReadOnlyCbAddress}
                             checked={rbCheckedAddressOrigin}
                             onChange={() => {
                               handleAddressCheckClient("origin");
@@ -1316,7 +1427,9 @@ export default function ServiceOrdersRequest() {
                           />
                           <label
                             htmlFor="rbAddressClientOrigin"
-                            className={`${isReadonly ? "inactive" : ""}`}
+                            className={`${
+                              isReadOnlyCbAddress ? "inactive" : ""
+                            }`}
                           >
                             Cliente
                           </label>
@@ -1334,7 +1447,7 @@ export default function ServiceOrdersRequest() {
                             onChange={(e) =>
                               setNeighborhoodOrigin(e.target.value)
                             }
-                            readOnly={true}
+                            readOnly
                             required
                           />
                           <button
@@ -1402,15 +1515,17 @@ export default function ServiceOrdersRequest() {
 
                         <div
                           className={`checkbox-block ${
-                            isReadonly ? "inactive" : ""
+                            isReadOnlyCbAddress ? "inactive" : ""
                           }`}
                         >
                           <input
                             type="radio"
                             name="rbAddressClient"
                             id="rbAddressClientDestiny"
-                            className={`${isReadonly ? "inactive" : ""}`}
-                            disabled={isReadonly}
+                            className={`${
+                              isReadOnlyCbAddress ? "inactive" : ""
+                            }`}
+                            disabled={isReadOnlyCbAddress}
                             checked={rbCheckedAddressDestiny}
                             onChange={() => {
                               handleAddressCheckClient("destiny");
@@ -1418,7 +1533,9 @@ export default function ServiceOrdersRequest() {
                           />
                           <label
                             htmlFor="rbAddressClientDestiny"
-                            className={`${isReadonly ? "inactive" : ""}`}
+                            className={`${
+                              isReadOnlyCbAddress ? "inactive" : ""
+                            }`}
                           >
                             Cliente
                           </label>
@@ -1435,7 +1552,7 @@ export default function ServiceOrdersRequest() {
                             onChange={(e) =>
                               setNeighborhoodDestiny(e.target.value)
                             }
-                            readOnly={true}
+                            readOnly
                             required
                           />
                           <button
@@ -1504,11 +1621,23 @@ export default function ServiceOrdersRequest() {
                         <textarea
                           id="observationService"
                           value={observationService}
-                          readOnly={isReadonly}
+                          readOnly={isReadOnlyObservationService}
                           maxLength="254"
                           onChange={(e) =>
                             setObservationService(e.target.value)
                           }
+                        />
+                      </div>
+
+                      <div className="input-label-block-column">
+                        <label htmlFor="observationUpdate">Alteração:</label>
+
+                        <textarea
+                          id="observationUpdate"
+                          value={observationUpdate}
+                          placeholder="Por que foi necessário a alteração?"
+                          readOnly={isReadOnlyObservationUpdate}
+                          onChange={(e) => setObservationUpdate(e.target.value)}
                         />
                       </div>
 
@@ -1571,9 +1700,9 @@ export default function ServiceOrdersRequest() {
                               <button
                                 type="button"
                                 className={`button btnDefault ${
-                                  isReadOnlyDestiny ? "btnInactive" : ""
+                                  isReadOnlyVehicle ? "btnInactive" : ""
                                 }`}
-                                disabled={isReadOnlyDestiny}
+                                disabled={isReadOnlyVehicle}
                                 onClick={() => {
                                   handleOpenModalSearchNeighborhood();
                                 }}
@@ -1622,9 +1751,9 @@ export default function ServiceOrdersRequest() {
                               <button
                                 type="button"
                                 className={`button btnDefault ${
-                                  isReadOnlyDestiny ? "btnInactive" : ""
+                                  isReadOnlyDriver ? "btnInactive" : ""
                                 }`}
-                                disabled={isReadOnlyDestiny}
+                                disabled={isReadOnlyDriver}
                                 onClick={() => {
                                   handleOpenModalSearchNeighborhood();
                                 }}

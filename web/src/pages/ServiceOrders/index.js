@@ -81,7 +81,7 @@ export default function ServiceOrdersRequest() {
   const [searchOsBtnInactive, setSearchOsBtnInactive] = useState(false);
 
   const [idServiceOrder, setIdServiceOrder] = useState("");
-  const [idSituation, setIdSituation] = useState(2);
+  const [idSituation, setIdSituation] = useState(7);
   const [situation, setSituation] = useState("");
 
   const [idClient, setIdClient] = useState("");
@@ -2017,6 +2017,7 @@ export default function ServiceOrdersRequest() {
                         <input
                           id="passengerName"
                           type="text"
+                          readOnly={isReadOnlyPassengers}
                           value={passengerName}
                           autoComplete="cc-csc"
                           onChange={(e) => {
@@ -2037,6 +2038,7 @@ export default function ServiceOrdersRequest() {
                           pattern="[0-9]+"
                           minLength="10"
                           maxLength="11"
+                          readOnly={isReadOnlyPassengers}
                           value={passengerPhone}
                           onChange={(e) => {
                             if (e.target.value !== "") {
@@ -2060,6 +2062,7 @@ export default function ServiceOrdersRequest() {
                           min="1"
                           max="6"
                           autoComplete="cc-csc"
+                          readOnly={isReadOnlyPassengers}
                           value={numberPassengers}
                           onChange={(e) => {
                             setNumberPassengers(e.target.value);

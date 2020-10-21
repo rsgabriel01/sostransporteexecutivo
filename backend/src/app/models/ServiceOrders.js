@@ -22,6 +22,9 @@ module.exports = (sequelize, DataTypes) => {
       street_number_destiny: DataTypes.BIGINT,
       complement_destiny: DataTypes.STRING,
       client_destiny: DataTypes.BOOLEAN,
+      passenger_name: DataTypes.STRING,
+      passenger_phone: DataTypes.STRING,
+      number_passengers: { type: DataTypes.BIGINT, defaultValue: 1 },
       date_time_completion: { type: DataTypes.DATE, defaultValue: null } /** */,
       id_user_completion: { type: DataTypes.BIGINT, defaultValue: null },
       observation_service: {

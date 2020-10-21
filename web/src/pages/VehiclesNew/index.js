@@ -819,6 +819,7 @@ export default function VehiclesNew() {
                           minLength="11"
                           maxLength="11"
                           required
+                          autoComplete="cc-csc"
                           value={registrationNumber}
                           onChange={(e) => {
                             if (e.target.value !== "") {

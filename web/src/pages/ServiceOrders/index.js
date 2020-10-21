@@ -27,12 +27,14 @@ import {
   RiUserLocationLine,
   RiCalendar2Line,
   RiCoinsLine,
+  RiGroupLine,
 } from "react-icons/ri";
 
 import LateralMenu from "../components/LateralMenu/LateralMenu";
 import Header from "../components/Header/Header";
 import Loading from "../components/Loading/Loading";
 import notify from "../../helpers/notifys";
+import { onlyNumber } from "../../helpers/onlyNumber";
 
 import api from "../../services/api";
 
@@ -61,6 +63,7 @@ export default function ServiceOrdersRequest() {
   const [isReadOnlyCbAddress, setIsReadOnlyCbAddress] = useState(true);
   const [isReadOnlyOrigin, setIsReadOnlyOrigin] = useState(true);
   const [isReadOnlyDestiny, setIsReadOnlyDestiny] = useState(true);
+  const [isReadOnlyPassengers, setIsReadOnlyPassengers] = useState(true);
   const [
     isReadOnlyObservationService,
     setIsReadOnlyObservationService,
@@ -97,6 +100,10 @@ export default function ServiceOrdersRequest() {
   const [streetDestiny, setStreetDestiny] = useState("");
   const [streetNumberDestiny, setStreetNumberDestiny] = useState("");
   const [complementDestiny, setComplementDestiny] = useState("");
+
+  const [passengerName, setPassengerName] = useState("");
+  const [passengerPhone, setPassengerPhone] = useState("");
+  const [numberPassengers, setNumberPassengers] = useState(1);
 
   const [observationService, setObservationService] = useState("");
   const [observationUpdate, setObservationUpdate] = useState("");
@@ -300,6 +307,8 @@ export default function ServiceOrdersRequest() {
           setIsReadOnlyDestiny(true);
         }
 
+        setIsReadOnlyPassengers(false);
+
         setIsReadOnlyObservationService(false);
         setIsReadOnlyObservationUpdate(false);
       } else if (idSituation === 2 || idSituation === "2") {
@@ -321,6 +330,8 @@ export default function ServiceOrdersRequest() {
           setIsReadOnlyOrigin(false);
           setIsReadOnlyDestiny(true);
         }
+
+        setIsReadOnlyPassengers(false);
 
         setIsReadOnlyObservationService(false);
         setIsReadOnlyObservationUpdate(false);
@@ -369,6 +380,8 @@ export default function ServiceOrdersRequest() {
           setIsReadOnlyOrigin(false);
           setIsReadOnlyDestiny(true);
         }
+
+        setIsReadOnlyPassengers(false);
 
         setIsReadOnlyObservationUpdate(false);
 
@@ -1603,6 +1616,73 @@ export default function ServiceOrdersRequest() {
                           value={complementDestiny}
                           readOnly={isReadOnlyDestiny}
                           onChange={(e) => setComplementDestiny(e.target.value)}
+                        />
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className="input-group-os">
+                    <h1>
+                      <RiGroupLine size={30} />
+                      Passageiros
+                    </h1>
+
+                    <div className="input-label-group-row">
+                      <div className="input-label-block-column">
+                        <label htmlFor="passengerName">
+                          Nome para contato:
+                        </label>
+
+                        <input
+                          id="passengerName"
+                          type="text"
+                          value={passengerName}
+                          autoComplete="cc-csc"
+                          onChange={(e) => {
+                            setPassengerName(e.target.value);
+                          }}
+                        />
+                      </div>
+
+                      <div className="input-label-block-column">
+                        <label htmlFor="passengerPhone">
+                          Telefone para contato:
+                        </label>
+
+                        <input
+                          id="passengerPhone"
+                          type="text"
+                          title="Esse campo aceita apenas números"
+                          pattern="[0-9]+"
+                          minLength="10"
+                          maxLength="11"
+                          value={passengerPhone}
+                          onChange={(e) => {
+                            if (e.target.value !== "") {
+                              if (!onlyNumber(e.target.value)) {
+                                return;
+                              }
+                            }
+                            setPassengerPhone(e.target.value);
+                          }}
+                        />
+                      </div>
+
+                      <div className="input-label-block-column">
+                        <label htmlFor="numberPassengers">
+                          Número de passageiros:
+                        </label>
+
+                        <input
+                          id="numberPassengers"
+                          type="number"
+                          min="1"
+                          max="6"
+                          autoComplete="cc-csc"
+                          value={numberPassengers}
+                          onChange={(e) => {
+                            setNumberPassengers(e.target.value);
+                          }}
                         />
                       </div>
                     </div>

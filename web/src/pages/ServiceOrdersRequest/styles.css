@@ -331,3 +331,54 @@ form .input-block + .input-block {
 
   margin: 0px;
 }
+
+.os-request-container section.form form .input-group-os {
+  width: 100%;
+
+  display: flex;
+  flex-direction: column;
+
+  padding-top: 25px;
+}
+
+.os-request-container section.form form .input-group-os + .input-group-os {
+  margin-top: 25px;
+}
+
+.os-request-container section.form form .input-group-os h1 {
+  padding-bottom: 10px;
+}
+
+.os-request-container section.form form .input-group-os label {
+  padding-bottom: 5px;
+}
+
+.os-request-container section.form form .input-label-group-row {
+  width: 100%;
+
+  display: flex;
+  flex-direction: row;
+}
+
+.os-request-container
+  section.form
+  form
+  .input-label-group-row
+  + .input-label-group-row {
+  margin-top: 10px;
+}
+
+.os-request-container section.form form .input-label-block-column {
+  width: 100%;
+
+  display: flex;
+  flex-direction: column;
+}
+
+.os-request-container
+  section.form
+  form
+  .input-label-block-column
+  + .input-label-block-column {
+  margin-left: 10px;
+}

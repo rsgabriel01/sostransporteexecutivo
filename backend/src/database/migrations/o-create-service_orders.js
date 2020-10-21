@@ -119,6 +119,18 @@ module.exports = {
           allowNull: false,
           type: DataTypes.BOOLEAN,
         },
+        passenger_name: {
+          allowNull: false,
+          type: DataTypes.STRING,
+        },
+        passenger_phone: {
+          allowNull: false,
+          type: DataTypes.STRING,
+        },
+        number_passengers: {
+          allowNull: false,
+          type: DataTypes.BIGINT,
+        },
         date_time_completion: {
           allowNull: true,
           type: DataTypes.DATE,

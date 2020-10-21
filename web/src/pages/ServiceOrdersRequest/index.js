@@ -1080,6 +1080,7 @@ export default function ServiceOrdersRequest() {
                             className="input-number"
                             type="number"
                             min="0"
+                            autoComplete="cc-csc"
                             value={streetNumberOrigin}
                             readOnly={isReadOnlyOrigin}
                             onChange={(e) =>
@@ -1170,6 +1171,7 @@ export default function ServiceOrdersRequest() {
                           <input
                             type="number"
                             min="0"
+                            autoComplete="cc-csc"
                             value={streetNumberDestiny}
                             readOnly={isReadOnlyDestiny}
                             onChange={(e) =>

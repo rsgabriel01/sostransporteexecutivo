@@ -52,6 +52,7 @@ export default function VehiclesNew() {
   const [idVehicleModel, setIdVehicleModel] = useState("");
   const [vehicleModel, setVehicleModel] = useState("");
   const [vehicleBrand, setVehicleBrand] = useState("");
+  const [numberSeats, setNumberSeats] = useState("");
   const [vehicleColor, setVehicleColor] = useState("");
   const [idDriver, setIdDriver] = useState("");
   const [idPeopleDriver, setIdPeopleDriver] = useState(null);
@@ -110,6 +111,7 @@ export default function VehiclesNew() {
         setIdVehicleModel("");
         setVehicleModel("");
         setVehicleBrand("");
+        setNumberSeats("");
         setVehicleColor("");
         setIdDriver("");
         setIdPeopleDriver(null);
@@ -154,6 +156,7 @@ export default function VehiclesNew() {
       carPlate: carPlate.toUpperCase(),
       registrationNumber,
       idVehicleModel,
+      numberSeats,
       vehicleColor: vehicleColor.toUpperCase(),
       idDriver:
         !idPeopleDriver || idPeopleDriver === "" ? null : idPeopleDriver,
@@ -307,6 +310,7 @@ export default function VehiclesNew() {
       idVehicleModel !== "" ||
       vehicleModel !== "" ||
       vehicleBrand !== "" ||
+      numberSeats !== "" ||
       vehicleColor !== "" ||
       idDriver !== "" ||
       // idPeopleDriver !== "" ||
@@ -875,6 +879,25 @@ export default function VehiclesNew() {
                           required
                           value={vehicleBrand}
                           onChange={(e) => setVehicleBrand(e.target.value)}
+                        />
+                      </div>
+
+                      <div
+                        className="input-label-block-column"
+                        id="input-label-block-column"
+                      >
+                        <label htmlFor="numberSeats">
+                          Quatidade de lugares:
+                        </label>
+
+                        <input
+                          id="numberSeats"
+                          type="number"
+                          min="2"
+                          autoComplete="cc-csc"
+                          required
+                          value={numberSeats}
+                          onChange={(e) => setNumberSeats(e.target.value)}
                         />
                       </div>
 

@@ -68,6 +68,7 @@ export default function Vehicles(props) {
   const [idVehicleModel, setIdVehicleModel] = useState("");
   const [vehicleModel, setVehicleModel] = useState("");
   const [vehicleBrand, setVehicleBrand] = useState("");
+  const [numberSeats, setNumberSeats] = useState("");
   const [vehicleColor, setVehicleColor] = useState("");
   const [idDriver, setIdDriver] = useState("");
   const [idPeopleDriver, setIdPeopleDriver] = useState(null);
@@ -131,6 +132,7 @@ export default function Vehicles(props) {
       id_model,
       model,
       brand,
+      number_seats,
       color,
       active,
     } = response.vehicle;
@@ -147,6 +149,7 @@ export default function Vehicles(props) {
     id_model ? setIdVehicleModel(id_model) : setIdVehicleModel("");
     model ? setVehicleModel(model) : setVehicleModel("");
     brand ? setVehicleBrand(brand) : setVehicleBrand("");
+    number_seats ? setNumberSeats(number_seats) : setNumberSeats("");
     color ? setVehicleColor(color) : setVehicleColor("");
     idDriver ? setIdDriver(idDriver) : setIdDriver("");
     idPeopleDriver
@@ -167,6 +170,7 @@ export default function Vehicles(props) {
         setIdVehicleModel("");
         setVehicleModel("");
         setVehicleBrand("");
+        setNumberSeats("");
         setVehicleColor("");
         setIdDriver("");
         setIdPeopleDriver(null);
@@ -180,6 +184,7 @@ export default function Vehicles(props) {
         setIdVehicleModel("");
         setVehicleModel("");
         setVehicleBrand("");
+        setNumberSeats("");
         setVehicleColor("");
         setIdDriver("");
         setIdPeopleDriver(null);
@@ -358,6 +363,7 @@ export default function Vehicles(props) {
       carPlate: carPlate.toUpperCase(),
       registrationNumber,
       idVehicleModel,
+      numberSeats,
       vehicleColor: vehicleColor.toUpperCase(),
       idDriver:
         !idPeopleDriver || idPeopleDriver === "" ? null : idPeopleDriver,
@@ -1264,6 +1270,26 @@ export default function Vehicles(props) {
                           required
                           value={vehicleBrand}
                           onChange={(e) => setVehicleBrand(e.target.value)}
+                        />
+                      </div>
+
+                      <div
+                        className="input-label-block-column"
+                        id="input-label-block-column"
+                      >
+                        <label htmlFor="numberSeats">
+                          Quatidade de lugares:
+                        </label>
+
+                        <input
+                          id="numberSeats"
+                          type="number"
+                          min="2"
+                          autoComplete="cc-csc"
+                          readOnly={isReadonly}
+                          required
+                          value={numberSeats}
+                          onChange={(e) => setNumberSeats(e.target.value)}
                         />
                       </div>
 

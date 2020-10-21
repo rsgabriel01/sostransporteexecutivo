@@ -102,10 +102,10 @@ export default function LateralMenu() {
             title={personNameUser}
             icon={<RiAccountCircleLine size={50} />}
           >
-            <MenuItem prefix={<RiAccountBoxLine size={20} />}>
+            {/* <MenuItem prefix={<RiAccountBoxLine size={20} />}>
               Minha Conta
               <Link to="/myaccount" />
-            </MenuItem>
+            </MenuItem> */}
             <MenuItem
               prefix={<RiLogoutBoxLine size={20} />}
               onClick={handleLogout}

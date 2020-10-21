@@ -27,9 +27,6 @@ export default function Main() {
   let history = useHistory();
 
   const date = new Date();
-  const optionsDate = { year: "numeric", month: "numeric", day: "numeric" };
-
-  const endDateNow = date.toLocaleDateString("en", optionsDate);
 
   const [loading, setLoading] = useState(true);
   const [startDate, setStartDate] = useState(

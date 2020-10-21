@@ -36,6 +36,12 @@ import Loading from "../components/Loading/Loading";
 import notify from "../../helpers/notifys";
 import { onlyNumber } from "../../helpers/onlyNumber";
 
+import {
+  getDateForDatePickerWithClassDate,
+  getDateForDatePickerWithDateString,
+  getDateOfDatePickerValue,
+} from "../../helpers/dates";
+
 import api from "../../services/api";
 
 import { isAuthenticated, logout } from "../../services/auth";
@@ -48,6 +54,8 @@ import jsonClassesModal from "../../helpers/stylesModal";
 export default function ServiceOrdersRequest() {
   //#region Definitions
   const history = useHistory();
+
+  const dateNow = new Date();
 
   const [loading, setLoading] = useState(true);
   const [loadingModal, setLoadingModal] = useState(true);
@@ -136,6 +144,16 @@ export default function ServiceOrdersRequest() {
   const ClassesModal = useStyles();
   const [titleModal, setTitleModal] = useState("");
   const [titleIconModal, setTitleIconModal] = useState();
+
+  const [openModalSearchOs, setOpenModalSearchOs] = useState(false);
+  const [searchIdOs, setSearchIdOs] = useState("");
+  const [searchNameFantasyClientOs, setSearchNameFantasyClientOs] = useState(
+    ""
+  );
+  const [searchDateSolicitationOs, setSearchDateSolicitationOs] = useState(
+    getDateForDatePickerWithClassDate(dateNow)
+  );
+  const [searchOsList, setSearchOsList] = useState([]);
 
   const [openModalSearchClient, setOpenModalSearchClient] = useState(false);
   const [searchClient, setSearchClient] = useState("");
@@ -835,6 +853,156 @@ export default function ServiceOrdersRequest() {
 
   // #endregion
 
+  //#region Input Focus
+  function inputFocus(input) {
+    switch (input) {
+      case "nameFantasyClient":
+        setTimeout(() => {
+          nameFantasyClientInputRef.current.focus();
+        }, 1);
+        break;
+      case "neighborhoodOrigin":
+        setTimeout(() => {
+          neighborhoodOriginInputRef.current.focus();
+        }, 1);
+        break;
+      case "neighborhoodDestiny":
+        setTimeout(() => {
+          neighborhoodDestinyInputRef.current.focus();
+        }, 1);
+        break;
+      case "streetOrigin":
+        setTimeout(() => {
+          streetOriginInputRef.current.focus();
+        }, 1);
+        break;
+      case "streetDestiny":
+        setTimeout(() => {
+          streetDestinyInputRef.current.focus();
+        }, 1);
+        break;
+      case "idDriver":
+        setTimeout(() => {
+          idDriverInputRef.current.focus();
+        }, 1);
+        break;
+      case "nameDriver":
+        setTimeout(() => {
+          nameDriverInputRef.current.focus();
+        }, 1);
+        break;
+
+      default:
+        break;
+    }
+  }
+  //#endregion Input Focus
+
+  // #region Handle Open Modal Search OS
+  const handleOpenModalSearchOsEdit = () => {
+    setLoadingModal(true);
+    loadSearchOsList();
+
+    setTitleIconModal(<RiFileListLine size={30} />);
+    setTitleModal("PESQUISAR ORDENS DE SERVIÇO");
+    setSearchIdOs("");
+    setSearchNameFantasyClientOs("");
+    setSearchDateSolicitationOs(getDateForDatePickerWithClassDate(dateNow));
+    setOpenModalSearchOs(true);
+  };
+
+  const handleCloseModalSearchOsEdit = () => {
+    setTitleModal("");
+
+    setOpenModalSearchOs(false);
+  };
+  // #endregion
+
+  // #region Handle Select Search OS
+  function handleSelectOsInSearch(idServiceOrder) {
+    setIdServiceOrder(idServiceOrder);
+    handleCloseModalSearchOsEdit();
+    inputFocus("idServiceOrder");
+  }
+  // #endregion
+
+  // #region Load Search OS List
+  async function loadSearchOsList() {
+    setLoadingModal(true);
+
+    try {
+      const response = await api.get(
+        `/serviceOrders/?idServiceOrder=${searchIdOs.toUpperCase()}?nameFantasyClient=${searchNameFantasyClientOs.toUpperCase()}?dateSolicitation=${getDateOfDatePickerValue(
+          searchDateSolicitationOs
+        )}`
+      );
+
+      if (response) {
+        console.log(response.data);
+
+        setSearchOsList(response.data);
+        setLoadingModal(false);
+      }
+    } catch (error) {
+      setLoadingModal(false);
+
+      if (error.response) {
+        const dataError = error.response.data;
+        const statusError = error.response.status;
+        console.error(dataError);
+        console.error(statusError);
+
+        if (statusError === 400 && dataError.message) {
+          console.log(dataError.message);
+          switch (dataError.message) {
+            case '"idServiceOrder" is required':
+              notify(
+                "error",
+                "Oops, algo deu errado, entre em contato com o suporte de TI. Erro: o QUERY PARAM 'idServiceOrder' não foi encontrado no endereço da rota."
+              );
+              break;
+
+            case '"nameFantasyClient" is required':
+              notify(
+                "error",
+                "Oops, algo deu errado, entre em contato com o suporte de TI. Erro: o QUERY PARAM 'nameFantasyClient' não foi encontrado no endereço da rota."
+              );
+              break;
+            case '"dateSolicitation" is required':
+              notify(
+                "error",
+                "Oops, algo deu errado, entre em contato com o suporte de TI. Erro: o QUERY PARAM 'dateSolicitation' não foi encontrado no endereço da rota."
+              );
+              break;
+
+            default:
+              notify("warning", dataError.message);
+          }
+        }
+
+        if (statusError === 401) {
+          switch (dataError.message) {
+            default:
+              notify("warning", dataError.message);
+          }
+        }
+      } else if (error.request) {
+        notify(
+          "error",
+          `Oops, algo deu errado, entre em contato com o suporte de TI. ${error}`
+        );
+        console.log(error.request);
+      } else {
+        notify(
+          "error",
+          `Oops, algo deu errado, entre em contato com o suporte de TI. ${error}`
+        );
+        console.log("Error", error.message);
+      }
+    }
+  }
+  // #endregion
+
   // #region Handle Open Modal Search client
   const handleOpenModalSearchClientEdit = () => {
     setLoadingModal(true);
@@ -886,51 +1054,6 @@ export default function ServiceOrdersRequest() {
     handleCloseModalSearchClientEdit();
   }
   // #endregion
-
-  //#region Input Focus
-  function inputFocus(input) {
-    switch (input) {
-      case "nameFantasyClient":
-        setTimeout(() => {
-          nameFantasyClientInputRef.current.focus();
-        }, 1);
-        break;
-      case "neighborhoodOrigin":
-        setTimeout(() => {
-          neighborhoodOriginInputRef.current.focus();
-        }, 1);
-        break;
-      case "neighborhoodDestiny":
-        setTimeout(() => {
-          neighborhoodDestinyInputRef.current.focus();
-        }, 1);
-        break;
-      case "streetOrigin":
-        setTimeout(() => {
-          streetOriginInputRef.current.focus();
-        }, 1);
-        break;
-      case "streetDestiny":
-        setTimeout(() => {
-          streetDestinyInputRef.current.focus();
-        }, 1);
-        break;
-      case "idDriver":
-        setTimeout(() => {
-          idDriverInputRef.current.focus();
-        }, 1);
-        break;
-      case "nameDriver":
-        setTimeout(() => {
-          nameDriverInputRef.current.focus();
-        }, 1);
-        break;
-
-      default:
-        break;
-    }
-  }
-  //#endregion Input Focus
 
   // #region Load Search Client List
   async function loadSearchClientList() {
@@ -1274,6 +1397,115 @@ export default function ServiceOrdersRequest() {
 
   return (
     <div className="main-container">
+      <Modal
+        id="modalSearchClient"
+        aria-labelledby="transition-modal-title"
+        aria-describedby="transition-modal-description"
+        className={ClassesModal.modal}
+        open={openModalSearchOs}
+        onClose={handleCloseModalSearchOsEdit}
+        closeAfterTransition
+        BackdropComponent={Backdrop}
+        BackdropProps={{
+          timeout: 500,
+        }}
+      >
+        <Fade in={openModalSearchOs}>
+          <div className={ClassesModal.paper}>
+            <h1 className="modal-search-title">
+              {titleIconModal} {titleModal}
+            </h1>
+            <div className="modal-search-content">
+              <div className="modal-search-input-button">
+                <div className="input-label-block-colum">
+                  <label htmlFor="inputSearchIdOs">Código:</label>
+                  <input
+                    id="inputSearchIdOs"
+                    type="text"
+                    value={searchIdOs}
+                    onChange={(e) => setSearchIdOs(e.target.value)}
+                    onKeyUp={loadSearchOsList}
+                  ></input>
+                </div>
+
+                <div className="input-label-block-colum">
+                  <label htmlFor="inputSearchNameFantasyClientOs">
+                    Cliente:
+                  </label>
+                  <input
+                    id="inputSearchNameFantasyClientOs"
+                    type="text"
+                    value={searchNameFantasyClientOs}
+                    onChange={(e) =>
+                      setSearchNameFantasyClientOs(e.target.value)
+                    }
+                    onKeyUp={loadSearchOsList}
+                  ></input>
+                </div>
+
+                <div className="input-label-block-colum">
+                  <label htmlFor="inputSearchDateSolicitationOs">
+                    Data de solicitação:
+                  </label>
+                  <input
+                    type="date"
+                    id="inputSearchDateSolicitationOs"
+                    value={searchDateSolicitationOs}
+                    onChange={(e) => {
+                      setSearchDateSolicitationOs(e.target.value);
+                      console.log(searchDateSolicitationOs);
+                    }}
+                  />
+                </div>
+
+                <button
+                  id="btnSearchOsModal"
+                  type="button"
+                  className="button btnDefault btnSearchModal"
+                  onClick={loadSearchOsList}
+                >
+                  <RiSearchLine size={24} />
+                  Buscar
+                </button>
+              </div>
+
+              <div className="modal-search-list">
+                {loadingModal ? (
+                  <Loading type="bars" color="#0f4c82" />
+                ) : (
+                  searchOsList.map((os) => (
+                    <div
+                      className="searchListIten"
+                      key={os.id}
+                      onDoubleClick={() => handleSelectOsInSearch(os.id)}
+                    >
+                      <div className="searchItenData">
+                        <strong>Código: {os.id}</strong>
+                        <section id="searchOsData">
+                          <p id="searchCnpjOs">Cliente: {os.id}</p>
+                          <p id="searchCompanyNameOs">
+                            Data de solicitação: {os.id}
+                          </p>
+                        </section>
+                      </div>
+                      <div className="OsBtnSelect">
+                        <button
+                          type="button"
+                          className="button btnSuccess"
+                          onClick={() => handleSelectOsInSearch(os.id)}
+                        >
+                          <RiArrowRightUpLine size={24} />
+                        </button>
+                      </div>
+                    </div>
+                  ))
+                )}
+              </div>
+            </div>
+          </div>
+        </Fade>
+      </Modal>
+
       <Modal
         id="modalSearchClient"
         aria-labelledby="transition-modal-title"
@@ -1729,7 +1961,7 @@ export default function ServiceOrdersRequest() {
                             }`}
                             onClick={() => {
                               clearFields("allNotIdVehicle");
-                              // handleOpenModalSearchVehicles();
+                              handleOpenModalSearchOsEdit();
                             }}
                           >
                             <RiSearchLine size={24} />

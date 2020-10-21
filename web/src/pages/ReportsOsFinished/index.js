@@ -86,6 +86,7 @@ export default function Main() {
 
                       <input
                         type="text"
+                        autoFocus
                         onChange={(e) => {
                           setCompanyName(e.target.value);
                         }}

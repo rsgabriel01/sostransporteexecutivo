@@ -532,6 +532,7 @@ export default function DriverNew() {
                             id="idPerson"
                             type="number"
                             min="1"
+                            autoFocus
                             readOnly
                             required
                             value={idPerson}

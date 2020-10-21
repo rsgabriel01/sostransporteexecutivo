@@ -1139,6 +1139,7 @@ export default function Vehicles(props) {
                             id="idVehicle"
                             type="number"
                             min="1"
+                            autoFocus
                             required
                             readOnly={searchVehicleBtnInactive}
                             value={idVehicle}

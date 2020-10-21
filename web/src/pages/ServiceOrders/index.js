@@ -856,6 +856,11 @@ export default function ServiceOrdersRequest() {
   //#region Input Focus
   function inputFocus(input) {
     switch (input) {
+      case "idServiceOrder":
+        setTimeout(() => {
+          idServiceOrderInputRef.current.focus();
+        }, 1);
+        break;
       case "nameFantasyClient":
         setTimeout(() => {
           nameFantasyClientInputRef.current.focus();
@@ -1938,6 +1943,7 @@ export default function ServiceOrdersRequest() {
                             type="number"
                             min="1"
                             required
+                            autoFocus
                             readOnly={searchOsBtnInactive}
                             value={idServiceOrder}
                             onChange={(e) => setIdServiceOrder(e.target.value)}

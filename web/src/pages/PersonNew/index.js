@@ -347,6 +347,7 @@ export default function PersonNew() {
                           id="name"
                           type="text"
                           required
+                          autoFocus
                           value={name}
                           onChange={(e) => setName(e.target.value)}
                         />

@@ -525,6 +525,7 @@ export default function PersonUser(props) {
                           <input
                             id="idPeople"
                             type="text"
+                            autoFocus
                             readOnly
                             required
                             value={idPeople}

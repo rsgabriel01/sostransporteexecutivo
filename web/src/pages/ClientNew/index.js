@@ -562,6 +562,7 @@ export default function ClientNew() {
                           id="companyName"
                           type="text"
                           required
+                          autoFocus
                           value={companyName}
                           onChange={(e) => setCompanyName(e.target.value)}
                         />

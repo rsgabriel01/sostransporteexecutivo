@@ -990,6 +990,7 @@ export default function ServiceOrdersRequest() {
                       <input
                         ref={nameFantasyClientInputRef}
                         type="text"
+                        autoFocus
                         value={nameFantasyClient}
                         onChange={(e) => setNameFantasyClient(e.target.value)}
                         id="client"

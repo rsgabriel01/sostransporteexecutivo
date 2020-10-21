@@ -184,6 +184,7 @@ export default function Login() {
                 <input
                   type="text"
                   placeholder="Usuário"
+                  autoFocus
                   value={user}
                   onChange={(e) => setUser(e.target.value)}
                   required

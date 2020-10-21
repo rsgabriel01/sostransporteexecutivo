@@ -802,6 +802,7 @@ export default function VehiclesNew() {
                           minLength="7"
                           maxLength="7"
                           required
+                          autoFocus
                           value={carPlate}
                           onChange={(e) => {
                             setCarPlate(e.target.value);

@@ -810,6 +810,7 @@ export default function Driver() {
                             id="idDriver"
                             type="number"
                             min="1"
+                            autoFocus
                             readOnly={searchDriverInactive}
                             required
                             value={idDriver}

@@ -35,6 +35,10 @@ module.exports = {
           allowNull: false,
           type: DataTypes.BIGINT,
         },
+        number_seats: {
+          allowNull: false,
+          type: DataTypes.BIGINT,
+        },
         color: {
           allowNull: false,
           type: DataTypes.STRING,

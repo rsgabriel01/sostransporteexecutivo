@@ -21,6 +21,7 @@ module.exports = {
         carPlate,
         registrationNumber,
         idVehicleModel,
+        numberSeats,
         vehicleColor,
         active,
       } = req.body;
@@ -114,6 +115,7 @@ module.exports = {
         id_model: idVehicleModel,
         car_plate: carPlate.toUpperCase(),
         registration_number: registrationNumber,
+        number_seats: numberSeats,
         color: vehicleColor.toUpperCase(),
         active,
       });
@@ -176,6 +178,7 @@ module.exports = {
         id_model,
         registration_number,
         car_plate,
+        number_seats,
         color,
         active,
       } = vehicleData;
@@ -192,6 +195,7 @@ module.exports = {
           registration_number,
           model,
           brand,
+          number_seats,
           color,
           active,
         },
@@ -212,6 +216,7 @@ module.exports = {
       let registrationNumberOld = "";
       let idVehicleModelOld = "";
       let idDriverOld = "";
+      let numberSeatsOld = "";
       let vehicleColorOld = "";
       let activeOld = false;
 
@@ -220,6 +225,7 @@ module.exports = {
         carPlate,
         registrationNumber,
         idVehicleModel,
+        numberSeats,
         vehicleColor,
         idDriver,
         active,
@@ -247,6 +253,7 @@ module.exports = {
         registrationNumberOld = oldVehicleFinded.registration_number;
         idVehicleModelOld = oldVehicleFinded.id_model;
         idDriverOld = oldVehicleFinded.id_people;
+        numberSeatsOld = oldVehicleFinded.number_seats;
         vehicleColorOld = oldVehicleFinded.color;
         activeOld = oldVehicleFinded.active;
       }
@@ -347,6 +354,10 @@ module.exports = {
 
         columnsUpdateVehicle["id_people"] =
           idDriver !== null && idDriver !== "" ? idDriver : null;
+      }
+
+      if (numberSeatsOld !== numberSeats) {
+        columnsUpdateVehicle["number_seats"] = numberSeats;
       }
 
       if (vehicleColorOld !== vehicleColor) {

@@ -44,6 +44,9 @@ module.exports = {
         streetDestiny,
         streetNumberDestiny,
         complementDestiny,
+        passengerName,
+        passengerPhone,
+        numberPassengers,
         observationService,
       } = req.body;
 
@@ -107,6 +110,9 @@ module.exports = {
         street_number_destiny: streetNumberDestiny,
         complement_destiny: complementDestiny.toUpperCase(),
         client_destiny: clientDestiny,
+        passenger_name: passengerName.toUpperCase(),
+        passenger_phone: passengerPhone,
+        number_passengers: numberPassengers,
         observation_service: observationService.toUpperCase(),
       });
 

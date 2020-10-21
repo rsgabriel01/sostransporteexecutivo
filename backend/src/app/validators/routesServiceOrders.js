@@ -18,6 +18,9 @@ const validatorOsCreate = celebrate({
     streetDestiny: Joi.string().required(),
     streetNumberDestiny: Joi.string().required(),
     complementDestiny: Joi.string().required().allow("", null),
+    passengerName: Joi.string().required(),
+    passengerPhone: Joi.string().regex(/^\d+$/).required().min(10).max(11),
+    numberPassengers: Joi.number().positive().integer().required(),
     observationService: Joi.string().required().allow("", null),
   }),
 });

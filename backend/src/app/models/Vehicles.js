@@ -8,6 +8,7 @@ module.exports = (sequelize, DataTypes) => {
       id_model: DataTypes.BIGINT,
       car_plate: DataTypes.STRING,
       registration_number: DataTypes.STRING,
+      number_seats: DataTypes.BIGINT,
       color: DataTypes.STRING,
       active: DataTypes.BOOLEAN,
     },

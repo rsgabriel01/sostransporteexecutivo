@@ -77,7 +77,7 @@
 }
 
 #btnSearchOsModal {
-  width: 25.276%;
+  width: 16.35%;
   height: 35px;
 }
 
@@ -456,11 +456,11 @@ form .input-block + .input-block {
   margin: 0px 0px 0px 10px;
 }
 
-/* .modal-search-content
+.modal-search-content
   .modal-search-input-button
   .input-label-block-colum#inputDateSearchOs {
   width: 20%;
-} */
+}
 
 .os-consult-container section.form form #input-label-block-column-cod {
   width: 21%;

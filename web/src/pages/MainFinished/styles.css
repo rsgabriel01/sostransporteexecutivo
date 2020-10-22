@@ -113,20 +113,6 @@
   padding-right: 0;
 }
 
-.solicitations-finished-container
-  .status-bar
-  .group-dates
-  input[type="date"]::-webkit-calendar-picker-indicator {
-  background: url(../../assets/calendarDateBlack.svg) no-repeat;
-}
-
-.solicitations-finished-container
-  .status-bar
-  .group-dates
-  input[type="date"]::-webkit-calendar-picker-indicator:hover {
-  background: url(../../assets/calendarDateBlue.svg) no-repeat;
-}
-
 .solicitation-finished-table {
   height: 100%;
   margin: 5px 0;

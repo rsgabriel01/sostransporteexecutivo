@@ -26,6 +26,7 @@ const NeighborhoodsLikeNameController = require("./controllers/NeighborhoodsLike
 const TravelFeeController = require("./controllers/TravelFeeController");
 
 const ServiceOrdersController = require("./controllers/ServiceOrdersController");
+const ServiceOrdersLikeController = require("./controllers/ServiceOrdersLikeController");
 
 const VehicleModelsLikeDescriptionController = require("./controllers/VehicleModelsLikeDescriptionController");
 
@@ -340,6 +341,13 @@ routes.post(
   verifySession,
   permissionAdminAttendance,
   ServiceOrdersController.store
+);
+
+routes.get(
+  "/serviceOrders/like/",
+  verifySession,
+  permissionAdminAttendance,
+  ServiceOrdersLikeController.indexLikeIdClientDate
 );
 // #endregion
 

@@ -146,7 +146,6 @@ export default function ServiceOrdersRequest() {
   const [titleIconModal, setTitleIconModal] = useState();
 
   const [openModalSearchOs, setOpenModalSearchOs] = useState(false);
-  const [searchIdOs, setSearchIdOs] = useState("");
   const [searchNameFantasyClientOs, setSearchNameFantasyClientOs] = useState(
     ""
   );
@@ -910,7 +909,6 @@ export default function ServiceOrdersRequest() {
 
     setTitleIconModal(<RiFileListLine size={30} />);
     setTitleModal("PESQUISAR ORDENS DE SERVIÇO");
-    setSearchIdOs("");
     setSearchNameFantasyClientOs("");
     setSearchDateSolicitationOs(getDateForDatePickerWithClassDate(dateNow));
     setOpenModalSearchOs(true);
@@ -918,7 +916,8 @@ export default function ServiceOrdersRequest() {
 
   const handleCloseModalSearchOsEdit = () => {
     setTitleModal("");
-
+    setSearchNameFantasyClientOs("");
+    setSearchDateSolicitationOs(getDateForDatePickerWithClassDate(dateNow));
     setOpenModalSearchOs(false);
   };
   // #endregion
@@ -937,9 +936,7 @@ export default function ServiceOrdersRequest() {
 
     try {
       const response = await api.get(
-        `/serviceOrders/?idServiceOrder=${searchIdOs.toUpperCase()}?nameFantasyClient=${searchNameFantasyClientOs.toUpperCase()}?dateSolicitation=${getDateOfDatePickerValue(
-          searchDateSolicitationOs
-        )}`
+        `/serviceOrders/like/?nameFantasyClient=${searchNameFantasyClientOs.toUpperCase()}&dateSolicitation=${searchDateSolicitationOs}`
       );
 
       if (response) {
@@ -960,13 +957,6 @@ export default function ServiceOrdersRequest() {
         if (statusError === 400 && dataError.message) {
           console.log(dataError.message);
           switch (dataError.message) {
-            case '"idServiceOrder" is required':
-              notify(
-                "error",
-                "Oops, algo deu errado, entre em contato com o suporte de TI. Erro: o QUERY PARAM 'idServiceOrder' não foi encontrado no endereço da rota."
-              );
-              break;
-
             case '"nameFantasyClient" is required':
               notify(
                 "error",
@@ -1423,17 +1413,6 @@ export default function ServiceOrdersRequest() {
             <div className="modal-search-content">
               <div className="modal-search-input-button">
                 <div className="input-label-block-colum">
-                  <label htmlFor="inputSearchIdOs">Código:</label>
-                  <input
-                    id="inputSearchIdOs"
-                    type="text"
-                    value={searchIdOs}
-                    onChange={(e) => setSearchIdOs(e.target.value)}
-                    onKeyUp={loadSearchOsList}
-                  ></input>
-                </div>
-
-                <div className="input-label-block-colum">
                   <label htmlFor="inputSearchNameFantasyClientOs">
                     Cliente:
                   </label>
@@ -1448,7 +1427,7 @@ export default function ServiceOrdersRequest() {
                   ></input>
                 </div>
 
-                <div className="input-label-block-colum">
+                <div className="input-label-block-colum" id="inputDateSearchOs">
                   <label htmlFor="inputSearchDateSolicitationOs">
                     Data de solicitação:
                   </label>
@@ -1487,9 +1466,15 @@ export default function ServiceOrdersRequest() {
                       <div className="searchItenData">
                         <strong>Código: {os.id}</strong>
                         <section id="searchOsData">
-                          <p id="searchCnpjOs">Cliente: {os.id}</p>
+                          <p id="searchCnpjOs">
+                            Cliente: {os.Client.name_fantasy}
+                          </p>
                           <p id="searchCompanyNameOs">
-                            Data de solicitação: {os.id}
+                            Data de solicitação:
+                            {`
+                            ${getDateOfDatePickerValue(
+                              os.date_time_solicitation.substring(0, 10)
+                            )} ${os.date_time_solicitation.substring(10)}`}
                           </p>
                         </section>
                       </div>

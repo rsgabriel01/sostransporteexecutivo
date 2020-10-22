@@ -77,7 +77,7 @@
 }
 
 #btnSearchOsModal {
-  width: 398.7px;
+  width: 25.276%;
   height: 35px;
 }
 
@@ -160,6 +160,7 @@
   display: flex;
   flex-direction: column;
   padding-bottom: 25px;
+  padding-top: 25px;
 }
 
 .os-consult-container section.form form .input-group-client h1 {
@@ -455,11 +456,21 @@ form .input-block + .input-block {
   margin: 0px 0px 0px 10px;
 }
 
+/* .modal-search-content
+  .modal-search-input-button
+  .input-label-block-colum#inputDateSearchOs {
+  width: 20%;
+} */
+
 .os-consult-container section.form form #input-label-block-column-cod {
   width: 21%;
 }
 
-.os-consult-container section.form form #input-label-block-column-cod-os {
+inputDateSearchOs
+  .os-consult-container
+  section.form
+  form
+  #input-label-block-column-cod-os {
   padding-bottom: 25px;
 }
 

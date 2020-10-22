@@ -13,6 +13,7 @@ export const getDateForDatePickerWithClassDate = (classDateOfPicker) => {
 };
 
 export const getDateForDatePickerWithDateString = (dateStringOfPicker) => {
+  console.log(dateStringOfPicker);
   const dayPtBr = dateStringOfPicker.substring(0, 2);
   const monthPtBr = dateStringOfPicker.substring(3, 5);
   const yearPtBr = dateStringOfPicker.substring(6, 10);
@@ -23,6 +24,7 @@ export const getDateForDatePickerWithDateString = (dateStringOfPicker) => {
 };
 
 export const getDateOfDatePickerValue = (datePickerValue) => {
+  console.log(datePickerValue);
   const yearPtBr = datePickerValue.substring(0, 4);
   const monthPtBr = datePickerValue.substring(5, 7);
   const dayPtBr = datePickerValue.substring(8, 10);

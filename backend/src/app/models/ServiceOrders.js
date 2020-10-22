@@ -1,4 +1,5 @@
 "use strict";
+const moment = require("moment");
 
 module.exports = (sequelize, DataTypes) => {
   const Service_orders = sequelize.define(
@@ -42,6 +43,23 @@ module.exports = (sequelize, DataTypes) => {
       timestamps: false,
     }
   );
+
+  Service_orders.prototype.toJSON = function () {
+    const values = { ...this.get() };
+    if (values.date_time_solicitation) {
+      const originalDateBD = moment
+        .utc(values.date_time_solicitation)
+        .local()
+        .format();
+      const fistUpdateDateToLocalFormat = originalDateBD.replace("T", " ");
+      const secondUpdateDateToLocalFormat = fistUpdateDateToLocalFormat.replace(
+        "-03:00",
+        ""
+      );
+      values.date_time_solicitation = secondUpdateDateToLocalFormat;
+    }
+    return values;
+  };
 
   Service_orders.associate = (models) => {
     Service_orders.belongsTo(models.People, {

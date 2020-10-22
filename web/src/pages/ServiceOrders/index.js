@@ -280,17 +280,29 @@ export default function ServiceOrdersRequest() {
 
       const dateTimeSolicitation = response.date_time_solicitation;
       dateTimeSolicitation
-        ? setDateTimeSolicitation(dateTimeSolicitation)
+        ? setDateTimeSolicitation(
+            `${getDateOfDatePickerValue(
+              dateTimeSolicitation.substring(0, 10)
+            )} ${dateTimeSolicitation.substring(10)}`
+          )
         : setDateTimeSolicitation("");
 
       const dateTimeAttendance = response.date_time_attendance;
       dateTimeAttendance
-        ? setDateTimeAttendance(dateTimeAttendance)
+        ? setDateTimeAttendance(
+            `${getDateOfDatePickerValue(
+              dateTimeAttendance.substring(0, 10)
+            )} ${dateTimeAttendance.substring(10)}`
+          )
         : setDateTimeAttendance("");
 
       const dateTimeCompletion = response.date_time_completion;
       dateTimeCompletion
-        ? setDateTimeCompletion(dateTimeCompletion)
+        ? setDateTimeCompletion(
+            `${getDateOfDatePickerValue(
+              dateTimeCompletion.substring(0, 10)
+            )} ${dateTimeCompletion.substring(10)}`
+          )
         : setDateTimeCompletion("");
 
       const cancellationFee = response.cancellation_fee;

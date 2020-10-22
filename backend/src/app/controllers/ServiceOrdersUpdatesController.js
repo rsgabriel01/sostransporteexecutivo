@@ -1,8 +1,7 @@
 const {
   Service_orders,
   People,
-  Vehicles,
-  Vehicle_models,
+  People_type,
   Neighborhoods,
 } = require("../models");
 
@@ -26,50 +25,6 @@ module.exports = {
       });
 
       return res.json(serviceOrders);
-    } catch (error) {
-      console.log(error);
-    }
-  },
-
-  async show(req, res) {
-    try {
-      const { idServiceOrder } = req.params;
-
-      const serviceOrder = await Service_orders.findOne({
-        where: {
-          id: idServiceOrder,
-        },
-        include: [
-          "Status",
-          "Client",
-          {
-            model: Vehicles,
-            as: "Vehicle",
-            include: {
-              model: Vehicle_models,
-              as: "VehicleModel",
-              include: ["ModelBrand"],
-            },
-          },
-          "Driver",
-          "Neighborhood_origin",
-          {
-            model: Neighborhoods,
-            as: "Neighborhood_destiny",
-            include: ["Travel_fee"],
-          },
-        ],
-        order: [["id", "ASC"]],
-      });
-
-      if (!serviceOrder) {
-        return res.status(400).json({
-          message:
-            "Nenhuma ordem de serviço foi encontrado com o código fornecido, por favor verifique.",
-        });
-      }
-
-      return res.json(serviceOrder);
     } catch (error) {
       console.log(error);
     }

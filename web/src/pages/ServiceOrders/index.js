@@ -89,11 +89,11 @@ export default function ServiceOrdersRequest() {
   const [searchOsBtnInactive, setSearchOsBtnInactive] = useState(false);
 
   const [idServiceOrder, setIdServiceOrder] = useState("");
-  const [idSituation, setIdSituation] = useState(7);
-  const [situation, setSituation] = useState("");
+  const [idSituation, setIdSituation] = useState(""); /** */
+  const [situation, setSituation] = useState(""); /** */
 
-  const [idClient, setIdClient] = useState("");
-  const [nameFantasyClient, setNameFantasyClient] = useState("");
+  const [idClient, setIdClient] = useState(""); /** */
+  const [nameFantasyClient, setNameFantasyClient] = useState(""); /** */
 
   const [rbCheckedAddressOrigin, setRbCheckedAddressOrigin] = useState(true);
   const [idNeighborhoodOrigin, setIdNeighborhoodOrigin] = useState("");
@@ -111,7 +111,7 @@ export default function ServiceOrdersRequest() {
 
   const [passengerName, setPassengerName] = useState("");
   const [passengerPhone, setPassengerPhone] = useState("");
-  const [numberPassengers, setNumberPassengers] = useState(1);
+  const [numberPassengers, setNumberPassengers] = useState("");
 
   const [observationService, setObservationService] = useState("");
   const [observationUpdate, setObservationUpdate] = useState("");
@@ -195,36 +195,165 @@ export default function ServiceOrdersRequest() {
 
   // #region Fill Fields
   function fillFields(response) {
-    const {
-      id,
-      car_plate,
-      registration_number,
-      id_model,
-      model,
-      brand,
-      color,
-      active,
-    } = response.vehicle;
+    if (response) {
+      const idSituation = response.id_status;
+      idSituation ? setIdSituation(idSituation) : setIdSituation("");
 
-    const idDriver = response.driver.id;
-    const idPeopleDriver = response.driver.idPeopleDriver;
-    const name = response.driver.name;
+      const rbCheckedAddressOrigin = response.client_origin;
+      rbCheckedAddressOrigin
+        ? setRbCheckedAddressOrigin(rbCheckedAddressOrigin)
+        : setRbCheckedAddressOrigin("");
 
-    // id ? setIdVehicle(id) : setIdVehicle("");
-    // car_plate ? setCarPlate(car_plate) : setCarPlate("");
-    // registration_number
-    //   ? setRegistrationNumber(registration_number)
-    //   : setRegistrationNumber("");
-    // id_model ? setIdVehicleModel(id_model) : setIdVehicleModel("");
-    // model ? setVehicleModel(model) : setVehicleModel("");
-    // brand ? setVehicleBrand(brand) : setVehicleBrand("");
-    // color ? setVehicleColor(color) : setVehicleColor("");
-    // idDriver ? setIdDriver(idDriver) : setIdDriver("");
-    // idPeopleDriver
-    //   ? setIdPeopleDriver(idPeopleDriver)
-    //   : setIdPeopleDriver(null);
-    // name ? setNameDriver(name) : setNameDriver("");
-    // setCheckedStatus(active);
+      const idNeighborhoodOrigin = response.id_neighborhood_origin;
+      idNeighborhoodOrigin
+        ? setIdNeighborhoodOrigin(idNeighborhoodOrigin)
+        : setIdNeighborhoodOrigin("");
+
+      const streetOrigin = response.street_origin;
+      streetOrigin ? setStreetOrigin(streetOrigin) : setStreetOrigin("");
+
+      const streetNumberOrigin = response.street_number_origin;
+      streetNumberOrigin
+        ? setStreetNumberOrigin(streetNumberOrigin)
+        : setStreetNumberOrigin("");
+
+      const complementOrigin = response.complement_origin;
+      complementOrigin
+        ? setComplementOrigin(complementOrigin)
+        : setComplementOrigin("");
+
+      const rbCheckedAddressDestiny = response.client_destiny;
+      rbCheckedAddressDestiny
+        ? setRbCheckedAddressDestiny(rbCheckedAddressDestiny)
+        : setRbCheckedAddressDestiny("");
+
+      const idNeighborhoodDestiny = response.id_neighborhood_destiny;
+      idNeighborhoodDestiny
+        ? setIdNeighborhoodDestiny(idNeighborhoodDestiny)
+        : setIdNeighborhoodDestiny("");
+
+      const streetDestiny = response.street_destiny;
+      streetDestiny ? setStreetDestiny(streetDestiny) : setStreetDestiny("");
+
+      const streetNumberDestiny = response.street_number_destiny;
+      streetNumberDestiny
+        ? setStreetNumberDestiny(streetNumberDestiny)
+        : setStreetNumberDestiny("");
+
+      const complementDestiny = response.complement_destiny;
+      complementDestiny
+        ? setComplementDestiny(complementDestiny)
+        : setComplementDestiny("");
+
+      const passengerName = response.passenger_name;
+      passengerName ? setPassengerName(passengerName) : setPassengerName("");
+
+      const passengerPhone = response.passenger_phone;
+      passengerPhone
+        ? setPassengerPhone(passengerPhone)
+        : setPassengerPhone("");
+
+      const numberPassengers = response.number_passengers;
+      numberPassengers
+        ? setNumberPassengers(numberPassengers)
+        : setNumberPassengers("");
+
+      const observationService = response.observation_service;
+      observationService
+        ? setObservationService(observationService)
+        : setObservationService("");
+
+      const observationUpdate = response.observation_update;
+      observationUpdate
+        ? setObservationUpdate(observationUpdate)
+        : setObservationUpdate("");
+
+      const observationCancellation = response.observation_service;
+      observationCancellation
+        ? setObservationCancellation(observationCancellation)
+        : setObservationCancellation("");
+
+      const idPeopleDriver = response.id_driver;
+      idPeopleDriver
+        ? setIdPeopleDriver(idPeopleDriver)
+        : setIdPeopleDriver("");
+
+      const dateTimeSolicitation = response.date_time_solicitation;
+      dateTimeSolicitation
+        ? setDateTimeSolicitation(dateTimeSolicitation)
+        : setDateTimeSolicitation("");
+
+      const dateTimeAttendance = response.date_time_attendance;
+      dateTimeAttendance
+        ? setDateTimeAttendance(dateTimeAttendance)
+        : setDateTimeAttendance("");
+
+      const dateTimeCompletion = response.date_time_completion;
+      dateTimeCompletion
+        ? setDateTimeCompletion(dateTimeCompletion)
+        : setDateTimeCompletion("");
+
+      const cancellationFee = response.cancellation_fee;
+      cancellationFee
+        ? setCancellationFee(cancellationFee)
+        : setCancellationFee("");
+    }
+
+    if (response.Status) {
+      const situation = response.Status.description;
+      situation ? setSituation(situation) : setSituation("");
+    }
+
+    if (response.Client) {
+      const idClient = response.Client.id;
+      idClient ? setIdClient(idVehicle) : setIdClient("");
+      const nameFantasyClient = response.Client.name_fantasy;
+      nameFantasyClient
+        ? setNameFantasyClient(nameFantasyClient)
+        : setNameFantasyClient("");
+    }
+
+    if (response.Vehicle) {
+      const idVehicle = response.Vehicle.id;
+      idVehicle ? setIdVehicle(idVehicle) : setIdVehicle("");
+      const carPlate = response.Vehicle.car_plate;
+      carPlate ? setCarPlate(carPlate) : setCarPlate("");
+    }
+
+    if (response.Driver) {
+      const idDriver = response.Driver.id;
+      idDriver ? setIdDriver(idDriver) : setIdDriver("");
+      const nameDriver = response.Driver.name;
+      nameDriver ? setNameDriver(nameDriver) : setNameDriver("");
+    }
+
+    if (response.Neighborhood_origin) {
+      const neighborhoodOrigin = response.Neighborhood_origin.name;
+      neighborhoodOrigin
+        ? setNeighborhoodOrigin(neighborhoodOrigin)
+        : setNeighborhoodOrigin("");
+
+      if (response.Neighborhood_origin.Travel_fee) {
+        if (rbCheckedAddressDestiny && !rbCheckedAddressOrigin) {
+          const totalValue = response.Neighborhood_origin.Travel_fee.value;
+          totalValue ? setTotalValue(totalValue) : setTotalValue("");
+        }
+      }
+    }
+
+    if (response.Neighborhood_origin) {
+      const neighborhoodDestiny = response.Neighborhood_destiny.name;
+      neighborhoodDestiny
+        ? setNeighborhoodDestiny(neighborhoodDestiny)
+        : setNeighborhoodDestiny("");
+
+      if (response.Neighborhood_destiny.Travel_fee) {
+        if (rbCheckedAddressOrigin && !rbCheckedAddressDestiny) {
+          const totalValue = response.Neighborhood_destiny.Travel_fee.value;
+          totalValue ? setTotalValue(totalValue) : setTotalValue("");
+        }
+      }
+    }
   }
   // #endregion Fill Fields
 
@@ -239,15 +368,15 @@ export default function ServiceOrdersRequest() {
   }
   // #endregion
 
-  // #region Load Vehicle data
-  async function loadDataVehicle(id) {
+  // #region Load Service Order data
+  async function loadDataServiceOrder(id) {
     try {
-      clearFields("allNotIdVehicle");
+      clearFields("allWithoutIdServiceOrder");
 
       setOsFinded(false);
-      console.log(id);
+      // console.log(id);
 
-      const response = await api.get(`/vehicle/${id}`);
+      const response = await api.get(`/serviceOrder/${id}`);
 
       if (response) {
         setOsFinded(true);
@@ -292,9 +421,9 @@ export default function ServiceOrdersRequest() {
   // #endregion
 
   // #region Handle Search Person
-  function handleSearchOs(idVehicle) {
-    if (idVehicle && !updateRegister) {
-      loadDataVehicle(idVehicle);
+  function handleSearchOs(idServiceOrder) {
+    if (idServiceOrder && !updateRegister) {
+      loadDataServiceOrder(idServiceOrder);
       setUpdateRegister(false);
       setTitleUpdate("");
     }
@@ -692,7 +821,8 @@ export default function ServiceOrdersRequest() {
       streetDestiny !== "" ||
       streetNumberDestiny !== "" ||
       complementDestiny !== "" ||
-      observationService !== ""
+      observationService !== "" ||
+      numberPassengers !== ""
     ) {
       return true;
     } else {

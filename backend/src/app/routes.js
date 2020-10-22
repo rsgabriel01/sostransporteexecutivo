@@ -91,7 +91,8 @@ const {
 // #region Vehicle Models
 const {
   validatorOsCreate,
-  validatorOsIndexLike,
+  validatorOsShow,
+  validatorOsIndexLikeIdClient,
 } = require("./validators/routesServiceOrders");
 // #endregion
 
@@ -335,6 +336,14 @@ routes.get("/travelFee", TravelFeeController.index);
 // #region ServiceOrders
 routes.get("/serviceOrders", ServiceOrdersController.index);
 
+routes.get(
+  "/serviceOrder/:idServiceOrder",
+  // validatorOsShow,
+  // verifySession,
+  // permissionAdminAttendance,
+  ServiceOrdersController.show
+);
+
 routes.post(
   "/serviceOrders",
   validatorOsCreate,
@@ -345,9 +354,10 @@ routes.post(
 
 routes.get(
   "/serviceOrders/like/",
+  validatorOsIndexLikeIdClient,
   verifySession,
   permissionAdminAttendance,
-  ServiceOrdersLikeController.indexLikeIdClientDate
+  ServiceOrdersLikeController.indexLikeIdClient
 );
 // #endregion
 

@@ -14,15 +14,9 @@ const {
   cast,
 } = require("sequelize");
 
-const moment = require("moment");
-
-const idTypeClient = 4;
-
 module.exports = {
-  async indexLikeIdClientDate(req, res) {
+  async indexLikeIdClient(req, res) {
     const { nameFantasyClient, dateSolicitation } = req.query;
-
-    console.log(`${dateSolicitation} 00:00:00-03`);
 
     try {
       const serviceOrders = await Service_orders.findAll({
@@ -55,9 +49,6 @@ module.exports = {
         order: [["id", "ASC"]],
       });
 
-      console.log(
-        moment.utc(serviceOrders.date_time_solicitation).local().format()
-      );
       return res.json(serviceOrders);
     } catch (error) {
       console.log(error);

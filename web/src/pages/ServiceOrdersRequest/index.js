@@ -504,7 +504,7 @@ export default function ServiceOrdersRequest() {
 
         setPassengerName("");
         setPassengerPhone("");
-        setNumberPassengers(1);
+        setNumberPassengers("");
 
         setIsReadOnlyOrigin(true);
         setIsReadOnlyDestiny(false);

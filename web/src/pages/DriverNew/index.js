@@ -467,9 +467,18 @@ export default function DriverNew() {
                       <div className="searchItenData">
                         <strong>Código: {person.id}</strong>
                         <section id="searchPersonDataInDriverUpdate">
-                          <p id="searchNamePerson">Nome: {person.name}</p>
-                          <p id="searchCpfPerson">CPF: {person.cpf_cnpj}</p>
-                          <p id="searchRgPerson">RG: {person.rg}</p>
+                          <p id="searchNamePerson">
+                            <strong>Nome: </strong>
+                            {person.name}
+                          </p>
+                          <p id="searchCpfPerson">
+                            <strong>CPF: </strong>
+                            {person.cpf_cnpj}
+                          </p>
+                          <p id="searchRgPerson">
+                            <strong>RG: </strong>
+                            {person.rg}
+                          </p>
                         </section>
                       </div>
                       <div className="clientBtnSelect">

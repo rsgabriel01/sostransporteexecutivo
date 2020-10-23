@@ -131,13 +131,14 @@ const validatorOsUpdateSituation7and8 = celebrate({
   }),
 });
 
-const validatorOsIndexLikeIdClient = celebrate({
+const validatorOsIndexLikeClientSituationDate = celebrate({
   [Segments.HEADERS]: Joi.object({
     authorization: Joi.string().required(),
     id_executingperson: Joi.number().positive().integer().required(),
   }).unknown(),
   [Segments.QUERY]: {
     nameFantasyClient: Joi.string().required().allow("", null),
+    situation: Joi.number().positive().integer().required(),
     dateSolicitation: Joi.string().required(),
   },
 });
@@ -145,5 +146,5 @@ const validatorOsIndexLikeIdClient = celebrate({
 module.exports = {
   validatorOsCreate,
   validatorOsShow,
-  validatorOsIndexLikeIdClient,
+  validatorOsIndexLikeClientSituationDate,
 };

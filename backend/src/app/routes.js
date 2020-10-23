@@ -92,7 +92,7 @@ const {
 const {
   validatorOsCreate,
   validatorOsShow,
-  validatorOsIndexLikeIdClient,
+  validatorOsIndexLikeClientSituationDate,
 } = require("./validators/routesServiceOrders");
 // #endregion
 
@@ -354,10 +354,10 @@ routes.post(
 
 routes.get(
   "/serviceOrders/like/",
-  validatorOsIndexLikeIdClient,
+  validatorOsIndexLikeClientSituationDate,
   verifySession,
   permissionAdminAttendance,
-  ServiceOrdersLikeController.indexLikeIdClient
+  ServiceOrdersLikeController.indexLikeClientSituationDate
 );
 // #endregion
 

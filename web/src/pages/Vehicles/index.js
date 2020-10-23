@@ -867,10 +867,12 @@ export default function Vehicles(props) {
                         <strong>Código: {vehicle.id}</strong>
                         <section id="searchVehicleData">
                           <p id="searchVehicleModel">
-                            Modelo: {vehicle.VehicleModel.description}
+                            <strong>Modelo: </strong>
+                            {vehicle.VehicleModel.description}
                           </p>
                           <p id="searchVehicleCarPlate">
-                            Placa: {vehicle.car_plate}
+                            <strong>Placa: </strong>
+                            {vehicle.car_plate}
                           </p>
                         </section>
                       </div>
@@ -955,10 +957,12 @@ export default function Vehicles(props) {
                         <strong>Código: {vehicleModel.id}</strong>
                         <section id="searchVehicleModelDataInVehicleUpdate">
                           <p id="searchDescriptionModel">
-                            Modelo: {vehicleModel.description}
+                            <strong>Modelo: </strong>
+                            {vehicleModel.description}
                           </p>
                           <p id="searcDescriptionModelBrand">
-                            Marca: {vehicleModel.ModelBrand.description}
+                            <strong>Marca: </strong>
+                            {vehicleModel.ModelBrand.description}
                           </p>
                         </section>
                       </div>
@@ -1047,10 +1051,12 @@ export default function Vehicles(props) {
                         <strong>Código: {driver.id}</strong>
                         <section id="searchDriverDataInVehicleUpdate">
                           <p id="searchVehicleDriverName">
-                            Nome: {driver.People.name}
+                            <strong>Nome: </strong>
+                            {driver.People.name}
                           </p>
                           <p id="searchVehicleDriveCpf">
-                            CPF: {driver.People.cpf_cnpj}
+                            <strong>CPF: </strong>
+                            {driver.People.cpf_cnpj}
                           </p>
                         </section>
                       </div>

@@ -496,7 +496,8 @@ export default function ClientNew() {
                         <strong>Código: {client.id}</strong>
                         <section id="searchClientData">
                           <p id="searchCompanyNameClient">
-                            Bairro: {client.name}
+                            <strong>Bairro: </strong>
+                            {client.name}
                           </p>
                         </section>
                       </div>

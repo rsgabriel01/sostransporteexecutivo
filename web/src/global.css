@@ -15,7 +15,8 @@ body {
 
 input,
 button,
-textarea {
+textarea,
+select {
   font: 400 18px Roboto, sans-serif;
 }
 
@@ -36,6 +37,54 @@ input {
   border: 1px solid #efefef;
   border-radius: 4px;
   padding: 0 24px;
+}
+
+input[type="date"] {
+  height: 35px;
+
+  width: 100%;
+
+  color: #3f3d56;
+
+  background: #efefef;
+
+  border: #efefef;
+  border-radius: 4px;
+
+  padding-left: 6px;
+
+  cursor: text;
+}
+
+input[type="date"]::-webkit-calendar-picker-indicator {
+  padding: 1px;
+  background: url(../src/assets/calendarDate.svg) no-repeat;
+  cursor: pointer;
+}
+
+input[type="date"]::-webkit-calendar-picker-indicator:focus {
+  background: url(../src/assets/calendarDateBlue.svg) no-repeat;
+}
+
+input[type="date"]::-webkit-calendar-picker-indicator:hover {
+  background: url(../src/assets/calendarDateBlue.svg) no-repeat;
+}
+
+select {
+  width: 100%;
+  height: 35px;
+  color: #3f3d56;
+  background: #efefef;
+  border: 1px solid #efefef;
+  border-radius: 4px;
+  border: 0;
+  /* margin: 1px; */
+  padding: 0 2px 0 7px;
+  cursor: pointer;
+}
+
+select:after {
+  padding-left: 20px;
 }
 
 textarea {
@@ -242,32 +291,6 @@ div.custom-ui
 }
 ::-webkit-scrollbar-thumb {
   background: #c1c1c1;
-}
-
-input[type="date"] {
-  height: 35px;
-
-  width: 100%;
-
-  color: #3f3d56;
-
-  background: #efefef;
-
-  border: #efefef;
-  border-radius: 4px;
-
-  padding-left: 6px;
-
-  cursor: text;
-}
-
-input[type="date"]::-webkit-calendar-picker-indicator {
-  background: url(../src/assets/calendarDate.svg) no-repeat;
-  cursor: pointer;
-}
-
-input[type="date"]::-webkit-calendar-picker-indicator:hover {
-  background: url(../src/assets/calendarDateBlue.svg) no-repeat;
 }
 
 .modal-search-title {

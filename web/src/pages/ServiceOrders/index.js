@@ -160,6 +160,7 @@ export default function ServiceOrdersRequest() {
   const [searchNameFantasyClientOs, setSearchNameFantasyClientOs] = useState(
     ""
   );
+  const [searchSituationOs, setSearchSituationOs] = useState("1");
   const [searchDateSolicitationOs, setSearchDateSolicitationOs] = useState(
     getDateForDatePickerWithClassDate(dateNow)
   );
@@ -438,7 +439,7 @@ export default function ServiceOrdersRequest() {
   }
   // #endregion
 
-  // #region Handle Search Person
+  // #region Handle Search OS
   function handleSearchOs(idServiceOrder) {
     if (idServiceOrder && !updateRegister) {
       loadDataServiceOrder(idServiceOrder);
@@ -677,7 +678,7 @@ export default function ServiceOrdersRequest() {
   }
   // #endregion
 
-  // #region create OS
+  // #region update OS
   async function updateOs() {
     let dataOS;
 
@@ -1478,7 +1479,7 @@ export default function ServiceOrdersRequest() {
 
     try {
       const response = await api.get(
-        `/serviceOrders/like/?nameFantasyClient=${searchNameFantasyClientOs.toUpperCase()}&dateSolicitation=${searchDateSolicitationOs}`
+        `/serviceOrders/like/?nameFantasyClient=${searchNameFantasyClientOs.toUpperCase()}&situation=${searchSituationOs}&dateSolicitation=${searchDateSolicitationOs}`
       );
 
       if (response) {
@@ -1503,6 +1504,12 @@ export default function ServiceOrdersRequest() {
               notify(
                 "error",
                 "Oops, algo deu errado, entre em contato com o suporte de TI. Erro: o QUERY PARAM 'nameFantasyClient' não foi encontrado no endereço da rota."
+              );
+              break;
+            case '"situation" is required':
+              notify(
+                "error",
+                "Oops, algo deu errado, entre em contato com o suporte de TI. Erro: o QUERY PARAM 'situation' não foi encontrado no endereço da rota."
               );
               break;
             case '"dateSolicitation" is required':
@@ -1954,21 +1961,6 @@ export default function ServiceOrdersRequest() {
             </h1>
             <div className="modal-search-content">
               <div className="modal-search-input-button">
-                <div className="input-label-block-colum">
-                  <label htmlFor="inputSearchNameFantasyClientOs">
-                    Cliente:
-                  </label>
-                  <input
-                    id="inputSearchNameFantasyClientOs"
-                    type="text"
-                    value={searchNameFantasyClientOs}
-                    onChange={(e) =>
-                      setSearchNameFantasyClientOs(e.target.value)
-                    }
-                    onKeyUp={loadSearchOsList}
-                  ></input>
-                </div>
-
                 <div className="input-label-block-colum" id="inputDateSearchOs">
                   <label htmlFor="inputSearchDateSolicitationOs">
                     Data de solicitação:
@@ -1979,9 +1971,55 @@ export default function ServiceOrdersRequest() {
                     value={searchDateSolicitationOs}
                     onChange={(e) => {
                       setSearchDateSolicitationOs(e.target.value);
-                      console.log(searchDateSolicitationOs);
                     }}
                   />
+                </div>
+
+                <div className="input-label-block-colum">
+                  <label htmlFor="listSearchSituationOs">Situação:</label>
+                  <select
+                    id="listSearchSituationOs"
+                    onChange={(e) => {
+                      setSearchSituationOs(e.target.value);
+                    }}
+                  >
+                    <option value="1">AGUARDANDO ATENDIMENTO</option>
+                    <option value="2">INICIADO ATENDIMENTO</option>
+                    <option value="3">NA LISTA DE EXECUÇÃO DO MOTORISTA</option>
+                    <option value="4">
+                      MOTORISTA A CAMINHO DO ENDEREÇO DE ORIGEM
+                    </option>
+                    <option value="5">
+                      PASSAGEIRO COLETADO NO ENDEREÇO DE ORIGEM
+                    </option>
+                    <option value="6">
+                      EM TRÂNSITO PARA O ENDEREÇO DE DESTINO
+                    </option>
+                    <option value="7">
+                      PASSAGEIRO DEIXADO NO ENDEREÇO DE DESTINO
+                    </option>
+                    <option value="8">FINALIZADO</option>
+                    <option value="98">
+                      FINALIZADO (COM TAXA DE CANCELAMENTO)
+                    </option>
+                    <option value="99">CANCELADO</option>
+                  </select>
+                </div>
+
+                <div className="input-label-block-colum">
+                  <label htmlFor="inputSearchNameFantasyClientOs">
+                    Cliente:
+                  </label>
+                  <input
+                    id="inputSearchNameFantasyClientOs"
+                    type="text"
+                    value={searchNameFantasyClientOs}
+                    onChange={(e) => {
+                      setSearchNameFantasyClientOs(e.target.value);
+                    }}
+                    onKeyUp={loadSearchOsList}
+                    onFocus={loadSearchOsList}
+                  ></input>
                 </div>
 
                 <button
@@ -2009,14 +2047,18 @@ export default function ServiceOrdersRequest() {
                         <strong>Código: {os.id}</strong>
                         <section id="searchOsData">
                           <p id="searchCnpjOs">
-                            Cliente: {os.Client.name_fantasy}
+                            <strong>Cliente: </strong>
+                            {os.Client.name_fantasy}
                           </p>
                           <p id="searchCompanyNameOs">
-                            Data de solicitação:
+                            <strong>Data de solicitação: </strong>
                             {`
                             ${getDateOfDatePickerValue(
                               os.date_time_solicitation.substring(0, 10)
                             )} ${os.date_time_solicitation.substring(10)}`}
+                          </p>
+                          <p id="searchCompanyNameOs">
+                            <strong>Situação:</strong> {os.Status.description}
                           </p>
                         </section>
                       </div>
@@ -2102,12 +2144,17 @@ export default function ServiceOrdersRequest() {
                       <div className="searchItenData">
                         <strong>Código: {client.id}</strong>
                         <section id="searchClientData">
-                          <p id="searchCnpjClient">CNPJ: {client.cpf_cnpj}</p>
+                          <p id="searchCnpjClient">
+                            <strong>CNPJ: </strong>
+                            {client.cpf_cnpj}
+                          </p>
                           <p id="searchCompanyNameClient">
-                            Razão Social: {client.company_name}
+                            <strong>Razão Social: </strong>
+                            {client.company_name}
                           </p>
                           <p id="searchNameFantasyClient">
-                            Nome Fantasia: {client.name_fantasy}
+                            <strong>Nome Fantasia: </strong>
+                            {client.name_fantasy}
                           </p>
                         </section>
                       </div>
@@ -2199,7 +2246,8 @@ export default function ServiceOrdersRequest() {
                         <strong>Código: {neighborhood.id}</strong>
                         <section id="searchNeighborhoodData">
                           <p id="searchNeighborhood">
-                            Bairro: {neighborhood.name}
+                            <strong>Bairro: </strong>
+                            {neighborhood.name}
                           </p>
                         </section>
                       </div>
@@ -2286,10 +2334,12 @@ export default function ServiceOrdersRequest() {
                         <strong>Código: {vehicle.id}</strong>
                         <section id="searchVehicleData">
                           <p id="searchVehicleModel">
-                            Modelo: {vehicle.VehicleModel.description}
+                            <strong>Modelo: </strong>
+                            {vehicle.VehicleModel.description}
                           </p>
                           <p id="searchVehicleCarPlate">
-                            Placa: {vehicle.car_plate}
+                            <strong>Placa: </strong>
+                            {vehicle.car_plate}
                           </p>
                         </section>
                       </div>
@@ -2377,7 +2427,8 @@ export default function ServiceOrdersRequest() {
                         <strong>Código: {driver.id}</strong>
                         <section id="searchDriverData">
                           <p id="searchNameDriver">
-                            Nome: {driver.People.name}
+                            <strong>Nome: </strong>
+                            {driver.People.name}
                           </p>
                         </section>
                       </div>

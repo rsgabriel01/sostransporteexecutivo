@@ -15,13 +15,17 @@ const {
 } = require("sequelize");
 
 module.exports = {
-  async indexLikeIdClient(req, res) {
-    const { nameFantasyClient, dateSolicitation } = req.query;
+  async indexLikeClientSituationDate(req, res) {
+    const { nameFantasyClient, situation, dateSolicitation } = req.query;
 
     try {
+      console.log(situation);
+      console.log(dateSolicitation);
+      console.log(" ");
       const serviceOrders = await Service_orders.findAll({
         where: {
           "$Client.name_fantasy$": { [Op.like]: `${nameFantasyClient}%` },
+          id_status: situation,
           date_time_solicitation: {
             [Op.gte]: `${dateSolicitation} 00:00:00-03`,
           },

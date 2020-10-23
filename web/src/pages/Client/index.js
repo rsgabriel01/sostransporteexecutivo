@@ -740,12 +740,17 @@ export default function Client() {
                       <div className="searchItenData">
                         <strong>Código: {client.id}</strong>
                         <section id="searchClientData">
-                          <p id="searchCnpjClient">CNPJ: {client.cpf_cnpj}</p>
+                          <p id="searchCnpjClient">
+                            <strong>CNPJ: </strong>
+                            {client.cpf_cnpj}
+                          </p>
                           <p id="searchCompanyNameClient">
-                            Razão Social: {client.company_name}
+                            <strong>Razão Social: </strong>
+                            {client.company_name}
                           </p>
                           <p id="searchNameFantasyClient">
-                            Nome Fantasia: {client.name_fantasy}
+                            <strong>Nome Fantasia: </strong>
+                            {client.name_fantasy}
                           </p>
                         </section>
                       </div>
@@ -827,7 +832,8 @@ export default function Client() {
                         <strong>Código: {neighborhood.id}</strong>
                         <section id="searchNeighborhoodData">
                           <p id="searchNeighborhood">
-                            Bairro: {neighborhood.name}
+                            <strong>Bairro: </strong>
+                            {neighborhood.name}
                           </p>
                         </section>
                       </div>

@@ -6,5 +6,5 @@ INSERT INTO "Status"("id", description) VALUES (5, 'PASSAGEIRO COLETADO NO ENDER
 INSERT INTO "Status"("id", description) VALUES (6, 'EM TRÂNSITO PARA O ENDEREÇO DE DESTINO');
 INSERT INTO "Status"("id", description) VALUES (7, 'PASSAGEIRO DEIXADO NO ENDEREÇO DE DESTINO');
 INSERT INTO "Status"("id", description) VALUES (8, 'FINALIZADO');
-INSERT INTO "Status"("id", description) VALUES (98, 'CANCELADO');
-INSERT INTO "Status"("id", description) VALUES (99, 'FINALIZADO (COM TAXA DE CANCELAMENTO)');
+INSERT INTO "Status"("id", description) VALUES (98, 'FINALIZADO (COM TAXA DE CANCELAMENTO)');
+INSERT INTO "Status"("id", description) VALUES (99, 'CANCELADO');

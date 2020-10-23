@@ -315,7 +315,7 @@ export default function ServiceOrdersRequest() {
 
       const cancellationFee = response.cancellation_fee;
       cancellationFee
-        ? setCancellationFee(cancellationFee)
+        ? setCancellationFee(`R$ ${cancellationFee},00`)
         : setCancellationFee("");
     }
 
@@ -356,7 +356,7 @@ export default function ServiceOrdersRequest() {
       if (response.Neighborhood_origin.Travel_fee) {
         if (rbCheckedAddressDestiny && !rbCheckedAddressOrigin) {
           const totalValue = response.Neighborhood_origin.Travel_fee.value;
-          totalValue ? setTotalValue(totalValue) : setTotalValue("");
+          totalValue ? setTotalValue(`R$ ${totalValue},00`) : setTotalValue("");
         }
       }
     }
@@ -370,7 +370,7 @@ export default function ServiceOrdersRequest() {
       if (response.Neighborhood_destiny.Travel_fee) {
         if (rbCheckedAddressOrigin && !rbCheckedAddressDestiny) {
           const totalValue = response.Neighborhood_destiny.Travel_fee.value;
-          totalValue ? setTotalValue(totalValue) : setTotalValue("");
+          totalValue ? setTotalValue(`R$ ${totalValue},00`) : setTotalValue("");
         }
       }
     }

@@ -2,6 +2,10 @@ module.exports = (sequelize, DataTypes) => {
   const People = sequelize.define(
     "People",
     {
+      id: {
+        primaryKey: true,
+        type: DataTypes.BIGINT,
+      },
       name: DataTypes.STRING,
       cpf_cnpj: DataTypes.STRING,
       rg: DataTypes.STRING,

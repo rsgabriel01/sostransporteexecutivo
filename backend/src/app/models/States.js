@@ -4,6 +4,10 @@ module.exports = (sequelize, DataTypes) => {
   const States = sequelize.define(
     "States",
     {
+      id: {
+        primaryKey: true,
+        type: DataTypes.BIGINT,
+      },
       name: DataTypes.STRING,
       uf: DataTypes.STRING,
     },

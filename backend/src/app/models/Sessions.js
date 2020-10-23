@@ -4,6 +4,10 @@ module.exports = (sequelize, DataTypes) => {
   const Sessions = sequelize.define(
     "Sessions",
     {
+      id: {
+        primaryKey: true,
+        type: DataTypes.BIGINT,
+      },
       id_user: DataTypes.BIGINT,
       token: DataTypes.STRING,
       first_acess: DataTypes.DATE,

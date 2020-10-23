@@ -260,7 +260,7 @@ routes.get(
   validatorDriversIndexLikeName,
   verifySession,
   permissionAdminAttendance,
-  DriversLikeNameController.indexInactiveLikeName
+  DriversLikeNameController.indexActiveLikeName
 );
 
 routes.get(
@@ -399,6 +399,14 @@ routes.get(
   verifySession,
   permissionAdminAttendance,
   VehiclesLikeModelController.indexLikeModel
+);
+
+routes.get(
+  "/vehicles/active/",
+  validatorVehiclesLikeModel,
+  verifySession,
+  permissionAdminAttendance,
+  VehiclesLikeModelController.indexActiveLikeModel
 );
 // #endregion
 

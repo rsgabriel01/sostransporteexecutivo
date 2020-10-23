@@ -5,6 +5,10 @@ module.exports = (sequelize, DataTypes) => {
   const Service_orders = sequelize.define(
     "Service_orders",
     {
+      id: {
+        primaryKey: true,
+        type: DataTypes.BIGINT,
+      },
       id_client: DataTypes.BIGINT,
       id_user_solicitation: DataTypes.BIGINT,
       date_time_solicitation: DataTypes.DATE /** */,
@@ -29,6 +33,10 @@ module.exports = (sequelize, DataTypes) => {
       date_time_completion: { type: DataTypes.DATE, defaultValue: null } /** */,
       id_user_completion: { type: DataTypes.BIGINT, defaultValue: null },
       observation_service: {
+        type: DataTypes.STRING,
+        defaultValue: null,
+      } /**/,
+      observation_update: {
         type: DataTypes.STRING,
         defaultValue: null,
       } /**/,

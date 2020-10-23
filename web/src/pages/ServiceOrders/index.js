@@ -64,72 +64,81 @@ export default function ServiceOrdersRequest() {
 
   const [titleUpdate, setTitleUpdate] = useState("");
 
-  const [osFinded, setOsFinded] = useState(false);
+  const [osFinded, setOsFinded] = useState(false); /** */
 
-  const [isReadonly, setIsReadonly] = useState(true);
-  const [isReadOnlyClient, setIsReadOnlyClient] = useState(true);
-  const [isReadOnlyCbAddress, setIsReadOnlyCbAddress] = useState(true);
-  const [isReadOnlyOrigin, setIsReadOnlyOrigin] = useState(true);
-  const [isReadOnlyDestiny, setIsReadOnlyDestiny] = useState(true);
-  const [isReadOnlyPassengers, setIsReadOnlyPassengers] = useState(true);
+  const [isReadOnlyClient, setIsReadOnlyClient] = useState(true); /** */
+  const [isReadOnlyCbAddress, setIsReadOnlyCbAddress] = useState(true); /** */
+  const [isReadOnlyOrigin, setIsReadOnlyOrigin] = useState(true); /** */
+  const [isReadOnlyDestiny, setIsReadOnlyDestiny] = useState(true); /** */
+  const [isReadOnlyPassengers, setIsReadOnlyPassengers] = useState(true); /** */
   const [
     isReadOnlyObservationService,
     setIsReadOnlyObservationService,
-  ] = useState(true);
+  ] = useState(true); /** */
   const [
     isReadOnlyObservationUpdate,
     setIsReadOnlyObservationUpdate,
-  ] = useState(true);
-  const [isReadOnlyVehicle, setIsReadOnlyVehicle] = useState(true);
-  const [isReadOnlyDriver, setIsReadOnlyDriver] = useState(true);
+  ] = useState(true); /** */
+  const [isReadOnlyVehicle, setIsReadOnlyVehicle] = useState(true); /** */
+  const [isReadOnlyDriver, setIsReadOnlyDriver] = useState(true); /** */
 
   const [loadingButton, setLoadingButton] = useState(false);
   const [textButtonSaveUpdate, setTextButtonSaveUpdate] = useState("Salvar");
   const [btnInactive, setBtnInactive] = useState("");
-  const [searchOsBtnInactive, setSearchOsBtnInactive] = useState(false);
+  const [searchOsBtnInactive, setSearchOsBtnInactive] = useState(false); /** */
 
-  const [idServiceOrder, setIdServiceOrder] = useState("");
+  const [idServiceOrder, setIdServiceOrder] = useState(""); /** */
   const [idSituation, setIdSituation] = useState(""); /** */
   const [situation, setSituation] = useState(""); /** */
 
   const [idClient, setIdClient] = useState(""); /** */
   const [nameFantasyClient, setNameFantasyClient] = useState(""); /** */
 
-  const [rbCheckedAddressOrigin, setRbCheckedAddressOrigin] = useState(true);
-  const [idNeighborhoodOrigin, setIdNeighborhoodOrigin] = useState("");
-  const [neighborhoodOrigin, setNeighborhoodOrigin] = useState("");
-  const [streetOrigin, setStreetOrigin] = useState("");
-  const [streetNumberOrigin, setStreetNumberOrigin] = useState("");
-  const [complementOrigin, setComplementOrigin] = useState("");
+  const [rbCheckedAddressOrigin, setRbCheckedAddressOrigin] = useState(
+    true
+  ); /** */
+  const [idNeighborhoodOrigin, setIdNeighborhoodOrigin] = useState(""); /** */
+  const [neighborhoodOrigin, setNeighborhoodOrigin] = useState(""); /** */
+  const [streetOrigin, setStreetOrigin] = useState(""); /** */
+  const [streetNumberOrigin, setStreetNumberOrigin] = useState(""); /** */
+  const [complementOrigin, setComplementOrigin] = useState(""); /** */
 
-  const [rbCheckedAddressDestiny, setRbCheckedAddressDestiny] = useState(false);
-  const [idNeighborhoodDestiny, setIdNeighborhoodDestiny] = useState("");
-  const [neighborhoodDestiny, setNeighborhoodDestiny] = useState("");
-  const [streetDestiny, setStreetDestiny] = useState("");
-  const [streetNumberDestiny, setStreetNumberDestiny] = useState("");
-  const [complementDestiny, setComplementDestiny] = useState("");
+  const [rbCheckedAddressDestiny, setRbCheckedAddressDestiny] = useState(
+    false
+  ); /** */
+  const [idNeighborhoodDestiny, setIdNeighborhoodDestiny] = useState(""); /** */
+  const [neighborhoodDestiny, setNeighborhoodDestiny] = useState(""); /*** */
+  const [streetDestiny, setStreetDestiny] = useState(""); /** */
+  const [streetNumberDestiny, setStreetNumberDestiny] = useState(""); /** */
+  const [complementDestiny, setComplementDestiny] = useState(""); /** */
 
-  const [passengerName, setPassengerName] = useState("");
-  const [passengerPhone, setPassengerPhone] = useState("");
-  const [numberPassengers, setNumberPassengers] = useState("");
+  const [passengerName, setPassengerName] = useState(""); /** */
+  const [passengerPhone, setPassengerPhone] = useState(""); /** */
+  const [numberPassengers, setNumberPassengers] = useState(""); /** */
 
-  const [observationService, setObservationService] = useState("");
-  const [observationUpdate, setObservationUpdate] = useState("");
-  const [observationCancellation, setObservationCancellation] = useState("");
+  const [observationService, setObservationService] = useState(""); /** */
+  const [observationUpdate, setObservationUpdate] = useState(""); /** */
+  const [
+    observationUpdatePlaceHolder,
+    setObservationUpdatePlaceHolder,
+  ] = useState(""); /** */
+  const [observationCancellation, setObservationCancellation] = useState(
+    ""
+  ); /** */
 
-  const [idVehicle, setIdVehicle] = useState("");
-  const [carPlate, setCarPlate] = useState("");
+  const [idVehicle, setIdVehicle] = useState(""); /** */
+  const [carPlate, setCarPlate] = useState(""); /** */
 
-  const [idDriver, setIdDriver] = useState("");
-  const [idPeopleDriver, setIdPeopleDriver] = useState("");
-  const [nameDriver, setNameDriver] = useState("");
+  const [idDriver, setIdDriver] = useState(""); /** */
+  const [idPeopleDriver, setIdPeopleDriver] = useState(""); /** */
+  const [nameDriver, setNameDriver] = useState(""); /** */
 
-  const [dateTimeSolicitation, setDateTimeSolicitation] = useState("");
-  const [dateTimeAttendance, setDateTimeAttendance] = useState("");
-  const [dateTimeCompletion, setDateTimeCompletion] = useState("");
+  const [dateTimeSolicitation, setDateTimeSolicitation] = useState(""); /** */
+  const [dateTimeAttendance, setDateTimeAttendance] = useState(""); /** */
+  const [dateTimeCompletion, setDateTimeCompletion] = useState(""); /** */
 
-  const [totalValue, setTotalValue] = useState("");
-  const [cancellationFee, setCancellationFee] = useState("");
+  const [totalValue, setTotalValue] = useState(""); /** */
+  const [cancellationFee, setCancellationFee] = useState(""); /** */
 
   const idServiceOrderInputRef = useRef(null);
   const nameFantasyClientInputRef = useRef(null);
@@ -137,8 +146,10 @@ export default function ServiceOrdersRequest() {
   const neighborhoodDestinyInputRef = useRef(null);
   const streetOriginInputRef = useRef(null);
   const streetDestinyInputRef = useRef(null);
+  const carPlateInputRef = useRef(null);
   const idDriverInputRef = useRef(null);
   const nameDriverInputRef = useRef(null);
+  const passengerNameInputRef = useRef(null);
 
   const useStyles = makeStyles((theme) => jsonClassesModal(theme));
   const ClassesModal = useStyles();
@@ -199,10 +210,7 @@ export default function ServiceOrdersRequest() {
       const idSituation = response.id_status;
       idSituation ? setIdSituation(idSituation) : setIdSituation("");
 
-      const rbCheckedAddressOrigin = response.client_origin;
-      rbCheckedAddressOrigin
-        ? setRbCheckedAddressOrigin(rbCheckedAddressOrigin)
-        : setRbCheckedAddressOrigin("");
+      setRbCheckedAddressOrigin(response.client_origin);
 
       const idNeighborhoodOrigin = response.id_neighborhood_origin;
       idNeighborhoodOrigin
@@ -222,10 +230,7 @@ export default function ServiceOrdersRequest() {
         ? setComplementOrigin(complementOrigin)
         : setComplementOrigin("");
 
-      const rbCheckedAddressDestiny = response.client_destiny;
-      rbCheckedAddressDestiny
-        ? setRbCheckedAddressDestiny(rbCheckedAddressDestiny)
-        : setRbCheckedAddressDestiny("");
+      setRbCheckedAddressDestiny(response.client_destiny);
 
       const idNeighborhoodDestiny = response.id_neighborhood_destiny;
       idNeighborhoodDestiny
@@ -265,10 +270,12 @@ export default function ServiceOrdersRequest() {
 
       const observationUpdate = response.observation_update;
       observationUpdate
-        ? setObservationUpdate(observationUpdate)
-        : setObservationUpdate("");
+        ? setObservationUpdatePlaceHolder(
+            `Alteração anterior: ${observationUpdate}`
+          )
+        : setObservationUpdatePlaceHolder("");
 
-      const observationCancellation = response.observation_service;
+      const observationCancellation = response.observation_cancellation;
       observationCancellation
         ? setObservationCancellation(observationCancellation)
         : setObservationCancellation("");
@@ -318,7 +325,7 @@ export default function ServiceOrdersRequest() {
 
     if (response.Client) {
       const idClient = response.Client.id;
-      idClient ? setIdClient(idVehicle) : setIdClient("");
+      idClient ? setIdClient(idClient) : setIdClient("");
       const nameFantasyClient = response.Client.name_fantasy;
       nameFantasyClient
         ? setNameFantasyClient(nameFantasyClient)
@@ -333,7 +340,7 @@ export default function ServiceOrdersRequest() {
     }
 
     if (response.Driver) {
-      const idDriver = response.Driver.id;
+      const idDriver = response.Driver.People_Type[0].Type_people.id;
       idDriver ? setIdDriver(idDriver) : setIdDriver("");
       const nameDriver = response.Driver.name;
       nameDriver ? setNameDriver(nameDriver) : setNameDriver("");
@@ -375,7 +382,6 @@ export default function ServiceOrdersRequest() {
     clearFields("all");
     setTitleUpdate("");
     setUpdateRegister(false);
-    setIsReadonly(true);
     setSearchOsBtnInactive(false);
   }
   // #endregion
@@ -460,7 +466,6 @@ export default function ServiceOrdersRequest() {
 
         setSearchOsBtnInactive(true);
         setUpdateRegister(true);
-        setIsReadonly(false);
 
         setIsReadOnlyClient(false);
         setIsReadOnlyCbAddress(false);
@@ -484,7 +489,6 @@ export default function ServiceOrdersRequest() {
 
         setSearchOsBtnInactive(true);
         setUpdateRegister(true);
-        setIsReadonly(false);
 
         setIsReadOnlyClient(false);
         setIsReadOnlyCbAddress(false);
@@ -511,7 +515,6 @@ export default function ServiceOrdersRequest() {
 
         setSearchOsBtnInactive(true);
         setUpdateRegister(true);
-        setIsReadonly(false);
 
         setIsReadOnlyCbAddress(false);
 
@@ -524,6 +527,8 @@ export default function ServiceOrdersRequest() {
           setIsReadOnlyOrigin(false);
           setIsReadOnlyDestiny(true);
         }
+
+        setIsReadOnlyObservationUpdate(false);
       } else if (
         idSituation === 7 ||
         idSituation === "7" ||
@@ -534,7 +539,6 @@ export default function ServiceOrdersRequest() {
 
         setSearchOsBtnInactive(true);
         setUpdateRegister(true);
-        setIsReadonly(false);
 
         setIsReadOnlyClient(false);
         setIsReadOnlyCbAddress(false);
@@ -674,87 +678,159 @@ export default function ServiceOrdersRequest() {
   // #endregion
 
   // #region create OS
-  async function createOs() {
-    const dataOs = {
-      idClient,
-      clientOrigin: rbCheckedAddressOrigin,
-      idNeighborhoodOrigin,
-      streetOrigin: streetOrigin.toUpperCase(),
-      streetNumberOrigin,
-      complementOrigin: complementOrigin.toUpperCase(),
-      clientDestiny: rbCheckedAddressDestiny,
-      idNeighborhoodDestiny,
-      streetDestiny: streetDestiny.toUpperCase(),
-      streetNumberDestiny,
-      complementDestiny: complementDestiny.toUpperCase(),
-      observationService: observationService.toUpperCase(),
-    };
+  async function updateOs() {
+    let dataOS;
+
+    if (idSituation === 1 || idSituation === "1") {
+      dataOS = {
+        idClient,
+        clientOrigin: rbCheckedAddressOrigin,
+        idNeighborhoodOrigin,
+        streetOrigin: streetOrigin.toUpperCase(),
+        streetNumberOrigin,
+        complementOrigin: complementOrigin.toUpperCase(),
+        clientDestiny: rbCheckedAddressDestiny,
+        idNeighborhoodDestiny,
+        streetDestiny: streetDestiny.toUpperCase(),
+        streetNumberDestiny,
+        complementDestiny: complementDestiny.toUpperCase(),
+        passengerName: passengerName.toUpperCase(),
+        passengerPhone: passengerPhone,
+        numberPassengers,
+        observationService: observationService.toUpperCase(),
+        observationUpdate: observationUpdate.toUpperCase(),
+      };
+    }
+    if (idSituation === 2 || idSituation === "2") {
+      dataOS = {
+        idClient,
+        clientOrigin: rbCheckedAddressOrigin,
+        idNeighborhoodOrigin,
+        streetOrigin: streetOrigin.toUpperCase(),
+        streetNumberOrigin,
+        complementOrigin: complementOrigin.toUpperCase(),
+        clientDestiny: rbCheckedAddressDestiny,
+        idNeighborhoodDestiny,
+        streetDestiny: streetDestiny.toUpperCase(),
+        streetNumberDestiny,
+        complementDestiny: complementDestiny.toUpperCase(),
+        passengerName: passengerName.toUpperCase(),
+        passengerPhone: passengerPhone,
+        numberPassengers,
+        observationService: observationService.toUpperCase(),
+        observationUpdate: observationUpdate.toUpperCase(),
+        idVehicle,
+        idDriver: idPeopleDriver,
+      };
+    }
+    if (idSituation === 3 || idSituation === "3") {
+      dataOS = {
+        clientOrigin: rbCheckedAddressOrigin,
+        idNeighborhoodOrigin,
+        streetOrigin: streetOrigin.toUpperCase(),
+        streetNumberOrigin,
+        complementOrigin: complementOrigin.toUpperCase(),
+        clientDestiny: rbCheckedAddressDestiny,
+        idNeighborhoodDestiny,
+        streetDestiny: streetDestiny.toUpperCase(),
+        streetNumberDestiny,
+        complementDestiny: complementDestiny.toUpperCase(),
+      };
+    }
+
+    if (
+      idSituation === 7 ||
+      idSituation === "7" ||
+      idSituation === 8 ||
+      idSituation === "8"
+    ) {
+      dataOS = {
+        idClient,
+        clientOrigin: rbCheckedAddressOrigin,
+        idNeighborhoodOrigin,
+        streetOrigin: streetOrigin.toUpperCase(),
+        streetNumberOrigin,
+        complementOrigin: complementOrigin.toUpperCase(),
+        clientDestiny: rbCheckedAddressDestiny,
+        idNeighborhoodDestiny,
+        streetDestiny: streetDestiny.toUpperCase(),
+        streetNumberDestiny,
+        complementDestiny: complementDestiny.toUpperCase(),
+        passengerName: passengerName.toUpperCase(),
+        passengerPhone: passengerPhone,
+        numberPassengers,
+        observationService: observationService.toUpperCase(),
+        observationUpdate: observationUpdate.toUpperCase(),
+        idVehicle,
+        idDriver: idPeopleDriver,
+      };
+    }
 
     setTextButtonSaveUpdate("Aguarde...");
     setLoadingButton(true);
     setBtnInactive("btnInactive");
 
-    console.log(dataOs);
+    console.log(dataOS);
 
-    try {
-      const response = await api.post("/serviceOrders", dataOs);
+    // try {
+    //   const response = await api.post("/serviceOrders", dataOS);
 
-      if (response) {
-        console.log(response.data);
+    //   if (response) {
+    //     console.log(response.data);
 
-        notify("success", response.data.message);
+    //     notify("success", response.data.message);
 
-        setTextButtonSaveUpdate("Salvar");
-        setLoadingButton(false);
-        setBtnInactive("");
-        clearFields("all");
-      }
-    } catch (error) {
-      setTextButtonSaveUpdate("Salvar");
-      setLoadingButton(false);
-      setBtnInactive("");
+    //     setTextButtonSaveUpdate("Salvar");
+    //     setLoadingButton(false);
+    //     setBtnInactive("");
+    //     clearFields("all");
+    //   }
+    // } catch (error) {
+    //   setTextButtonSaveUpdate("Salvar");
+    //   setLoadingButton(false);
+    //   setBtnInactive("");
 
-      if (error.response) {
-        const dataError = error.response.data;
-        const statusError = error.response.status;
-        console.error(dataError);
-        console.error(statusError);
+    //   if (error.response) {
+    //     const dataError = error.response.data;
+    //     const statusError = error.response.status;
+    //     console.error(dataError);
+    //     console.error(statusError);
 
-        if (statusError === 400 && dataError.message) {
-          console.log(dataError.message);
-          switch (dataError.message) {
-            default:
-              notify("warning", dataError.message);
-          }
-        }
+    //     if (statusError === 400 && dataError.message) {
+    //       console.log(dataError.message);
+    //       switch (dataError.message) {
+    //         default:
+    //           notify("warning", dataError.message);
+    //       }
+    //     }
 
-        if (statusError === 401) {
-          switch (dataError.message) {
-            default:
-              notify("warning", dataError.message);
-          }
-        }
+    //     if (statusError === 401) {
+    //       switch (dataError.message) {
+    //         default:
+    //           notify("warning", dataError.message);
+    //       }
+    //     }
 
-        if (statusError === 500) {
-          notify(
-            "error",
-            "Ooops, erro interno do servidor, por favor entre em contato com setor de TI."
-          );
-        }
-      } else if (error.request) {
-        notify(
-          "error",
-          `Oops, algo deu errado, entre em contato com o suporte de TI. ${error}`
-        );
-        console.log("Error 1", error.request);
-      } else {
-        notify(
-          "error",
-          `Oops, algo deu errado, entre em contato com o suporte de TI. ${error}`
-        );
-        console.log("Error 2", error.message);
-      }
-    }
+    //     if (statusError === 500) {
+    //       notify(
+    //         "error",
+    //         "Ooops, erro interno do servidor, por favor entre em contato com setor de TI."
+    //       );
+    //     }
+    //   } else if (error.request) {
+    //     notify(
+    //       "error",
+    //       `Oops, algo deu errado, entre em contato com o suporte de TI. ${error}`
+    //     );
+    //     console.log("Error 1", error.request);
+    //   } else {
+    //     notify(
+    //       "error",
+    //       `Oops, algo deu errado, entre em contato com o suporte de TI. ${error}`
+    //     );
+    //     console.log("Error 2", error.message);
+    //   }
+    // }
   }
   //#endregion
 
@@ -797,8 +873,8 @@ export default function ServiceOrdersRequest() {
                         clearFields("all");
                         break;
 
-                      case "createOs":
-                        createOs();
+                      case "updateOs":
+                        updateOs();
                         break;
                       default:
                         break;
@@ -821,6 +897,9 @@ export default function ServiceOrdersRequest() {
   //#region Verify Field Filled
   const fieldsIsFilled = () => {
     if (
+      idServiceOrder !== "" ||
+      idSituation !== "" ||
+      situation !== "" ||
       idClient !== "" ||
       nameFantasyClient !== "" ||
       idNeighborhoodOrigin !== "" ||
@@ -833,8 +912,23 @@ export default function ServiceOrdersRequest() {
       streetDestiny !== "" ||
       streetNumberDestiny !== "" ||
       complementDestiny !== "" ||
+      passengerName !== "" ||
+      passengerPhone !== "" ||
+      numberPassengers !== "" ||
       observationService !== "" ||
-      numberPassengers !== ""
+      observationUpdatePlaceHolder !== "" ||
+      observationUpdate !== "" ||
+      observationCancellation !== "" ||
+      idVehicle !== "" ||
+      carPlate !== "" ||
+      idDriver !== "" ||
+      idPeopleDriver !== "" ||
+      nameDriver !== "" ||
+      dateTimeSolicitation !== "" ||
+      dateTimeAttendance !== "" ||
+      dateTimeCompletion !== "" ||
+      totalValue !== "" ||
+      cancellationFee !== ""
     ) {
       return true;
     } else {
@@ -847,70 +941,292 @@ export default function ServiceOrdersRequest() {
   function handleSubmit(e) {
     e.preventDefault();
 
-    if (idClient === "" || nameFantasyClient == "") {
+    if (idServiceOrder === "" || idSituation === "" || situation === "") {
       notify(
         "warning",
-        "Os dados do cliente devem estar preenchidos, por favor verifique."
+        "Os dados da ordem de serviço devem estar preenchidos, por favor verifique."
       );
 
-      inputFocus("nameFantasyClient");
+      inputFocus("idServiceOrder");
       return;
-    }
-
-    if (
-      idNeighborhoodOrigin === "" ||
-      neighborhoodOrigin === "" ||
-      streetOrigin === "" ||
-      streetNumberOrigin === ""
-    ) {
-      if (rbCheckedAddressOrigin) {
+    } else if (idSituation === 1 || idSituation === "1") {
+      if (idClient === "" || nameFantasyClient === "") {
         notify(
           "warning",
-          "Os dados de endereço cliente devem estar preenchidos, por favor verifique."
+          "Os dados de cliente devem estar preenchidos, por favor verifique."
         );
         inputFocus("nameFantasyClient");
-      } else {
-        notify(
-          "warning",
-          "Os dados de endereço de origem devem estar preenchidos, por favor verifique."
-        );
-        inputFocus("neighborhoodOrigin");
+        return;
       }
 
-      return;
-    }
+      if (
+        idNeighborhoodOrigin === "" ||
+        neighborhoodOrigin === "" ||
+        streetOrigin === "" ||
+        streetNumberOrigin === ""
+      ) {
+        if (rbCheckedAddressOrigin) {
+        } else {
+          notify(
+            "warning",
+            "Os dados de endereço de origem devem estar preenchidos, por favor verifique."
+          );
+          inputFocus("neighborhoodOrigin");
+        }
 
-    if (
-      idNeighborhoodDestiny === "" ||
-      neighborhoodDestiny === "" ||
-      streetDestiny === "" ||
-      streetNumberDestiny === ""
-    ) {
-      if (rbCheckedAddressDestiny) {
+        return;
+      }
+
+      if (
+        idNeighborhoodDestiny === "" ||
+        neighborhoodDestiny === "" ||
+        streetDestiny === "" ||
+        streetNumberDestiny === ""
+      ) {
+        if (rbCheckedAddressDestiny) {
+          notify(
+            "warning",
+            "Os dados de endereço cliente devem estar preenchidos, por favor verifique."
+          );
+          inputFocus("nameFantasyClient");
+        } else {
+          notify(
+            "warning",
+            "Os dados de endereço de destino devem estar preenchidos, por favor verifique."
+          );
+          inputFocus("neighborhoodDestiny");
+        }
+        return;
+      }
+
+      if (
+        passengerName === "" ||
+        passengerPhone === "" ||
+        numberPassengers === ""
+      ) {
         notify(
           "warning",
-          "Os dados de endereço cliente devem estar preenchidos, por favor verifique."
+          "Os dados dos passgeiros devem estar preenchidos, por favor verifique."
+        );
+        inputFocus("passengerName");
+        return;
+      }
+    } else if (idSituation === 2 || idSituation === "2") {
+      if (idClient === "" || nameFantasyClient === "") {
+        notify(
+          "warning",
+          "Os dados de cliente devem estar preenchidos, por favor verifique."
         );
         inputFocus("nameFantasyClient");
-      } else {
+        return;
+      }
+
+      if (
+        idNeighborhoodOrigin === "" ||
+        neighborhoodOrigin === "" ||
+        streetOrigin === "" ||
+        streetNumberOrigin === ""
+      ) {
+        if (rbCheckedAddressOrigin) {
+        } else {
+          notify(
+            "warning",
+            "Os dados de endereço de origem devem estar preenchidos, por favor verifique."
+          );
+          inputFocus("neighborhoodOrigin");
+        }
+
+        return;
+      }
+
+      if (
+        idNeighborhoodDestiny === "" ||
+        neighborhoodDestiny === "" ||
+        streetDestiny === "" ||
+        streetNumberDestiny === ""
+      ) {
+        if (rbCheckedAddressDestiny) {
+          notify(
+            "warning",
+            "Os dados de endereço cliente devem estar preenchidos, por favor verifique."
+          );
+          inputFocus("nameFantasyClient");
+        } else {
+          notify(
+            "warning",
+            "Os dados de endereço de destino devem estar preenchidos, por favor verifique."
+          );
+          inputFocus("neighborhoodDestiny");
+        }
+        return;
+      }
+
+      if (
+        passengerName === "" ||
+        passengerPhone === "" ||
+        numberPassengers === ""
+      ) {
         notify(
           "warning",
-          "Os dados de endereço de destino devem estar preenchidos, por favor verifique."
+          "Os dados dos passgeiros devem estar preenchidos, por favor verifique."
         );
-        inputFocus("neighborhoodDestiny");
+        inputFocus("passengerName");
+        return;
       }
-      return;
+
+      if (idVehicle === "" || carPlate === "") {
+        notify(
+          "warning",
+          "Os dados de veículo devem estar preenchidos, por favor verifique."
+        );
+        inputFocus("carPlate");
+        return;
+      }
+
+      if (idDriver === "" || idPeopleDriver === "" || nameDriver === "") {
+        notify(
+          "warning",
+          "Os dados do motorista devem estar preenchidos, por favor verifique."
+        );
+        inputFocus("nameDriver");
+        return;
+      }
+    } else if (idSituation === 3 || idSituation === "3") {
+      if (
+        idNeighborhoodOrigin === "" ||
+        neighborhoodOrigin === "" ||
+        streetOrigin === "" ||
+        streetNumberOrigin === ""
+      ) {
+        if (rbCheckedAddressOrigin) {
+        } else {
+          notify(
+            "warning",
+            "Os dados de endereço de origem devem estar preenchidos, por favor verifique."
+          );
+          inputFocus("neighborhoodOrigin");
+        }
+
+        return;
+      }
+
+      if (
+        idNeighborhoodDestiny === "" ||
+        neighborhoodDestiny === "" ||
+        streetDestiny === "" ||
+        streetNumberDestiny === ""
+      ) {
+        if (rbCheckedAddressDestiny) {
+          notify(
+            "warning",
+            "Os dados de endereço cliente devem estar preenchidos, por favor verifique."
+          );
+          inputFocus("nameFantasyClient");
+        } else {
+          notify(
+            "warning",
+            "Os dados de endereço de destino devem estar preenchidos, por favor verifique."
+          );
+          inputFocus("neighborhoodDestiny");
+        }
+        return;
+      }
+    } else if (
+      idSituation === 7 ||
+      idSituation === "7" ||
+      idSituation === 8 ||
+      idSituation === "8"
+    ) {
+      if (idClient === "" || nameFantasyClient === "") {
+        notify(
+          "warning",
+          "Os dados de cliente devem estar preenchidos, por favor verifique."
+        );
+        inputFocus("nameFantasyClient");
+        return;
+      }
+
+      if (
+        idNeighborhoodOrigin === "" ||
+        neighborhoodOrigin === "" ||
+        streetOrigin === "" ||
+        streetNumberOrigin === ""
+      ) {
+        if (rbCheckedAddressOrigin) {
+        } else {
+          notify(
+            "warning",
+            "Os dados de endereço de origem devem estar preenchidos, por favor verifique."
+          );
+          inputFocus("neighborhoodOrigin");
+        }
+
+        return;
+      }
+
+      if (
+        idNeighborhoodDestiny === "" ||
+        neighborhoodDestiny === "" ||
+        streetDestiny === "" ||
+        streetNumberDestiny === ""
+      ) {
+        if (rbCheckedAddressDestiny) {
+          notify(
+            "warning",
+            "Os dados de endereço cliente devem estar preenchidos, por favor verifique."
+          );
+          inputFocus("nameFantasyClient");
+        } else {
+          notify(
+            "warning",
+            "Os dados de endereço de destino devem estar preenchidos, por favor verifique."
+          );
+          inputFocus("neighborhoodDestiny");
+        }
+        return;
+      }
+
+      if (
+        passengerName === "" ||
+        passengerPhone === "" ||
+        numberPassengers === ""
+      ) {
+        notify(
+          "warning",
+          "Os dados dos passgeiros devem estar preenchidos, por favor verifique."
+        );
+        inputFocus("passengerName");
+        return;
+      }
+
+      if (idVehicle === "" || carPlate === "") {
+        notify(
+          "warning",
+          "Os dados de veículo devem estar preenchidos, por favor verifique."
+        );
+        inputFocus("carPlate");
+        return;
+      }
+
+      if (idDriver === "" || idPeopleDriver === "" || nameDriver === "") {
+        notify(
+          "warning",
+          "Os dados do motorista devem estar preenchidos, por favor verifique."
+        );
+        inputFocus("nameDriver");
+        return;
+      }
     }
 
     confirmationAlert(
       "Atenção!",
       "Deseja realmente SALVAR esse cadastro?",
-      "createOs"
+      "updateOs"
     );
   }
   // #endregion
 
-  // #region Handle Cancel Create
+  // #region Handle Cancel Update
   function handleCancelUpdate() {
     confirmationAlert(
       "Atenção!",
@@ -938,53 +1254,127 @@ export default function ServiceOrdersRequest() {
   function clearFields(inputs) {
     switch (inputs) {
       case "all":
-        setIdServiceOrder("");
+        setIdServiceOrder(""); /** */
 
-        setIdClient("");
-        setNameFantasyClient("");
+        setIdSituation(""); /** */
+        setSituation(""); /** */
 
-        setIdNeighborhoodOrigin("");
-        setNeighborhoodOrigin("");
-        setStreetOrigin("");
-        setStreetNumberOrigin("");
-        setComplementOrigin("");
+        setIdClient(""); /** */
+        setNameFantasyClient(""); /** */
 
-        setIdNeighborhoodDestiny("");
-        setNeighborhoodDestiny("");
-        setStreetDestiny("");
-        setStreetNumberDestiny("");
-        setComplementDestiny("");
+        setIdNeighborhoodOrigin(""); /** */
+        setNeighborhoodOrigin(""); /** */
+        setStreetOrigin(""); /** */
+        setStreetNumberOrigin(""); /** */
+        setComplementOrigin(""); /** */
 
-        setObservationService("");
+        setIdNeighborhoodDestiny("") /** */;
+        setNeighborhoodDestiny(""); /** */
+        setStreetDestiny(""); /** */
+        setStreetNumberDestiny(""); /** */
+        setComplementDestiny(""); /** */
 
-        setIsReadOnlyOrigin(true);
-        setIsReadOnlyDestiny(true);
-        setRbCheckedAddressOrigin(true);
-        setRbCheckedAddressDestiny(false);
+        setPassengerName(""); /** */
+        setPassengerPhone(""); /** */
+        setNumberPassengers(""); /** */
+
+        setObservationService(""); /** */
+        setObservationUpdatePlaceHolder(""); /** */
+        setObservationUpdate(""); /** */
+        setObservationCancellation(""); /** */
+
+        setIdVehicle(""); /** */
+        setCarPlate(""); //** */
+
+        setIdDriver(""); /** */
+        setIdPeopleDriver(""); /** */
+        setNameDriver(""); /** */
+
+        setDateTimeSolicitation(""); /** */
+        setDateTimeAttendance(""); /** */
+        setDateTimeCompletion(""); /** */
+
+        setTotalValue(""); /** */
+        setCancellationFee(""); /** */
+
+        setIsReadOnlyClient(true); /** */
+        setIsReadOnlyCbAddress(true); /** */
+        setIsReadOnlyOrigin(true); /** */
+        setIsReadOnlyDestiny(true); /** */
+        setIsReadOnlyPassengers(true); /** */
+
+        setIsReadOnlyObservationService(true); /** */
+
+        setIsReadOnlyObservationUpdate(true); /** */
+        setIsReadOnlyVehicle(true); /** */
+        setIsReadOnlyDriver(true); /** */
+
+        setRbCheckedAddressOrigin(true); /** */
+        setRbCheckedAddressDestiny(false); /** */
+
+        setSearchOsBtnInactive(false); /*** */
+        setOsFinded(false); /** */
         break;
 
       case "allWithoutIdServiceOrder":
-        setIdClient("");
-        setNameFantasyClient("");
+        setIdSituation(""); /** */
+        setSituation(""); /** */
 
-        setIdNeighborhoodOrigin("");
-        setNeighborhoodOrigin("");
-        setStreetOrigin("");
-        setStreetNumberOrigin("");
-        setComplementOrigin("");
+        setIdClient(""); /** */
+        setNameFantasyClient(""); /** */
 
-        setIdNeighborhoodDestiny("");
-        setNeighborhoodDestiny("");
-        setStreetDestiny("");
-        setStreetNumberDestiny("");
-        setComplementDestiny("");
+        setIdNeighborhoodOrigin(""); /** */
+        setNeighborhoodOrigin(""); /** */
+        setStreetOrigin(""); /** */
+        setStreetNumberOrigin(""); /** */
+        setComplementOrigin(""); /** */
 
-        setObservationService("");
+        setIdNeighborhoodDestiny("") /** */;
+        setNeighborhoodDestiny(""); /** */
+        setStreetDestiny(""); /** */
+        setStreetNumberDestiny(""); /** */
+        setComplementDestiny(""); /** */
 
-        setIsReadOnlyOrigin(true);
-        setIsReadOnlyDestiny(true);
-        setRbCheckedAddressOrigin(true);
-        setRbCheckedAddressDestiny(false);
+        setPassengerName(""); /** */
+        setPassengerPhone(""); /** */
+        setNumberPassengers(""); /** */
+
+        setObservationService(""); /** */
+        setObservationUpdatePlaceHolder(""); /** */
+        setObservationUpdate(""); /** */
+        setObservationCancellation(""); /** */
+
+        setIdVehicle(""); /** */
+        setCarPlate(""); //** */
+
+        setIdDriver(""); /** */
+        setIdPeopleDriver(""); /** */
+        setNameDriver(""); /** */
+
+        setDateTimeSolicitation(""); /** */
+        setDateTimeAttendance(""); /** */
+        setDateTimeCompletion(""); /** */
+
+        setTotalValue(""); /** */
+        setCancellationFee(""); /** */
+
+        setIsReadOnlyClient(true); /** */
+        setIsReadOnlyCbAddress(true); /** */
+        setIsReadOnlyOrigin(true); /** */
+        setIsReadOnlyDestiny(true); /** */
+        setIsReadOnlyPassengers(true); /** */
+
+        setIsReadOnlyObservationService(true); /** */
+
+        setIsReadOnlyObservationUpdate(true); /** */
+        setIsReadOnlyVehicle(true); /** */
+        setIsReadOnlyDriver(true); /** */
+
+        setRbCheckedAddressOrigin(true); /** */
+        setRbCheckedAddressDestiny(false); /** */
+
+        setSearchOsBtnInactive(false); /*** */
+        setOsFinded(false); /** */
         break;
 
       default:
@@ -1027,12 +1417,22 @@ export default function ServiceOrdersRequest() {
           streetDestinyInputRef.current.focus();
         }, 1);
         break;
+      case "carPlate":
+        setTimeout(() => {
+          carPlateInputRef.current.focus();
+        }, 1);
+        break;
       case "idDriver":
         setTimeout(() => {
           idDriverInputRef.current.focus();
         }, 1);
         break;
       case "nameDriver":
+        setTimeout(() => {
+          nameDriverInputRef.current.focus();
+        }, 1);
+        break;
+      case "passengerName":
         setTimeout(() => {
           nameDriverInputRef.current.focus();
         }, 1);
@@ -1385,7 +1785,7 @@ export default function ServiceOrdersRequest() {
 
     try {
       const response = await api.get(
-        `/vehicles/?vehicleModel=${searchVehicle.toUpperCase()}`
+        `/vehicles/active/?vehicleModel=${searchVehicle.toUpperCase()}`
       );
 
       if (response) {
@@ -1476,7 +1876,7 @@ export default function ServiceOrdersRequest() {
 
     try {
       const response = await api.get(
-        `/drivers/?name=${searchDriver.toUpperCase()}`
+        `/drivers/active/?name=${searchDriver.toUpperCase()}`
       );
 
       if (response) {
@@ -2083,6 +2483,7 @@ export default function ServiceOrdersRequest() {
                                 clearFields("allWithoutIdServiceOrder");
                               }
                             }}
+                            required
                           />
 
                           <button
@@ -2112,7 +2513,6 @@ export default function ServiceOrdersRequest() {
                           id="situation"
                           type="text"
                           readOnly
-                          required
                           value={situation}
                           onChange={(e) => {
                             setSituation(e.target.value);
@@ -2135,7 +2535,6 @@ export default function ServiceOrdersRequest() {
                         onChange={(e) => setNameFantasyClient(e.target.value)}
                         id="client"
                         readOnly
-                        required
                       />
                       <button
                         type="button"
@@ -2205,7 +2604,6 @@ export default function ServiceOrdersRequest() {
                               setNeighborhoodOrigin(e.target.value)
                             }
                             readOnly
-                            required
                           />
                           <button
                             type="button"
@@ -2311,7 +2709,6 @@ export default function ServiceOrdersRequest() {
                               setNeighborhoodDestiny(e.target.value)
                             }
                             readOnly
-                            required
                           />
                           <button
                             type="button"
@@ -2380,6 +2777,7 @@ export default function ServiceOrdersRequest() {
                         </label>
 
                         <input
+                          ref={passengerNameInputRef}
                           id="passengerName"
                           type="text"
                           readOnly={isReadOnlyPassengers}
@@ -2388,6 +2786,7 @@ export default function ServiceOrdersRequest() {
                           onChange={(e) => {
                             setPassengerName(e.target.value);
                           }}
+                          required
                         />
                       </div>
 
@@ -2413,6 +2812,7 @@ export default function ServiceOrdersRequest() {
                             }
                             setPassengerPhone(e.target.value);
                           }}
+                          required
                         />
                       </div>
 
@@ -2432,6 +2832,7 @@ export default function ServiceOrdersRequest() {
                           onChange={(e) => {
                             setNumberPassengers(e.target.value);
                           }}
+                          required
                         />
                       </div>
                     </div>
@@ -2464,9 +2865,10 @@ export default function ServiceOrdersRequest() {
                         <textarea
                           id="observationUpdate"
                           value={observationUpdate}
-                          placeholder="Por que foi necessário a alteração?"
+                          placeholder={`Por que foi necessário a alteração?\n${observationUpdatePlaceHolder}`}
                           readOnly={isReadOnlyObservationUpdate}
                           onChange={(e) => setObservationUpdate(e.target.value)}
+                          required
                         />
                       </div>
 
@@ -2515,6 +2917,7 @@ export default function ServiceOrdersRequest() {
 
                             <div className="row">
                               <input
+                                ref={carPlateInputRef}
                                 id="carPlate"
                                 type="text"
                                 minLength="7"

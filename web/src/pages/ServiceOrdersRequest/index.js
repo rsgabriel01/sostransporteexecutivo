@@ -71,7 +71,7 @@ export default function ServiceOrdersRequest() {
   const [observationService, setObservationService] = useState("");
   const [passengerName, setPassengerName] = useState("");
   const [passengerPhone, setPassengerPhone] = useState("");
-  const [numberPassengers, setNumberPassengers] = useState(1);
+  const [numberPassengers, setNumberPassengers] = useState("");
 
   const nameFantasyClientInputRef = useRef(null);
   const neighborhoodOriginInputRef = useRef(null);
@@ -554,7 +554,7 @@ export default function ServiceOrdersRequest() {
       setNeighborhoodOrigin(neighborhood);
       setStreetOrigin(street);
       setStreetNumberOrigin(number);
-      setComplementOrigin(complement);
+      complement ? setComplementDestiny(complement) : setComplementDestiny("");
 
       inputFocus("neighborhoodDestiny");
     } else if (rbCheckedAddressDestiny) {
@@ -562,7 +562,7 @@ export default function ServiceOrdersRequest() {
       setNeighborhoodDestiny(neighborhood);
       setStreetDestiny(street);
       setStreetNumberDestiny(number);
-      setComplementDestiny(complement);
+      complement ? setComplementDestiny(complement) : setComplementDestiny("");
 
       inputFocus("neighborhoodOrigin");
     }
@@ -1215,6 +1215,7 @@ export default function ServiceOrdersRequest() {
                           onChange={(e) => {
                             setPassengerName(e.target.value);
                           }}
+                          required
                         />
                       </div>
 
@@ -1239,6 +1240,7 @@ export default function ServiceOrdersRequest() {
                             }
                             setPassengerPhone(e.target.value);
                           }}
+                          required
                         />
                       </div>
 
@@ -1257,6 +1259,7 @@ export default function ServiceOrdersRequest() {
                           onChange={(e) => {
                             setNumberPassengers(e.target.value);
                           }}
+                          required
                         />
                       </div>
                     </div>

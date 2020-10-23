@@ -4,6 +4,10 @@ module.exports = (sequelize, DataTypes) => {
   const Travel_fee = sequelize.define(
     "Travel_fee",
     {
+      id: {
+        primaryKey: true,
+        type: DataTypes.BIGINT,
+      },
       id_neighborhood: DataTypes.BIGINT,
       value: DataTypes.REAL,
     },

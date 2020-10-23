@@ -4,6 +4,8 @@ const {
   Vehicles,
   Vehicle_models,
   Neighborhoods,
+  Type_people,
+  Types,
 } = require("../models");
 
 const { Op, fn, col, literal, QueryTypes, Sequelize } = require("sequelize");
@@ -51,7 +53,18 @@ module.exports = {
               include: ["ModelBrand"],
             },
           },
-          "Driver",
+          {
+            model: People,
+            as: "Driver",
+            include: {
+              model: Types,
+              through: "Type_people",
+              as: "People_Type",
+              where: {
+                "$Driver.People_Type.Type_people.id_type$": 3,
+              },
+            },
+          },
           "Neighborhood_origin",
           {
             model: Neighborhoods,

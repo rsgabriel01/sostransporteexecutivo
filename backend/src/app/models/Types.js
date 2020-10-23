@@ -4,6 +4,10 @@ module.exports = (sequelize, DataTypes) => {
   const Types = sequelize.define(
     "Types",
     {
+      id: {
+        primaryKey: true,
+        type: DataTypes.BIGINT,
+      },
       description: DataTypes.STRING,
       active: DataTypes.BOOLEAN,
     },

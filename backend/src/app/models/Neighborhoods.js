@@ -4,6 +4,10 @@ module.exports = (sequelize, DataTypes) => {
   const Neighborhoods = sequelize.define(
     "Neighborhoods",
     {
+      id: {
+        primaryKey: true,
+        type: DataTypes.BIGINT,
+      },
       id_city: DataTypes.BIGINT,
       situation: DataTypes.STRING,
       name: DataTypes.STRING,

@@ -147,6 +147,10 @@ module.exports = {
           allowNull: true,
           type: DataTypes.STRING,
         },
+        observation_update: {
+          allowNull: true,
+          type: DataTypes.STRING,
+        },
         observation_cancellation: {
           allowNull: true,
           type: DataTypes.STRING,

@@ -7,6 +7,7 @@ module.exports = (sequelize, DataTypes) => {
     {
       id: {
         primaryKey: true,
+        autoIncrement: true,
         type: DataTypes.BIGINT,
       },
       id_client: DataTypes.BIGINT,

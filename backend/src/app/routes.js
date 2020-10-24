@@ -33,6 +33,8 @@ const VehicleModelsLikeDescriptionController = require("./controllers/VehicleMod
 
 const VehicleController = require("./controllers/VehicleController");
 const VehiclesLikeModelController = require("./controllers/VehiclesLikeModelController");
+
+const ReportsServiceOrdersController = require("./controllers/ReportsServiceOrdersController");
 // #endregion
 
 // #region Validators
@@ -458,6 +460,15 @@ routes.get(
 );
 //#endregion Vehicle Models
 
+// #region Reports
+routes.get(
+  "/reports/serviceOrders/completed/",
+  // validatorOsIndexLikeClientSituationDate,
+  verifySession,
+  permissionAdminAttendance,
+  ReportsServiceOrdersController.indexCompletedWithIdClientAndPeriod
+);
+// #endregion Reports
 //#endregion Routes
 
 module.exports = routes;

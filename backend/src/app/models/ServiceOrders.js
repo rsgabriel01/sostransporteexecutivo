@@ -67,6 +67,45 @@ module.exports = (sequelize, DataTypes) => {
       );
       values.date_time_solicitation = secondUpdateDateToLocalFormat;
     }
+
+    if (values.date_time_attendance) {
+      const originalDateBD = moment
+        .utc(values.date_time_attendance)
+        .local()
+        .format();
+      const fistUpdateDateToLocalFormat = originalDateBD.replace("T", " ");
+      const secondUpdateDateToLocalFormat = fistUpdateDateToLocalFormat.replace(
+        "-03:00",
+        ""
+      );
+      values.date_time_attendance = secondUpdateDateToLocalFormat;
+    }
+
+    if (values.date_time_execution) {
+      const originalDateBD = moment
+        .utc(values.date_time_execution)
+        .local()
+        .format();
+      const fistUpdateDateToLocalFormat = originalDateBD.replace("T", " ");
+      const secondUpdateDateToLocalFormat = fistUpdateDateToLocalFormat.replace(
+        "-03:00",
+        ""
+      );
+      values.date_time_execution = secondUpdateDateToLocalFormat;
+    }
+
+    if (values.date_time_completion) {
+      const originalDateBD = moment
+        .utc(values.date_time_completion)
+        .local()
+        .format();
+      const fistUpdateDateToLocalFormat = originalDateBD.replace("T", " ");
+      const secondUpdateDateToLocalFormat = fistUpdateDateToLocalFormat.replace(
+        "-03:00",
+        ""
+      );
+      values.date_time_completion = secondUpdateDateToLocalFormat;
+    }
     return values;
   };
 

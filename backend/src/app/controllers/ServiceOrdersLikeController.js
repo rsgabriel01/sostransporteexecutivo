@@ -43,7 +43,11 @@ module.exports = {
             },
           },
           "Driver",
-          "Neighborhood_origin",
+          {
+            model: Neighborhoods,
+            as: "Neighborhood_origin",
+            include: ["Travel_fee"],
+          },
           {
             model: Neighborhoods,
             as: "Neighborhood_destiny",

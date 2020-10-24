@@ -556,8 +556,6 @@ export default function ServiceOrdersRequest() {
           setIsReadOnlyDestiny(true);
         }
 
-        setIsReadOnlyPassengers(false);
-
         setIsReadOnlyObservationUpdate(false);
 
         setIsReadOnlyVehicle(false);
@@ -754,12 +752,16 @@ export default function ServiceOrdersRequest() {
         idNeighborhoodOrigin,
         streetOrigin: streetOrigin.toUpperCase(),
         streetNumberOrigin,
-        complementOrigin: complementOrigin.toUpperCase(),
+        complementOrigin: complementOrigin
+          ? complementOrigin.toUpperCase()
+          : complementOrigin,
         clientDestiny: rbCheckedAddressDestiny,
         idNeighborhoodDestiny,
         streetDestiny: streetDestiny.toUpperCase(),
         streetNumberDestiny,
-        complementDestiny: complementDestiny.toUpperCase(),
+        complementDestiny: complementDestiny
+          ? complementDestiny.toUpperCase()
+          : complementDestiny,
         observationUpdate: observationUpdate.toUpperCase(),
       };
     }
@@ -779,16 +781,16 @@ export default function ServiceOrdersRequest() {
         idNeighborhoodOrigin,
         streetOrigin: streetOrigin.toUpperCase(),
         streetNumberOrigin,
-        complementOrigin: complementOrigin.toUpperCase(),
+        complementOrigin: complementOrigin
+          ? complementOrigin.toUpperCase()
+          : complementOrigin,
         clientDestiny: rbCheckedAddressDestiny,
         idNeighborhoodDestiny,
         streetDestiny: streetDestiny.toUpperCase(),
         streetNumberDestiny,
-        complementDestiny: complementDestiny.toUpperCase(),
-        passengerName: passengerName.toUpperCase(),
-        passengerPhone: passengerPhone,
-        numberPassengers,
-        observationService: observationService.toUpperCase(),
+        complementDestiny: complementDestiny
+          ? complementDestiny.toUpperCase()
+          : complementDestiny,
         observationUpdate: observationUpdate.toUpperCase(),
         idVehicle,
         idDriver: idPeopleDriver,

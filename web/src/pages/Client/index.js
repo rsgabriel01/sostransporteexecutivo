@@ -44,6 +44,7 @@ export default function Client() {
   const history = useHistory();
 
   const [loading, setLoading] = useState(true);
+  const [loadingConsultData, setLoadingConsultData] = useState(false);
   const [loadingModal, setLoadingModal] = useState(true);
 
   const [isReadonly, setIsReadOnly] = useState(true);
@@ -215,17 +216,20 @@ export default function Client() {
     try {
       clearFields();
 
+      setLoadingConsultData(true);
       setClientFinded(false);
 
       const response = await api.get(`/client/${id}`);
 
       if (response) {
+        setLoadingConsultData(false);
         setClientFinded(true);
         fillFields(response.data);
       }
 
       console.log(response.data);
     } catch (error) {
+      setLoadingConsultData(false);
       if (error.response) {
         setClientFinded(false);
 
@@ -900,6 +904,14 @@ export default function Client() {
                     <h1>
                       {titleUpdate}
                       DADOS DE CLIENTE
+                      {!loadingConsultData ? (
+                        ""
+                      ) : (
+                        <RiLoader4Line
+                          size={30}
+                          className="load-spinner-button"
+                        />
+                      )}
                     </h1>
                   </div>
 

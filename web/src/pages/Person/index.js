@@ -43,6 +43,7 @@ export default function Person() {
   // #region Definitions
   const history = useHistory();
   const [loading, setLoading] = useState(true);
+  const [loadingConsultData, setLoadingConsultData] = useState(false);
   const [loadingModal, setLoadingModal] = useState(true);
 
   const [isReadonly, setIsReadonly] = useState(true);
@@ -196,17 +197,20 @@ export default function Person() {
     try {
       clearFields();
 
+      setLoadingConsultData(true);
       setPersonFinded(false);
 
       const response = await api.get(`/person/${id}`);
 
       if (response) {
+        setLoadingConsultData(true);
         setPersonFinded(true);
         fillFields(response.data);
       }
 
       console.log(response.data);
     } catch (error) {
+      setLoadingConsultData(false);
       if (error.response) {
         setPersonFinded(false);
 
@@ -695,6 +699,14 @@ export default function Person() {
                     <h1>
                       {titleUpdate}
                       DADOS DE PESSOA
+                      {!loadingConsultData ? (
+                        ""
+                      ) : (
+                        <RiLoader4Line
+                          size={30}
+                          className="load-spinner-button"
+                        />
+                      )}
                     </h1>
                   </div>
 

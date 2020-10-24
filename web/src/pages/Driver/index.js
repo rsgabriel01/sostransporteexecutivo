@@ -41,7 +41,9 @@ import jsonClassesModal from "../../helpers/stylesModal";
 export default function Driver() {
   // #region Definitions
   const history = useHistory();
+
   const [loading, setLoading] = useState(true);
+  const [loadingConsultData, setLoadingConsultData] = useState(false);
   const [loadingModal, setLoadingModal] = useState(true);
 
   const [isReadonly, setIsReadonly] = useState(true);
@@ -166,17 +168,20 @@ export default function Driver() {
     try {
       clearFields();
 
+      setLoadingConsultData(true);
       setDriverFinded(false);
 
       const response = await api.get(`/driver/${id}`);
 
       if (response) {
+        setLoadingConsultData(false);
         setDriverFinded(true);
         fillFields(response.data);
       }
 
       console.log(response.data);
     } catch (error) {
+      setLoadingConsultData(false);
       if (error.response) {
         setDriverFinded(false);
 
@@ -798,6 +803,14 @@ export default function Driver() {
                     <h1>
                       {titleUpdate}
                       DADOS DE MOTORISTA
+                      {!loadingConsultData ? (
+                        ""
+                      ) : (
+                        <RiLoader4Line
+                          size={30}
+                          className="load-spinner-button"
+                        />
+                      )}
                     </h1>
                   </div>
 

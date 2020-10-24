@@ -45,6 +45,7 @@ export default function Vehicles(props) {
   // #region Definitions
   const history = useHistory();
   const [loading, setLoading] = useState(true);
+  const [loadingConsultData, setLoadingConsultData] = useState(false);
   const [loadingModal, setLoadingModal] = useState(true);
 
   const [isReadonly, setIsReadonly] = useState(true);
@@ -240,18 +241,22 @@ export default function Vehicles(props) {
     try {
       clearFields("allNotIdVehicle");
 
+      setLoadingConsultData(true);
       setVehicleFinded(false);
       console.log(id);
 
       const response = await api.get(`/vehicle/${id}`);
 
       if (response) {
+        setLoadingConsultData(false);
         setVehicleFinded(true);
         fillFields(response.data);
       }
 
       console.log(response.data);
     } catch (error) {
+      setLoadingConsultData(false);
+
       if (error.response) {
         setVehicleFinded(false);
 
@@ -1123,6 +1128,14 @@ export default function Vehicles(props) {
                     <h1>
                       {titleUpdate}
                       DADOS DE VEÍCULO
+                      {!loadingConsultData ? (
+                        ""
+                      ) : (
+                        <RiLoader4Line
+                          size={30}
+                          className="load-spinner-button"
+                        />
+                      )}
                     </h1>
                   </div>
 

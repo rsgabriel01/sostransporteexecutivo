@@ -58,6 +58,7 @@ export default function ServiceOrdersRequest() {
   const dateNow = new Date();
 
   const [loading, setLoading] = useState(true);
+  const [loadingConsultData, setLoadingConsultData] = useState(false);
   const [loadingModal, setLoadingModal] = useState(true);
 
   const [updateRegister, setUpdateRegister] = useState(false);
@@ -394,18 +395,21 @@ export default function ServiceOrdersRequest() {
     try {
       clearFields("allWithoutIdServiceOrder");
 
+      setLoadingConsultData(true);
       setOsFinded(false);
-      // console.log(id);
 
       const response = await api.get(`/serviceOrder/${id}`);
 
       if (response) {
+        setLoadingConsultData(false);
         setOsFinded(true);
         fillFields(response.data);
       }
 
       console.log(response.data);
     } catch (error) {
+      setLoadingConsultData(false);
+
       if (error.response) {
         setOsFinded(false);
 
@@ -2539,6 +2543,14 @@ export default function ServiceOrdersRequest() {
                     <h1>
                       {titleUpdate}
                       DADOS DA ORDEM DE SERVIÇO
+                      {!loadingConsultData ? (
+                        ""
+                      ) : (
+                        <RiLoader4Line
+                          size={30}
+                          className="load-spinner-button"
+                        />
+                      )}
                     </h1>
                   </div>
 

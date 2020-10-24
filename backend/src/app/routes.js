@@ -26,7 +26,7 @@ const NeighborhoodsLikeNameController = require("./controllers/NeighborhoodsLike
 const TravelFeeController = require("./controllers/TravelFeeController");
 
 const ServiceOrdersController = require("./controllers/ServiceOrdersController");
-const ServiceOrdersLikeController = require("./controllers/ServiceOrdersLikeController");
+const ServiceOrdersIndexController = require("./controllers/ServiceOrdersIndexController");
 const ServiceOrdersUpdatesController = require("./controllers/ServiceOrdersUpdatesController");
 
 const VehicleModelsLikeDescriptionController = require("./controllers/VehicleModelsLikeDescriptionController");
@@ -356,7 +356,7 @@ routes.get(
   validatorOsIndexLikeClientSituationDate,
   verifySession,
   permissionAdminAttendance,
-  ServiceOrdersLikeController.indexLikeClientSituationDate
+  ServiceOrdersIndexController.indexLikeClientSituationDate
 );
 
 routes.post(

@@ -161,7 +161,7 @@ export default function ServiceOrdersRequest() {
   const [searchNameFantasyClientOs, setSearchNameFantasyClientOs] = useState(
     ""
   );
-  const [searchSituationOs, setSearchSituationOs] = useState("1");
+  const [searchSituationOs, setSearchSituationOs] = useState(0);
   const [searchDateSolicitationOs, setSearchDateSolicitationOs] = useState(
     getDateForDatePickerWithClassDate(dateNow)
   );
@@ -1501,6 +1501,7 @@ export default function ServiceOrdersRequest() {
     setTitleIconModal(<RiFileListLine size={30} />);
     setTitleModal("PESQUISAR ORDENS DE SERVIÇO");
     setSearchNameFantasyClientOs("");
+    setSearchSituationOs(0);
     setSearchDateSolicitationOs(getDateForDatePickerWithClassDate(dateNow));
     setOpenModalSearchOs(true);
   };
@@ -1508,6 +1509,7 @@ export default function ServiceOrdersRequest() {
   const handleCloseModalSearchOsEdit = () => {
     setTitleModal("");
     setSearchNameFantasyClientOs("");
+    setSearchSituationOs(0);
     setSearchDateSolicitationOs(getDateForDatePickerWithClassDate(dateNow));
     setOpenModalSearchOs(false);
   };
@@ -1524,7 +1526,7 @@ export default function ServiceOrdersRequest() {
   // #region Load Search OS List
   async function loadSearchOsList() {
     setLoadingModal(true);
-    console.log(situation);
+    console.log(searchSituationOs);
 
     try {
       const response = await api.get(

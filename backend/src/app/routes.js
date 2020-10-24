@@ -359,6 +359,38 @@ routes.get(
   ServiceOrdersIndexController.indexLikeClientSituationDate
 );
 
+routes.get(
+  "/serviceOrders/index/",
+  // validatorOsIndexLikeClientSituationDate,
+  // verifySession,
+  // permissionAdminAttendance,
+  ServiceOrdersIndexController.indexSituations
+);
+
+routes.get(
+  "/serviceOrders/index/period/solicitation/",
+  // validatorOsIndexLikeClientSituationDate,
+  // verifySession,
+  // permissionAdminAttendance,
+  ServiceOrdersIndexController.indexSituationsPeriodSolicitation
+);
+
+routes.get(
+  "/serviceOrders/index/period/attendance/",
+  // validatorOsIndexLikeClientSituationDate,
+  // verifySession,
+  // permissionAdminAttendance,
+  ServiceOrdersIndexController.indexSituationsPeriodAttendance
+);
+
+routes.get(
+  "/serviceOrders/index/period/completion/",
+  // validatorOsIndexLikeClientSituationDate,
+  // verifySession,
+  // permissionAdminAttendance,
+  ServiceOrdersIndexController.indexSituationsPeriodAttendance
+);
+
 routes.post(
   "/serviceOrders",
   validatorOsCreate,

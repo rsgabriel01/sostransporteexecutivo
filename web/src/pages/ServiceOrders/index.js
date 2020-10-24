@@ -1524,6 +1524,7 @@ export default function ServiceOrdersRequest() {
   // #region Load Search OS List
   async function loadSearchOsList() {
     setLoadingModal(true);
+    console.log(situation);
 
     try {
       const response = await api.get(
@@ -2031,6 +2032,7 @@ export default function ServiceOrdersRequest() {
                       setSearchSituationOs(e.target.value);
                     }}
                   >
+                    <option value="0">TODAS</option>
                     <option value="1">AGUARDANDO ATENDIMENTO</option>
                     <option value="2">INICIADO ATENDIMENTO</option>
                     <option value="3">NA LISTA DE EXECUÇÃO DO MOTORISTA</option>

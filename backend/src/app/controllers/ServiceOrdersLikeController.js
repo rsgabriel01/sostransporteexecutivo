@@ -18,44 +18,82 @@ module.exports = {
   async indexLikeClientSituationDate(req, res) {
     const { nameFantasyClient, situation, dateSolicitation } = req.query;
 
+    let serviceOrders = [];
+
     try {
       console.log(situation);
       console.log(dateSolicitation);
       console.log(" ");
-      const serviceOrders = await Service_orders.findAll({
-        where: {
-          "$Client.name_fantasy$": { [Op.like]: `${nameFantasyClient}%` },
-          id_status: situation,
-          date_time_solicitation: {
-            [Op.gte]: `${dateSolicitation} 00:00:00-03`,
-          },
-        },
-        include: [
-          "Status",
-          "Client",
-          {
-            model: Vehicles,
-            as: "Vehicle",
-            include: {
-              model: Vehicle_models,
-              as: "VehicleModel",
-              include: ["ModelBrand"],
+      if (situation === 0 || situation === "0") {
+        serviceOrders = await Service_orders.findAll({
+          where: {
+            "$Client.name_fantasy$": { [Op.like]: `${nameFantasyClient}%` },
+            date_time_solicitation: {
+              [Op.gte]: `${dateSolicitation} 00:00:00-03`,
             },
           },
-          "Driver",
-          {
-            model: Neighborhoods,
-            as: "Neighborhood_origin",
-            include: ["Travel_fee"],
+          include: [
+            "Status",
+            "Client",
+            {
+              model: Vehicles,
+              as: "Vehicle",
+              include: {
+                model: Vehicle_models,
+                as: "VehicleModel",
+                include: ["ModelBrand"],
+              },
+            },
+            "Driver",
+            {
+              model: Neighborhoods,
+              as: "Neighborhood_origin",
+              include: ["Travel_fee"],
+            },
+            {
+              model: Neighborhoods,
+              as: "Neighborhood_destiny",
+              include: ["Travel_fee"],
+            },
+          ],
+          order: [["id", "ASC"]],
+        });
+      } else {
+        serviceOrders = await Service_orders.findAll({
+          where: {
+            "$Client.name_fantasy$": { [Op.like]: `${nameFantasyClient}%` },
+            id_status: situation,
+            date_time_solicitation: {
+              [Op.gte]: `${dateSolicitation} 00:00:00-03`,
+            },
           },
-          {
-            model: Neighborhoods,
-            as: "Neighborhood_destiny",
-            include: ["Travel_fee"],
-          },
-        ],
-        order: [["id", "ASC"]],
-      });
+          include: [
+            "Status",
+            "Client",
+            {
+              model: Vehicles,
+              as: "Vehicle",
+              include: {
+                model: Vehicle_models,
+                as: "VehicleModel",
+                include: ["ModelBrand"],
+              },
+            },
+            "Driver",
+            {
+              model: Neighborhoods,
+              as: "Neighborhood_origin",
+              include: ["Travel_fee"],
+            },
+            {
+              model: Neighborhoods,
+              as: "Neighborhood_destiny",
+              include: ["Travel_fee"],
+            },
+          ],
+          order: [["id", "ASC"]],
+        });
+      }
 
       return res.json(serviceOrders);
     } catch (error) {

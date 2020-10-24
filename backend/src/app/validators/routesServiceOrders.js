@@ -141,7 +141,7 @@ const validatorOsIndexLikeClientSituationDate = celebrate({
   }).unknown(),
   [Segments.QUERY]: {
     nameFantasyClient: Joi.string().required().allow("", null),
-    situation: Joi.number().positive().integer().required(),
+    situation: Joi.number().positive().integer().required().allow("0", 0),
     dateSolicitation: Joi.string().required(),
   },
 });

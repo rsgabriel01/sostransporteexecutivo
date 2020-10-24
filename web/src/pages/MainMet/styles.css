@@ -144,6 +144,8 @@
 
 .solicitation-met-table table tr#table-header :last-child {
   border-radius: 0px 3px 3px 0px;
+  padding-right: 10px;
+  text-align: right;
 }
 
 .solicitation-met-table .div-responsive-table {
@@ -168,18 +170,6 @@
 
 .div-responsive-table table.table-content tr td {
   height: 30px;
-}
-
-.div-responsive-table table.table-content tr td div.answer {
-  display: flex;
-  align-items: center;
-  justify-content: flex-end;
-  height: 100%;
-}
-
-div.answer button {
-  height: 30px;
-  width: 30px;
 }
 
 .solicitation-met-table table tr td {

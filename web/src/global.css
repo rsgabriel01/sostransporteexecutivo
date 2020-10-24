@@ -1,5 +1,16 @@
 @import url("https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap");
 
+::-webkit-scrollbar-track {
+  background-color: #f4f4f4;
+}
+::-webkit-scrollbar {
+  width: 6px;
+  background: #f4f4f4;
+}
+::-webkit-scrollbar-thumb {
+  background: #c1c1c1;
+}
+
 * {
   margin: 0;
   padding: 0;
@@ -282,15 +293,19 @@ div.custom-ui
   margin-left: 10px;
 }
 
-::-webkit-scrollbar-track {
-  background-color: #f4f4f4;
+.div-responsive-table table.table-content tr td div.answer {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  height: 100%;
 }
-::-webkit-scrollbar {
-  width: 6px;
-  background: #f4f4f4;
+
+div.answer button {
+  height: 30px;
+  width: 30px;
 }
-::-webkit-scrollbar-thumb {
-  background: #c1c1c1;
+div.answer button + button {
+  margin-left: 5px;
 }
 
 .modal-search-title {

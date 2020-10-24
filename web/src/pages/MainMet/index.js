@@ -18,6 +18,7 @@ import {
   RiCheckLine,
   RiFileList2Line,
   RiFilterLine,
+  RiCloseLine,
 } from "react-icons/ri";
 
 import "./styles.css";
@@ -153,6 +154,7 @@ export default function MainMet() {
                       <th>ORIGEM</th>
                       <th>DESTINO</th>
                       <th>OBSERVAÇÃO</th>
+                      <th>AÇÕES</th>
                     </tr>
                   </thead>
                 </table>
@@ -168,216 +170,18 @@ export default function MainMet() {
                         <td>SÃO CRISTOVÃO </td>
                         <td>CENTRO</td>
                         <td>CLIENTE COM</td>
-                      </tr>
-
-                      <tr>
-                        <td>2</td>
-                        <td>honda Henjis</td>
-                        <td>27/08/2020 15:30</td>
-                        <td>JOÃO</td>
-                        <td>SÃO CRISTOVÃO </td>
-                        <td>CENTRO</td>
-                        <td>CLIENTE COM</td>
-                      </tr>
-
-                      <tr>
-                        <td>3</td>
-                        <td>honda Henjis</td>
-                        <td>27/08/2020 15:30</td>
-                        <td>JOÃO</td>
-                        <td>SÃO CRISTOVÃO </td>
-                        <td>CENTRO</td>
-                        <td>CLIENTE COM</td>
-                      </tr>
-
-                      <tr>
-                        <td>4</td>
-                        <td>honda Henjis</td>
-                        <td>27/08/2020 15:30</td>
-                        <td>JOÃO</td>
-                        <td>SÃO CRISTOVÃO </td>
-                        <td>CENTRO</td>
-                        <td>CLIENTE COM</td>
-                      </tr>
-
-                      <tr>
-                        <td>5</td>
-                        <td>honda Henjis</td>
-                        <td>27/08/2020 15:30</td>
-                        <td>JOÃO</td>
-                        <td>SÃO CRISTOVÃO </td>
-                        <td>CENTRO</td>
-                        <td>CLIENTE COM</td>
-                      </tr>
-
-                      <tr>
-                        <td>6</td>
-                        <td>honda Henjis</td>
-                        <td>27/08/2020 15:30</td>
-                        <td>JOÃO</td>
-                        <td>SÃO CRISTOVÃO </td>
-                        <td>CENTRO</td>
-                        <td>CLIENTE COM</td>
-                      </tr>
-
-                      <tr>
-                        <td>7</td>
-                        <td>honda Henjis</td>
-                        <td>27/08/2020 15:30</td>
-                        <td>JOÃO</td>
-                        <td>SÃO CRISTOVÃO </td>
-                        <td>CENTRO</td>
-                        <td>CLIENTE COM</td>
-                      </tr>
-
-                      <tr>
-                        <td>8</td>
-                        <td>honda Henjis</td>
-                        <td>27/08/2020 15:30</td>
-                        <td>JOÃO</td>
-                        <td>SÃO CRISTOVÃO </td>
-                        <td>CENTRO</td>
-                        <td>CLIENTE COM</td>
-                      </tr>
-
-                      <tr>
-                        <td>9</td>
-                        <td>honda Henjis</td>
-                        <td>27/08/2020 15:30</td>
-                        <td>JOÃO</td>
-                        <td>SÃO CRISTOVÃO </td>
-                        <td>CENTRO</td>
-                        <td>CLIENTE COM</td>
-                      </tr>
-
-                      <tr>
-                        <td>10</td>
-                        <td>honda Henjis</td>
-                        <td>27/08/2020 15:30</td>
-                        <td>JOÃO</td>
-                        <td>SÃO CRISTOVÃO </td>
-                        <td>CENTRO</td>
-                        <td>CLIENTE COM</td>
-                      </tr>
-
-                      <tr>
-                        <td>11</td>
-                        <td>honda Henjis</td>
-                        <td>27/08/2020 15:30</td>
-                        <td>JOÃO</td>
-                        <td>SÃO CRISTOVÃO </td>
-                        <td>CENTRO</td>
-                        <td>CLIENTE COM</td>
-                      </tr>
-
-                      <tr>
-                        <td>12</td>
-                        <td>honda Henjis</td>
-                        <td>27/08/2020 15:30</td>
-                        <td>JOÃO</td>
-                        <td>SÃO CRISTOVÃO </td>
-                        <td>CENTRO</td>
-                        <td>CLIENTE COM</td>
-                      </tr>
-
-                      <tr>
-                        <td>13</td>
-                        <td>honda Henjis</td>
-                        <td>27/08/2020 15:30</td>
-                        <td>JOÃO</td>
-                        <td>SÃO CRISTOVÃO </td>
-                        <td>CENTRO</td>
-                        <td>CLIENTE COM</td>
-                      </tr>
-
-                      <tr>
-                        <td>14</td>
-                        <td>honda Henjis</td>
-                        <td>27/08/2020 15:30</td>
-                        <td>JOÃO</td>
-                        <td>SÃO CRISTOVÃO </td>
-                        <td>CENTRO</td>
-                        <td>CLIENTE COM</td>
-                      </tr>
-
-                      <tr>
-                        <td>15</td>
-                        <td>honda Henjis</td>
-                        <td>27/08/2020 15:30</td>
-                        <td>JOÃO</td>
-                        <td>SÃO CRISTOVÃO </td>
-                        <td>CENTRO</td>
-                        <td>CLIENTE COM</td>
-                      </tr>
-
-                      <tr>
-                        <td>16</td>
-                        <td>honda Henjis</td>
-                        <td>27/08/2020 15:30</td>
-                        <td>JOÃO</td>
-                        <td>SÃO CRISTOVÃO </td>
-                        <td>CENTRO</td>
-                        <td>CLIENTE COM</td>
-                      </tr>
-
-                      <tr>
-                        <td>17</td>
-                        <td>honda Henjis</td>
-                        <td>27/08/2020 15:30</td>
-                        <td>JOÃO</td>
-                        <td>SÃO CRISTOVÃO </td>
-                        <td>CENTRO</td>
-                        <td>CLIENTE COM</td>
-                      </tr>
-
-                      <tr>
-                        <td>18</td>
-                        <td>honda Henjis</td>
-                        <td>27/08/2020 15:30</td>
-                        <td>JOÃO</td>
-                        <td>SÃO CRISTOVÃO </td>
-                        <td>CENTRO</td>
-                        <td>CLIENTE COM</td>
-                      </tr>
-
-                      <tr>
-                        <td>19</td>
-                        <td>honda Henjis</td>
-                        <td>27/08/2020 15:30</td>
-                        <td>JOÃO</td>
-                        <td>SÃO CRISTOVÃO </td>
-                        <td>CENTRO</td>
-                        <td>CLIENTE COM</td>
-                      </tr>
-
-                      <tr>
-                        <td>20</td>
-                        <td>honda Henjis</td>
-                        <td>27/08/2020 15:30</td>
-                        <td>JOÃO</td>
-                        <td>SÃO CRISTOVÃO </td>
-                        <td>CENTRO</td>
-                        <td>CLIENTE COM</td>
-                      </tr>
-
-                      <tr>
-                        <td>21</td>
-                        <td>honda Henjis</td>
-                        <td>27/08/2020 15:30</td>
-                        <td>JOÃO</td>
-                        <td>SÃO CRISTOVÃO </td>
-                        <td>CENTRO</td>
-                        <td>CLIENTE COM</td>
-                      </tr>
-
-                      <tr>
-                        <td>22</td>
-                        <td>honda Henjis</td>
-                        <td>27/08/2020 15:30</td>
-                        <td>JOÃO</td>
-                        <td>SÃO CRISTOVÃO </td>
-                        <td>CENTRO</td>
-                        <td>CLIENTE COM</td>
+                        <td>
+                          <div className="answer">
+                            <button
+                              type="button"
+                              title="Cancelar ordem de serviço"
+                              className={`button btnCancel`}
+                              onClick={() => {}}
+                            >
+                              <RiCloseLine size={24} />
+                            </button>
+                          </div>
+                        </td>
                       </tr>
                     </tbody>
                   </table>

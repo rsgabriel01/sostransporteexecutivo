@@ -27,6 +27,7 @@ const TravelFeeController = require("./controllers/TravelFeeController");
 
 const ServiceOrdersController = require("./controllers/ServiceOrdersController");
 const ServiceOrdersLikeController = require("./controllers/ServiceOrdersLikeController");
+const ServiceOrdersUpdatesController = require("./controllers/ServiceOrdersUpdatesController");
 
 const VehicleModelsLikeDescriptionController = require("./controllers/VehicleModelsLikeDescriptionController");
 
@@ -93,6 +94,10 @@ const {
   validatorOsCreate,
   validatorOsShow,
   validatorOsIndexLikeClientSituationDate,
+  validatorOsUpdateSituation1,
+  validatorOsUpdateSituation2,
+  validatorOsUpdateSituation3,
+  validatorOsUpdateSituation7and8,
 } = require("./validators/routesServiceOrders");
 // #endregion
 
@@ -344,6 +349,14 @@ routes.get(
   ServiceOrdersController.show
 );
 
+routes.get(
+  "/serviceOrders/like/",
+  validatorOsIndexLikeClientSituationDate,
+  verifySession,
+  permissionAdminAttendance,
+  ServiceOrdersLikeController.indexLikeClientSituationDate
+);
+
 routes.post(
   "/serviceOrders",
   validatorOsCreate,
@@ -352,13 +365,14 @@ routes.post(
   ServiceOrdersController.store
 );
 
-routes.get(
-  "/serviceOrders/like/",
-  validatorOsIndexLikeClientSituationDate,
+routes.put(
+  "/serviceOrder/update/situation1",
+  validatorOsUpdateSituation1,
   verifySession,
   permissionAdminAttendance,
-  ServiceOrdersLikeController.indexLikeClientSituationDate
+  ServiceOrdersUpdatesController.updateSituation1
 );
+
 // #endregion
 
 // #region Vehicle

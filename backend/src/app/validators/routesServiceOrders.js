@@ -25,12 +25,23 @@ const validatorOsCreate = celebrate({
   }),
 });
 
+const validatorOsShow = celebrate({
+  [Segments.HEADERS]: Joi.object({
+    authorization: Joi.string().required(),
+    id_executingperson: Joi.number().positive().integer().required(),
+  }).unknown(),
+  [Segments.PARAMS]: Joi.object().keys({
+    idServiceOrder: Joi.number().positive().integer().required(),
+  }),
+});
+
 const validatorOsUpdateSituation1 = celebrate({
   [Segments.HEADERS]: Joi.object({
     authorization: Joi.string().required(),
     id_executingperson: Joi.number().positive().integer().required(),
   }).unknown(),
   [Segments.BODY]: Joi.object().keys({
+    idServiceOrder: Joi.number().positive().integer().required(),
     idClient: Joi.number().positive().integer().required(),
     clientOrigin: Joi.boolean().required(),
     idNeighborhoodOrigin: Joi.number().positive().integer().required(),
@@ -46,16 +57,7 @@ const validatorOsUpdateSituation1 = celebrate({
     passengerPhone: Joi.string().regex(/^\d+$/).required().min(10).max(11),
     numberPassengers: Joi.number().positive().integer().required(),
     observationService: Joi.string().required().allow("", null),
-  }),
-});
-
-const validatorOsShow = celebrate({
-  [Segments.HEADERS]: Joi.object({
-    authorization: Joi.string().required(),
-    id_executingperson: Joi.number().positive().integer().required(),
-  }).unknown(),
-  [Segments.PARAMS]: Joi.object().keys({
-    idServiceOrder: Joi.number().positive().integer().required(),
+    observationUpdate: Joi.string().required(),
   }),
 });
 
@@ -147,4 +149,8 @@ module.exports = {
   validatorOsCreate,
   validatorOsShow,
   validatorOsIndexLikeClientSituationDate,
+  validatorOsUpdateSituation1,
+  validatorOsUpdateSituation2,
+  validatorOsUpdateSituation3,
+  validatorOsUpdateSituation7and8,
 };

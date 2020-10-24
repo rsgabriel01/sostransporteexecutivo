@@ -10,29 +10,33 @@ const { Op, fn, col, literal, QueryTypes, Sequelize } = require("sequelize");
 const moment = require("moment");
 
 module.exports = {
-  async index(req, res) {
+  async updateSituation1(req, res) {
     try {
-      const serviceOrders = await Service_orders.findAll({
-        include: [
-          "Client",
-          "User_attendance",
-          "Driver",
-          "Status",
-          "Neighborhood_origin",
-          "Neighborhood_destiny",
-          "User_completion",
-        ],
-      });
+      let columnsUpdateOs = {};
 
-      return res.json(serviceOrders);
-    } catch (error) {
-      console.log(error);
-    }
-  },
+      let idClientOld = "";
 
-  async store(req, res) {
-    try {
+      let clientOriginOld = true;
+      let idNeighborhoodOriginOld = "";
+      let streetOriginOld = "";
+      let streetNumberOriginOld = "";
+      let complementOriginOld = "";
+
+      let clientDestinyOld = false;
+      let idNeighborhoodDestinyOld = "";
+      let streetDestinyOld = "";
+      let streetNumberDestinyOld = "";
+      let complementDestinyOld = "";
+
+      let passengerNameOld = "";
+      let passengerPhoneOld = "";
+      let numberPassengersOld = "";
+
+      let observationServiceOld = "";
+      let observationUpdateOld = "";
+
       const {
+        idServiceOrder,
         idClient,
         clientOrigin,
         idNeighborhoodOrigin,
@@ -48,83 +52,181 @@ module.exports = {
         passengerPhone,
         numberPassengers,
         observationService,
+        observationUpdate,
       } = req.body;
 
-      const { id_executingperson } = req.headers;
+      console.log(req.body);
 
-      const clientFinded = await People.findOne({
+      const oldOsFinded = await Service_orders.findOne({
         where: {
-          id: idClient,
-          active: true,
-          "$People_Type.Type_people.id_type$": 4,
-          "$People_Type.Type_people.active$": true,
-        },
-        include: ["People_Type"],
-      });
-
-      if (!clientFinded) {
-        return res.status(400).json({
-          message:
-            "O cliente informado não existe ou não está ativo, por favor verifique.",
-        });
-      }
-
-      const neighborhoodOriginFinded = await Neighborhoods.findOne({
-        where: {
-          id: idNeighborhoodOrigin,
+          id: idServiceOrder,
         },
       });
 
-      if (!neighborhoodOriginFinded) {
+      console.log(JSON.stringify(oldOsFinded));
+
+      if (oldOsFinded) {
+        idClientOld = oldOsFinded.id_client;
+
+        clientOriginOld = oldOsFinded.client_origin;
+        idNeighborhoodOriginOld = oldOsFinded.id_neighborhood_origin;
+        streetOriginOld = oldOsFinded.street_origin;
+        streetNumberOriginOld = oldOsFinded.street_number_origin;
+        complementOriginOld = oldOsFinded.complement_origin;
+
+        clientDestinyOld = oldOsFinded.client_destiny;
+        idNeighborhoodDestinyOld = oldOsFinded.id_neighborhood_destiny;
+        streetDestinyOld = oldOsFinded.street_destiny;
+        streetNumberDestinyOld = oldOsFinded.street_number_destiny;
+        complementDestinyOld = oldOsFinded.complement_destiny;
+
+        passengerNameOld = oldOsFinded.passenger_name;
+        passengerPhoneOld = oldOsFinded.passenger_phone;
+        numberPassengersOld = oldOsFinded.number_passengers;
+
+        observationServiceOld = oldOsFinded.observation_service;
+        observationUpdateOld = oldOsFinded.observation_update;
+      } else {
         return res.status(400).json({
-          message:
-            "O bairro de origem informado não foi encontrado em nossa base de dados, por favor verifique.",
+          message: "Nenhum cadastro foi encontrado com o código informado.",
         });
       }
 
-      const neighborhoodDestinyFinded = await Neighborhoods.findOne({
+      if (Number(idClientOld) !== Number(idClient)) {
+        const clientFinded = await People.findOne({
+          where: {
+            id: idClient,
+            active: true,
+          },
+        });
+
+        if (clientFinded) {
+          return res.status(400).json({
+            message:
+              "O cliente informado para alteração não foi encontrado ou está inativo, por favor verifique.",
+          });
+        }
+
+        columnsUpdateOs["id_client"] = idClient;
+      }
+
+      if (clientOriginOld !== clientOrigin) {
+        columnsUpdateOs["client_origin"] = clientOrigin;
+      }
+
+      if (Number(idNeighborhoodOriginOld) !== Number(idNeighborhoodOrigin)) {
+        const neighborhoodFinded = await Neighborhoods.findOne({
+          where: {
+            id: idNeighborhoodDestiny,
+          },
+        });
+
+        if (!neighborhoodFinded) {
+          return res.status(400).json({
+            message:
+              "O bairro informado não foi encontrado, por favor verifique.",
+          });
+        }
+
+        columnsUpdateOs["id_neighborhood_origin"] = idNeighborhoodOrigin;
+      }
+
+      if (streetOriginOld !== streetOrigin) {
+        columnsUpdateOs["street_origin"] = streetOrigin;
+      }
+
+      if (streetNumberOriginOld !== streetNumberOrigin) {
+        columnsUpdateOs["street_number_origin"] = streetNumberOrigin;
+      }
+
+      if (complementOriginOld !== complementOrigin) {
+        columnsUpdateOs["complement_origin"] = complementOrigin;
+      }
+
+      if (clientDestinyOld !== clientDestiny) {
+        columnsUpdateOs["client_destiny"] = clientDestiny;
+      }
+
+      if (Number(idNeighborhoodDestinyOld) !== Number(idNeighborhoodDestiny)) {
+        const neighborhoodFinded = await Neighborhoods.findOne({
+          where: {
+            id: idNeighborhoodDestiny,
+          },
+        });
+
+        if (!neighborhoodFinded) {
+          return res.status(400).json({
+            message:
+              "O bairro informado não foi encontrado, por favor verifique.",
+          });
+        }
+
+        columnsUpdateOs["id_neighborhood_destiny"] = idNeighborhoodDestiny;
+      }
+
+      if (streetDestinyOld !== streetDestiny) {
+        columnsUpdateOs["street_destiny"] = streetDestiny;
+      }
+
+      if (streetNumberDestinyOld !== streetNumberDestiny) {
+        columnsUpdateOs["street_number_destiny"] = streetNumberDestiny;
+      }
+
+      if (complementDestinyOld !== complementDestiny) {
+        columnsUpdateOs["complement_destiny"] = complementDestiny;
+      }
+
+      if (passengerNameOld !== passengerName) {
+        columnsUpdateOs["passenger_name"] = passengerName;
+      }
+
+      if (passengerPhoneOld !== passengerPhone) {
+        columnsUpdateOs["passenger_phone"] = passengerPhone;
+      }
+
+      if (Number(numberPassengersOld) !== Number(numberPassengers)) {
+        columnsUpdateOs["number_passengers"] = numberPassengers;
+      }
+
+      if (observationServiceOld !== observationService) {
+        columnsUpdateOs["observation_service"] = observationService;
+      }
+
+      if (observationUpdateOld !== "") {
+        if (observationUpdateOld !== null) {
+          columnsUpdateOs[
+            "observation_update"
+          ] = `${observationUpdateOld}; ${observationUpdate}`;
+        } else {
+          columnsUpdateOs["observation_update"] = observationUpdate;
+        }
+      } else {
+        return res.status(400).json({
+          message:
+            "A observação de alteração não pode estar em branco, por favor verifique.",
+        });
+      }
+
+      console.log(columnsUpdateOs);
+      await Service_orders.update(columnsUpdateOs, {
         where: {
-          id: idNeighborhoodDestiny,
+          id: idServiceOrder,
         },
       });
 
-      if (!neighborhoodDestinyFinded) {
-        return res.status(400).json({
-          message:
-            "O bairro de destino informado não foi encontrado em nossa base de dados, por favor verifique.",
-        });
-      }
-
-      const createdOs = await Service_orders.create({
-        id_user_solicitation: id_executingperson,
-        id_client: idClient,
-        id_status: 1,
-        date_time_solicitation: moment().format(),
-        id_neighborhood_origin: idNeighborhoodOrigin,
-        street_origin: streetOrigin.toUpperCase(),
-        street_number_origin: streetNumberOrigin,
-        complement_origin: complementOrigin.toUpperCase(),
-        client_origin: clientOrigin,
-        id_neighborhood_destiny: idNeighborhoodDestiny,
-        street_destiny: streetDestiny.toUpperCase(),
-        street_number_destiny: streetNumberDestiny,
-        complement_destiny: complementDestiny.toUpperCase(),
-        client_destiny: clientDestiny,
-        passenger_name: passengerName.toUpperCase(),
-        passenger_phone: passengerPhone,
-        number_passengers: numberPassengers,
-        observation_service: observationService.toUpperCase(),
+      const dataOsUpdated = await Service_orders.findOne({
+        where: {
+          id: idServiceOrder,
+        },
       });
 
-      if (createdOs) {
-        return res.status(201).json({
-          createdOs,
-          message: `Cadastro de ordem de serviço efetuado com sucesso! Código: ${createdOs.id}`,
-        });
-      }
+      return res.json({
+        dataOsUpdated,
+        message: "Cadastro alterado com sucesso.",
+      });
     } catch (error) {
       console.log(error);
-      return res.status(500).json(error);
+      return res.status(500);
     }
   },
 };

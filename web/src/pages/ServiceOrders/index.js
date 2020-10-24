@@ -272,7 +272,7 @@ export default function ServiceOrdersRequest() {
       const observationUpdate = response.observation_update;
       observationUpdate
         ? setObservationUpdatePlaceHolder(
-            `Alteração anterior: ${observationUpdate}`
+            `Alterações anteriores: ${observationUpdate}`
           )
         : setObservationUpdatePlaceHolder("");
 
@@ -352,26 +352,27 @@ export default function ServiceOrdersRequest() {
       neighborhoodOrigin
         ? setNeighborhoodOrigin(neighborhoodOrigin)
         : setNeighborhoodOrigin("");
-
-      if (response.Neighborhood_origin.Travel_fee) {
-        if (rbCheckedAddressDestiny && !rbCheckedAddressOrigin) {
-          const totalValue = response.Neighborhood_origin.Travel_fee.value;
-          totalValue ? setTotalValue(`R$ ${totalValue},00`) : setTotalValue("");
-        }
-      }
     }
 
-    if (response.Neighborhood_origin) {
+    if (response.Neighborhood_destiny) {
       const neighborhoodDestiny = response.Neighborhood_destiny.name;
       neighborhoodDestiny
         ? setNeighborhoodDestiny(neighborhoodDestiny)
         : setNeighborhoodDestiny("");
+    }
 
-      if (response.Neighborhood_destiny.Travel_fee) {
-        if (rbCheckedAddressOrigin && !rbCheckedAddressDestiny) {
-          const totalValue = response.Neighborhood_destiny.Travel_fee.value;
-          totalValue ? setTotalValue(`R$ ${totalValue},00`) : setTotalValue("");
-        }
+    if (
+      response.Neighborhood_origin.Travel_fee &&
+      response.Neighborhood_destiny.Travel_fee
+    ) {
+      console.log("tre");
+
+      if (response.client_origin && !response.client_destiny) {
+        const totalValue = response.Neighborhood_destiny.Travel_fee.value;
+        totalValue ? setTotalValue(`R$ ${totalValue},00`) : setTotalValue("");
+      } else if (!response.client_origin && response.client_destiny) {
+        const totalValue = response.Neighborhood_origin.Travel_fee.value;
+        totalValue ? setTotalValue(`R$ ${totalValue},00`) : setTotalValue("");
       }
     }
   }
@@ -682,19 +683,28 @@ export default function ServiceOrdersRequest() {
   async function updateOs() {
     let dataOS;
 
+    setTextButtonSaveUpdate("Aguarde...");
+    setLoadingButton(true);
+    setBtnInactive("btnInactive");
+
     if (idSituation === 1 || idSituation === "1") {
       dataOS = {
+        idServiceOrder,
         idClient,
         clientOrigin: rbCheckedAddressOrigin,
         idNeighborhoodOrigin,
         streetOrigin: streetOrigin.toUpperCase(),
         streetNumberOrigin,
-        complementOrigin: complementOrigin.toUpperCase(),
+        complementOrigin: complementOrigin
+          ? complementOrigin.toUpperCase()
+          : complementOrigin,
         clientDestiny: rbCheckedAddressDestiny,
         idNeighborhoodDestiny,
         streetDestiny: streetDestiny.toUpperCase(),
         streetNumberDestiny,
-        complementDestiny: complementDestiny.toUpperCase(),
+        complementDestiny: complementDestiny
+          ? complementDestiny.toUpperCase()
+          : complementDestiny,
         passengerName: passengerName.toUpperCase(),
         passengerPhone: passengerPhone,
         numberPassengers,
@@ -704,6 +714,7 @@ export default function ServiceOrdersRequest() {
     }
     if (idSituation === 2 || idSituation === "2") {
       dataOS = {
+        idServiceOrder,
         idClient,
         clientOrigin: rbCheckedAddressOrigin,
         idNeighborhoodOrigin,
@@ -726,6 +737,7 @@ export default function ServiceOrdersRequest() {
     }
     if (idSituation === 3 || idSituation === "3") {
       dataOS = {
+        idServiceOrder,
         clientOrigin: rbCheckedAddressOrigin,
         idNeighborhoodOrigin,
         streetOrigin: streetOrigin.toUpperCase(),
@@ -746,6 +758,7 @@ export default function ServiceOrdersRequest() {
       idSituation === "8"
     ) {
       dataOS = {
+        idServiceOrder,
         idClient,
         clientOrigin: rbCheckedAddressOrigin,
         idNeighborhoodOrigin,
@@ -767,71 +780,80 @@ export default function ServiceOrdersRequest() {
       };
     }
 
-    setTextButtonSaveUpdate("Aguarde...");
-    setLoadingButton(true);
-    setBtnInactive("btnInactive");
-
     console.log(dataOS);
 
-    // try {
-    //   const response = await api.post("/serviceOrders", dataOS);
+    try {
+      if (idSituation === 1 || idSituation === "1") {
+        const response = await api.put(
+          "/serviceOrder/update/situation1",
+          dataOS
+        );
 
-    //   if (response) {
-    //     console.log(response.data);
+        if (response) {
+          console.log(response.data);
 
-    //     notify("success", response.data.message);
+          alterPageUpdateForConsult();
 
-    //     setTextButtonSaveUpdate("Salvar");
-    //     setLoadingButton(false);
-    //     setBtnInactive("");
-    //     clearFields("all");
-    //   }
-    // } catch (error) {
-    //   setTextButtonSaveUpdate("Salvar");
-    //   setLoadingButton(false);
-    //   setBtnInactive("");
+          notify("success", response.data.message);
 
-    //   if (error.response) {
-    //     const dataError = error.response.data;
-    //     const statusError = error.response.status;
-    //     console.error(dataError);
-    //     console.error(statusError);
+          setTextButtonSaveUpdate("Salvar");
+          setLoadingButton(false);
+          setBtnInactive("");
+        }
+      }
+    } catch (error) {
+      setTextButtonSaveUpdate("Salvar");
+      setLoadingButton(false);
+      setBtnInactive("");
 
-    //     if (statusError === 400 && dataError.message) {
-    //       console.log(dataError.message);
-    //       switch (dataError.message) {
-    //         default:
-    //           notify("warning", dataError.message);
-    //       }
-    //     }
+      if (error.response) {
+        const dataError = error.response.data;
+        const statusError = error.response.status;
+        console.error(dataError);
+        console.error(statusError);
 
-    //     if (statusError === 401) {
-    //       switch (dataError.message) {
-    //         default:
-    //           notify("warning", dataError.message);
-    //       }
-    //     }
+        if (statusError === 400 && dataError.message) {
+          console.log(dataError.message);
+          switch (dataError.message) {
+            default:
+              notify("warning", dataError.message);
+          }
+        }
 
-    //     if (statusError === 500) {
-    //       notify(
-    //         "error",
-    //         "Ooops, erro interno do servidor, por favor entre em contato com setor de TI."
-    //       );
-    //     }
-    //   } else if (error.request) {
-    //     notify(
-    //       "error",
-    //       `Oops, algo deu errado, entre em contato com o suporte de TI. ${error}`
-    //     );
-    //     console.log("Error 1", error.request);
-    //   } else {
-    //     notify(
-    //       "error",
-    //       `Oops, algo deu errado, entre em contato com o suporte de TI. ${error}`
-    //     );
-    //     console.log("Error 2", error.message);
-    //   }
-    // }
+        if (statusError === 401) {
+          switch (dataError.message) {
+            default:
+              notify("warning", dataError.message);
+          }
+        }
+
+        if (statusError === 404) {
+          notify(
+            "error",
+            "Ooops, a rota dessa requisição não foi encontrada, por favor entre em contato com setor de TI."
+          );
+        }
+
+        if (statusError === 500) {
+          notify(
+            "error",
+            "Ooops, erro interno do servidor, por favor entre em contato com setor de TI."
+          );
+        }
+      } else if (error.request) {
+        notify(
+          "error",
+          `Oops, algo deu errado, entre em contato com o suporte de TI. ${error}`
+        );
+        console.log("Error 1", error.request);
+      } else {
+        notify(
+          "error",
+          `Oops, algo deu errado, entre em contato com o suporte de TI. ${error}`
+        );
+        console.log("Error 2", error.message);
+      }
+    }
   }
   //#endregion
 
@@ -2545,7 +2567,7 @@ export default function ServiceOrdersRequest() {
                               searchOsBtnInactive ? "btnInactive" : ""
                             }`}
                             onClick={() => {
-                              clearFields("allNotIdVehicle");
+                              clearFields("allWithoutIdServiceOrder");
                               handleOpenModalSearchOsEdit();
                             }}
                           >

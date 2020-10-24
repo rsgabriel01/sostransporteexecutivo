@@ -381,6 +381,14 @@ routes.put(
   ServiceOrdersUpdatesController.updateSituation2
 );
 
+routes.put(
+  "/serviceOrder/update/situation3",
+  validatorOsUpdateSituation3,
+  verifySession,
+  permissionAdminAttendance,
+  ServiceOrdersUpdatesController.updateSituation3
+);
+
 // #endregion
 
 // #region Vehicle

@@ -760,6 +760,7 @@ export default function ServiceOrdersRequest() {
         streetDestiny: streetDestiny.toUpperCase(),
         streetNumberDestiny,
         complementDestiny: complementDestiny.toUpperCase(),
+        observationUpdate: observationUpdate.toUpperCase(),
       };
     }
 
@@ -827,6 +828,13 @@ export default function ServiceOrdersRequest() {
         if (statusError === 400 && dataError.message) {
           console.log(dataError.message);
           switch (dataError.message) {
+            case '"observationUpdate" is required':
+              notify(
+                "warning",
+                "É obrigatorio informar a observação da alteração, por favor verifique."
+              );
+              break;
+
             default:
               notify("warning", dataError.message);
           }

@@ -554,7 +554,7 @@ export default function ServiceOrdersRequest() {
       setNeighborhoodOrigin(neighborhood);
       setStreetOrigin(street);
       setStreetNumberOrigin(number);
-      complement ? setComplementDestiny(complement) : setComplementDestiny("");
+      complement ? setComplementOrigin(complement) : setComplementOrigin("");
 
       inputFocus("neighborhoodDestiny");
     } else if (rbCheckedAddressDestiny) {

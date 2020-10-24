@@ -227,6 +227,7 @@ export default function ServiceOrdersRequest() {
         : setStreetNumberOrigin("");
 
       const complementOrigin = response.complement_origin;
+      console.log("origin: " + complementOrigin);
       complementOrigin
         ? setComplementOrigin(complementOrigin)
         : setComplementOrigin("");
@@ -247,6 +248,8 @@ export default function ServiceOrdersRequest() {
         : setStreetNumberDestiny("");
 
       const complementDestiny = response.complement_destiny;
+      console.log("destiny: " + complementDestiny);
+
       complementDestiny
         ? setComplementDestiny(complementDestiny)
         : setComplementDestiny("");
@@ -272,7 +275,7 @@ export default function ServiceOrdersRequest() {
       const observationUpdate = response.observation_update;
       observationUpdate
         ? setObservationUpdatePlaceHolder(
-            `Alterações anteriores: ${observationUpdate}`
+            `Observações anteriores: ${observationUpdate}`
           )
         : setObservationUpdatePlaceHolder("");
 
@@ -365,8 +368,6 @@ export default function ServiceOrdersRequest() {
       response.Neighborhood_origin.Travel_fee &&
       response.Neighborhood_destiny.Travel_fee
     ) {
-      console.log("tre");
-
       if (response.client_origin && !response.client_destiny) {
         const totalValue = response.Neighborhood_destiny.Travel_fee.value;
         totalValue ? setTotalValue(`R$ ${totalValue},00`) : setTotalValue("");
@@ -682,12 +683,15 @@ export default function ServiceOrdersRequest() {
   // #region update OS
   async function updateOs() {
     let dataOS;
+    let situationString = "";
 
     setTextButtonSaveUpdate("Aguarde...");
     setLoadingButton(true);
     setBtnInactive("btnInactive");
 
     if (idSituation === 1 || idSituation === "1") {
+      situationString = "1";
+
       dataOS = {
         idServiceOrder,
         idClient,
@@ -713,6 +717,8 @@ export default function ServiceOrdersRequest() {
       };
     }
     if (idSituation === 2 || idSituation === "2") {
+      situationString = "2";
+
       dataOS = {
         idServiceOrder,
         idClient,
@@ -720,12 +726,16 @@ export default function ServiceOrdersRequest() {
         idNeighborhoodOrigin,
         streetOrigin: streetOrigin.toUpperCase(),
         streetNumberOrigin,
-        complementOrigin: complementOrigin.toUpperCase(),
+        complementOrigin: complementOrigin
+          ? complementOrigin.toUpperCase()
+          : complementOrigin,
         clientDestiny: rbCheckedAddressDestiny,
         idNeighborhoodDestiny,
         streetDestiny: streetDestiny.toUpperCase(),
         streetNumberDestiny,
-        complementDestiny: complementDestiny.toUpperCase(),
+        complementDestiny: complementDestiny
+          ? complementDestiny.toUpperCase()
+          : complementDestiny,
         passengerName: passengerName.toUpperCase(),
         passengerPhone: passengerPhone,
         numberPassengers,
@@ -736,6 +746,8 @@ export default function ServiceOrdersRequest() {
       };
     }
     if (idSituation === 3 || idSituation === "3") {
+      situationString = "3";
+
       dataOS = {
         idServiceOrder,
         clientOrigin: rbCheckedAddressOrigin,
@@ -757,6 +769,8 @@ export default function ServiceOrdersRequest() {
       idSituation === 8 ||
       idSituation === "8"
     ) {
+      situationString = "7and8";
+
       dataOS = {
         idServiceOrder,
         idClient,
@@ -783,23 +797,21 @@ export default function ServiceOrdersRequest() {
     console.log(dataOS);
 
     try {
-      if (idSituation === 1 || idSituation === "1") {
-        const response = await api.put(
-          "/serviceOrder/update/situation1",
-          dataOS
-        );
+      const response = await api.put(
+        `/serviceOrder/update/situation${situationString}`,
+        dataOS
+      );
 
-        if (response) {
-          console.log(response.data);
+      if (response) {
+        console.log(response.data);
 
-          alterPageUpdateForConsult();
+        alterPageUpdateForConsult();
 
-          notify("success", response.data.message);
+        notify("success", response.data.message);
 
-          setTextButtonSaveUpdate("Salvar");
-          setLoadingButton(false);
-          setBtnInactive("");
-        }
+        setTextButtonSaveUpdate("Salvar");
+        setLoadingButton(false);
+        setBtnInactive("");
       }
     } catch (error) {
       setTextButtonSaveUpdate("Salvar");
@@ -1604,7 +1616,7 @@ export default function ServiceOrdersRequest() {
       setNeighborhoodOrigin(neighborhood);
       setStreetOrigin(street);
       setStreetNumberOrigin(number);
-      setComplementOrigin(complement);
+      complement ? setComplementOrigin(complement) : setComplementOrigin("");
 
       inputFocus("neighborhoodDestiny");
     } else if (rbCheckedAddressDestiny) {
@@ -1612,7 +1624,7 @@ export default function ServiceOrdersRequest() {
       setNeighborhoodDestiny(neighborhood);
       setStreetDestiny(street);
       setStreetNumberDestiny(number);
-      setComplementDestiny(complement);
+      complement ? setComplementDestiny(complement) : setComplementDestiny("");
 
       inputFocus("neighborhoodOrigin");
     }

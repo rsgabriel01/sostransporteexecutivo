@@ -15,6 +15,9 @@ module.exports = {
     try {
       let columnsUpdateOs = {};
 
+      let neighborhoodOriginFinded;
+      let neighborhoodDestinyFinded;
+
       let idClientOld = "";
 
       let clientOriginOld = true;
@@ -117,13 +120,14 @@ module.exports = {
       }
 
       if (Number(idNeighborhoodOriginOld) !== Number(idNeighborhoodOrigin)) {
-        const neighborhoodFinded = await Neighborhoods.findOne({
+        neighborhoodOriginFinded = await Neighborhoods.findOne({
           where: {
             id: idNeighborhoodDestiny,
           },
+          include: ["Travel_fee"],
         });
 
-        if (!neighborhoodFinded) {
+        if (!neighborhoodOriginFinded) {
           return res.status(400).json({
             message:
               "O bairro informado não foi encontrado, por favor verifique.",
@@ -150,13 +154,14 @@ module.exports = {
       }
 
       if (Number(idNeighborhoodDestinyOld) !== Number(idNeighborhoodDestiny)) {
-        const neighborhoodFinded = await Neighborhoods.findOne({
+        neighborhoodDestinyFinded = await Neighborhoods.findOne({
           where: {
             id: idNeighborhoodDestiny,
           },
+          include: ["Travel_fee"],
         });
 
-        if (!neighborhoodFinded) {
+        if (!neighborhoodDestinyFinded) {
           return res.status(400).json({
             message:
               "O bairro informado não foi encontrado, por favor verifique.",
@@ -209,6 +214,103 @@ module.exports = {
         });
       }
 
+      if (
+        clientOriginOld !== clientOrigin &&
+        clientDestinyOld !== clientDestiny
+      ) {
+        if (
+          Number(idNeighborhoodOriginOld) !== Number(idNeighborhoodOrigin) ||
+          Number(idNeighborhoodDestinyOld) !== Number(idNeighborhoodDestiny)
+        ) {
+          if (clientOrigin && !clientDestiny) {
+            if (idNeighborhoodDestiny === idNeighborhoodOrigin) {
+              columnsUpdateOs["travel_value"] =
+                neighborhoodDestinyFinded.Travel_fee.value / 2;
+            } else {
+              columnsUpdateOs["travel_value"] =
+                neighborhoodDestinyFinded.Travel_fee.value;
+            }
+          } else if (!clientOrigin && clientDestiny) {
+            if (idNeighborhoodOrigin === idNeighborhoodDestiny) {
+              columnsUpdateOs["travel_value"] =
+                neighborhoodOriginFinded.Travel_fee.value / 2;
+            } else {
+              columnsUpdateOs["travel_value"] =
+                neighborhoodOriginFinded.Travel_fee.value;
+            }
+          }
+        } else {
+          neighborhoodOriginFinded = await Neighborhoods.findOne({
+            where: {
+              id: idNeighborhoodOrigin,
+            },
+            include: ["Travel_fee"],
+          });
+
+          neighborhoodDestinyFinded = await Neighborhoods.findOne({
+            where: {
+              id: idNeighborhoodDestiny,
+            },
+            include: ["Travel_fee"],
+          });
+
+          if (clientOrigin && !clientDestiny) {
+            if (idNeighborhoodDestiny === idNeighborhoodOrigin) {
+              columnsUpdateOs["travel_value"] =
+                neighborhoodDestinyFinded.Travel_fee.value / 2;
+            } else {
+              columnsUpdateOs["travel_value"] =
+                neighborhoodDestinyFinded.Travel_fee.value;
+            }
+          } else if (!clientOrigin && clientDestiny) {
+            if (idNeighborhoodOrigin === idNeighborhoodDestiny) {
+              columnsUpdateOs["travel_value"] =
+                neighborhoodOriginFinded.Travel_fee.value / 2;
+            } else {
+              columnsUpdateOs["travel_value"] =
+                neighborhoodOriginFinded.Travel_fee.value;
+            }
+          }
+        }
+      }
+
+      if (
+        Number(idNeighborhoodOriginOld) !== Number(idNeighborhoodOrigin) ||
+        Number(idNeighborhoodDestinyOld) !== Number(idNeighborhoodDestiny)
+      ) {
+        neighborhoodOriginFinded = await Neighborhoods.findOne({
+          where: {
+            id: idNeighborhoodOrigin,
+          },
+          include: ["Travel_fee"],
+        });
+
+        neighborhoodDestinyFinded = await Neighborhoods.findOne({
+          where: {
+            id: idNeighborhoodDestiny,
+          },
+          include: ["Travel_fee"],
+        });
+
+        if (clientOrigin && !clientDestiny) {
+          if (idNeighborhoodDestiny === idNeighborhoodOrigin) {
+            columnsUpdateOs["travel_value"] =
+              neighborhoodDestinyFinded.Travel_fee.value / 2;
+          } else {
+            columnsUpdateOs["travel_value"] =
+              neighborhoodDestinyFinded.Travel_fee.value;
+          }
+        } else if (!clientOrigin && clientDestiny) {
+          if (idNeighborhoodOrigin === idNeighborhoodDestiny) {
+            columnsUpdateOs["travel_value"] =
+              neighborhoodOriginFinded.Travel_fee.value / 2;
+          } else {
+            columnsUpdateOs["travel_value"] =
+              neighborhoodOriginFinded.Travel_fee.value;
+          }
+        }
+      }
+
       console.log(columnsUpdateOs);
       await Service_orders.update(columnsUpdateOs, {
         where: {
@@ -235,6 +337,9 @@ module.exports = {
   async updateSituation2(req, res) {
     try {
       let columnsUpdateOs = {};
+
+      let neighborhoodOriginFinded;
+      let neighborhoodDestinyFinded;
 
       let idClientOld = "";
 
@@ -346,13 +451,14 @@ module.exports = {
       }
 
       if (Number(idNeighborhoodOriginOld) !== Number(idNeighborhoodOrigin)) {
-        const neighborhoodFinded = await Neighborhoods.findOne({
+        neighborhoodOriginFinded = await Neighborhoods.findOne({
           where: {
             id: idNeighborhoodDestiny,
           },
+          include: ["Travel_fee"],
         });
 
-        if (!neighborhoodFinded) {
+        if (!neighborhoodOriginFinded) {
           return res.status(400).json({
             message:
               "O bairro informado não foi encontrado, por favor verifique.",
@@ -379,13 +485,14 @@ module.exports = {
       }
 
       if (Number(idNeighborhoodDestinyOld) !== Number(idNeighborhoodDestiny)) {
-        const neighborhoodFinded = await Neighborhoods.findOne({
+        neighborhoodDestinyFinded = await Neighborhoods.findOne({
           where: {
             id: idNeighborhoodDestiny,
           },
+          include: ["Travel_fee"],
         });
 
-        if (!neighborhoodFinded) {
+        if (!neighborhoodDestinyFinded) {
           return res.status(400).json({
             message:
               "O bairro informado não foi encontrado, por favor verifique.",
@@ -477,6 +584,103 @@ module.exports = {
         columnsUpdateOs["id_driver"] = idDriver;
       }
 
+      if (
+        clientOriginOld !== clientOrigin &&
+        clientDestinyOld !== clientDestiny
+      ) {
+        if (
+          Number(idNeighborhoodOriginOld) !== Number(idNeighborhoodOrigin) ||
+          Number(idNeighborhoodDestinyOld) !== Number(idNeighborhoodDestiny)
+        ) {
+          if (clientOrigin && !clientDestiny) {
+            if (idNeighborhoodDestiny === idNeighborhoodOrigin) {
+              columnsUpdateOs["travel_value"] =
+                neighborhoodDestinyFinded.Travel_fee.value / 2;
+            } else {
+              columnsUpdateOs["travel_value"] =
+                neighborhoodDestinyFinded.Travel_fee.value;
+            }
+          } else if (!clientOrigin && clientDestiny) {
+            if (idNeighborhoodOrigin === idNeighborhoodDestiny) {
+              columnsUpdateOs["travel_value"] =
+                neighborhoodOriginFinded.Travel_fee.value / 2;
+            } else {
+              columnsUpdateOs["travel_value"] =
+                neighborhoodOriginFinded.Travel_fee.value;
+            }
+          }
+        } else {
+          neighborhoodOriginFinded = await Neighborhoods.findOne({
+            where: {
+              id: idNeighborhoodOrigin,
+            },
+            include: ["Travel_fee"],
+          });
+
+          neighborhoodDestinyFinded = await Neighborhoods.findOne({
+            where: {
+              id: idNeighborhoodDestiny,
+            },
+            include: ["Travel_fee"],
+          });
+
+          if (clientOrigin && !clientDestiny) {
+            if (idNeighborhoodDestiny === idNeighborhoodOrigin) {
+              columnsUpdateOs["travel_value"] =
+                neighborhoodDestinyFinded.Travel_fee.value / 2;
+            } else {
+              columnsUpdateOs["travel_value"] =
+                neighborhoodDestinyFinded.Travel_fee.value;
+            }
+          } else if (!clientOrigin && clientDestiny) {
+            if (idNeighborhoodOrigin === idNeighborhoodDestiny) {
+              columnsUpdateOs["travel_value"] =
+                neighborhoodOriginFinded.Travel_fee.value / 2;
+            } else {
+              columnsUpdateOs["travel_value"] =
+                neighborhoodOriginFinded.Travel_fee.value;
+            }
+          }
+        }
+      }
+
+      if (
+        Number(idNeighborhoodOriginOld) !== Number(idNeighborhoodOrigin) ||
+        Number(idNeighborhoodDestinyOld) !== Number(idNeighborhoodDestiny)
+      ) {
+        neighborhoodOriginFinded = await Neighborhoods.findOne({
+          where: {
+            id: idNeighborhoodOrigin,
+          },
+          include: ["Travel_fee"],
+        });
+
+        neighborhoodDestinyFinded = await Neighborhoods.findOne({
+          where: {
+            id: idNeighborhoodDestiny,
+          },
+          include: ["Travel_fee"],
+        });
+
+        if (clientOrigin && !clientDestiny) {
+          if (idNeighborhoodDestiny === idNeighborhoodOrigin) {
+            columnsUpdateOs["travel_value"] =
+              neighborhoodDestinyFinded.Travel_fee.value / 2;
+          } else {
+            columnsUpdateOs["travel_value"] =
+              neighborhoodDestinyFinded.Travel_fee.value;
+          }
+        } else if (!clientOrigin && clientDestiny) {
+          if (idNeighborhoodOrigin === idNeighborhoodDestiny) {
+            columnsUpdateOs["travel_value"] =
+              neighborhoodOriginFinded.Travel_fee.value / 2;
+          } else {
+            columnsUpdateOs["travel_value"] =
+              neighborhoodOriginFinded.Travel_fee.value;
+          }
+        }
+      }
+
       console.log(columnsUpdateOs);
       await Service_orders.update(columnsUpdateOs, {
         where: {
@@ -503,6 +707,9 @@ module.exports = {
   async updateSituation3(req, res) {
     try {
       let columnsUpdateOs = {};
+
+      let neighborhoodOriginFinded;
+      let neighborhoodDestinyFinded;
 
       let clientOriginOld = true;
       let idNeighborhoodOriginOld = "";
@@ -569,13 +776,14 @@ module.exports = {
       }
 
       if (Number(idNeighborhoodOriginOld) !== Number(idNeighborhoodOrigin)) {
-        const neighborhoodFinded = await Neighborhoods.findOne({
+        neighborhoodOriginFinded = await Neighborhoods.findOne({
           where: {
             id: idNeighborhoodDestiny,
           },
+          include: ["Travel_fee"],
         });
 
-        if (!neighborhoodFinded) {
+        if (!neighborhoodOriginFinded) {
           return res.status(400).json({
             message:
               "O bairro informado não foi encontrado, por favor verifique.",
@@ -602,13 +810,14 @@ module.exports = {
       }
 
       if (Number(idNeighborhoodDestinyOld) !== Number(idNeighborhoodDestiny)) {
-        const neighborhoodFinded = await Neighborhoods.findOne({
+        neighborhoodDestinyFinded = await Neighborhoods.findOne({
           where: {
             id: idNeighborhoodDestiny,
           },
+          include: ["Travel_fee"],
         });
 
-        if (!neighborhoodFinded) {
+        if (!neighborhoodDestinyFinded) {
           return res.status(400).json({
             message:
               "O bairro informado não foi encontrado, por favor verifique.",
@@ -645,6 +854,103 @@ module.exports = {
         });
       }
 
+      if (
+        clientOriginOld !== clientOrigin &&
+        clientDestinyOld !== clientDestiny
+      ) {
+        if (
+          Number(idNeighborhoodOriginOld) !== Number(idNeighborhoodOrigin) ||
+          Number(idNeighborhoodDestinyOld) !== Number(idNeighborhoodDestiny)
+        ) {
+          if (clientOrigin && !clientDestiny) {
+            if (idNeighborhoodDestiny === idNeighborhoodOrigin) {
+              columnsUpdateOs["travel_value"] =
+                neighborhoodDestinyFinded.Travel_fee.value / 2;
+            } else {
+              columnsUpdateOs["travel_value"] =
+                neighborhoodDestinyFinded.Travel_fee.value;
+            }
+          } else if (!clientOrigin && clientDestiny) {
+            if (idNeighborhoodOrigin === idNeighborhoodDestiny) {
+              columnsUpdateOs["travel_value"] =
+                neighborhoodOriginFinded.Travel_fee.value / 2;
+            } else {
+              columnsUpdateOs["travel_value"] =
+                neighborhoodOriginFinded.Travel_fee.value;
+            }
+          }
+        } else {
+          neighborhoodOriginFinded = await Neighborhoods.findOne({
+            where: {
+              id: idNeighborhoodOrigin,
+            },
+            include: ["Travel_fee"],
+          });
+
+          neighborhoodDestinyFinded = await Neighborhoods.findOne({
+            where: {
+              id: idNeighborhoodDestiny,
+            },
+            include: ["Travel_fee"],
+          });
+
+          if (clientOrigin && !clientDestiny) {
+            if (idNeighborhoodDestiny === idNeighborhoodOrigin) {
+              columnsUpdateOs["travel_value"] =
+                neighborhoodDestinyFinded.Travel_fee.value / 2;
+            } else {
+              columnsUpdateOs["travel_value"] =
+                neighborhoodDestinyFinded.Travel_fee.value;
+            }
+          } else if (!clientOrigin && clientDestiny) {
+            if (idNeighborhoodOrigin === idNeighborhoodDestiny) {
+              columnsUpdateOs["travel_value"] =
+                neighborhoodOriginFinded.Travel_fee.value / 2;
+            } else {
+              columnsUpdateOs["travel_value"] =
+                neighborhoodOriginFinded.Travel_fee.value;
+            }
+          }
+        }
+      }
+
+      if (
+        Number(idNeighborhoodOriginOld) !== Number(idNeighborhoodOrigin) ||
+        Number(idNeighborhoodDestinyOld) !== Number(idNeighborhoodDestiny)
+      ) {
+        neighborhoodOriginFinded = await Neighborhoods.findOne({
+          where: {
+            id: idNeighborhoodOrigin,
+          },
+          include: ["Travel_fee"],
+        });
+
+        neighborhoodDestinyFinded = await Neighborhoods.findOne({
+          where: {
+            id: idNeighborhoodDestiny,
+          },
+          include: ["Travel_fee"],
+        });
+
+        if (clientOrigin && !clientDestiny) {
+          if (idNeighborhoodDestiny === idNeighborhoodOrigin) {
+            columnsUpdateOs["travel_value"] =
+              neighborhoodDestinyFinded.Travel_fee.value / 2;
+          } else {
+            columnsUpdateOs["travel_value"] =
+              neighborhoodDestinyFinded.Travel_fee.value;
+          }
+        } else if (!clientOrigin && clientDestiny) {
+          if (idNeighborhoodOrigin === idNeighborhoodDestiny) {
+            columnsUpdateOs["travel_value"] =
+              neighborhoodOriginFinded.Travel_fee.value / 2;
+          } else {
+            columnsUpdateOs["travel_value"] =
+              neighborhoodOriginFinded.Travel_fee.value;
+          }
+        }
+      }
+
       console.log(columnsUpdateOs);
       await Service_orders.update(columnsUpdateOs, {
         where: {
@@ -671,6 +977,9 @@ module.exports = {
   async updateSituation7and8(req, res) {
     try {
       let columnsUpdateOs = {};
+
+      let neighborhoodOriginFinded;
+      let neighborhoodDestinyFinded;
 
       let idClientOld = "";
 
@@ -760,13 +1069,14 @@ module.exports = {
       }
 
       if (Number(idNeighborhoodOriginOld) !== Number(idNeighborhoodOrigin)) {
-        const neighborhoodFinded = await Neighborhoods.findOne({
+        neighborhoodOriginFinded = await Neighborhoods.findOne({
           where: {
             id: idNeighborhoodDestiny,
           },
+          include: ["Travel_fee"],
         });
 
-        if (!neighborhoodFinded) {
+        if (!neighborhoodOriginFinded) {
           return res.status(400).json({
             message:
               "O bairro informado não foi encontrado, por favor verifique.",
@@ -793,13 +1103,14 @@ module.exports = {
       }
 
       if (Number(idNeighborhoodDestinyOld) !== Number(idNeighborhoodDestiny)) {
-        const neighborhoodFinded = await Neighborhoods.findOne({
+        neighborhoodDestinyFinded = await Neighborhoods.findOne({
           where: {
             id: idNeighborhoodDestiny,
           },
+          include: ["Travel_fee"],
         });
 
-        if (!neighborhoodFinded) {
+        if (!neighborhoodDestinyFinded) {
           return res.status(400).json({
             message:
               "O bairro informado não foi encontrado, por favor verifique.",
@@ -834,6 +1145,103 @@ module.exports = {
           message:
             "A observação de alteração não pode estar em branco, por favor verifique.",
         });
+      }
+
+      if (
+        clientOriginOld !== clientOrigin &&
+        clientDestinyOld !== clientDestiny
+      ) {
+        if (
+          Number(idNeighborhoodOriginOld) !== Number(idNeighborhoodOrigin) ||
+          Number(idNeighborhoodDestinyOld) !== Number(idNeighborhoodDestiny)
+        ) {
+          if (clientOrigin && !clientDestiny) {
+            if (idNeighborhoodDestiny === idNeighborhoodOrigin) {
+              columnsUpdateOs["travel_value"] =
+                neighborhoodDestinyFinded.Travel_fee.value / 2;
+            } else {
+              columnsUpdateOs["travel_value"] =
+                neighborhoodDestinyFinded.Travel_fee.value;
+            }
+          } else if (!clientOrigin && clientDestiny) {
+            if (idNeighborhoodOrigin === idNeighborhoodDestiny) {
+              columnsUpdateOs["travel_value"] =
+                neighborhoodOriginFinded.Travel_fee.value / 2;
+            } else {
+              columnsUpdateOs["travel_value"] =
+                neighborhoodOriginFinded.Travel_fee.value;
+            }
+          }
+        } else {
+          neighborhoodOriginFinded = await Neighborhoods.findOne({
+            where: {
+              id: idNeighborhoodOrigin,
+            },
+            include: ["Travel_fee"],
+          });
+
+          neighborhoodDestinyFinded = await Neighborhoods.findOne({
+            where: {
+              id: idNeighborhoodDestiny,
+            },
+            include: ["Travel_fee"],
+          });
+
+          if (clientOrigin && !clientDestiny) {
+            if (idNeighborhoodDestiny === idNeighborhoodOrigin) {
+              columnsUpdateOs["travel_value"] =
+                neighborhoodDestinyFinded.Travel_fee.value / 2;
+            } else {
+              columnsUpdateOs["travel_value"] =
+                neighborhoodDestinyFinded.Travel_fee.value;
+            }
+          } else if (!clientOrigin && clientDestiny) {
+            if (idNeighborhoodOrigin === idNeighborhoodDestiny) {
+              columnsUpdateOs["travel_value"] =
+                neighborhoodOriginFinded.Travel_fee.value / 2;
+            } else {
+              columnsUpdateOs["travel_value"] =
+                neighborhoodOriginFinded.Travel_fee.value;
+            }
+          }
+        }
+      }
+
+      if (
+        Number(idNeighborhoodOriginOld) !== Number(idNeighborhoodOrigin) ||
+        Number(idNeighborhoodDestinyOld) !== Number(idNeighborhoodDestiny)
+      ) {
+        neighborhoodOriginFinded = await Neighborhoods.findOne({
+          where: {
+            id: idNeighborhoodOrigin,
+          },
+          include: ["Travel_fee"],
+        });
+
+        neighborhoodDestinyFinded = await Neighborhoods.findOne({
+          where: {
+            id: idNeighborhoodDestiny,
+          },
+          include: ["Travel_fee"],
+        });
+
+        if (clientOrigin && !clientDestiny) {
+          if (idNeighborhoodDestiny === idNeighborhoodOrigin) {
+            columnsUpdateOs["travel_value"] =
+              neighborhoodDestinyFinded.Travel_fee.value / 2;
+          } else {
+            columnsUpdateOs["travel_value"] =
+              neighborhoodDestinyFinded.Travel_fee.value;
+          }
+        } else if (!clientOrigin && clientDestiny) {
+          if (idNeighborhoodOrigin === idNeighborhoodDestiny) {
+            columnsUpdateOs["travel_value"] =
+              neighborhoodOriginFinded.Travel_fee.value / 2;
+          } else {
+            columnsUpdateOs["travel_value"] =
+              neighborhoodOriginFinded.Travel_fee.value;
+          }
+        }
       }
 
       console.log(columnsUpdateOs);

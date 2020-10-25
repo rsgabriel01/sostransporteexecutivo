@@ -107,10 +107,25 @@
   padding-left: 5px;
 }
 
+.solicitations-executing-container .status-bar .group-dates input:hover {
+  border: 2px solid #0f4c82;
+}
+
+.solicitations-executing-container .status-bar .group-dates input:focus {
+  border: 2px solid #0f4c82;
+}
+
 .solicitations-executing-container .status-bar .group-dates input[type="date"] {
   color: #000000;
   background: #ffffff;
   padding-right: 0;
+}
+
+.solicitations-executing-container
+  .status-bar
+  .group-dates
+  input[type="date"]::-webkit-calendar-picker-indicator {
+  padding: 1px 1px 1px 8px;
 }
 
 .solicitation-executing-table {

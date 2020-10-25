@@ -94,8 +94,13 @@ export default function Main() {
     loadOsListAll();
 
     const timer = () => {
-      loadOsListAll();
-      console.log("chamou load all");
+      if (!filtered) {
+        loadOsListAll();
+        console.log("chamou load all");
+      } else {
+        loadOsListFiltered();
+        console.log("chamou load filtrado");
+      }
 
       setTimeout(() => {
         timer();
@@ -119,17 +124,6 @@ export default function Main() {
     }
   }
 
-  //#endregion
-
-  //#region Handle Set Start Date
-  function testObjectConsult() {
-    const data = {
-      startDate: getDateOfDatePickerValue(startDate),
-      endDate: getDateOfDatePickerValue(endDate),
-    };
-
-    return data;
-  }
   //#endregion
 
   // #region Alert confirmation
@@ -398,8 +392,8 @@ export default function Main() {
   }
   // #endregion Cancel OS
 
-  // #region Handle Submit
-  function handleSubmit(e) {
+  // #region Handle Submit Cancel Os
+  function handleSubmitCancelOs(e) {
     e.preventDefault();
 
     console.log(idServiceOrder);
@@ -434,7 +428,7 @@ export default function Main() {
       );
     }
   }
-  // #endregion Handle Submit
+  // #endregion Handle Submit Cancel Os
 
   // #region Handle Open Modal Search client
   const handleOpenModalCancelOs = (idServiceOrder, idSituationServiceOrder) => {
@@ -605,7 +599,7 @@ export default function Main() {
             </h1>
             <div className="modal-content">
               <section className="form">
-                <form onSubmit={handleSubmit}>
+                <form onSubmit={handleSubmitCancelOs}>
                   <div className="input-group">
                     <div className="row">
                       <div className="column" id="columnIdServiceOrder">
@@ -783,6 +777,7 @@ export default function Main() {
                     </button>
                   </Link>
                 </div>
+
                 <div className="group-dates">
                   <div className="row">
                     <div className="column">

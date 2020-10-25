@@ -164,15 +164,6 @@
   .group-filters
   input[type="date"]::-webkit-calendar-picker-indicator {
   padding: 1px 1px 1px 8px;
-
-  background: url(../../assets/calendarDateBlack.svg) no-repeat;
-}
-
-.reports-osFinished-container
-  .status-bar
-  .group-filters
-  input[type="date"]::-webkit-calendar-picker-indicator:hover {
-  background: url(../../assets/calendarDateBlue.svg) no-repeat;
 }
 
 .reports-osFinished-table {

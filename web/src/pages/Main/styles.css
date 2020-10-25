@@ -78,7 +78,7 @@
 }
 
 .solicitations-waiting-container .status-bar .group-dates button#filterDate {
-  margin-left: 5px;
+  margin-left: 10px;
 }
 
 .solicitations-waiting-container .status-bar .group-dates button {
@@ -107,10 +107,25 @@
   padding-left: 5px;
 }
 
+.solicitations-waiting-container .status-bar .group-dates input:hover {
+  border: 2px solid #0f4c82;
+}
+
+.solicitations-waiting-container .status-bar .group-dates input:focus {
+  border: 2px solid #0f4c82;
+}
+
 .solicitations-waiting-container .status-bar .group-dates input[type="date"] {
   color: #000000;
   background: #ffffff;
   padding-right: 0;
+}
+
+.solicitations-waiting-container
+  .status-bar
+  .group-dates
+  input[type="date"]::-webkit-calendar-picker-indicator {
+  padding: 1px 1px 1px 8px;
 }
 
 .solicitation-waiting-table {
@@ -185,4 +200,8 @@
 
 .solicitation-waiting-table table tr td button {
   border-radius: 4px;
+}
+
+.modal-content section.form form .column#columnIdServiceOrder {
+  width: 21.05%;
 }

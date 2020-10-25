@@ -185,12 +185,7 @@ module.exports = {
         });
       }
 
-      return res.json({
-        situations,
-        arraySituationsString,
-        arraySituationsInt,
-        serviceOrders,
-      });
+      return res.json(serviceOrders);
     } catch (error) {
       console.log(error);
     }
@@ -294,12 +289,7 @@ module.exports = {
         });
       }
 
-      return res.json({
-        situations,
-        arraySituationsString,
-        arraySituationsInt,
-        serviceOrders,
-      });
+      return res.json(serviceOrders);
     } catch (error) {
       console.log(error);
     }
@@ -403,12 +393,7 @@ module.exports = {
         });
       }
 
-      return res.json({
-        situations,
-        arraySituationsString,
-        arraySituationsInt,
-        serviceOrders,
-      });
+      return res.json(serviceOrders);
     } catch (error) {
       console.log(error);
     }
@@ -512,12 +497,7 @@ module.exports = {
         });
       }
 
-      return res.json({
-        situations,
-        arraySituationsString,
-        arraySituationsInt,
-        serviceOrders,
-      });
+      return res.json(serviceOrders);
     } catch (error) {
       console.log(error);
     }

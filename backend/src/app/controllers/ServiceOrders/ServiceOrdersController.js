@@ -311,7 +311,7 @@ module.exports = {
       });
 
       return res.json({
-        message: `Ordem de serviço ${serviceOrders.id} cancelada com sucesso!`,
+        message: `Ordem de serviço ${serviceOrder.id} cancelada com sucesso!`,
       });
     } catch (error) {
       console.log(error);

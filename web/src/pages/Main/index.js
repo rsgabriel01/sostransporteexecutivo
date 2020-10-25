@@ -451,6 +451,11 @@ export default function Main() {
     setSearchClient("");
     clearFieldsCancelOs();
     setOpenModalCancelOs(false);
+    if (filtered) {
+      loadOsListFiltered();
+    } else {
+      loadOsListAll();
+    }
   };
   // #endregion
 
@@ -777,10 +782,11 @@ export default function Main() {
                       <input
                         type="date"
                         id="startDate"
+                        readOnly={filtered}
+                        value={startDate}
                         onChange={(e) => {
                           setStartDate(e.target.value);
                         }}
-                        value={startDate}
                       />
                     </div>
                     <div className="column">
@@ -788,10 +794,11 @@ export default function Main() {
                       <input
                         type="date"
                         id="endDate"
+                        readOnly={filtered}
+                        value={endDate}
                         onChange={(e) => {
                           setEndDate(e.target.value);
                         }}
-                        value={endDate}
                       />
                     </div>
                   </div>

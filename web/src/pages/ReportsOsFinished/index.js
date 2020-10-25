@@ -96,8 +96,8 @@ export default function Main() {
   function clearFields() {
     setIdClient("");
     setFantasyName("");
-    setStartDate(getDateForDatePickerWithClassDate(date));
-    setEndDate(getDateForDatePickerWithClassDate(date));
+    // setStartDate(getDateForDatePickerWithClassDate(date));
+    // setEndDate(getDateForDatePickerWithClassDate(date));
     setTotalCountOs("0");
     setTotalValue("00");
   }
@@ -187,6 +187,10 @@ export default function Main() {
       );
 
       if (response) {
+        console.log(response.data.serviceOrders);
+        console.log(response.data.monthlyData.totalValue);
+        console.log(response.data.monthlyData.totalAmount);
+
         setGeneratedReport(true);
         setReportOsList(response.data.serviceOrders);
         setTotalValue(response.data.monthlyData.totalValue);
@@ -669,15 +673,7 @@ export default function Main() {
                               R${" "}
                               {os.id_status == 98
                                 ? os.cancellation_fee
-                                : os.client_origin &&
-                                  !os.client_destiny &&
-                                  os.id_status == 8
-                                ? os.Neighborhood_destiny.Travel_fee.value
-                                : !os.client_origin &&
-                                  os.client_destiny &&
-                                  os.id_status == 8
-                                ? os.Neighborhood_origin.Travel_fee.value
-                                : "Erro"}
+                                : os.travel_value}
                               ,00
                             </td>
                           </tr>

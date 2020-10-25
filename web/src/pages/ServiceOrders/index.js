@@ -268,6 +268,18 @@ export default function ServiceOrdersRequest() {
         ? setNumberPassengers(numberPassengers)
         : setNumberPassengers("");
 
+      if (response.id_status === "98" && response.id_status !== 98) {
+        response.cancellation_fee
+          ? setTotalValue(`R$ ${response.cancellation_fee},00`)
+          : setTotalValue("");
+      } else if (response.id_status === "99" && response.id_status !== 99) {
+        setTotalValue("");
+      } else {
+        response.travel_value
+          ? setTotalValue(`R$ ${response.travel_value},00`)
+          : setTotalValue("");
+      }
+
       const observationService = response.observation_service;
       observationService
         ? setObservationService(observationService)
@@ -363,47 +375,6 @@ export default function ServiceOrdersRequest() {
       neighborhoodDestiny
         ? setNeighborhoodDestiny(neighborhoodDestiny)
         : setNeighborhoodDestiny("");
-    }
-
-    if (
-      response.Neighborhood_origin.Travel_fee &&
-      response.Neighborhood_destiny.Travel_fee
-    ) {
-      if (response.id_status === "98" && response.id_status !== 98) {
-        setTotalValue(`R$ ${response.cancellation_fee},00`);
-      } else if (response.id_status === "99" && response.id_status !== 99) {
-        setTotalValue("");
-      } else {
-        if (response.client_origin && !response.client_destiny) {
-          if (
-            response.id_neighborhood_destiny === response.id_neighborhood_origin
-          ) {
-            const totalValue = response.Neighborhood_destiny.Travel_fee.value;
-            totalValue
-              ? setTotalValue(`R$ ${totalValue / 2},00`)
-              : setTotalValue("");
-          } else {
-            const totalValue = response.Neighborhood_destiny.Travel_fee.value;
-            totalValue
-              ? setTotalValue(`R$ ${totalValue},00`)
-              : setTotalValue("");
-          }
-        } else if (!response.client_origin && response.client_destiny) {
-          if (
-            response.id_neighborhood_origin === response.id_neighborhood_destiny
-          ) {
-            const totalValue = response.Neighborhood_origin.Travel_fee.value;
-            totalValue
-              ? setTotalValue(`R$ ${totalValue / 2},00`)
-              : setTotalValue("");
-          } else {
-            const totalValue = response.Neighborhood_origin.Travel_fee.value;
-            totalValue
-              ? setTotalValue(`R$ ${totalValue},00`)
-              : setTotalValue("");
-          }
-        }
-      }
     }
   }
   // #endregion Fill Fields

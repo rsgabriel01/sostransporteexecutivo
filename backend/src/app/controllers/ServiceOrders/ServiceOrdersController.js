@@ -227,6 +227,7 @@ module.exports = {
     try {
       const { idServiceOrder } = req.params;
       const { observationCancellation } = req.body;
+      const { id_executingperson } = req.headers;
 
       console.log(req.body);
 
@@ -236,6 +237,7 @@ module.exports = {
         observation_cancellation: observationCancellation,
         id_status: 99,
         date_time_cancellation: moment().format(),
+        id_user_cancellation: id_executingperson,
       };
 
       const serviceOrder = await Service_orders.findOne({
@@ -299,11 +301,13 @@ module.exports = {
     try {
       const { idServiceOrder } = req.params;
       const { observationCancellation } = req.body;
+      const { id_executingperson } = req.headers;
 
       let columnsCancellation = {
         observation_cancellation: observationCancellation,
         id_status: 99,
         date_time_cancellation: moment().format(),
+        id_user_cancellation: id_executingperson,
       };
 
       const serviceOrder = await Service_orders.findOne({

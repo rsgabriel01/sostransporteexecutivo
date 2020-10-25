@@ -42,6 +42,7 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.STRING,
         defaultValue: null,
       } /**/,
+      id_user_cancellation: { type: DataTypes.BIGINT, defaultValue: null },
       observation_cancellation: {
         type: DataTypes.STRING,
         defaultValue: null,
@@ -118,11 +119,11 @@ module.exports = (sequelize, DataTypes) => {
     });
     Service_orders.belongsTo(models.People, {
       foreignKey: "id_user_solicitation",
-      as: "User_solicitation",
+      as: "UserSolicitation",
     });
     Service_orders.belongsTo(models.People, {
       foreignKey: "id_user_attendance",
-      as: "User_attendance",
+      as: "UserAttendance",
     });
     Service_orders.belongsTo(models.People, {
       foreignKey: "id_driver",
@@ -146,7 +147,11 @@ module.exports = (sequelize, DataTypes) => {
     });
     Service_orders.belongsTo(models.People, {
       foreignKey: "id_user_completion",
-      as: "User_completion",
+      as: "UserCompletion",
+    });
+    Service_orders.belongsTo(models.People, {
+      foreignKey: "id_user_cancellation",
+      as: "UserCancellation",
     });
   };
 

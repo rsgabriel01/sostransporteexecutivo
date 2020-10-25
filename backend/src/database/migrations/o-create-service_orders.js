@@ -155,6 +155,14 @@ module.exports = {
           allowNull: true,
           type: DataTypes.STRING,
         },
+        id_user_cancellation: {
+          allowNull: true,
+          type: DataTypes.BIGINT,
+          references: {
+            model: "People",
+            key: "id",
+          },
+        },
         observation_cancellation: {
           allowNull: true,
           type: DataTypes.STRING,

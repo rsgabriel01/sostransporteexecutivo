@@ -3,38 +3,38 @@ const express = require("express");
 const routes = express.Router();
 
 // #region Controllers
-const PersonController = require("./controllers/PersonController");
-const PeopleLikeNameController = require("./controllers/PeopleLikeNameController");
+const PersonController = require("./controllers/People/Person/PersonController");
+const PeopleLikeNameController = require("./controllers/People/PeopleLikeNameController");
 
-const clientController = require("./controllers/ClientController");
-const clientLikeNameFantasyController = require("./controllers/ClientLikeNameFantasyController");
+const clientController = require("./controllers/People/Clients/ClientController");
+const clientLikeNameFantasyController = require("./controllers/People/Clients/ClientLikeNameFantasyController");
 
-const DriverController = require("./controllers/DriverController");
-const DriversLikeNameController = require("./controllers/DriversLikeNameController");
+const DriverController = require("./controllers/People/Drivers/DriverController");
+const DriversLikeNameController = require("./controllers/People/Drivers/DriversLikeNameController");
 
-const TypePeopleController = require("./controllers/TypePeopleController");
+const TypePeopleController = require("./controllers/TypePeople/TypePeopleController");
 
-const PeopleAddressController = require("./controllers/PeopleAddressController");
+const PeopleAddressController = require("./controllers/PeopleAddress/PeopleAddressController");
 
-const UsersController = require("./controllers/UsersController");
+const UsersController = require("./controllers/Users/UsersController");
 
-const SessionsController = require("./controllers/SessionsController");
+const SessionsController = require("./controllers/Sessions/SessionsController");
 
-const NeighborhoodsController = require("./controllers/NeighborhoodsController");
-const NeighborhoodsLikeNameController = require("./controllers/NeighborhoodsLikeNameController");
+const NeighborhoodsController = require("./controllers/Neighborhoods/NeighborhoodsController");
+const NeighborhoodsLikeNameController = require("./controllers/Neighborhoods/NeighborhoodsLikeNameController");
 
-const TravelFeeController = require("./controllers/TravelFeeController");
+const TravelFeeController = require("./controllers/TravelFee/TravelFeeController");
 
-const ServiceOrdersController = require("./controllers/ServiceOrdersController");
-const ServiceOrdersIndexController = require("./controllers/ServiceOrdersIndexController");
-const ServiceOrdersUpdatesController = require("./controllers/ServiceOrdersUpdatesController");
+const ServiceOrdersController = require("./controllers/ServiceOrders/ServiceOrdersController");
+const ServiceOrdersIndexController = require("./controllers/ServiceOrders/ServiceOrdersIndexController");
+const ServiceOrdersUpdatesController = require("./controllers/ServiceOrders/ServiceOrdersUpdatesController");
 
-const VehicleModelsLikeDescriptionController = require("./controllers/VehicleModelsLikeDescriptionController");
+const VehicleModelsLikeDescriptionController = require("./controllers/VehicleModels/VehicleModelsLikeDescriptionController");
 
-const VehicleController = require("./controllers/VehicleController");
-const VehiclesLikeModelController = require("./controllers/VehiclesLikeModelController");
+const VehicleController = require("./controllers/Vehicles/VehicleController");
+const VehiclesLikeModelController = require("./controllers/Vehicles/VehiclesLikeModelController");
 
-const ReportsServiceOrdersController = require("./controllers/ReportsServiceOrdersController");
+const ReportsServiceOrdersController = require("./controllers/Reports/ReportsServiceOrdersController");
 // #endregion
 
 // #region Validators

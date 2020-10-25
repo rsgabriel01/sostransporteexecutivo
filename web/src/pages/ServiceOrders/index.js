@@ -137,6 +137,7 @@ export default function ServiceOrdersRequest() {
   const [dateTimeSolicitation, setDateTimeSolicitation] = useState(""); /** */
   const [dateTimeAttendance, setDateTimeAttendance] = useState(""); /** */
   const [dateTimeCompletion, setDateTimeCompletion] = useState(""); /** */
+  const [dateTimeCancellation, setDateTimeCancellation] = useState(""); /** */
 
   const [totalValue, setTotalValue] = useState(""); /** */
   const [cancellationFee, setCancellationFee] = useState(""); /** */
@@ -328,6 +329,15 @@ export default function ServiceOrdersRequest() {
             )} ${dateTimeCompletion.substring(10)}`
           )
         : setDateTimeCompletion("");
+
+      const dateTimeCancellation = response.date_time_cancellation;
+      dateTimeCancellation
+        ? setDateTimeCancellation(
+            `${getDateOfDatePickerValue(
+              dateTimeCancellation.substring(0, 10)
+            )} ${dateTimeCancellation.substring(10)}`
+          )
+        : setDateTimeCancellation("");
 
       const cancellationFee = response.cancellation_fee;
       cancellationFee
@@ -1341,6 +1351,7 @@ export default function ServiceOrdersRequest() {
         setDateTimeSolicitation(""); /** */
         setDateTimeAttendance(""); /** */
         setDateTimeCompletion(""); /** */
+        setDateTimeCancellation(""); /** */
 
         setTotalValue(""); /** */
         setCancellationFee(""); /** */
@@ -1402,6 +1413,7 @@ export default function ServiceOrdersRequest() {
         setDateTimeSolicitation(""); /** */
         setDateTimeAttendance(""); /** */
         setDateTimeCompletion(""); /** */
+        setDateTimeCancellation(""); /** */
 
         setTotalValue(""); /** */
         setCancellationFee(""); /** */
@@ -3161,6 +3173,23 @@ export default function ServiceOrdersRequest() {
                           value={dateTimeCompletion}
                           onChange={(e) => {
                             setDateTimeCompletion(e.target.value);
+                          }}
+                        />
+                      </div>
+
+                      <div className="input-label-block-column">
+                        <label htmlFor="dateTimeCancellation">
+                          Cancelamento:
+                        </label>
+
+                        <input
+                          id="dateTimeCancellation"
+                          type="text"
+                          placeholder="00/00/00 00:00:00"
+                          readOnly
+                          value={dateTimeCancellation}
+                          onChange={(e) => {
+                            setDateTimeCancellation(e.target.value);
                           }}
                         />
                       </div>

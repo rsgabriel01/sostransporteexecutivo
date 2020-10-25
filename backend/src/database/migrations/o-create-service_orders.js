@@ -163,6 +163,10 @@ module.exports = {
           allowNull: true,
           type: DataTypes.REAL,
         },
+        date_time_cancellation: {
+          allowNull: true,
+          type: DataTypes.DATE,
+        },
       },
       {
         tableName: "Service_orders",

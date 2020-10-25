@@ -312,9 +312,17 @@ export default function Main() {
     setBtnInactive("btnInactive");
 
     try {
-      const response = await api.delete(
-        `/serviceOrder/withFee/${idServiceOrder}`,
-        { observationCancellation: observationCancellation }
+      console.log(observationCancellation);
+
+      const cancelData = {
+        observationCancellation,
+      };
+
+      console.log(cancelData);
+
+      const response = await api.put(
+        `/serviceOrder/cancellation/noFee/${idServiceOrder}`,
+        cancelData
       );
 
       if (response) {

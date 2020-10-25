@@ -225,6 +225,70 @@ module.exports = {
 
   async destroyNoFee(req, res) {
     try {
+      const { idServiceOrder } = req.params;
+      const { observationCancellation } = req.body;
+
+      console.log(req.body);
+
+      console.log(observationCancellation);
+
+      let columnsCancellation = {
+        observation_cancellation: observationCancellation,
+        id_status: 99,
+        date_time_cancellation: moment().format(),
+      };
+
+      const serviceOrder = await Service_orders.findOne({
+        where: {
+          id: idServiceOrder,
+        },
+        include: [
+          {
+            model: Neighborhoods,
+            as: "Neighborhood_origin",
+            include: ["Travel_fee"],
+          },
+          {
+            model: Neighborhoods,
+            as: "Neighborhood_destiny",
+            include: ["Travel_fee"],
+          },
+        ],
+      });
+
+      if (!serviceOrder) {
+        return res.status(400).json({
+          message:
+            "Não foi encontrado ordem de serviço com o código fornecido, por favor verifique.",
+        });
+      }
+
+      if (serviceOrder.id_status > 4) {
+        return res.status(400).json({
+          message:
+            "Não foi cancelar essa ordem de serviço, a mesma não está em situação apta de cancelamento, por favor verifique.",
+        });
+      }
+
+      if (serviceOrder.id_status === 4 || serviceOrder.id_status === "4") {
+        return res.status(400).json({
+          message:
+            "Não foi cancelar essa ordem de serviço, a mesma está na situação: MOTORISTA A CAMINHO DO ENDEREÇO DE ORIGEM, cancelamentos para esse tipo de situação devem ser efetuados em outra rota, por favor verifique.",
+        });
+      }
+
+      console.log(serviceOrder.id_status);
+      console.log(columnsCancellation);
+
+      await Service_orders.update(columnsCancellation, {
+        where: {
+          id: idServiceOrder,
+        },
+      });
+
+      return res.json({
+        message: `Ordem de serviço ${serviceOrder.id} cancelada com sucesso!`,
+      });
     } catch (error) {
       console.log(error);
       return res.status(500).json(error);
@@ -239,6 +303,7 @@ module.exports = {
       let columnsCancellation = {
         observation_cancellation: observationCancellation,
         id_status: 99,
+        date_time_cancellation: moment().format(),
       };
 
       const serviceOrder = await Service_orders.findOne({

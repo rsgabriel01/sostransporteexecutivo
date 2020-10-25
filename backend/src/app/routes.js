@@ -431,16 +431,16 @@ routes.put(
   ServiceOrdersUpdatesController.updateSituation7and8
 );
 
-routes.delete(
-  "/serviceOrder/noFee/:idServiceOrder",
+routes.put(
+  "/serviceOrder/cancellation/noFee/:idServiceOrder",
   // validatorOsUpdateSituation7and8,
   verifySession,
   permissionAdminAttendance,
   ServiceOrdersController.destroyNoFee
 );
 
-routes.delete(
-  "/serviceOrder/withFee/:idServiceOrder",
+routes.put(
+  "/serviceOrder/cancellation/withFee/:idServiceOrder",
   // validatorOsUpdateSituation7and8,
   verifySession,
   permissionAdminAttendance,

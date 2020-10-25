@@ -47,6 +47,7 @@ module.exports = (sequelize, DataTypes) => {
         defaultValue: null,
       } /** */,
       cancellation_fee: { type: DataTypes.REAL, defaultValue: null } /** */,
+      date_time_cancellation: { type: DataTypes.DATE, defaultValue: null },
     },
     {
       tableName: "Service_orders",
@@ -95,9 +96,9 @@ module.exports = (sequelize, DataTypes) => {
       values.date_time_execution = secondUpdateDateToLocalFormat;
     }
 
-    if (values.date_time_completion) {
+    if (values.date_time_cancellation) {
       const originalDateBD = moment
-        .utc(values.date_time_completion)
+        .utc(values.date_time_cancellation)
         .local()
         .format();
       const fistUpdateDateToLocalFormat = originalDateBD.replace("T", " ");
@@ -105,7 +106,7 @@ module.exports = (sequelize, DataTypes) => {
         "-03:00",
         ""
       );
-      values.date_time_completion = secondUpdateDateToLocalFormat;
+      values.date_time_cancellation = secondUpdateDateToLocalFormat;
     }
     return values;
   };

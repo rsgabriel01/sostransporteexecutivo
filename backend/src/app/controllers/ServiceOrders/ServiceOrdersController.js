@@ -6,6 +6,7 @@ const {
   Neighborhoods,
   Type_people,
   Types,
+  People_address,
 } = require("../../models");
 
 const { Op, fn, col, literal, QueryTypes, Sequelize } = require("sequelize");
@@ -112,6 +113,8 @@ module.exports = {
         observationService,
       } = req.body;
 
+      let travelValue;
+
       const { id_executingperson } = req.headers;
 
       const clientFinded = await People.findOne({
@@ -121,7 +124,20 @@ module.exports = {
           "$People_Type.Type_people.id_type$": 4,
           "$People_Type.Type_people.active$": true,
         },
-        include: ["People_Type"],
+        include: [
+          "People_Type",
+          {
+            model: People_address,
+            as: "People_address",
+            include: [
+              {
+                model: Neighborhoods,
+                as: "Neighborhood",
+                include: ["Travel_fee"],
+              },
+            ],
+          },
+        ],
       });
 
       if (!clientFinded) {
@@ -135,6 +151,7 @@ module.exports = {
         where: {
           id: idNeighborhoodOrigin,
         },
+        include: ["Travel_fee"],
       });
 
       if (!neighborhoodOriginFinded) {
@@ -148,6 +165,7 @@ module.exports = {
         where: {
           id: idNeighborhoodDestiny,
         },
+        include: ["Travel_fee"],
       });
 
       if (!neighborhoodDestinyFinded) {
@@ -155,6 +173,20 @@ module.exports = {
           message:
             "O bairro de destino informado não foi encontrado em nossa base de dados, por favor verifique.",
         });
+      }
+
+      if (clientOrigin && !clientDestiny) {
+        if (idNeighborhoodDestiny === idNeighborhoodOrigin) {
+          travelValue = neighborhoodDestinyFinded.Travel_fee.value / 2;
+        } else {
+          travelValue = neighborhoodDestinyFinded.Travel_fee.value;
+        }
+      } else if (!clientOrigin && clientDestiny) {
+        if (idNeighborhoodOrigin === idNeighborhoodDestiny) {
+          travelValue = neighborhoodOriginFinded.Travel_fee.value / 2;
+        } else {
+          travelValue = neighborhoodOriginFinded.Travel_fee.value;
+        }
       }
 
       const createdOs = await Service_orders.create({
@@ -175,6 +207,7 @@ module.exports = {
         passenger_name: passengerName.toUpperCase(),
         passenger_phone: passengerPhone,
         number_passengers: numberPassengers,
+        travel_value: travelValue,
         observation_service: observationService.toUpperCase(),
       });
 
@@ -184,6 +217,102 @@ module.exports = {
           message: `Cadastro de ordem de serviço efetuado com sucesso! Código: ${createdOs.id}`,
         });
       }
+    } catch (error) {
+      console.log(error);
+      return res.status(500).json(error);
+    }
+  },
+
+  async destroyNoFee(req, res) {
+    try {
+    } catch (error) {
+      console.log(error);
+      return res.status(500).json(error);
+    }
+  },
+
+  async destroyWithFee(req, res) {
+    try {
+      const { idServiceOrder } = req.params;
+      const { observationCancellation } = req.body;
+
+      let columnsCancellation = {
+        observation_cancellation: observationCancellation,
+        id_status: 99,
+      };
+
+      const serviceOrder = await Service_orders.findOne({
+        where: {
+          id: idServiceOrder,
+        },
+        include: [
+          {
+            model: Neighborhoods,
+            as: "Neighborhood_origin",
+            include: ["Travel_fee"],
+          },
+          {
+            model: Neighborhoods,
+            as: "Neighborhood_destiny",
+            include: ["Travel_fee"],
+          },
+        ],
+      });
+
+      if (!serviceOrder) {
+        return res.status(400).json({
+          message:
+            "Não foi encontrado ordem de serviço com o código fornecido, por favor verifique.",
+        });
+      }
+
+      if (serviceOrder.id_status > 4) {
+        return res.status(400).json({
+          message:
+            "Não foi cancelar essa ordem de serviço, a mesma não está em situação apta de cancelamento, por favor verifique.",
+        });
+      }
+
+      if (serviceOrder.id_status === 4 || serviceOrder.id_status === "4") {
+        columnsCancellation.id_status = 98;
+
+        if (serviceOrder.client_origin && !serviceOrder.client_destiny) {
+          if (
+            serviceOrder.id_neighborhood_destiny ===
+            serviceOrder.id_neighborhood_origin
+          ) {
+            columnsCancellation["cancellation_fee"] =
+              serviceOrder.Neighborhood_destiny.Travel_fee.value / 2 / 2;
+          } else {
+            columnsCancellation["cancellation_fee"] =
+              serviceOrder.Neighborhood_destiny.Travel_fee.value / 2;
+          }
+        } else if (!serviceOrder.client_origin && serviceOrder.client_destiny) {
+          if (
+            serviceOrder.id_neighborhood_origin ===
+            serviceOrder.id_neighborhood_destiny
+          ) {
+            columnsCancellation["cancellation_fee"] =
+              serviceOrder.Neighborhood_origin.Travel_fee.value / 2 / 2;
+          } else {
+            columnsCancellation["cancellation_fee"] =
+              serviceOrder.Neighborhood_origin.Travel_fee.value / 2;
+          }
+        }
+      }
+
+      console.log(serviceOrder.id_status);
+      console.log(columnsCancellation);
+
+      await Service_orders.update(columnsCancellation, {
+        where: {
+          id: idServiceOrder,
+        },
+      });
+
+      return res.json({
+        message: `Ordem de serviço ${serviceOrders.id} cancelada com sucesso!`,
+      });
     } catch (error) {
       console.log(error);
       return res.status(500).json(error);

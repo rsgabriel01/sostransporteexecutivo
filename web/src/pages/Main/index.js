@@ -313,7 +313,8 @@ export default function Main() {
 
     try {
       const response = await api.delete(
-        `/serviceOrder/noFee/${idServiceOrder}`
+        `/serviceOrder/withFee/${idServiceOrder}`,
+        { observationCancellation: observationCancellation }
       );
 
       if (response) {

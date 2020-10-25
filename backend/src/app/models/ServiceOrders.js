@@ -30,6 +30,7 @@ module.exports = (sequelize, DataTypes) => {
       client_destiny: DataTypes.BOOLEAN,
       passenger_name: DataTypes.STRING,
       passenger_phone: DataTypes.STRING,
+      travel_value: DataTypes.REAL,
       number_passengers: { type: DataTypes.BIGINT, defaultValue: 1 },
       date_time_completion: { type: DataTypes.DATE, defaultValue: null } /** */,
       id_user_completion: { type: DataTypes.BIGINT, defaultValue: null },

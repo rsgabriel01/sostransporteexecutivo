@@ -131,6 +131,10 @@ module.exports = {
           allowNull: false,
           type: DataTypes.BIGINT,
         },
+        travel_value: {
+          allowNull: false,
+          type: DataTypes.REAL,
+        },
         date_time_completion: {
           allowNull: true,
           type: DataTypes.DATE,

@@ -369,12 +369,40 @@ export default function ServiceOrdersRequest() {
       response.Neighborhood_origin.Travel_fee &&
       response.Neighborhood_destiny.Travel_fee
     ) {
-      if (response.client_origin && !response.client_destiny) {
-        const totalValue = response.Neighborhood_destiny.Travel_fee.value;
-        totalValue ? setTotalValue(`R$ ${totalValue},00`) : setTotalValue("");
-      } else if (!response.client_origin && response.client_destiny) {
-        const totalValue = response.Neighborhood_origin.Travel_fee.value;
-        totalValue ? setTotalValue(`R$ ${totalValue},00`) : setTotalValue("");
+      if (response.id_status === "98" && response.id_status !== 98) {
+        setTotalValue(`R$ ${response.cancellation_fee},00`);
+      } else if (response.id_status === "99" && response.id_status !== 99) {
+        setTotalValue("");
+      } else {
+        if (response.client_origin && !response.client_destiny) {
+          if (
+            response.id_neighborhood_destiny === response.id_neighborhood_origin
+          ) {
+            const totalValue = response.Neighborhood_destiny.Travel_fee.value;
+            totalValue
+              ? setTotalValue(`R$ ${totalValue / 2},00`)
+              : setTotalValue("");
+          } else {
+            const totalValue = response.Neighborhood_destiny.Travel_fee.value;
+            totalValue
+              ? setTotalValue(`R$ ${totalValue},00`)
+              : setTotalValue("");
+          }
+        } else if (!response.client_origin && response.client_destiny) {
+          if (
+            response.id_neighborhood_origin === response.id_neighborhood_destiny
+          ) {
+            const totalValue = response.Neighborhood_origin.Travel_fee.value;
+            totalValue
+              ? setTotalValue(`R$ ${totalValue / 2},00`)
+              : setTotalValue("");
+          } else {
+            const totalValue = response.Neighborhood_origin.Travel_fee.value;
+            totalValue
+              ? setTotalValue(`R$ ${totalValue},00`)
+              : setTotalValue("");
+          }
+        }
       }
     }
   }

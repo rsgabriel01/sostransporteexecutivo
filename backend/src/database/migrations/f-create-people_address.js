@@ -33,7 +33,7 @@ module.exports = {
         },
         street_number: {
           allowNull: false,
-          type: DataTypes.BIGINT,
+          type: DataTypes.STRING,
         },
         complement: {
           allowNull: true,

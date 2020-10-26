@@ -56,7 +56,7 @@ module.exports = {
               include: ["Travel_fee"],
             },
           ],
-          order: [["id", "ASC"]],
+          order: [["id", "DESC"]],
         });
       } else {
         serviceOrders = await Service_orders.findAll({
@@ -91,7 +91,7 @@ module.exports = {
               include: ["Travel_fee"],
             },
           ],
-          order: [["id", "ASC"]],
+          order: [["id", "DESC"]],
         });
       }
 
@@ -456,7 +456,7 @@ module.exports = {
                 include: ["Travel_fee"],
               },
             ],
-            order: [["id", "ASC"]],
+            order: [["id", "DESC"]],
           });
         } else {
           serviceOrders = await Service_orders.findAll({
@@ -493,7 +493,7 @@ module.exports = {
                 include: ["Travel_fee"],
               },
             ],
-            order: [["id", "ASC"]],
+            order: [["id", "DESC"]],
           });
         }
       } else {

@@ -13,7 +13,7 @@ module.exports = {
             [Op.like]: `${vehicleModel.toUpperCase()}%`,
           },
         },
-        include: ["VehicleModel"],
+        include: ["VehicleModel", "People"],
         order: [["id", "ASC"]],
       });
 
@@ -34,7 +34,7 @@ module.exports = {
           },
           active: true,
         },
-        include: ["VehicleModel"],
+        include: ["VehicleModel", "People"],
         order: [["id", "ASC"]],
       });
 
@@ -55,7 +55,7 @@ module.exports = {
           },
           active: false,
         },
-        include: ["VehicleModel"],
+        include: ["VehicleModel", "People"],
         order: [["id", "ASC"]],
       });
 

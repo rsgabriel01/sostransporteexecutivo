@@ -2770,8 +2770,7 @@ export default function ServiceOrdersRequest() {
                           <label htmlFor="street_number">Número:</label>
                           <input
                             className="input-number"
-                            type="number"
-                            min="0"
+                            type="text"
                             autoComplete="cc-csc"
                             value={streetNumberOrigin}
                             readOnly={isReadOnlyOrigin}
@@ -2873,8 +2872,7 @@ export default function ServiceOrdersRequest() {
                         <div className="input-block">
                           <label htmlFor="street_number">Número:</label>
                           <input
-                            type="number"
-                            min="0"
+                            type="text"
                             autoComplete="cc-csc"
                             value={streetNumberDestiny}
                             readOnly={isReadOnlyDestiny}

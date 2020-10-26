@@ -349,7 +349,7 @@ export default function Vehicles(props) {
 
   //#endregion Focus Fields
 
-  // #region Handle Search Person
+  // #region Handle Search Vehicle
   function handleSearchVehicle(idVehicle) {
     if (idVehicle && !updateRegister) {
       loadDataVehicle(idVehicle);

@@ -85,7 +85,7 @@ module.exports = {
         },
         street_number_origin: {
           allowNull: false,
-          type: DataTypes.BIGINT,
+          type: DataTypes.STRING,
         },
         complement_origin: {
           allowNull: true,
@@ -109,7 +109,7 @@ module.exports = {
         },
         street_number_destiny: {
           allowNull: false,
-          type: DataTypes.BIGINT,
+          type: DataTypes.STRING,
         },
         complement_destiny: {
           allowNull: true,

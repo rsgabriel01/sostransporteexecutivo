@@ -12,7 +12,7 @@ module.exports = (sequelize, DataTypes) => {
       id_people: DataTypes.BIGINT,
       id_neighborhood: DataTypes.BIGINT,
       street: DataTypes.STRING,
-      street_number: DataTypes.BIGINT,
+      street_number: DataTypes.STRING,
       complement: DataTypes.STRING,
     },
     {

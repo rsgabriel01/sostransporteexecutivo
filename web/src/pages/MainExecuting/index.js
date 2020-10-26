@@ -494,7 +494,7 @@ export default function MainExecuting() {
 
     try {
       const response = await api.put(
-        `/orderService/completion/${idServiceOrder}`,
+        `/serviceOrder/completion/${idServiceOrder}`,
         {}
       );
 

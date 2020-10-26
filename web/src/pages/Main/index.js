@@ -24,6 +24,9 @@ import {
   RiLoader4Line,
   RiArrowLeftLine,
   RiRefreshLine,
+  RiCarLine,
+  RiArrowRightCircleLine,
+  RiFileListLine,
 } from "react-icons/ri";
 
 import LateralMenu from "../components/LateralMenu/LateralMenu";
@@ -86,8 +89,14 @@ export default function Main() {
   const [titleIconModal, setTitleIconModal] = useState();
 
   const [openModalCancelOs, setOpenModalCancelOs] = useState(false);
-  const [searchClient, setSearchClient] = useState("");
-  const [searchClientList, setSearchClientList] = useState([]);
+
+  const [openModalAnswerOs, setOpenModalAnswerOs] = useState(false);
+  const [idVehicleAttendance, setIdVehicleAttendance] = useState("");
+  const [plateVehicleAttendance, setPlateVehicleAttendance] = useState("");
+  const [modelVehicleAttendance, setModelVehicleAttendance] = useState("");
+  const [nameDriverAttendance, setNameDriverAttendance] = useState("");
+  const [attendanceDriverList, setAttendanceDriverList] = useState([]);
+
   // #endregion Definitions
 
   //#region Use Effect
@@ -157,7 +166,9 @@ export default function Main() {
                       case "cancelOs":
                         cancelOs();
                         break;
-
+                      case "answerOs":
+                        answerOs();
+                        break;
                       default:
                         break;
                     }
@@ -348,6 +359,68 @@ export default function Main() {
   }
   //#endregion  Load OS List Of Filter
 
+  //#region Fill Fields Cancel OS
+  function fillFieldsCancelOs(response) {
+    if (response) {
+      const idServiceOrder = response.id;
+      idServiceOrder
+        ? setIdServiceOrder(idServiceOrder)
+        : setIdServiceOrder("");
+
+      const idSituationServiceOrder = response.id_status;
+      idSituationServiceOrder
+        ? setIdSituationServiceOrder(idSituationServiceOrder)
+        : setIdSituationServiceOrder("");
+
+      const dateTimeSolicitation = response.date_time_solicitation;
+      dateTimeSolicitation
+        ? setDateTimeSolicitation(
+            `${getDateOfDatePickerValue(
+              dateTimeSolicitation.substring(0, 10)
+            )} ${dateTimeSolicitation.substring(10)}`
+          )
+        : setDateTimeSolicitation("");
+
+      if (response.Neighborhood_origin) {
+        const clientOrigin = response.client_origin;
+        clientOrigin
+          ? setOriginServiceOrder("CLIENTE")
+          : setOriginServiceOrder(response.Neighborhood_origin.name);
+      }
+
+      if (response.Neighborhood_destiny) {
+        const clientOrigin = response.client_destiny;
+        clientOrigin
+          ? setDestinyServiceOrder("CLIENTE")
+          : setDestinyServiceOrder(response.Neighborhood_destiny.name);
+      }
+    }
+
+    if (response.Client) {
+      const nameFantasyClient = response.Client.name_fantasy;
+      nameFantasyClient
+        ? setNameFantasyClient(nameFantasyClient)
+        : setNameFantasyClient("");
+    }
+
+    if (response.Status) {
+      const situation = response.Status.description;
+      situation ? setSituation(situation) : setSituation("");
+    }
+  }
+  //#endregion Fill Fields Cancel OS
+
+  //#region Clear Fields Cancel OS
+  function clearFieldsModalOs() {
+    setIdServiceOrder("");
+    setSituation("");
+    setDateTimeSolicitation("");
+    setOriginServiceOrder("");
+    setDestinyServiceOrder("");
+    setObservationCancellation("");
+  }
+  //#endregion Clear Fields Cancel OS
+
   // #region Cancel OS
   async function cancelOs() {
     setTextButtonSaveUpdate("Aguarde...");
@@ -451,7 +524,7 @@ export default function Main() {
     if (idServiceOrder === "" || idSituationServiceOrder === "") {
       notify(
         "warning",
-        "Os dados de ordem de serviço devem estar preenchidos, por favor verifique."
+        "Os dados da ordem de serviço devem estar preenchidos, por favor verifique."
       );
       return;
     }
@@ -479,103 +552,10 @@ export default function Main() {
   }
   // #endregion Handle Submit Cancel Os
 
-  // #region Handle Open Modal Search client
-  const handleOpenModalCancelOs = (idServiceOrder, idSituationServiceOrder) => {
-    if (idSituationServiceOrder < 1 && idSituationServiceOrder > 4) {
-      notify(
-        "warning",
-        "Essa ordem de serviço não está em uma situação apta a cancelamento."
-      );
-      return;
-    }
-
-    setLoadingModal(true);
-    loadCancelOsData(idServiceOrder);
-
-    setTitleIconModal(<RiCloseCircleLine size={30} />);
-    setTitleModal("CANCELAR ORDEM DE SERVIÇO");
-    setOpenModalCancelOs(true);
-  };
-
-  const handleCloseModalCancelOs = () => {
-    setTitleModal("");
-    setSearchClient("");
-    clearFieldsCancelOs();
-    setOpenModalCancelOs(false);
-    if (filtered) {
-      loadOsListFiltered();
-    } else {
-      loadOsListAll();
-    }
-  };
-  // #endregion
-
-  //#region Fill Fields Cancel OS
-  function fillFieldsCancelOs(response) {
-    if (response) {
-      const idServiceOrder = response.id;
-      idServiceOrder
-        ? setIdServiceOrder(idServiceOrder)
-        : setIdServiceOrder("");
-
-      const idSituationServiceOrder = response.id_status;
-      idSituationServiceOrder
-        ? setIdSituationServiceOrder(idSituationServiceOrder)
-        : setIdSituationServiceOrder("");
-
-      const dateTimeSolicitation = response.date_time_solicitation;
-      dateTimeSolicitation
-        ? setDateTimeSolicitation(
-            `${getDateOfDatePickerValue(
-              dateTimeSolicitation.substring(0, 10)
-            )} ${dateTimeSolicitation.substring(10)}`
-          )
-        : setDateTimeSolicitation("");
-
-      if (response.Neighborhood_origin) {
-        const clientOrigin = response.client_origin;
-        clientOrigin
-          ? setOriginServiceOrder("CLIENTE")
-          : setOriginServiceOrder(response.Neighborhood_origin.name);
-      }
-
-      if (response.Neighborhood_destiny) {
-        const clientOrigin = response.client_destiny;
-        clientOrigin
-          ? setDestinyServiceOrder("CLIENTE")
-          : setDestinyServiceOrder(response.Neighborhood_destiny.name);
-      }
-    }
-
-    if (response.Client) {
-      const nameFantasyClient = response.Client.name_fantasy;
-      nameFantasyClient
-        ? setNameFantasyClient(nameFantasyClient)
-        : setNameFantasyClient("");
-    }
-
-    if (response.Status) {
-      const situation = response.Status.description;
-      situation ? setSituation(situation) : setSituation("");
-    }
-  }
-  //#endregion Fill Fields Cancel OS
-
-  //#region Clear Fields Cancel OS
-  function clearFieldsCancelOs() {
-    setIdServiceOrder("");
-    setSituation("");
-    setDateTimeSolicitation("");
-    setOriginServiceOrder("");
-    setDestinyServiceOrder("");
-    setObservationCancellation("");
-  }
-  //#endregion Clear Fields Cancel OS
-
   // #region Load Cancel OS Data
-  async function loadCancelOsData(idServiceOrder) {
+  async function loadModalOsData(idServiceOrder) {
     try {
-      clearFieldsCancelOs();
+      clearFieldsModalOs();
 
       setLoadingModal(true);
 
@@ -586,6 +566,7 @@ export default function Main() {
 
         setLoadingModal(false);
         fillFieldsCancelOs(response.data);
+        loadDriverAttendanceOsData();
       }
     } catch (error) {
       setLoadingModal(false);
@@ -621,10 +602,268 @@ export default function Main() {
   }
   // #endregion
 
+  // #region Handle Open/close Modal Cancel OS
+  const handleOpenModalCancelOs = (idServiceOrder, idSituationServiceOrder) => {
+    if (idSituationServiceOrder < 1 && idSituationServiceOrder > 4) {
+      notify(
+        "warning",
+        "Essa ordem de serviço não está em uma situação apta à cancelamento, por favor verifique."
+      );
+      return;
+    }
+
+    setLoadingModal(true);
+    loadModalOsData(idServiceOrder);
+
+    setTitleIconModal(<RiCloseCircleLine size={30} />);
+    setTitleModal("CANCELAR ORDEM DE SERVIÇO");
+    setOpenModalCancelOs(true);
+  };
+
+  const handleCloseModalCancelOs = () => {
+    setTitleModal("");
+    clearFieldsModalOs();
+    setOpenModalCancelOs(false);
+    if (filtered) {
+      loadOsListFiltered();
+    } else {
+      loadOsListAll();
+    }
+  };
+  // #endregion Open/close Modal Cancel OS
+
+  //#region Fill Fields Answer OS
+  function fillFieldsDriverAttendanceOs(idDriver) {
+    if (idDriver != "0" && idDriver != 0) {
+      attendanceDriverList.map((driver) => {
+        if (driver.id == idDriver) {
+          setPlateVehicleAttendance(driver.car_plate);
+          setModelVehicleAttendance(driver.VehicleModel.description);
+          setNameDriverAttendance(driver.People.name);
+        }
+      });
+    } else {
+      setPlateVehicleAttendance("");
+      setModelVehicleAttendance("");
+      setNameDriverAttendance("");
+    }
+  }
+  //#endregion Fill Fields Answer OS
+
+  //#region Clear Fields Answer OS
+  function clearFieldsAnswerOs() {
+    setIdVehicleAttendance("");
+    setPlateVehicleAttendance("");
+    setModelVehicleAttendance("");
+    setNameDriverAttendance("");
+  }
+  //#endregion Clear Fields Answer OS
+
+  // #region Answer OS
+  async function answerOs() {
+    setTextButtonSaveUpdate("Aguarde...");
+    setLoadingButton(true);
+    setBtnInactive("btnInactive");
+
+    try {
+      const attendanceData = {
+        idVehicleAttendance,
+      };
+
+      const response = await api.put(
+        `/serviceOrder/attendance/${idServiceOrder}`,
+        attendanceData
+      );
+
+      if (response) {
+        console.log(response.data);
+
+        notify("success", response.data.message);
+
+        setTextButtonSaveUpdate("Salvar");
+        setLoadingButton(false);
+        setBtnInactive("");
+        handleCloseModalAnswerOs();
+      }
+    } catch (error) {
+      setTextButtonSaveUpdate("Salvar");
+      setLoadingButton(false);
+      setBtnInactive("");
+
+      if (error.response) {
+        const dataError = error.response.data;
+        const statusError = error.response.status;
+        console.error(dataError);
+        console.error(statusError);
+
+        if (statusError === 400 && dataError.message) {
+          console.log(dataError.message);
+          switch (dataError.message) {
+            case '"observationUpdate" is required':
+              notify(
+                "warning",
+                "É obrigatorio informar a observação da alteração, por favor verifique."
+              );
+              break;
+
+            default:
+              notify("warning", dataError.message);
+          }
+        }
+
+        if (statusError === 401) {
+          switch (dataError.message) {
+            default:
+              notify("warning", dataError.message);
+          }
+        }
+
+        if (statusError === 404) {
+          notify(
+            "error",
+            "Ooops, a rota dessa requisição não foi encontrada, por favor entre em contato com setor de TI."
+          );
+        }
+
+        if (statusError === 500) {
+          notify(
+            "error",
+            "Ooops, erro interno do servidor, por favor entre em contato com setor de TI."
+          );
+        }
+      } else if (error.request) {
+        notify(
+          "error",
+          `Oops, algo deu errado, entre em contato com o suporte de TI. ${error}`
+        );
+        console.log("Error 1", error.request);
+      } else {
+        notify(
+          "error",
+          `Oops, algo deu errado, entre em contato com o suporte de TI. ${error}`
+        );
+        console.log("Error 2", error.message);
+      }
+    }
+  }
+  // #endregion Answer OS
+
+  // #region Handle Submit Answer Os
+  function handleSubmitAnswerOs(e) {
+    e.preventDefault();
+
+    if (idServiceOrder === "" || idSituationServiceOrder === "") {
+      notify(
+        "warning",
+        "Os dados da ordem de serviço devem estar preenchidos, por favor verifique."
+      );
+      return;
+    }
+
+    if (
+      idVehicleAttendance === "" ||
+      idVehicleAttendance === "0" ||
+      idVehicleAttendance === 0
+    ) {
+      notify(
+        "warning",
+        "Os dados do motorista devem estar preenchidos, por favor verifique."
+      );
+      return;
+    }
+
+    confirmationAlert(
+      "Atenção!",
+      "Todos os dados estão corretos? Podemos ATENDER essa ordem de serviço?",
+      "answerOs"
+    );
+  }
+  // #endregion Handle Submit Answer Os
+
+  // #region Load Driver Attendance Data
+  async function loadDriverAttendanceOsData() {
+    try {
+      setLoadingModal(true);
+
+      const response = await api.get(`/vehicles/active/?vehicleModel=`);
+
+      if (response) {
+        console.log("Driver List");
+        console.log(response.data);
+
+        setLoadingModal(false);
+        setAttendanceDriverList(response.data);
+      }
+    } catch (error) {
+      setLoadingModal(false);
+
+      if (error.response) {
+        const dataError = error.response.data;
+        const statusError = error.response.status;
+
+        console.error(dataError);
+        console.error(statusError);
+
+        if (statusError === 400 && dataError.message) {
+          console.log(dataError.message);
+          switch (dataError.message) {
+            default:
+              notify("warning", dataError.message);
+          }
+        }
+      } else if (error.request) {
+        notify(
+          "error",
+          `Oops, algo deu errado, entre em contato com o suporte de TI. ${error}`
+        );
+        console.log(error.request);
+      } else {
+        notify(
+          "error",
+          `Oops, algo deu errado, entre em contato com o suporte de TI. ${error}`
+        );
+        console.log("Error", error.message);
+      }
+    }
+  }
+  // #endregion Load Driver Attendance Data
+
+  // #region Handle Open/close Modal Answer OS
+  const handleOpenModalAnswerOs = (idServiceOrder, idSituationServiceOrder) => {
+    if (idSituationServiceOrder > 1) {
+      notify(
+        "warning",
+        "Essa ordem de serviço não está em uma situação apta à atendimento, por favor verifique."
+      );
+      return;
+    }
+
+    setLoadingModal(true);
+    loadModalOsData(idServiceOrder);
+
+    setTitleIconModal(<RiArrowRightCircleLine size={30} />);
+    setTitleModal("ATENDER ORDEM DE SERVIÇO");
+    setOpenModalAnswerOs(true);
+  };
+
+  const handleCloseModalAnswerOs = () => {
+    setTitleModal("");
+    clearFieldsModalOs();
+    clearFieldsAnswerOs();
+    setOpenModalAnswerOs(false);
+
+    if (filtered) {
+      loadOsListFiltered();
+    } else {
+      loadOsListAll();
+    }
+  };
+  // #endregion Handle Open/close Modal Answer OS
+
   return (
     <div className="main-container">
       <Modal
-        id="modalSearchClient"
+        id="modalCancelOs"
         aria-labelledby="transition-modal-title"
         aria-describedby="transition-modal-description"
         className={ClassesModal.modal}
@@ -758,6 +997,229 @@ export default function Main() {
                       disabled={loadingButton}
                       onClick={() => {
                         handleCloseModalCancelOs();
+                      }}
+                    >
+                      <RiArrowLeftLine size={30} />
+                      Voltar
+                    </button>
+                    <button
+                      type="submit"
+                      className={`button btnSuccess ${btnInactive}`}
+                      disabled={loadingButton}
+                    >
+                      {!loadingButton ? (
+                        <RiCheckLine size={25} />
+                      ) : (
+                        <RiLoader4Line
+                          size={25}
+                          className="load-spinner-button"
+                        />
+                      )}
+                      {textButtonSaveUpdate}
+                    </button>
+                  </div>
+                </form>
+              </section>
+            </div>
+          </div>
+        </Fade>
+      </Modal>
+
+      <Modal
+        id="modalAnswer"
+        aria-labelledby="transition-modal-title"
+        aria-describedby="transition-modal-description"
+        className={ClassesModal.modal}
+        open={openModalAnswerOs}
+        onClose={handleCloseModalAnswerOs}
+        closeAfterTransition
+        BackdropComponent={Backdrop}
+        BackdropProps={{
+          timeout: 500,
+        }}
+      >
+        <Fade in={openModalAnswerOs}>
+          <div className={ClassesModal.paper}>
+            <h1 className="modal-title">
+              {titleIconModal} {titleModal}{" "}
+              {!loadingModal ? (
+                ""
+              ) : (
+                <RiLoader4Line size={30} className="load-spinner-button" />
+              )}
+            </h1>
+            <div className="modal-content">
+              <section className="form">
+                <form onSubmit={handleSubmitAnswerOs}>
+                  <div className="input-group">
+                    <div className="row">
+                      <h1>
+                        <RiFileListLine size={30} />
+                        Ordem de serviço
+                      </h1>
+                    </div>
+                    <div className="row">
+                      <div className="column" id="columnIdServiceOrder">
+                        <label htmlFor="idServiceOrder">Código:</label>
+
+                        <input
+                          id="idServiceOrder"
+                          type="number"
+                          min="1"
+                          required
+                          readOnly
+                          value={idServiceOrder}
+                          required
+                        />
+                      </div>
+
+                      <div className="column">
+                        <label htmlFor="situation">Situação:</label>
+
+                        <input
+                          id="situation"
+                          type="text"
+                          readOnly
+                          value={situation}
+                        />
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className="input-group">
+                    <div className="row">
+                      <div className="column">
+                        <label htmlFor="nameFantasyClient">Cliente:</label>
+
+                        <input
+                          id="nameFantasyClient"
+                          type="text"
+                          readOnly
+                          value={nameFantasyClient}
+                        />
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className="input-group">
+                    <div className="row">
+                      <div className="column">
+                        <label htmlFor="dateTimeSolicitation">
+                          Data/Hora solicitação:
+                        </label>
+
+                        <input
+                          id="dateTimeSolicitation"
+                          type="text"
+                          readOnly
+                          value={dateTimeSolicitation}
+                          required
+                        />
+                      </div>
+
+                      <div className="column">
+                        <label htmlFor="origin">Origem:</label>
+
+                        <input
+                          id="origin"
+                          type="text"
+                          readOnly
+                          value={originServiceOrder}
+                        />
+                      </div>
+
+                      <div className="column">
+                        <label htmlFor="destiny">Destino:</label>
+
+                        <input
+                          id="destiny"
+                          type="text"
+                          readOnly
+                          value={destinyServiceOrder}
+                        />
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className="input-group">
+                    <div className="row">
+                      <h1 id="titleVehicleAttendance">
+                        <RiCarLine size={30} color="#000000" />
+                        Veículo
+                      </h1>
+                    </div>
+
+                    <div className="row">
+                      <div
+                        className="column"
+                        id="inputBlockIdVehicleAttendance"
+                      >
+                        <label htmlFor="idVehicleAttendance">Código:</label>
+                        <select
+                          readOnly={loadingModal}
+                          onChange={(e) => {
+                            setIdVehicleAttendance(e.target.value);
+                            fillFieldsDriverAttendanceOs(e.target.value);
+                            console.log(idVehicleAttendance);
+                          }}
+                        >
+                          <option value="0">SELECIONE</option>
+                          {attendanceDriverList.map((driver) => (
+                            <option key={driver.id} value={driver.id}>
+                              {driver.id}
+                            </option>
+                          ))}
+                        </select>
+                      </div>
+
+                      <div
+                        className="column"
+                        id="inputBlockPlateVehicleAttendance"
+                      >
+                        <label htmlFor="plateVehicleAttendance">Placa:</label>
+
+                        <input
+                          id="plateVehicleAttendance"
+                          type="text"
+                          readOnly
+                          value={plateVehicleAttendance}
+                        />
+                      </div>
+
+                      <div
+                        className="column"
+                        id="inputBlockModelVehicleAttendance"
+                      >
+                        <label htmlFor="modelVehicleAttendance">Modelo:</label>
+
+                        <input
+                          id="modelVehicleAttendance"
+                          type="text"
+                          readOnly
+                          value={modelVehicleAttendance}
+                        />
+                      </div>
+
+                      <div className="column">
+                        <label htmlFor="nameDriverAttendance">Motorista:</label>
+
+                        <input
+                          id="nameDriverAttendance"
+                          type="text"
+                          readOnly
+                          value={nameDriverAttendance}
+                        />
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className="button-group">
+                    <button
+                      type="button"
+                      className={`button btnReturn ${btnInactive}`}
+                      disabled={loadingButton}
+                      onClick={() => {
+                        handleCloseModalAnswerOs();
                       }}
                     >
                       <RiArrowLeftLine size={30} />
@@ -1015,7 +1477,12 @@ export default function Main() {
                                     os.id_status > 1 ? "btnInactive" : ""
                                   }`}
                                   disabled={os.id_status > 1 ? true : false}
-                                  onClick={() => {}}
+                                  onClick={() => {
+                                    handleOpenModalAnswerOs(
+                                      os.id,
+                                      os.id_status
+                                    );
+                                  }}
                                 >
                                   <RiArrowRightLine size={24} />
                                 </button>

@@ -210,6 +210,54 @@
   border-radius: 4px;
 }
 
+/* .modal-content section.form form .input-group .row svg {
+  color: unset !important;
+} */
+
 .modal-content section.form form .column#columnIdServiceOrder {
   width: 21.05%;
+}
+
+.modal-content section.form form .column#inputBlockIdVehicleAttendance {
+  width: 40%;
+}
+
+.modal-content section.form form .column#inputBlockPlateVehicleAttendance {
+  width: 40%;
+}
+
+.modal-content section.form form .column#inputBlockModelVehicleAttendance {
+  width: 40%;
+}
+
+.modal-content section.form form .row h1 {
+  display: inline-flex;
+
+  padding: 0;
+
+  color: #000000 !important;
+}
+
+.modal-content section.form form .row h1#titleVehicleAttendance svg {
+  color: #000000 !important;
+}
+
+.modal-content section.form form .row h1 {
+  padding-bottom: 10px;
+}
+
+.modal-content section.form form .row input:hover {
+  border: 2px solid #0f4c82;
+}
+
+.modal-content section.form form .row input:focus {
+  border: 2px solid #0f4c82;
+}
+
+.modal-content section.form form .row select:hover {
+  border: 2px solid #0f4c82;
+}
+
+.modal-content section.form form .row select:focus {
+  border: 2px solid #0f4c82;
 }

@@ -142,7 +142,9 @@ module.exports = {
       }
 
       if (streetNumberOriginOld !== streetNumberOrigin) {
-        columnsUpdateOs["street_number_origin"] = streetNumberOrigin;
+        columnsUpdateOs[
+          "street_number_origin"
+        ] = streetNumberOrigin.toUpperCase();
       }
 
       if (complementOriginOld !== complementOrigin) {
@@ -176,7 +178,9 @@ module.exports = {
       }
 
       if (streetNumberDestinyOld !== streetNumberDestiny) {
-        columnsUpdateOs["street_number_destiny"] = streetNumberDestiny;
+        columnsUpdateOs[
+          "street_number_destiny"
+        ] = streetNumberDestiny.toUpperCase();
       }
 
       if (complementDestinyOld !== complementDestiny) {
@@ -473,7 +477,9 @@ module.exports = {
       }
 
       if (streetNumberOriginOld !== streetNumberOrigin) {
-        columnsUpdateOs["street_number_origin"] = streetNumberOrigin;
+        columnsUpdateOs[
+          "street_number_origin"
+        ] = streetNumberOrigin.toUpperCase();
       }
 
       if (complementOriginOld !== complementOrigin) {
@@ -507,7 +513,9 @@ module.exports = {
       }
 
       if (streetNumberDestinyOld !== streetNumberDestiny) {
-        columnsUpdateOs["street_number_destiny"] = streetNumberDestiny;
+        columnsUpdateOs[
+          "street_number_destiny"
+        ] = streetNumberDestiny.toUpperCase();
       }
 
       if (complementDestinyOld !== complementDestiny) {
@@ -798,7 +806,9 @@ module.exports = {
       }
 
       if (streetNumberOriginOld !== streetNumberOrigin) {
-        columnsUpdateOs["street_number_origin"] = streetNumberOrigin;
+        columnsUpdateOs[
+          "street_number_origin"
+        ] = streetNumberOrigin.toUpperCase();
       }
 
       if (complementOriginOld !== complementOrigin) {
@@ -832,7 +842,9 @@ module.exports = {
       }
 
       if (streetNumberDestinyOld !== streetNumberDestiny) {
-        columnsUpdateOs["street_number_destiny"] = streetNumberDestiny;
+        columnsUpdateOs[
+          "street_number_destiny"
+        ] = streetNumberDestiny.toUpperCase();
       }
 
       if (complementDestinyOld !== complementDestiny) {
@@ -1091,7 +1103,9 @@ module.exports = {
       }
 
       if (streetNumberOriginOld !== streetNumberOrigin) {
-        columnsUpdateOs["street_number_origin"] = streetNumberOrigin;
+        columnsUpdateOs[
+          "street_number_origin"
+        ] = streetNumberOrigin.toUpperCase();
       }
 
       if (complementOriginOld !== complementOrigin) {
@@ -1125,7 +1139,9 @@ module.exports = {
       }
 
       if (streetNumberDestinyOld !== streetNumberDestiny) {
-        columnsUpdateOs["street_number_destiny"] = streetNumberDestiny;
+        columnsUpdateOs[
+          "street_number_destiny"
+        ] = streetNumberDestiny.toUpperCase();
       }
 
       if (complementDestinyOld !== complementDestiny) {

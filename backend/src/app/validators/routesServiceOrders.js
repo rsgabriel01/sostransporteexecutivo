@@ -146,6 +146,62 @@ const validatorOsIndexLikeClientSituationDate = celebrate({
   },
 });
 
+const validatorIndexSituations = celebrate({
+  [Segments.HEADERS]: Joi.object({
+    authorization: Joi.string().required(),
+    id_executingperson: Joi.number().positive().integer().required(),
+  }).unknown(),
+  [Segments.QUERY]: {
+    situations: Joi.string().required(),
+  },
+});
+
+const validatorIndexSituationsPeriod = celebrate({
+  [Segments.HEADERS]: Joi.object({
+    authorization: Joi.string().required(),
+    id_executingperson: Joi.number().positive().integer().required(),
+  }).unknown(),
+  [Segments.QUERY]: {
+    situations: Joi.string().required(),
+  },
+});
+
+const validatorDestroy = celebrate({
+  [Segments.HEADERS]: Joi.object({
+    authorization: Joi.string().required(),
+    id_executingperson: Joi.number().positive().integer().required(),
+  }).unknown(),
+  [Segments.PARAMS]: Joi.object().keys({
+    idServiceOrder: Joi.number().positive().integer().required(),
+  }),
+  [Segments.BODY]: Joi.object().keys({
+    observationCancellation: Joi.string().required(),
+  }),
+});
+
+const validatorOSCompletion = celebrate({
+  [Segments.HEADERS]: Joi.object({
+    authorization: Joi.string().required(),
+    id_executingperson: Joi.number().positive().integer().required(),
+  }).unknown(),
+  [Segments.PARAMS]: Joi.object().keys({
+    idServiceOrder: Joi.number().positive().integer().required(),
+  }),
+});
+
+const validatorOSAttendance = celebrate({
+  [Segments.HEADERS]: Joi.object({
+    authorization: Joi.string().required(),
+    id_executingperson: Joi.number().positive().integer().required(),
+  }).unknown(),
+  [Segments.PARAMS]: Joi.object().keys({
+    idServiceOrder: Joi.number().positive().integer().required(),
+  }),
+  [Segments.BODY]: Joi.object().keys({
+    idVehicleAttendance: Joi.number().positive().integer().required(),
+  }),
+});
+
 module.exports = {
   validatorOsCreate,
   validatorOsShow,
@@ -154,4 +210,9 @@ module.exports = {
   validatorOsUpdateSituation2,
   validatorOsUpdateSituation3,
   validatorOsUpdateSituation7and8,
+  validatorIndexSituations,
+  validatorIndexSituationsPeriod,
+  validatorDestroy,
+  validatorOSAttendance,
+  validatorOSCompletion,
 };

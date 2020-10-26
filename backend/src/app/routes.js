@@ -54,6 +54,7 @@ const {
 // #region Client
 const {
   validatorClientCreate,
+  validatorClientUpdate,
   validatorClientsIndexLikeNameFantasy,
 } = require("./validators/routesClient");
 
@@ -65,6 +66,12 @@ const {
   validatorDriverUpdate,
   validatorDriversIndexLikeName,
 } = require("./validators/routesDrivers");
+// #endregion
+
+// #region Reports
+const {
+  indexCompletedWithIdClientAndPeriod,
+} = require("./validators/routesReports");
 // #endregion
 
 // #region PeopleAddress
@@ -94,7 +101,7 @@ const {
 } = require("./validators/routesNeighborhood");
 // #endregion
 
-// #region Vehicle Models
+// #region Service Orders
 const {
   validatorOsCreate,
   validatorOsShow,
@@ -103,6 +110,11 @@ const {
   validatorOsUpdateSituation2,
   validatorOsUpdateSituation3,
   validatorOsUpdateSituation7and8,
+  validatorIndexSituations,
+  validatorIndexSituationsPeriod,
+  validatorDestroy,
+  validatorOSAttendance,
+  validatorOSCompletion,
 } = require("./validators/routesServiceOrders");
 // #endregion
 
@@ -203,7 +215,7 @@ routes.post(
 
 routes.put(
   "/client/update",
-  // validatorClientCreate,
+  validatorClientUpdate,
   verifySession,
   permissionAdminAttendance,
   clientController.update
@@ -313,8 +325,8 @@ routes.get(
 routes.post(
   "/user/create",
   validatorUsersCreate,
-  /*verifySession,
-  permissionAdminAttendance,*/
+  verifySession,
+  permissionAdminAttendance,
   UsersController.store
 );
 
@@ -348,9 +360,9 @@ routes.get("/serviceOrders", ServiceOrdersController.index);
 
 routes.get(
   "/serviceOrder/:idServiceOrder",
-  // validatorOsShow,
-  // verifySession,
-  // permissionAdminAttendance,
+  validatorOsShow,
+  verifySession,
+  permissionAdminAttendance,
   ServiceOrdersController.show
 );
 
@@ -364,33 +376,33 @@ routes.get(
 
 routes.get(
   "/serviceOrders/index/",
-  // validatorOsIndexLikeClientSituationDate,
-  // verifySession,
-  // permissionAdminAttendance,
+  validatorIndexSituations,
+  verifySession,
+  permissionAdminAttendance,
   ServiceOrdersIndexController.indexSituations
 );
 
 routes.get(
   "/serviceOrders/index/period/solicitation/",
-  // validatorOsIndexLikeClientSituationDate,
-  // verifySession,
-  // permissionAdminAttendance,
+  validatorIndexSituationsPeriod,
+  verifySession,
+  permissionAdminAttendance,
   ServiceOrdersIndexController.indexSituationsPeriodSolicitation
 );
 
 routes.get(
   "/serviceOrders/index/period/attendance/",
-  // validatorOsIndexLikeClientSituationDate,
-  // verifySession,
-  // permissionAdminAttendance,
+  validatorIndexSituationsPeriod,
+  verifySession,
+  permissionAdminAttendance,
   ServiceOrdersIndexController.indexSituationsPeriodAttendance
 );
 
 routes.get(
   "/serviceOrders/index/period/completion/",
-  // validatorOsIndexLikeClientSituationDate,
-  // verifySession,
-  // permissionAdminAttendance,
+  validatorIndexSituationsPeriod,
+  verifySession,
+  permissionAdminAttendance,
   ServiceOrdersIndexController.indexSituationsPeriodCompletion
 );
 
@@ -436,7 +448,7 @@ routes.put(
 
 routes.put(
   "/serviceOrder/cancellation/noFee/:idServiceOrder",
-  // validatorOsUpdateSituation7and8,
+  validatorDestroy,
   verifySession,
   permissionAdminAttendance,
   ServiceOrdersController.destroyNoFee
@@ -444,7 +456,7 @@ routes.put(
 
 routes.put(
   "/serviceOrder/cancellation/withFee/:idServiceOrder",
-  // validatorOsUpdateSituation7and8,
+  validatorDestroy,
   verifySession,
   permissionAdminAttendance,
   ServiceOrdersController.destroyWithFee
@@ -452,17 +464,17 @@ routes.put(
 
 routes.put(
   "/serviceOrder/completion/:idServiceOrder",
-  // validatorOsUpdateSituation7and8,
-  // verifySession,
-  // permissionAdminAttendance,
+  validatorOSCompletion,
+  verifySession,
+  permissionAdminAttendance,
   ServiceOrdersCompletionController.store
 );
 
 routes.put(
   "/serviceOrder/attendance/:idServiceOrder",
-  // validatorOsUpdateSituation7and8,
-  // verifySession,
-  // permissionAdminAttendance,
+  validatorOSAttendance,
+  verifySession,
+  permissionAdminAttendance,
   ServiceOrdersAttendanceController.store
 );
 
@@ -530,12 +542,13 @@ routes.get(
 // #region Reports
 routes.get(
   "/reports/serviceOrders/completed/",
-  // validatorOsIndexLikeClientSituationDate,
+  indexCompletedWithIdClientAndPeriod,
   verifySession,
   permissionAdminAttendance,
   ReportsServiceOrdersController.indexCompletedWithIdClientAndPeriod
 );
 // #endregion Reports
+
 //#endregion Routes
 
 module.exports = routes;

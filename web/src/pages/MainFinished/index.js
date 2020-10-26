@@ -96,23 +96,23 @@ export default function MainFinished() {
 
     loadOsListAllOfDay();
 
-    const timer = () => {
-      if (!filtered) {
-        loadOsListAllOfDay();
-        console.log("chamou load all");
-      } else {
-        loadOsListFiltered();
-        console.log("chamou load filtrado");
-      }
+    // const timer = () => {
+    //   if (!filtered) {
+    //     loadOsListAllOfDay();
+    //     console.log("chamou load all");
+    //   } else {
+    //     loadOsListFiltered();
+    //     console.log("chamou load filtrado");
+    //   }
 
-      setTimeout(() => {
-        timer();
-      }, 60000);
-    };
+    //   setTimeout(() => {
+    //     timer();
+    //   }, 60000);
+    // };
 
-    timer();
+    // timer();
 
-    return () => clearTimeout(timer);
+    // return () => clearTimeout(timer);
   }, []);
   //#endregion
 

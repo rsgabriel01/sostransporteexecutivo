@@ -28,6 +28,8 @@ const TravelFeeController = require("./controllers/TravelFee/TravelFeeController
 const ServiceOrdersController = require("./controllers/ServiceOrders/ServiceOrdersController");
 const ServiceOrdersIndexController = require("./controllers/ServiceOrders/ServiceOrdersIndexController");
 const ServiceOrdersUpdatesController = require("./controllers/ServiceOrders/ServiceOrdersUpdatesController");
+const ServiceOrdersCompletionController = require("./controllers/ServiceOrders/ServiceOrdersCompletionController");
+const ServiceOrdersExecutionController = require("./controllers/ServiceOrders/ServiceOrdersExecutionController");
 
 const VehicleModelsLikeDescriptionController = require("./controllers/VehicleModels/VehicleModelsLikeDescriptionController");
 
@@ -445,6 +447,14 @@ routes.put(
   verifySession,
   permissionAdminAttendance,
   ServiceOrdersController.destroyWithFee
+);
+
+routes.put(
+  "/orderService/completion/:idServiceOrder",
+  // validatorOsUpdateSituation7and8,
+  // verifySession,
+  // permissionAdminAttendance,
+  ServiceOrdersCompletionController.store
 );
 
 // #endregion

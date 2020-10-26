@@ -91,23 +91,23 @@ export default function MainMet() {
 
     loadOsListAll();
 
-    const timer = () => {
-      if (!filtered) {
-        loadOsListAll();
-        console.log("chamou load all");
-      } else {
-        loadOsListFiltered();
-        console.log("chamou load filtrado");
-      }
+    // const timer = () => {
+    //   if (!filtered) {
+    //     loadOsListAll();
+    //     console.log("chamou load all");
+    //   } else {
+    //     loadOsListFiltered();
+    //     console.log("chamou load filtrado");
+    //   }
 
-      setTimeout(() => {
-        timer();
-      }, 60000);
-    };
+    //   setTimeout(() => {
+    //     timer();
+    //   }, 60000);
+    // };
 
-    timer();
+    // timer();
 
-    return () => clearTimeout(timer);
+    // return () => clearTimeout(timer);
   }, []);
   //#endregion
 

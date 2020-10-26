@@ -56,6 +56,7 @@ export default function MainExecuting() {
   const [filtered, setFiltered] = useState(false);
 
   const [loadingButton, setLoadingButton] = useState(false);
+  const [loadingButtonCompleteOs, setLoadingButtonCompleteOs] = useState(false);
   const [textButtonSaveUpdate, setTextButtonSaveUpdate] = useState("Salvar");
   const [btnInactive, setBtnInactive] = useState("");
 
@@ -96,23 +97,23 @@ export default function MainExecuting() {
 
     loadOsListAll();
 
-    const timer = () => {
-      if (!filtered) {
-        loadOsListAll();
-        console.log("chamou load all");
-      } else {
-        loadOsListFiltered();
-        console.log("chamou load filtrado");
-      }
+    // const timer = () => {
+    //   if (!filtered && !loadingButtonCompleteOs) {
+    //     loadOsListAll();
+    //     console.log("chamou load all");
+    //   } else if (!loadingButtonCompleteOs) {
+    //     loadOsListFiltered();
+    //     console.log("chamou load filtrado");
+    //   }
 
-      setTimeout(() => {
-        timer();
-      }, 60000);
-    };
+    //   setTimeout(() => {
+    //     timer();
+    //   }, 60000);
+    // };
 
-    timer();
+    // timer();
 
-    return () => clearTimeout(timer);
+    // return () => clearTimeout(timer);
   }, []);
   //#endregion
 
@@ -157,7 +158,9 @@ export default function MainExecuting() {
                       case "cancelOs":
                         cancelOs();
                         break;
-
+                      case "completeOs":
+                        completeOs();
+                        break;
                       default:
                         break;
                     }
@@ -479,6 +482,101 @@ export default function MainExecuting() {
   }
   // #endregion Handle Submit Cancel Os
 
+  //#region Complete OS
+  async function completeOs() {
+    setLoadingButtonCompleteOs(true);
+    setBtnInactive("btnInactive");
+
+    try {
+      const response = await api.put(
+        `/orderService/completion/${idServiceOrder}`,
+        {}
+      );
+
+      if (response) {
+        console.log(response.data);
+
+        notify("success", response.data.message);
+
+        setIdServiceOrder("");
+        setLoadingButtonCompleteOs(false);
+        setBtnInactive("");
+      }
+    } catch (error) {
+      setIdServiceOrder("");
+      setLoadingButtonCompleteOs(false);
+      setBtnInactive("");
+
+      if (error.response) {
+        const dataError = error.response.data;
+        const statusError = error.response.status;
+        console.error(dataError);
+        console.error(statusError);
+
+        if (statusError === 400 && dataError.message) {
+          console.log(dataError.message);
+          switch (dataError.message) {
+            case '"observationUpdate" is required':
+              notify(
+                "warning",
+                "É obrigatorio informar a observação da alteração, por favor verifique."
+              );
+              break;
+
+            default:
+              notify("warning", dataError.message);
+          }
+        }
+
+        if (statusError === 401) {
+          switch (dataError.message) {
+            default:
+              notify("warning", dataError.message);
+          }
+        }
+
+        if (statusError === 404) {
+          notify(
+            "error",
+            "Ooops, a rota dessa requisição não foi encontrada, por favor entre em contato com setor de TI."
+          );
+        }
+
+        if (statusError === 500) {
+          notify(
+            "error",
+            "Ooops, erro interno do servidor, por favor entre em contato com setor de TI."
+          );
+        }
+      } else if (error.request) {
+        notify(
+          "error",
+          `Oops, algo deu errado, entre em contato com o suporte de TI. ${error}`
+        );
+        console.log("Error 1", error.request);
+      } else {
+        notify(
+          "error",
+          `Oops, algo deu errado, entre em contato com o suporte de TI. ${error}`
+        );
+        console.log("Error 2", error.message);
+      }
+    }
+  }
+
+  //#endregion Complete OS
+
+  // #region Handle Complete OS
+  function handleCompleteOS(idServiceOrder) {
+    setIdServiceOrder(idServiceOrder);
+    confirmationAlert(
+      "Atenção!",
+      `Deu tudo certo com a ordem de serviço ${idServiceOrder}? Podemos realmente FINALIZA-LA?`,
+      "completeOs"
+    );
+  }
+  // #endregion Handle Complete OS
+
   // #region Handle Open Modal Search client
   const handleOpenModalCancelOs = (idServiceOrder, idSituationServiceOrder) => {
     if (idSituationServiceOrder < 1 && idSituationServiceOrder > 4) {
@@ -499,7 +597,6 @@ export default function MainExecuting() {
 
   const handleCloseModalCancelOs = () => {
     setTitleModal("");
-    setSearchClient("");
     clearFieldsCancelOs();
     setOpenModalCancelOs(false);
     if (filtered) {
@@ -1015,12 +1112,29 @@ export default function MainExecuting() {
                                         : "Não é possível finalizar essa ordem de serviço"
                                     }
                                     className={`button btnDefault ${
-                                      os.id_status != 7 ? "btnInactive" : ""
+                                      os.id_status != 7 ||
+                                      loadingButtonCompleteOs
+                                        ? "btnInactive"
+                                        : ""
                                     }`}
-                                    disabled={os.id_status != 7 ? true : false}
-                                    onClick={() => {}}
+                                    disabled={
+                                      os.id_status != 7 ||
+                                      loadingButtonCompleteOs
+                                        ? true
+                                        : false
+                                    }
+                                    onClick={() => {
+                                      handleCompleteOS(os.id);
+                                    }}
                                   >
-                                    <RiCheckLine size={24} />
+                                    {!loadingButtonCompleteOs ? (
+                                      <RiCheckLine size={25} />
+                                    ) : (
+                                      <RiLoader4Line
+                                        size={25}
+                                        className="load-spinner-button"
+                                      />
+                                    )}
                                   </button>
                                 ) : (
                                   ""

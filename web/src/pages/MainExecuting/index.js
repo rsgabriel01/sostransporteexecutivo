@@ -131,7 +131,12 @@ export default function MainExecuting() {
   // #endregion
 
   // #region Alert confirmation
-  function confirmationAlert(title, message, functionExecute) {
+  function confirmationAlert(
+    title,
+    message,
+    functionExecute,
+    parameterFunction
+  ) {
     confirmAlert({
       customUI: ({ onClose }) => (
         <div className="custom-ui">
@@ -159,7 +164,7 @@ export default function MainExecuting() {
                         cancelOs();
                         break;
                       case "completeOs":
-                        completeOs();
+                        completeOs(parameterFunction);
                         break;
                       default:
                         break;
@@ -483,7 +488,7 @@ export default function MainExecuting() {
   // #endregion Handle Submit Cancel Os
 
   //#region Complete OS
-  async function completeOs() {
+  async function completeOs(idServiceOrder) {
     setLoadingButtonCompleteOs(true);
     setBtnInactive("btnInactive");
 
@@ -498,12 +503,20 @@ export default function MainExecuting() {
 
         notify("success", response.data.message);
 
-        setIdServiceOrder("");
+        if (filtered) {
+          loadOsListFiltered();
+        } else {
+          loadOsListAll();
+        }
         setLoadingButtonCompleteOs(false);
         setBtnInactive("");
       }
     } catch (error) {
-      setIdServiceOrder("");
+      if (filtered) {
+        loadOsListFiltered();
+      } else {
+        loadOsListAll();
+      }
       setLoadingButtonCompleteOs(false);
       setBtnInactive("");
 
@@ -572,7 +585,8 @@ export default function MainExecuting() {
     confirmationAlert(
       "Atenção!",
       `Deu tudo certo com a ordem de serviço ${idServiceOrder}? Podemos realmente FINALIZA-LA?`,
-      "completeOs"
+      "completeOs",
+      idServiceOrder
     );
   }
   // #endregion Handle Complete OS

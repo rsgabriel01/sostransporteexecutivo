@@ -188,7 +188,6 @@ export default function MainMet() {
         break;
     }
   }
-
   //#endregion Focus Fields
 
   // #region Clear Filter
@@ -222,7 +221,6 @@ export default function MainMet() {
 
     loadOsListFiltered();
   }
-
   // #endregion Handle Filter List
 
   // #region  Load OS List All
@@ -943,8 +941,12 @@ export default function MainMet() {
                       <tbody>
                         {osList.map((os) => (
                           <tr key={os.id}>
-                            <td>{os.id}</td>
-                            <td>{os.Client.name_fantasy}</td>
+                            <td>{os.id ? os.id : ""}</td>
+                            <td>
+                              {os.Client.name_fantasy
+                                ? os.Client.name_fantasy
+                                : ""}
+                            </td>
                             <td>{`${
                               os.date_time_attendance
                                 ? getDateOfDatePickerValue(
@@ -956,31 +958,49 @@ export default function MainMet() {
                                 ? os.date_time_attendance.substring(10)
                                 : "00:00:00"
                             }`}</td>
-                            <td>{os.Driver.name}</td>
+                            <td>{os.Driver ? os.Driver.name : ""}</td>
                             <td>
                               {os.client_origin
                                 ? "CLIENTE"
-                                : os.Neighborhood_origin.name}
+                                : os.Neighborhood_origin.name
+                                ? os.Neighborhood_origin.name
+                                : ""}
                             </td>
                             <td>
                               {os.client_destiny
                                 ? "CLIENTE"
-                                : os.Neighborhood_destiny.name}
+                                : os.Neighborhood_destiny.name
+                                ? os.Neighborhood_destiny.name
+                                : ""}
                             </td>
-                            <td>{os.observation_service}</td>
+                            <td>
+                              {os.observation_service
+                                ? os.observation_service
+                                : ""}
+                            </td>
                             <td>
                               <div className="answer">
                                 <button
                                   type="button"
                                   title={
-                                    os.id_status > 4
+                                    os.id_status > 0 && os.id_status <= 3
+                                      ? "Cancelar ordem de serviço"
+                                      : os.id_status == 4
+                                      ? "Cancelar ordem de serviço (gera taxa de cancelamento)"
+                                      : os.id_status > 4
                                       ? "Não é possivel cancelar essa ordem de serviço"
-                                      : "Cancelar ordem de serviço"
+                                      : ""
                                   }
                                   className={`button btnCancel ${
-                                    os.id_status > 4 ? "btnInactive" : ""
+                                    os.id_status > 4 || os.id_status < 1
+                                      ? "btnInactive"
+                                      : ""
                                   }`}
-                                  disabled={os.id_status > 4 ? true : false}
+                                  disabled={
+                                    os.id_status > 4 || os.id_status < 1
+                                      ? true
+                                      : false
+                                  }
                                   onClick={() => {
                                     handleOpenModalCancelOs(
                                       os.id,

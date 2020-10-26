@@ -15,6 +15,7 @@ module.exports = (sequelize, DataTypes) => {
       date_time_solicitation: DataTypes.DATE /** */,
       id_user_attendance: { type: DataTypes.BIGINT, defaultValue: null },
       date_time_attendance: { type: DataTypes.DATE, defaultValue: null } /** */,
+      date_time_execution: { type: DataTypes.DATE, defaultValue: null } /** */,
       id_driver: { type: DataTypes.BIGINT, defaultValue: null } /** */,
       id_vehicle: { type: DataTypes.BIGINT, defaultValue: null } /** */,
       id_status: DataTypes.BIGINT /** */,
@@ -58,6 +59,7 @@ module.exports = (sequelize, DataTypes) => {
 
   Service_orders.prototype.toJSON = function () {
     const values = { ...this.get() };
+
     if (values.date_time_solicitation) {
       const originalDateBD = moment
         .utc(values.date_time_solicitation)
@@ -95,6 +97,19 @@ module.exports = (sequelize, DataTypes) => {
         ""
       );
       values.date_time_execution = secondUpdateDateToLocalFormat;
+    }
+
+    if (values.date_time_completion) {
+      const originalDateBD = moment
+        .utc(values.date_time_completion)
+        .local()
+        .format();
+      const fistUpdateDateToLocalFormat = originalDateBD.replace("T", " ");
+      const secondUpdateDateToLocalFormat = fistUpdateDateToLocalFormat.replace(
+        "-03:00",
+        ""
+      );
+      values.date_time_completion = secondUpdateDateToLocalFormat;
     }
 
     if (values.date_time_cancellation) {

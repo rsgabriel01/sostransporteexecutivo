@@ -75,6 +75,9 @@ export default function Main() {
   const [destinyServiceOrder, setDestinyServiceOrder] = useState("");
   const [observationCancellation, setObservationCancellation] = useState("");
 
+  const startDateInputRef = useRef(null);
+  const endDateInputRef = useRef(null);
+
   const [osList, setOsList] = useState([]);
 
   const useStyles = makeStyles((theme) => jsonClassesModal(theme));
@@ -173,12 +176,58 @@ export default function Main() {
   }
   // #endregion
 
+  // #region Focus Fields
+  function inputFocus(input) {
+    switch (input) {
+      case "startDate":
+        setTimeout(() => {
+          startDateInputRef.current.focus();
+        }, 1);
+        break;
+      case "endDate":
+        setTimeout(() => {
+          endDateInputRef.current.focus();
+        }, 1);
+        break;
+
+      default:
+        break;
+    }
+  }
+  //#endregion Focus Fields
+
   // #region Clear Filter
   function clearFilter() {
     loadOsListAll();
     setFiltered(false);
   }
   // #endregion Clear Filter
+
+  // #region Handle Filter List
+  function handleFilterList() {
+    if (startDate === "" || endDate === "") {
+      notify(
+        "warning",
+        "Para filtrar a lista de ordens de serviço atendidas os dados do periodo devem estar preenchidos, por favor verifique."
+      );
+
+      inputFocus("startDate");
+      return;
+    }
+
+    if (startDate > endDate) {
+      notify(
+        "warning",
+        "Para filtrar a lista de ordens de serviço atendidas a data final do periodo não pode ser menor que a data inicial, por favor verifique."
+      );
+
+      inputFocus("startDate");
+      return;
+    }
+
+    loadOsListFiltered();
+  }
+  // #endregion Handle Filter List
 
   // #region  Load OS List All
   async function loadOsListAll() {
@@ -783,6 +832,7 @@ export default function Main() {
                     <div className="column">
                       <label htmlFor="startDate">Inicio:</label>
                       <input
+                        ref={startDateInputRef}
                         type="date"
                         id="startDate"
                         readOnly={filtered}
@@ -795,6 +845,7 @@ export default function Main() {
                     <div className="column">
                       <label htmlFor="endDate">Fim:</label>
                       <input
+                        ref={endDateInputRef}
                         type="date"
                         id="endDate"
                         readOnly={filtered}
@@ -813,7 +864,7 @@ export default function Main() {
                         id="filterDate"
                         title="Filtrar"
                         onClick={() => {
-                          loadOsListFiltered();
+                          handleFilterList();
                         }}
                       >
                         <RiFilterLine size={24} />
@@ -884,35 +935,65 @@ export default function Main() {
                       <tbody>
                         {osList.map((os) => (
                           <tr key={os.id}>
-                            <td>{os.id}</td>
-                            <td>{os.Client.name_fantasy}</td>
-                            <td>{`${getDateOfDatePickerValue(
-                              os.date_time_solicitation.substring(0, 10)
-                            )} ${os.date_time_solicitation.substring(10)}`}</td>
+                            <td>{os.id ? os.id : ""}</td>
+                            <td>
+                              {os.Client.name_fantasy
+                                ? os.Client.name_fantasy
+                                : ""}
+                            </td>
+                            <td>{`${
+                              os.date_time_solicitation
+                                ? getDateOfDatePickerValue(
+                                    os.date_time_solicitation.substring(0, 10)
+                                  )
+                                : "00/00/00"
+                            } ${
+                              os.date_time_solicitation
+                                ? os.date_time_solicitation.substring(10)
+                                : "00:00:00"
+                            }`}</td>
                             <td>
                               {os.client_origin
                                 ? "CLIENTE"
-                                : os.Neighborhood_origin.name}
+                                : os.Neighborhood_origin.name
+                                ? os.Neighborhood_origin.name
+                                : ""}
                             </td>
                             <td>
                               {os.client_destiny
                                 ? "CLIENTE"
-                                : os.Neighborhood_destiny.name}
+                                : os.Neighborhood_destiny.name
+                                ? os.Neighborhood_destiny.name
+                                : ""}
                             </td>
-                            <td>{os.observation_service}</td>
+                            <td>
+                              {os.observation_service
+                                ? os.observation_service
+                                : ""}
+                            </td>
                             <td>
                               <div className="answer">
                                 <button
                                   type="button"
                                   title={
-                                    os.id_status > 4
+                                    os.id_status > 0 && os.id_status <= 3
+                                      ? "Cancelar ordem de serviço"
+                                      : os.id_status == 4
+                                      ? "Cancelar ordem de serviço (gera taxa de cancelamento)"
+                                      : os.id_status > 4
                                       ? "Não é possivel cancelar essa ordem de serviço"
-                                      : "Cancelar ordem de serviço"
+                                      : ""
                                   }
                                   className={`button btnCancel ${
-                                    os.id_status > 4 ? "btnInactive" : ""
+                                    os.id_status > 4 || os.id_status < 1
+                                      ? "btnInactive"
+                                      : ""
                                   }`}
-                                  disabled={os.id_status > 4 ? true : false}
+                                  disabled={
+                                    os.id_status > 4 || os.id_status < 1
+                                      ? true
+                                      : false
+                                  }
                                   onClick={() => {
                                     handleOpenModalCancelOs(
                                       os.id,

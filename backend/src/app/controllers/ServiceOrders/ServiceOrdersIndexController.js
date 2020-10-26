@@ -104,6 +104,8 @@ module.exports = {
   async indexSituations(req, res) {
     const { situations } = req.query;
 
+    console.log(situations);
+
     let serviceOrders = [];
 
     const arraySituationsString = situations.split(",");
@@ -111,6 +113,10 @@ module.exports = {
     const arraySituationsInt = arraySituationsString.map((situation) =>
       Number(situation)
     );
+
+    console.log("array de situações string " + arraySituationsString);
+
+    console.log("array de situações int " + arraySituationsInt);
 
     try {
       if (

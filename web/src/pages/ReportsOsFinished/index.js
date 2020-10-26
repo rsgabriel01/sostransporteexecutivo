@@ -526,6 +526,7 @@ export default function Main() {
                         ref={startDateInputRef}
                         type="date"
                         id="startDate"
+                        disabled={generatedReport}
                         value={startDate}
                         onChange={(e) => {
                           setStartDate(e.target.value);
@@ -538,6 +539,7 @@ export default function Main() {
                         ref={endDateInputRef}
                         type="date"
                         id="endDate"
+                        disabled={generatedReport}
                         value={endDate}
                         onChange={(e) => {
                           setEndDate(e.target.value);

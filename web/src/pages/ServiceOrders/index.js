@@ -137,6 +137,7 @@ export default function ServiceOrdersRequest() {
   const [dateTimeSolicitation, setDateTimeSolicitation] = useState(""); /** */
   const [dateTimeAttendance, setDateTimeAttendance] = useState(""); /** */
   const [dateTimeCompletion, setDateTimeCompletion] = useState(""); /** */
+  const [dateTimeExecution, setDateTimeExecution] = useState(""); /** */
   const [dateTimeCancellation, setDateTimeCancellation] = useState(""); /** */
 
   const [totalValue, setTotalValue] = useState(""); /** */
@@ -329,6 +330,15 @@ export default function ServiceOrdersRequest() {
             )} ${dateTimeCompletion.substring(10)}`
           )
         : setDateTimeCompletion("");
+
+      const dateTimeExecution = response.date_time_execution;
+      dateTimeExecution
+        ? setDateTimeExecution(
+            `${getDateOfDatePickerValue(
+              dateTimeExecution.substring(0, 10)
+            )} ${dateTimeExecution.substring(10)}`
+          )
+        : setDateTimeExecution("");
 
       const dateTimeCancellation = response.date_time_cancellation;
       dateTimeCancellation
@@ -1351,6 +1361,7 @@ export default function ServiceOrdersRequest() {
         setDateTimeSolicitation(""); /** */
         setDateTimeAttendance(""); /** */
         setDateTimeCompletion(""); /** */
+        setDateTimeExecution(""); /** */
         setDateTimeCancellation(""); /** */
 
         setTotalValue(""); /** */
@@ -1413,6 +1424,7 @@ export default function ServiceOrdersRequest() {
         setDateTimeSolicitation(""); /** */
         setDateTimeAttendance(""); /** */
         setDateTimeCompletion(""); /** */
+        setDateTimeExecution(""); /** */
         setDateTimeCancellation(""); /** */
 
         setTotalValue(""); /** */
@@ -3158,6 +3170,21 @@ export default function ServiceOrdersRequest() {
                           value={dateTimeAttendance}
                           onChange={(e) => {
                             setDateTimeAttendance(e.target.value);
+                          }}
+                        />
+                      </div>
+
+                      <div className="input-label-block-column">
+                        <label htmlFor="dateTimeExecution">Execução:</label>
+
+                        <input
+                          id="dateTimeExecution"
+                          type="text"
+                          placeholder="00/00/00 00:00:00"
+                          readOnly
+                          value={dateTimeExecution}
+                          onChange={(e) => {
+                            setDateTimeExecution(e.target.value);
                           }}
                         />
                       </div>

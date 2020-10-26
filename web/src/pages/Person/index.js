@@ -572,10 +572,10 @@ export default function Person() {
       >
         <Fade in={openModalSearchPerson}>
           <div className={ClassesModal.paper}>
-            <h1 className="modal-search-title">
+            <h1 className="modal-title">
               {titleIconModal} {titleModal}
             </h1>
-            <div className="modal-search-content">
+            <div className="modal-content">
               <div className="modal-search-input-button">
                 <div className="input-label-block-colum">
                   <label htmlFor="inputSearchPerson">Nome:</label>

@@ -703,10 +703,10 @@ export default function Client() {
       >
         <Fade in={openModalSearchClient}>
           <div className={ClassesModal.paper}>
-            <h1 className="modal-search-title">
+            <h1 className="modal-title">
               {titleIconModal} {titleModal}
             </h1>
-            <div className="modal-search-content">
+            <div className="modal-content">
               <div className="modal-search-input-button">
                 <div className="input-label-block-colum">
                   <label htmlFor="inputSearchClient">Nome fantasia:</label>
@@ -791,10 +791,10 @@ export default function Client() {
       >
         <Fade in={openModalSearchNeighborhood}>
           <div className={ClassesModal.paper}>
-            <h1 className="modal-search-title">
+            <h1 className="modal-title">
               {titleIconModal} {titleModal}
             </h1>
-            <div className="modal-search-content">
+            <div className="modal-content">
               <div className="modal-search-input-button">
                 <div className="input-label-block-colum">
                   <label htmlFor="inputSearchNeighborhood">Bairro:</label>

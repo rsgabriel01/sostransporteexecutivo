@@ -830,10 +830,10 @@ export default function Vehicles(props) {
       >
         <Fade in={openModalSearchVehicle}>
           <div className={ClassesModal.paper}>
-            <h1 className="modal-search-title">
+            <h1 className="modal-title">
               {titleIconModal} {titleModal}
             </h1>
-            <div className="modal-search-content">
+            <div className="modal-content">
               <div className="modal-search-input-button">
                 <div className="input-label-block-colum">
                   <label htmlFor="inputSearchVehicle">Modelo:</label>
@@ -916,10 +916,10 @@ export default function Vehicles(props) {
       >
         <Fade in={openModalSearchVehicleModel}>
           <div className={ClassesModal.paper}>
-            <h1 className="modal-search-title">
+            <h1 className="modal-title">
               {titleIconModal} {titleModal}
             </h1>
-            <div className="modal-search-content">
+            <div className="modal-content">
               <div className="modal-search-input-button">
                 <div className="input-label-block-colum">
                   <label htmlFor="inputSearchVehicleModel">Modelo:</label>
@@ -1010,10 +1010,10 @@ export default function Vehicles(props) {
       >
         <Fade in={openModalSearchDriver}>
           <div className={ClassesModal.paper}>
-            <h1 className="modal-search-title">
+            <h1 className="modal-title">
               {titleIconModal} {titleModal}
             </h1>
-            <div className="modal-search-content">
+            <div className="modal-content">
               <div className="modal-search-input-button">
                 <div className="input-label-block-colum">
                   <label htmlFor="inputSearchDriver">Nome:</label>

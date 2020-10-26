@@ -2030,10 +2030,10 @@ export default function ServiceOrdersRequest() {
       >
         <Fade in={openModalSearchOs}>
           <div className={ClassesModal.paper}>
-            <h1 className="modal-search-title">
+            <h1 className="modal-title">
               {titleIconModal} {titleModal}
             </h1>
-            <div className="modal-search-content">
+            <div className="modal-content">
               <div className="modal-search-input-button">
                 <div className="input-label-block-colum" id="inputDateSearchOs">
                   <label htmlFor="inputSearchDateSolicitationOs">
@@ -2170,10 +2170,10 @@ export default function ServiceOrdersRequest() {
       >
         <Fade in={openModalSearchClient}>
           <div className={ClassesModal.paper}>
-            <h1 className="modal-search-title">
+            <h1 className="modal-title">
               {titleIconModal} {titleModal}
             </h1>
-            <div className="modal-search-content">
+            <div className="modal-content">
               <div className="modal-search-input-button">
                 <div className="input-label-block-colum">
                   <label htmlFor="inputSearchClient">Nome fantasia:</label>
@@ -2276,10 +2276,10 @@ export default function ServiceOrdersRequest() {
       >
         <Fade in={openModalSearchNeighborhood}>
           <div className={ClassesModal.paper}>
-            <h1 className="modal-search-title">
+            <h1 className="modal-title">
               {titleIconModal} {titleModal}
             </h1>
-            <div className="modal-search-content">
+            <div className="modal-content">
               <div className="modal-search-input-button">
                 <div className="input-label-block-colum">
                   <label htmlFor="inputSearchNeighborhood">Bairro:</label>
@@ -2364,10 +2364,10 @@ export default function ServiceOrdersRequest() {
       >
         <Fade in={openModalSearchVehicle}>
           <div className={ClassesModal.paper}>
-            <h1 className="modal-search-title">
+            <h1 className="modal-title">
               {titleIconModal} {titleModal}
             </h1>
-            <div className="modal-search-content">
+            <div className="modal-content">
               <div className="modal-search-input-button">
                 <div className="input-label-block-colum">
                   <label htmlFor="inputSearchVehicle">Modelo:</label>
@@ -2456,10 +2456,10 @@ export default function ServiceOrdersRequest() {
       >
         <Fade in={openModalSearchDriver}>
           <div className={ClassesModal.paper}>
-            <h1 className="modal-search-title">
+            <h1 className="modal-title">
               {titleIconModal} {titleModal}
             </h1>
-            <div className="modal-search-content">
+            <div className="modal-content">
               <div className="modal-search-input-button">
                 <div className="input-label-block-colum">
                   <label htmlFor="inputSearchDriver">Nome:</label>

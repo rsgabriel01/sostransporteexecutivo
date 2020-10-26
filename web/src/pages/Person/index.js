@@ -203,7 +203,7 @@ export default function Person() {
       const response = await api.get(`/person/${id}`);
 
       if (response) {
-        setLoadingConsultData(true);
+        setLoadingConsultData(false);
         setPersonFinded(true);
         fillFields(response.data);
       }

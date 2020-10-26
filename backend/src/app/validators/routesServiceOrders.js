@@ -163,6 +163,8 @@ const validatorIndexSituationsPeriod = celebrate({
   }).unknown(),
   [Segments.QUERY]: {
     situations: Joi.string().required(),
+    startDate: Joi.string().required(),
+    endDate: Joi.string().required(),
   },
 });
 

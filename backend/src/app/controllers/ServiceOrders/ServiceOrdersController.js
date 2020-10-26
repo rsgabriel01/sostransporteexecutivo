@@ -344,6 +344,7 @@ module.exports = {
 
       if (serviceOrder.id_status === 4 || serviceOrder.id_status === "4") {
         columnsCancellation.id_status = 98;
+        columnsCancellation["date_time_completion"] = moment().format();
 
         if (serviceOrder.client_origin && !serviceOrder.client_destiny) {
           if (

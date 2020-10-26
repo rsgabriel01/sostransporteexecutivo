@@ -19,6 +19,7 @@ module.exports = {
             key: "id",
           },
           onUpdate: "CASCADE",
+          onDelete: "SET NULL",
         },
         description: {
           allowNull: false,

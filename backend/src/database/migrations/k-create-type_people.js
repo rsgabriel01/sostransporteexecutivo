@@ -19,6 +19,7 @@ module.exports = {
             key: "id",
           },
           onUpdate: "CASCADE",
+          onDelete: "SET NULL",
         },
         id_type: {
           allowNull: false,
@@ -28,6 +29,7 @@ module.exports = {
             key: "id",
           },
           onUpdate: "CASCADE",
+          onDelete: "SET NULL",
         },
         active: {
           allowNull: false,

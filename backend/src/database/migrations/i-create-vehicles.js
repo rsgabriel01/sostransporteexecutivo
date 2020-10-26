@@ -19,6 +19,7 @@ module.exports = {
             key: "id",
           },
           onUpdate: "CASCADE",
+          onDelete: "SET NULL",
         },
         id_model: {
           allowNull: false,
@@ -28,6 +29,7 @@ module.exports = {
             key: "id",
           },
           onUpdate: "CASCADE",
+          onDelete: "SET NULL",
         },
         car_plate: {
           allowNull: false,

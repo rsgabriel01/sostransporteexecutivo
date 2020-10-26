@@ -19,6 +19,7 @@ module.exports = {
             key: "id",
           },
           onUpdate: "CASCADE",
+          onDelete: "SET NULL",
         },
         id_user_solicitation: {
           allowNull: false,
@@ -28,6 +29,7 @@ module.exports = {
             key: "id",
           },
           onUpdate: "CASCADE",
+          onDelete: "SET NULL",
         },
         id_user_attendance: {
           allowNull: true,
@@ -37,6 +39,7 @@ module.exports = {
             key: "id",
           },
           onUpdate: "CASCADE",
+          onDelete: "SET NULL",
         },
         id_driver: {
           allowNull: true,
@@ -46,6 +49,7 @@ module.exports = {
             key: "id",
           },
           onUpdate: "CASCADE",
+          onDelete: "SET NULL",
         },
         id_vehicle: {
           allowNull: true,
@@ -55,6 +59,7 @@ module.exports = {
             key: "id",
           },
           onUpdate: "CASCADE",
+          onDelete: "SET NULL",
         },
         id_status: {
           allowNull: false,
@@ -64,6 +69,7 @@ module.exports = {
             key: "id",
           },
           onUpdate: "CASCADE",
+          onDelete: "SET NULL",
         },
         date_time_solicitation: {
           allowNull: false,
@@ -85,6 +91,7 @@ module.exports = {
             key: "id",
           },
           onUpdate: "CASCADE",
+          onDelete: "SET NULL",
         },
         street_origin: {
           allowNull: false,
@@ -110,6 +117,7 @@ module.exports = {
             key: "id",
           },
           onUpdate: "CASCADE",
+          onDelete: "SET NULL",
         },
         street_destiny: {
           allowNull: false,
@@ -155,6 +163,7 @@ module.exports = {
             key: "id",
           },
           onUpdate: "CASCADE",
+          onDelete: "SET NULL",
         },
         observation_service: {
           allowNull: true,
@@ -172,6 +181,7 @@ module.exports = {
             key: "id",
           },
           onUpdate: "CASCADE",
+          onDelete: "SET NULL",
         },
         observation_cancellation: {
           allowNull: true,

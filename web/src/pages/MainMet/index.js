@@ -879,7 +879,7 @@ export default function MainMet() {
                         type="button"
                         className="button btnSuccess"
                         id="filterDate"
-                        title="Atualizar listagem"
+                        title="Atualizar listagem sem filtro"
                         onClick={() => {
                           loadOsListAll();
                         }}
@@ -905,7 +905,7 @@ export default function MainMet() {
                         type="button"
                         className="button btnSuccess"
                         id="filterDate"
-                        title="Atualizar listagem"
+                        title="Atualizar listagem filtrada"
                         onClick={() => {
                           loadOsListFiltered();
                         }}

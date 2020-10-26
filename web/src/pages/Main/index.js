@@ -874,7 +874,7 @@ export default function Main() {
                         type="button"
                         className="button btnSuccess"
                         id="filterDate"
-                        title="Atualizar listagem"
+                        title="Atualizar listagem sem filtro"
                         onClick={() => {
                           loadOsListAll();
                         }}
@@ -900,7 +900,7 @@ export default function Main() {
                         type="button"
                         className="button btnSuccess"
                         id="filterDate"
-                        title="Atualizar listagem"
+                        title="Atualizar listagem filtrada"
                         onClick={() => {
                           loadOsListFiltered();
                         }}

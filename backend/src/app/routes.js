@@ -388,7 +388,7 @@ routes.get(
   // validatorOsIndexLikeClientSituationDate,
   // verifySession,
   // permissionAdminAttendance,
-  ServiceOrdersIndexController.indexSituationsPeriodAttendance
+  ServiceOrdersIndexController.indexSituationsPeriodCompletion
 );
 
 routes.post(

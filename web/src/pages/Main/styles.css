@@ -81,6 +81,14 @@
   margin-left: 10px;
 }
 
+.solicitations-waiting-container
+  .status-bar
+  .group-dates
+  button#filterDate
+  + button {
+  margin-left: 5px;
+}
+
 .solicitations-waiting-container .status-bar .group-dates button {
   /* filter: none; */
   color: #ffffff;

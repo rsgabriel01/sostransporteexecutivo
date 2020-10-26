@@ -17,6 +17,7 @@ module.exports = {
             model: "Citys",
             key: "id",
           },
+          onUpdate: "CASCADE",
         },
         situation: {
           allowNull: true,

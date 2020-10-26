@@ -17,6 +17,7 @@ module.exports = {
             model: "States",
             key: "id",
           },
+          onUpdate: "CASCADE",
         },
         name: {
           allowNull: true,

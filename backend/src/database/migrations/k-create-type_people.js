@@ -18,6 +18,7 @@ module.exports = {
             model: "People",
             key: "id",
           },
+          onUpdate: "CASCADE",
         },
         id_type: {
           allowNull: false,
@@ -26,6 +27,7 @@ module.exports = {
             model: "Types",
             key: "id",
           },
+          onUpdate: "CASCADE",
         },
         active: {
           allowNull: false,

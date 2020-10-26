@@ -18,6 +18,7 @@ module.exports = {
             model: "People",
             key: "id",
           },
+          onUpdate: "CASCADE",
         },
         id_user_solicitation: {
           allowNull: false,
@@ -26,6 +27,7 @@ module.exports = {
             model: "People",
             key: "id",
           },
+          onUpdate: "CASCADE",
         },
         id_user_attendance: {
           allowNull: true,
@@ -34,6 +36,7 @@ module.exports = {
             model: "People",
             key: "id",
           },
+          onUpdate: "CASCADE",
         },
         id_driver: {
           allowNull: true,
@@ -42,6 +45,7 @@ module.exports = {
             model: "People",
             key: "id",
           },
+          onUpdate: "CASCADE",
         },
         id_vehicle: {
           allowNull: true,
@@ -50,6 +54,7 @@ module.exports = {
             model: "Vehicles",
             key: "id",
           },
+          onUpdate: "CASCADE",
         },
         id_status: {
           allowNull: false,
@@ -58,6 +63,7 @@ module.exports = {
             model: "Status",
             key: "id",
           },
+          onUpdate: "CASCADE",
         },
         date_time_solicitation: {
           allowNull: false,
@@ -78,6 +84,7 @@ module.exports = {
             model: "Neighborhoods",
             key: "id",
           },
+          onUpdate: "CASCADE",
         },
         street_origin: {
           allowNull: false,
@@ -102,6 +109,7 @@ module.exports = {
             model: "Neighborhoods",
             key: "id",
           },
+          onUpdate: "CASCADE",
         },
         street_destiny: {
           allowNull: false,
@@ -146,6 +154,7 @@ module.exports = {
             model: "People",
             key: "id",
           },
+          onUpdate: "CASCADE",
         },
         observation_service: {
           allowNull: true,
@@ -162,6 +171,7 @@ module.exports = {
             model: "People",
             key: "id",
           },
+          onUpdate: "CASCADE",
         },
         observation_cancellation: {
           allowNull: true,

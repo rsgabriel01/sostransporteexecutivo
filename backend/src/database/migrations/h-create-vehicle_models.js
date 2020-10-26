@@ -18,6 +18,7 @@ module.exports = {
             model: "Vehicle_brands",
             key: "id",
           },
+          onUpdate: "CASCADE",
         },
         description: {
           allowNull: false,

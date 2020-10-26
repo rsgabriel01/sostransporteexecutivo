@@ -18,6 +18,7 @@ module.exports = {
             model: "People",
             key: "id",
           },
+          onUpdate: "CASCADE",
         },
         id_model: {
           allowNull: false,
@@ -26,6 +27,7 @@ module.exports = {
             model: "Vehicle_models",
             key: "id",
           },
+          onUpdate: "CASCADE",
         },
         car_plate: {
           allowNull: false,

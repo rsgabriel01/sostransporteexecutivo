@@ -18,6 +18,7 @@ module.exports = {
             model: "Neighborhoods",
             key: "id",
           },
+          onUpdate: "CASCADE",
         },
         value: {
           allowNull: false,

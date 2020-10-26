@@ -18,6 +18,7 @@ module.exports = {
             model: "People",
             key: "id",
           },
+          onUpdate: "CASCADE",
         },
         id_neighborhood: {
           allowNull: false,
@@ -26,6 +27,7 @@ module.exports = {
             model: "Neighborhoods",
             key: "id",
           },
+          onUpdate: "CASCADE",
         },
         street: {
           allowNull: false,

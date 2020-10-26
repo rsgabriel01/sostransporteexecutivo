@@ -18,6 +18,7 @@ module.exports = {
             model: "Users",
             key: "id",
           },
+          onUpdate: "CASCADE",
         },
         token: {
           allowNull: false,

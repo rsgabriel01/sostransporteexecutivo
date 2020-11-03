@@ -21,6 +21,7 @@ import {
   RiLock2Line,
   RiLoginBoxLine,
   RiLoader4Line,
+  RiTaxiWifiLine,
 } from "react-icons/ri";
 
 import "./styles.css";
@@ -177,7 +178,10 @@ export default function Login() {
           <img src={loginIllustrator} alt="Solicitação de viagem" />
           <section className="form">
             <form onSubmit={handleLogin}>
-              <h1>ACESSAR A PLATAFORMA</h1>
+              <h1 id="titleFormLogin">
+                <RiTaxiWifiLine size={56} />
+                SOSTE
+              </h1>
 
               <div className="input-group">
                 <RiUserLine size={30} color="#3F3D56" />
@@ -204,8 +208,6 @@ export default function Login() {
                 />
                 {visibleIcon}
               </div>
-
-              <Link to="/remember">Esqueci minha senha</Link>
 
               <button
                 type="submit"

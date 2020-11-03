@@ -47,11 +47,19 @@ body {
 }
 
 .logon-container section.form form h1 {
-  font-size: 28px;
+  font-size: 40px;
   font-weight: 700;
 
   margin-bottom: 60px;
-  color: #3f3d56;
+  color: #0f4c82;
+}
+
+.logon-container section.form form h1#titleFormLogin {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  column-gap: 8px;
 }
 
 form .input-group {

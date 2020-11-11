@@ -38,7 +38,6 @@ export default function Login({ navigation }) {
     async function virifyAuthorization() {
       const response = await isAuthenticated();
       if (response) {
-        console.log("response: " + response);
         navigation.navigate("Home");
       }
     }
@@ -217,6 +216,7 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: "center",
     alignItems: "center",
+    backgroundColor: "#F1F1F1",
   },
   form: {
     alignSelf: "stretch",
@@ -252,26 +252,20 @@ const styles = StyleSheet.create({
   },
 
   inputUser: {
+    flex: 1,
     paddingHorizontal: 10,
-    borderRadius: 5,
-    // borderWidth: 1,
     fontSize: 16,
     color: "#3f3d56",
     height: "100%",
-    width: 270,
-    marginRight: 200,
   },
 
   inputPassword: {
+    flex: 1,
     flexDirection: "row",
     paddingHorizontal: 10,
-    borderRadius: 5,
-    // borderWidth: 1,
-
     fontSize: 16,
     color: "#3f3d56",
     height: "100%",
-    width: 230,
   },
 
   button: {
@@ -284,7 +278,7 @@ const styles = StyleSheet.create({
   },
 
   buttonText: {
-    color: "#fff",
+    color: "#EFEFEF",
     fontWeight: "bold",
     fontSize: 16,
   },

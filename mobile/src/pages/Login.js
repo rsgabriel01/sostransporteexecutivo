@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { StatusBar } from "expo-status-bar";
+import { useNavigation } from "@react-navigation/native";
 import {
   View,
   KeyboardAvoidingView,
@@ -25,12 +26,13 @@ import { login, isAuthenticated } from "../services/auth";
 import logo from "../assets/logo/SOSTE.png";
 import { toastfySuccess, toastfyInfo, toastfyError } from "../helpers/toastify";
 
-export default function Login({ navigation }) {
+export default function Login() {
   //#region Definitions
   const [user, setUser] = useState("");
   const [password, setPassword] = useState("");
   const [passwordInvisible, setPasswordInvisible] = useState(true);
   const [loading, setLoading] = useState(false);
+  const navigation = useNavigation();
   //#endregion Definitions
 
   //#region Verify Session
@@ -78,10 +80,10 @@ export default function Login({ navigation }) {
       if (validateFields() === true) {
         setLoading(true);
 
-        const response = await api.post("/acess/mobile/login", data);
+        const response = await api.post("/access/mobile/login", data);
 
         if (response) {
-          // toastfySuccess("Sucesso", "sadasdas");
+          setLoading(false);
 
           await login(
             response.data.session.token,
@@ -109,8 +111,10 @@ export default function Login({ navigation }) {
         }
       } else if (error.request) {
         console.log(error.request);
+        toastfyError("Erro", error.request);
       } else {
         console.log("Error", error.message);
+        toastfyError("Erro", error.message);
       }
     }
   }
@@ -216,7 +220,7 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: "center",
     alignItems: "center",
-    backgroundColor: "#F1F1F1",
+    // backgroundColor: "#F1F1F1",
   },
   form: {
     alignSelf: "stretch",

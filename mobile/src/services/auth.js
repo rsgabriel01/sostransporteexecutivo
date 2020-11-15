@@ -9,11 +9,7 @@ export const isAuthenticated = async () => {
   try {
     const token_key = await AsyncStorage.getItem(TOKEN_KEY);
 
-    const response = await api.get("/acess/mobile/session", {
-      headers: {
-        token: token_key,
-      },
-    });
+    const response = await api.get("/access/mobile/session");
 
     if (
       response.status === 200 &&

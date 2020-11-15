@@ -5,12 +5,15 @@ export const TOKEN_KEY = "@soste-Token";
 export const ID_EXECUTINGPERSON = "@soste-IdExecutingPerson";
 
 const api = axios.create({
-  baseURL: "http://192.168.0.33:3333/api",
+  baseURL: "http://192.168.0.30:3333/api",
 });
 
 api.interceptors.request.use(async (config) => {
   const token = await AsyncStorage.getItem(TOKEN_KEY);
   const executingperson = await AsyncStorage.getItem(ID_EXECUTINGPERSON);
+  console.log(token);
+  console.log(executingperson);
+
   if (token) {
     config.headers.authorization = `${token}`;
   }

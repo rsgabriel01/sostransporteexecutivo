@@ -17,6 +17,7 @@ import {
   ActivityIndicator,
   FlatList,
 } from "react-native";
+import { BorderlessButton } from "react-native-gesture-handler";
 
 import { createIconSet } from "react-native-vector-icons";
 import Toast from "react-native-toast-message";
@@ -26,13 +27,16 @@ const assetId = require("../assets/customIcons/remixicon.ttf");
 const CustomIcon = createIconSet(glyphMap, "remixicon", assetId);
 
 import api from "../services/api";
-import { isAuthenticated } from "../services/auth";
+import { isAuthenticated, logout, getToken } from "../services/auth";
 import logo from "../assets/logo/SOSTE.png";
 import { toastfySuccess, toastfyInfo, toastfyError } from "../helpers/toastify";
 import { NavigationActions } from "react-navigation";
+import { useNavigation } from "@react-navigation/native";
 
-export default function Home({ navigation }) {
-  //#region Definitions
+export default function Home() {
+  // #region Definitions
+  const navigation = useNavigation();
+
   const [loading, setLoading] = useState(false);
   const [executionSoList, setExecutionSoList] = useState([
     {
@@ -88,7 +92,7 @@ export default function Home({ navigation }) {
   ]);
   //#endregion Definitions
 
-  //#region Verify Session
+  // #region Verify Session
   useEffect(() => {
     async function virifyAuthorization() {
       const response = await isAuthenticated();
@@ -98,11 +102,56 @@ export default function Home({ navigation }) {
     }
     virifyAuthorization();
   }, []);
-  //#endregion
+  // #endregion
+
+  // #region Logout
+  async function handleLogout() {
+    try {
+      setLoading(true);
+
+      const response = await api.delete("/access/mobile/logout");
+      if (response) {
+        setLoading(false);
+        await logout();
+        navigation.navigate("Login");
+      }
+    } catch (error) {
+      setLoading(false);
+
+      if (error.response) {
+        const statusError = error.response.status;
+        const dataError = error.response.data;
+        const errorMessage = error.response.data.message;
+        console.error(error, dataError);
+        if (statusError == 400) {
+          toastfyError("Atenção", errorMessage);
+        } else if (statusError == 401) {
+          toastfyError("Atenção", errorMessage);
+        } else {
+          toastfyError("Erro", "Oops, algo deu errado. " + dataError);
+        }
+      } else if (error.request) {
+        console.log(error.request);
+        toastfyError("Erro", error.request);
+      } else {
+        console.log("Error", error.message);
+        toastfyError("Erro", error.message);
+      }
+    }
+  }
+  // #endregion Logout
 
   return (
     <SafeAreaView style={stylesGlobal.container}>
-      <Image source={logo} style={stylesGlobal.logo} />
+      <View style={stylesGlobal.header}>
+        <BorderlessButton onPress={handleLogout}>
+          <CustomIcon name="logout-box-line" size={30} color="#0F4C82" />
+        </BorderlessButton>
+
+        <Image source={logo} style={stylesGlobal.logo} />
+
+        <View style={stylesGlobal.viewWhite} />
+      </View>
 
       <View style={stylesGlobal.execution}>
         <Text style={stylesExecution.listTitle}>Em execução</Text>
@@ -110,7 +159,7 @@ export default function Home({ navigation }) {
         <FlatList
           style={stylesExecution.list}
           data={executionSoList}
-          keyExtractor={(executionSo) => executionSo.id}
+          keyExtractor={(executionSo) => executionSo.id.toString()}
           horizontal
           showsHorizontalScrollIndicator={false}
           renderItem={({ item }) => (
@@ -119,24 +168,24 @@ export default function Home({ navigation }) {
               onPress={() => navigation.navigate("ServiceOrder")}
             >
               <View style={stylesExecution.iconTextTitleGroupList}>
-                <CustomIcon name="taxi-wifi-line" size={30} color="#F1F1F1" />
+                <CustomIcon name="taxi-wifi-line" size={30} color="#fef3f5" />
 
                 <Text style={stylesExecution.textTitleList}>{item.client}</Text>
               </View>
               <View style={stylesExecution.iconTextGroupList}>
-                <CustomIcon name="file-list-2-line" size={30} color="#F1F1F1" />
+                <CustomIcon name="file-list-2-line" size={30} color="#fef3f5" />
 
                 <Text style={stylesExecution.textList}>{item.os}</Text>
               </View>
               <View style={stylesExecution.iconTextGroupList}>
-                <CustomIcon name="map-pin-line" size={30} color="#F1F1F1" />
+                <CustomIcon name="map-pin-line" size={30} color="#fef3f5" />
 
                 <Text style={stylesExecution.textList}>
                   {item.originClient ? "CLIENTE" : "PASSAGEIRO"}
                 </Text>
               </View>
               <View style={stylesExecution.iconTextGroupList}>
-                <CustomIcon name="map-pin-line" size={30} color="#F1F1F1" />
+                <CustomIcon name="map-pin-line" size={30} color="#fef3f5" />
 
                 <Text style={stylesExecution.textList}>
                   {item.destinyClient ? "CLIENTE" : "PASSAGEIRO"}
@@ -153,7 +202,7 @@ export default function Home({ navigation }) {
         <FlatList
           style={stylesWaiting.list}
           data={executionSoList}
-          keyExtractor={(executionSo) => executionSo.id}
+          keyExtractor={(executionSo) => executionSo.id.toString()}
           horizontal={false}
           renderItem={({ item }) => (
             <TouchableOpacity
@@ -218,16 +267,28 @@ const stylesGlobal = StyleSheet.create({
     zIndex: 9999999999999,
   },
 
-  container: {
-    flex: 1,
-    backgroundColor: "#F1F1F1",
+  header: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+
+    paddingHorizontal: 10,
+    marginTop: 10,
   },
 
   logo: {
     height: 32,
     resizeMode: "contain",
     alignSelf: "center",
-    marginTop: 10,
+  },
+
+  viewWhite: {
+    height: 30,
+    width: 30,
+  },
+
+  container: {
+    flex: 1,
   },
 
   execution: {
@@ -274,7 +335,7 @@ const stylesExecution = StyleSheet.create({
 
   textTitleList: {
     flexWrap: "wrap",
-    color: "#F1F1F1",
+    color: "#fef3f5",
     fontWeight: "bold",
     paddingLeft: 5,
     textTransform: "capitalize",
@@ -291,7 +352,7 @@ const stylesExecution = StyleSheet.create({
     flexWrap: "wrap",
     alignItems: "center",
     textAlignVertical: "center",
-    color: "#F1F1F1",
+    color: "#fef3f5",
     fontWeight: "bold",
     paddingLeft: 1,
     textTransform: "capitalize",

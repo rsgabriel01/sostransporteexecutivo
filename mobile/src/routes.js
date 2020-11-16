@@ -18,7 +18,7 @@ export default function Routes() {
       <Navigator
         screenOptions={{
           headerShown: false,
-          cardStyle: { backgroundColor: "#fef3f5" },
+          // cardStyle: { backgroundColor: "#fef3f5" },
         }}
       >
         <Screen

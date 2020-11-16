@@ -40,54 +40,105 @@ export default function Home() {
   const [loading, setLoading] = useState(false);
   const [executionSoList, setExecutionSoList] = useState([
     {
-      id: 1,
-      client: "ENJIN",
-      os: 1000,
+      id: 19,
+      client: "ENJIS",
+      os: 19,
       originClient: true,
       neghborhoodClient: "SÃO CRISTOVÃO",
       destinyClient: false,
       neghborhoodDestiny: "SITIO DE RECREIO PARAÍSO",
-      solicitation: "03/11/2020 08:26:00",
+      solicitation: "16/11/2020 08:26:00",
     },
     {
-      id: 2,
-      client: "Zacarias",
-      os: 11,
+      id: 20,
+      client: "ENJIS",
+      os: 20,
       originClient: true,
-      neghborhoodClient: "São Cristovão",
-      destinyClient: false,
-      neghborhoodDestiny: "Parque Verde",
-      solicitation: "03/11/2020 08:26:00",
-    },
-    {
-      id: 3,
-      client: "Bonsai",
-      os: 12,
-      originClient: true,
-      neghborhoodClient: "São Cristovão",
-      destinyClient: false,
-      neghborhoodDestiny: "São Francisco",
-      solicitation: "03/11/2020 08:26:00",
-    },
-    {
-      id: 4,
-      client: "Divesa",
-      os: 139849,
-      originClient: false,
       neghborhoodClient: "SITIO DE RECREIO PARAÍSO",
-      destinyClient: true,
-      neghborhoodDestiny: "Parque São Paulo",
-      solicitation: "03/11/2020 08:26:00",
+      destinyClient: false,
+      neghborhoodDestiny: "SÃO CRISTOVÃO",
+      solicitation: "16/11/2020 08:26:00",
     },
     {
-      id: 5,
-      client: "Audi",
-      os: 14,
+      id: 21,
+      client: "ENJIS",
+      os: 21,
       originClient: true,
-      neghborhoodClient: "São Cristovão",
+      neghborhoodClient: "SITIO DE RECREIO PARAÍSO",
       destinyClient: false,
-      neghborhoodDestiny: "Nucleo industrial III",
-      solicitation: "03/11/2020 08:26:00",
+      neghborhoodDestiny: "SÃO CRISTOVÃO",
+      solicitation: "16/11/2020 08:26:00",
+    },
+    {
+      id: 22,
+      client: "ENJIS",
+      os: 22,
+      originClient: true,
+      neghborhoodClient: "SITIO DE RECREIO PARAÍSO",
+      destinyClient: false,
+      neghborhoodDestiny: "SÃO CRISTOVÃO",
+      solicitation: "16/11/2020 08:26:00",
+    },
+    {
+      id: 23,
+      client: "ENJIS",
+      os: 21,
+      originClient: true,
+      neghborhoodClient: "SITIO DE RECREIO PARAÍSO",
+      destinyClient: false,
+      neghborhoodDestiny: "SÃO CRISTOVÃO",
+      solicitation: "16/11/2020 08:26:00",
+    },
+  ]);
+
+  const [waitingSoList, setWaitingSoList] = useState([
+    {
+      id: 22,
+      client: "ZACARIS",
+      os: 22,
+      originClient: false,
+      destinyClient: true,
+      solicitation: "16/11/2020 14:26:00",
+    },
+    {
+      id: 23,
+      client: "ZACARIS",
+      os: 23,
+      originClient: false,
+      destinyClient: true,
+      solicitation: "16/11/2020 14:36:00",
+    },
+    {
+      id: 24,
+      client: "ZACARIS",
+      os: 24,
+      originClient: false,
+      destinyClient: true,
+      solicitation: "16/11/2020 14:46:00",
+    },
+    {
+      id: 25,
+      client: "DIVES",
+      os: 25,
+      originClient: true,
+      destinyClient: false,
+      solicitation: "16/11/2020 14:56:00",
+    },
+    {
+      id: 26,
+      client: "DIVES",
+      os: 26,
+      originClient: true,
+      destinyClient: false,
+      solicitation: "16/11/2020 15:06:00",
+    },
+    {
+      id: 27,
+      client: "DIVES",
+      os: 27,
+      originClient: true,
+      destinyClient: false,
+      solicitation: "16/11/2020 15:16:00",
     },
   ]);
   //#endregion Definitions
@@ -143,6 +194,18 @@ export default function Home() {
 
   return (
     <SafeAreaView style={stylesGlobal.container}>
+      {loading ? (
+        <ActivityIndicator
+          size="large"
+          color="#0F4C82"
+          style={stylesGlobal.loading}
+        />
+      ) : (
+        <></>
+      )}
+
+      <Toast ref={(ref) => Toast.setRef(ref)} />
+
       <View style={stylesGlobal.header}>
         <BorderlessButton onPress={handleLogout}>
           <CustomIcon name="logout-box-line" size={30} color="#0F4C82" />
@@ -168,24 +231,24 @@ export default function Home() {
               onPress={() => navigation.navigate("ServiceOrder")}
             >
               <View style={stylesExecution.iconTextTitleGroupList}>
-                <CustomIcon name="taxi-wifi-line" size={30} color="#fef3f5" />
+                <CustomIcon name="taxi-wifi-line" size={30} color="#EFEFEF" />
 
                 <Text style={stylesExecution.textTitleList}>{item.client}</Text>
               </View>
               <View style={stylesExecution.iconTextGroupList}>
-                <CustomIcon name="file-list-2-line" size={30} color="#fef3f5" />
+                <CustomIcon name="file-list-2-line" size={30} color="#EFEFEF" />
 
                 <Text style={stylesExecution.textList}>{item.os}</Text>
               </View>
               <View style={stylesExecution.iconTextGroupList}>
-                <CustomIcon name="map-pin-line" size={30} color="#fef3f5" />
+                <CustomIcon name="map-pin-line" size={30} color="#EFEFEF" />
 
                 <Text style={stylesExecution.textList}>
                   {item.originClient ? "CLIENTE" : "PASSAGEIRO"}
                 </Text>
               </View>
               <View style={stylesExecution.iconTextGroupList}>
-                <CustomIcon name="map-pin-line" size={30} color="#fef3f5" />
+                <CustomIcon name="map-pin-line" size={30} color="#EFEFEF" />
 
                 <Text style={stylesExecution.textList}>
                   {item.destinyClient ? "CLIENTE" : "PASSAGEIRO"}
@@ -201,8 +264,8 @@ export default function Home() {
 
         <FlatList
           style={stylesWaiting.list}
-          data={executionSoList}
-          keyExtractor={(executionSo) => executionSo.id.toString()}
+          data={waitingSoList}
+          keyExtractor={(waitingSo) => waitingSo.id.toString()}
           horizontal={false}
           renderItem={({ item }) => (
             <TouchableOpacity
@@ -335,10 +398,10 @@ const stylesExecution = StyleSheet.create({
 
   textTitleList: {
     flexWrap: "wrap",
-    color: "#fef3f5",
+    color: "#ffffff",
     fontWeight: "bold",
     paddingLeft: 5,
-    textTransform: "capitalize",
+    textTransform: "uppercase",
   },
 
   iconTextGroupList: {
@@ -352,7 +415,7 @@ const stylesExecution = StyleSheet.create({
     flexWrap: "wrap",
     alignItems: "center",
     textAlignVertical: "center",
-    color: "#fef3f5",
+    color: "#ffffff",
     fontWeight: "bold",
     paddingLeft: 1,
     textTransform: "capitalize",
@@ -370,6 +433,7 @@ const stylesWaiting = StyleSheet.create({
 
   list: {
     paddingHorizontal: 10,
+    paddingBottom: 10,
   },
 
   listItem: {
@@ -394,7 +458,7 @@ const stylesWaiting = StyleSheet.create({
     color: "#858585",
     fontWeight: "bold",
     paddingLeft: 5,
-    textTransform: "capitalize",
+    textTransform: "uppercase",
   },
 
   dataClient: {

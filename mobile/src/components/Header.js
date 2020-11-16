@@ -14,14 +14,14 @@ export default function Header({ title, showCancel = true }) {
   return (
     <View style={styles.container}>
       <BorderlessButton onPress={navigtion.goBack}>
-        <CustomIcon name="arrow-left-line" size={23} color="#fef3f5" />
+        <CustomIcon name="arrow-left-line" size={23} color="#ffffff" />
       </BorderlessButton>
 
       <Text style={styles.title}>{title}</Text>
 
       {showCancel ? (
         <BorderlessButton onPress={navigtion.goBack}>
-          <CustomIcon name="close-line" size={23} color="#fef3f5" />
+          <CustomIcon name="close-line" size={23} color="#ffffff" />
         </BorderlessButton>
       ) : (
         <View style={styles.viewWhite} />
@@ -45,7 +45,7 @@ const styles = StyleSheet.create({
 
   title: {
     fontWeight: "bold",
-    color: "#fef3f5",
+    color: "#ffffff",
     fontSize: 16,
   },
 

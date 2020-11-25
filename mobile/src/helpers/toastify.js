@@ -11,7 +11,7 @@ export const toastConfig = {
   },
 };
 
-export function toastfySuccess(Title, Message) {
+export function toastfySuccess(Title, Message, topDistance = 45) {
   Toast.show({
     type: "success",
     position: "top",
@@ -19,23 +19,23 @@ export function toastfySuccess(Title, Message) {
     text2: Message,
     visibilityTime: 4000,
     autoHide: true,
-    topOffset: 50,
+    topOffset: topDistance,
   });
 }
 
-export function toastfyError(Title, Message) {
+export function toastfyError(Title, Message, topDistance = 45) {
   Toast.show({
     type: "error",
     position: "top",
     text1: Title,
     text2: Message,
-    visibilityTime: 4000,
+    visibilityTime: 7000,
     autoHide: true,
-    topOffset: 50,
+    topOffset: topDistance,
   });
 }
 
-export function toastfyInfo(Title, Message) {
+export function toastfyInfo(Title, Message, topDistance = 45) {
   Toast.show({
     type: "info",
     position: "top",
@@ -43,6 +43,6 @@ export function toastfyInfo(Title, Message) {
     text2: Message,
     visibilityTime: 4000,
     autoHide: true,
-    topOffset: 50,
+    topOffset: topDistance,
   });
 }

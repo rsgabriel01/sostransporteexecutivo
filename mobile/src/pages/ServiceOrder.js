@@ -1,6 +1,9 @@
 import React, { useState, useEffect } from "react";
 import { StatusBar } from "expo-status-bar";
 
+import { NavigationActions } from "react-navigation";
+import { useNavigation, useRoute } from "@react-navigation/native";
+
 import {
   SafeAreaView,
   View,
@@ -16,6 +19,7 @@ import {
   Alert,
   ActivityIndicator,
   FlatList,
+  Linking,
 } from "react-native";
 import { BorderlessButton } from "react-native-gesture-handler";
 
@@ -28,19 +32,56 @@ const CustomIcon = createIconSet(glyphMap, "remixicon", assetId);
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 
 import api from "../services/api";
-import { isAuthenticated, logout, getToken } from "../services/auth";
+import {
+  isAuthenticated,
+  logout,
+  getToken,
+  getNameExecutingPerson,
+} from "../services/auth";
+import {
+  getDateForDatePickerWithClassDate,
+  getDateForDatePickerWithDateString,
+  getDateOfDatePickerValue,
+} from "../helpers/dates";
 import logo from "../assets/logo/SOSTE.png";
 import { toastfySuccess, toastfyInfo, toastfyError } from "../helpers/toastify";
-import { NavigationActions } from "react-navigation";
-import { useNavigation } from "@react-navigation/native";
 
 export default function ServiceOrder() {
   // #region Definitions
   const navigation = useNavigation();
+  const route = useRoute();
+
+  const { idServiceOrder } = route.params;
+  const [nameDriver, setNameDriver] = useState("");
 
   const [loading, setLoading] = useState(false);
 
-  const [executionSoList, setExecutionSoList] = useState([]);
+  const [idSituation, setIdSituation] = useState("");
+  const [situation, setSituation] = useState("");
+
+  const [idClient, setIdClient] = useState("");
+  const [nameFantasyClient, setNameFantasyClient] = useState("");
+
+  const [clientAddressOrigin, setClientAddressOrigin] = useState(true);
+  const [neighborhoodOrigin, setNeighborhoodOrigin] = useState("");
+  const [streetOrigin, setStreetOrigin] = useState("");
+  const [streetNumberOrigin, setStreetNumberOrigin] = useState("");
+  const [complementOrigin, setComplementOrigin] = useState("");
+
+  const [clientAddressDestiny, setClientAddressDestiny] = useState(false);
+  const [neighborhoodDestiny, setNeighborhoodDestiny] = useState("");
+  const [streetDestiny, setStreetDestiny] = useState("");
+  const [streetNumberDestiny, setStreetNumberDestiny] = useState("");
+  const [complementDestiny, setComplementDestiny] = useState("");
+
+  const [passengerName, setPassengerName] = useState("");
+  const [passengerPhone, setPassengerPhone] = useState("");
+  const [numberPassengers, setNumberPassengers] = useState("");
+
+  const [observationService, setObservationService] = useState("");
+
+  const [dateTimeSolicitation, setDateTimeSolicitation] = useState("");
+
   //#endregion Definitions
 
   // #region Verify Session
@@ -51,9 +92,204 @@ export default function ServiceOrder() {
         navigation.navigate("Login");
       }
     }
+
+    async function getNameDriver() {
+      const driver = await getNameExecutingPerson();
+
+      setNameDriver(driver);
+    }
+
     virifyAuthorization();
+
+    getNameDriver();
+
+    loadServiceOrder();
   }, []);
   // #endregion
+
+  // #region Load Service Orders
+  async function loadServiceOrder() {
+    setLoading(true);
+
+    try {
+      const response = await api.get(`/serviceOrder/${idServiceOrder}`);
+
+      if (response) {
+        setLoading(false);
+
+        console.log(response.data);
+        fillFields(response.data);
+      }
+    } catch (error) {
+      setLoading(false);
+
+      if (error.response) {
+        const statusError = error.response.status;
+        const dataError = error.response.data;
+        const errorMessage = error.response.data.message;
+        console.error(error, dataError);
+        if (statusError == 400) {
+          toastfyError("Atenção", errorMessage);
+        } else if (statusError == 401) {
+          toastfyError("Atenção", errorMessage);
+        } else {
+          toastfyError("Erro", "Oops, algo deu errado. " + dataError);
+        }
+      } else if (error.request) {
+        console.log(error.request);
+        toastfyError("Erro", error.request);
+      } else {
+        console.log("Error", error.message);
+        toastfyError("Erro", error.message);
+      }
+    }
+  }
+  // #endregion Load Service Orders
+
+  // #region Fill Fields
+  function fillFields(response) {
+    if (response) {
+      const idSituation = response.id_status;
+      idSituation ? setIdSituation(idSituation) : setIdSituation("");
+
+      setClientAddressOrigin(response.client_origin);
+
+      const streetOrigin = response.street_origin;
+      streetOrigin ? setStreetOrigin(streetOrigin) : setStreetOrigin("");
+
+      const streetNumberOrigin = response.street_number_origin;
+      streetNumberOrigin
+        ? setStreetNumberOrigin(streetNumberOrigin)
+        : setStreetNumberOrigin("");
+
+      const complementOrigin = response.complement_origin;
+      console.log("origin: " + complementOrigin);
+      complementOrigin
+        ? setComplementOrigin(complementOrigin)
+        : setComplementOrigin("");
+
+      setClientAddressDestiny(response.client_destiny);
+
+      const streetDestiny = response.street_destiny;
+      streetDestiny ? setStreetDestiny(streetDestiny) : setStreetDestiny("");
+
+      const streetNumberDestiny = response.street_number_destiny;
+      streetNumberDestiny
+        ? setStreetNumberDestiny(streetNumberDestiny)
+        : setStreetNumberDestiny("");
+
+      const complementDestiny = response.complement_destiny;
+      console.log("destiny: " + complementDestiny);
+
+      complementDestiny
+        ? setComplementDestiny(complementDestiny)
+        : setComplementDestiny("");
+
+      const passengerName = response.passenger_name;
+      passengerName ? setPassengerName(passengerName) : setPassengerName("");
+
+      const passengerPhone = response.passenger_phone;
+      passengerPhone
+        ? setPassengerPhone(passengerPhone)
+        : setPassengerPhone("");
+
+      const numberPassengers = response.number_passengers;
+      numberPassengers
+        ? setNumberPassengers(numberPassengers)
+        : setNumberPassengers("");
+
+      const observationService = response.observation_service;
+      observationService
+        ? setObservationService(observationService)
+        : setObservationService("");
+
+      const dateTimeSolicitation = response.date_time_solicitation;
+      dateTimeSolicitation
+        ? setDateTimeSolicitation(
+            `${getDateOfDatePickerValue(
+              dateTimeSolicitation.substring(0, 10)
+            )} ${dateTimeSolicitation.substring(10)}`
+          )
+        : setDateTimeSolicitation("");
+    }
+
+    if (response.Status) {
+      const situation = response.Status.description;
+      situation ? setSituation(situation) : setSituation("");
+    }
+
+    if (response.Client) {
+      const nameFantasyClient = response.Client.name_fantasy;
+      nameFantasyClient
+        ? setNameFantasyClient(nameFantasyClient)
+        : setNameFantasyClient("");
+    }
+
+    if (response.Neighborhood_origin) {
+      const neighborhoodOrigin = response.Neighborhood_origin.name;
+      neighborhoodOrigin
+        ? setNeighborhoodOrigin(neighborhoodOrigin)
+        : setNeighborhoodOrigin("");
+    }
+
+    if (response.Neighborhood_destiny) {
+      const neighborhoodDestiny = response.Neighborhood_destiny.name;
+      neighborhoodDestiny
+        ? setNeighborhoodDestiny(neighborhoodDestiny)
+        : setNeighborhoodDestiny("");
+    }
+  }
+  // #endregion Fill Fields
+
+  // #region Hadle Whatsapp
+  function handleWhatsapp() {
+    if (passengerPhone !== "") {
+      Linking.openURL(
+        `whatsapp://send?phone=+55${passengerPhone}&text=Olá ${passengerName}, tudo bem? Meu nome é ${nameDriver}, eu serei o motorista responsavel por tansportar o(a) senhor(a) por conta da ${nameFantasyClient}`
+      );
+    } else {
+      toastfyError(
+        "Atenção",
+        "Não foi encontrado um número para contato via Whatsapp",
+        10
+      );
+    }
+  }
+  // #endregion Hadle Whatsapp
+
+  // #region Hadle Waze
+  function handleWaze() {
+    if (streetOrigin === "" || streetDestiny === "") {
+      toastfyError(
+        "Atenção",
+        "Não foi encontrada endereço para consulta de rotas pelo Waze",
+        10
+      );
+      return;
+    }
+
+    const streetOriginUrl = streetOrigin.replace(" ", "%20");
+    const addressOriginUrl = `${streetNumberOrigin}%20${streetOriginUrl}`;
+
+    const streetDestinyUrl = streetDestiny.replace(" ", "%20");
+    const addressDestinyUrl = `${streetNumberDestiny}%20${streetDestinyUrl}`;
+
+    console.log(addressOriginUrl);
+    console.log(addressDestinyUrl);
+
+    if (idSituation == 3 || idSituation == 4) {
+      Linking.openURL(`https://waze.com/ul?q=${addressOriginUrl}`);
+    } else if (idSituation == 5 || idSituation == 6) {
+      Linking.openURL(`https://waze.com/ul?q=${addressDestinyUrl}`);
+    } else {
+      toastfyError(
+        "Atenção",
+        "Essa ordem de serviço não está em uma situação apta para consulta de rotas pelo Waze",
+        10
+      );
+    }
+  }
+  // #endregion Handle Waze
 
   return (
     <SafeAreaView style={styles.safeContainer}>
@@ -75,8 +311,8 @@ export default function ServiceOrder() {
             <CustomIcon name="user-2-line" size={75} color="#000" />
 
             <View style={styles.nameCodClient}>
-              <Text style={styles.nameClient}>HONDA ENJIS</Text>
-              <Text style={styles.codClient}>Código: 2</Text>
+              <Text style={styles.nameClient}>{nameFantasyClient}</Text>
+              <Text style={styles.codClient}>Código: {idClient}</Text>
             </View>
           </View>
 
@@ -90,14 +326,12 @@ export default function ServiceOrder() {
             <View style={styles.codSituationServiceOrder}>
               <View style={styles.textsColumn}>
                 <Text style={styles.textDarkGray}>Código</Text>
-                <Text style={styles.textLightGray}>19</Text>
+                <Text style={styles.textLightGray}>{idServiceOrder}</Text>
               </View>
 
               <View style={styles.textsColumn}>
                 <Text style={styles.textDarkGray}>Situação</Text>
-                <Text style={styles.textLightGray}>
-                  NA LISTA DE EXECUÇÃO DO MOTORISTA
-                </Text>
+                <Text style={styles.textLightGray}>{situation}</Text>
               </View>
             </View>
           </View>
@@ -110,7 +344,7 @@ export default function ServiceOrder() {
                 <Text style={styles.dataTitleText}>Origem</Text>
               </View>
 
-              {true ? (
+              {clientAddressOrigin ? (
                 <View style={styles.dataTitle}>
                   <CustomIcon name="checkbox-line" size={20} color="#000" />
                   <Text style={styles.clientAddress}>Cliente</Text>
@@ -123,22 +357,22 @@ export default function ServiceOrder() {
             <View style={styles.dataColumn}>
               <View style={styles.textsColumn}>
                 <Text style={styles.textDarkGray}>Bairro</Text>
-                <Text style={styles.textLightGray}>SÃO CRISTOVÃO</Text>
+                <Text style={styles.textLightGray}>{neighborhoodOrigin}</Text>
               </View>
 
               <View style={styles.textsColumn}>
                 <Text style={styles.textDarkGray}>Rua</Text>
-                <Text style={styles.textLightGray}>AV BRASIL</Text>
+                <Text style={styles.textLightGray}>{streetOrigin}</Text>
               </View>
 
               <View style={styles.textsColumn}>
                 <Text style={styles.textDarkGray}>Número</Text>
-                <Text style={styles.textLightGray}>700</Text>
+                <Text style={styles.textLightGray}>{streetNumberOrigin}</Text>
               </View>
 
               <View style={styles.textsColumn}>
                 <Text style={styles.textDarkGray}>Complemento</Text>
-                <Text style={styles.textLightGray}></Text>
+                <Text style={styles.textLightGray}>{complementOrigin}</Text>
               </View>
             </View>
           </View>
@@ -150,7 +384,7 @@ export default function ServiceOrder() {
                 <CustomIcon name="map-pin-line" size={35} color="#000" />
                 <Text style={styles.dataTitleText}>Destino</Text>
               </View>
-              {!true ? (
+              {clientAddressDestiny ? (
                 <View style={styles.dataTitle}>
                   <CustomIcon name="checkbox-line" size={20} color="#000" />
                   <Text style={styles.clientAddress}>Cliente</Text>
@@ -163,22 +397,22 @@ export default function ServiceOrder() {
             <View style={styles.dataColumn}>
               <View style={styles.textsColumn}>
                 <Text style={styles.textDarkGray}>Bairro</Text>
-                <Text style={styles.textLightGray}>CANCELLI</Text>
+                <Text style={styles.textLightGray}>{neighborhoodDestiny}</Text>
               </View>
 
               <View style={styles.textsColumn}>
                 <Text style={styles.textDarkGray}>Rua</Text>
-                <Text style={styles.textLightGray}>RUA TEREZINA</Text>
+                <Text style={styles.textLightGray}>{streetDestiny}</Text>
               </View>
 
               <View style={styles.textsColumn}>
                 <Text style={styles.textDarkGray}>Número</Text>
-                <Text style={styles.textLightGray}>310</Text>
+                <Text style={styles.textLightGray}>{streetNumberDestiny}</Text>
               </View>
 
               <View style={styles.textsColumn}>
                 <Text style={styles.textDarkGray}>Complemento</Text>
-                <Text style={styles.textLightGray}>BLOCO 2 AP 91</Text>
+                <Text style={styles.textLightGray}>{complementDestiny}</Text>
               </View>
             </View>
           </View>
@@ -193,14 +427,12 @@ export default function ServiceOrder() {
             <View style={styles.dataColumn}>
               <View style={styles.textsColumn}>
                 <Text style={styles.textDarkGray}>Nome para contato</Text>
-                <Text style={styles.textLightGray}>
-                  GABRIEL RODRIGUES SOUZA
-                </Text>
+                <Text style={styles.textLightGray}>{passengerName}</Text>
               </View>
 
               <View style={styles.textsColumn}>
                 <Text style={styles.textDarkGray}>Número de passageiros</Text>
-                <Text style={styles.textLightGray}>1</Text>
+                <Text style={styles.textLightGray}>{numberPassengers}</Text>
               </View>
             </View>
           </View>
@@ -214,9 +446,7 @@ export default function ServiceOrder() {
 
             <View style={styles.dataColumn}>
               <View style={styles.textsColumn}>
-                <Text style={styles.textLightGray}>
-                  PASSAGEIRO DE BERMUDA MARROM E CAMISETA BRANCA
-                </Text>
+                <Text style={styles.textLightGray}>{observationService}</Text>
               </View>
             </View>
           </View>
@@ -230,19 +460,29 @@ export default function ServiceOrder() {
 
             <View style={styles.dataColumn}>
               <View style={styles.textsColumn}>
-                <Text style={styles.textLightGray}>26/10/2020 15:18:46</Text>
+                <Text style={styles.textLightGray}>{dateTimeSolicitation}</Text>
               </View>
             </View>
           </View>
 
           <View style={styles.buttonsRow}>
-            <TouchableOpacity onPress={() => {}} style={styles.buttonWhatsApp}>
+            <TouchableOpacity
+              onPress={() => {
+                handleWhatsapp();
+              }}
+              style={styles.buttonWhatsApp}
+            >
               <CustomIcon name="whatsapp-line" size={30} color="#EFEFEF" />
 
               <Text style={styles.buttonText}>Contato</Text>
             </TouchableOpacity>
 
-            <TouchableOpacity onPress={() => {}} style={styles.buttonWaze}>
+            <TouchableOpacity
+              onPress={() => {
+                handleWaze();
+              }}
+              style={styles.buttonWaze}
+            >
               <MaterialCommunityIcons name="waze" size={33} color="#EFEFEF" />
 
               <Text style={styles.buttonText}>Rotas</Text>
@@ -378,6 +618,7 @@ const styles = StyleSheet.create({
   },
 
   textsColumn: {
+    flex: 1,
     marginBottom: 5,
   },
 
@@ -390,9 +631,11 @@ const styles = StyleSheet.create({
     fontSize: 16,
     fontWeight: "bold",
     color: "#B0B0B0",
+    textTransform: "uppercase",
   },
 
   orderService: {
+    flex: 1,
     marginBottom: 15,
   },
 

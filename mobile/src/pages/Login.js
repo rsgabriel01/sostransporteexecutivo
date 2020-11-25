@@ -1,8 +1,9 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback, useRef } from "react";
 import { StatusBar } from "expo-status-bar";
-import { useNavigation } from "@react-navigation/native";
+import { useNavigation, useFocusEffect } from "@react-navigation/native";
 import {
   View,
+  SafeAreaView,
   KeyboardAvoidingView,
   Image,
   Text,
@@ -33,6 +34,10 @@ export default function Login() {
   const [passwordInvisible, setPasswordInvisible] = useState(true);
   const [loading, setLoading] = useState(false);
   const navigation = useNavigation();
+
+  const userInputRef = useRef(null);
+  const passwordInputRef = useRef(null);
+
   //#endregion Definitions
 
   //#region Verify Session
@@ -47,21 +52,55 @@ export default function Login() {
   }, []);
   //#endregion
 
-  const alertMessage = (title, message) => {
-    Alert.alert(title, message);
+  // #region use Focus Effect
+  useFocusEffect(
+    useCallback(() => {
+      setFocus("user");
+
+      return () => {
+        clearFields();
+      };
+    }, [])
+  );
+  // #endregion use Effect
+
+  const clearFields = () => {
+    setUser("");
+    setPassword("");
+    setPasswordInvisible("");
+    setPasswordInvisible(true);
+  };
+
+  const setFocus = (input) => {
+    switch (input) {
+      case "user":
+        setTimeout(() => {
+          userInputRef.current.focus();
+        }, 1);
+        break;
+
+      case "password":
+        setTimeout(() => {
+          passwordInputRef.current.focus();
+        }, 1);
+        break;
+    }
   };
 
   const validateFields = () => {
     if (user === "") {
-      toastfyError("Atenção", "O usuário deve ser preenchido.");
+      toastfyError("Atenção", "O usuário deve ser preenchido");
+      setFocus("user");
       return false;
     }
     if (password === "") {
       toastfyError("Atenção", "A senha deve ser preenchida.");
+      setFocus("password");
       return false;
     }
     if (password.length < 8) {
       toastfyError("Atenção", "A senha deve conter no mínimo 8 caracteres.");
+      setFocus("password");
       return false;
     }
 
@@ -146,10 +185,11 @@ export default function Login() {
 
       <Image source={logo} />
 
-      <View style={styles.form}>
+      <SafeAreaView style={styles.form}>
         <View style={styles.inputGroup}>
           <CustomIcon name="user-line" size={30} color="#3f3d56" />
           <TextInput
+            ref={userInputRef}
             style={styles.inputUser}
             placeholder="Usuário"
             placeholderTextColor="#999"
@@ -166,6 +206,7 @@ export default function Login() {
           <CustomIcon name="lock-2-line" size={30} color="#3f3d56" />
 
           <TextInput
+            ref={passwordInputRef}
             style={styles.inputPassword}
             placeholder="Senha"
             placeholderTextColor="#999"
@@ -197,7 +238,7 @@ export default function Login() {
         <TouchableOpacity onPress={handleSubmit} style={styles.button}>
           <Text style={styles.buttonText}>Entrar</Text>
         </TouchableOpacity>
-      </View>
+      </SafeAreaView>
 
       <StatusBar style="dark" />
     </KeyboardAvoidingView>

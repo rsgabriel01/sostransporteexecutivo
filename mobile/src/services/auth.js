@@ -24,15 +24,15 @@ export const isAuthenticated = async () => {
 };
 
 export const getToken = async () => {
-  await AsyncStorage.getItem(TOKEN_KEY);
+  return await AsyncStorage.getItem(TOKEN_KEY);
 };
 
 export const getIdExecutingPerson = async () => {
-  await AsyncStorage.getItem(ID_EXECUTINGPERSON);
+  return await AsyncStorage.getItem(ID_EXECUTINGPERSON);
 };
 
 export const getNameExecutingPerson = async () => {
-  await AsyncStorage.getItem(NAME_EXECUTINGPERSON);
+  return await AsyncStorage.getItem(NAME_EXECUTINGPERSON);
 };
 
 export const login = async (

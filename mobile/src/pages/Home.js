@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import { StatusBar } from "expo-status-bar";
 
 import {
@@ -27,123 +27,38 @@ const assetId = require("../assets/customIcons/remixicon.ttf");
 const CustomIcon = createIconSet(glyphMap, "remixicon", assetId);
 
 import api from "../services/api";
-import { isAuthenticated, logout, getToken } from "../services/auth";
+import {
+  isAuthenticated,
+  logout,
+  getToken,
+  getIdExecutingPerson,
+} from "../services/auth";
 import logo from "../assets/logo/SOSTE.png";
 import { toastfySuccess, toastfyInfo, toastfyError } from "../helpers/toastify";
+import {
+  getDateForDatePickerWithClassDate,
+  getDateForDatePickerWithDateString,
+  getDateOfDatePickerValue,
+} from "../helpers/dates";
 import { NavigationActions } from "react-navigation";
-import { useNavigation } from "@react-navigation/native";
+import {
+  useNavigation,
+  useFocusEffect,
+  useIsFocused,
+} from "@react-navigation/native";
 
 export default function Home() {
   // #region Definitions
   const navigation = useNavigation();
+  const isFocused = useIsFocused();
 
   const [loading, setLoading] = useState(false);
-  const [executionSoList, setExecutionSoList] = useState([
-    {
-      id: 19,
-      client: "ENJIS",
-      os: 19,
-      originClient: true,
-      neghborhoodClient: "SÃO CRISTOVÃO",
-      destinyClient: false,
-      neghborhoodDestiny: "SITIO DE RECREIO PARAÍSO",
-      solicitation: "16/11/2020 08:26:00",
-    },
-    {
-      id: 20,
-      client: "ENJIS",
-      os: 20,
-      originClient: true,
-      neghborhoodClient: "SITIO DE RECREIO PARAÍSO",
-      destinyClient: false,
-      neghborhoodDestiny: "SÃO CRISTOVÃO",
-      solicitation: "16/11/2020 08:26:00",
-    },
-    {
-      id: 21,
-      client: "ENJIS",
-      os: 21,
-      originClient: true,
-      neghborhoodClient: "SITIO DE RECREIO PARAÍSO",
-      destinyClient: false,
-      neghborhoodDestiny: "SÃO CRISTOVÃO",
-      solicitation: "16/11/2020 08:26:00",
-    },
-    {
-      id: 22,
-      client: "ENJIS",
-      os: 22,
-      originClient: true,
-      neghborhoodClient: "SITIO DE RECREIO PARAÍSO",
-      destinyClient: false,
-      neghborhoodDestiny: "SÃO CRISTOVÃO",
-      solicitation: "16/11/2020 08:26:00",
-    },
-    {
-      id: 23,
-      client: "ENJIS",
-      os: 21,
-      originClient: true,
-      neghborhoodClient: "SITIO DE RECREIO PARAÍSO",
-      destinyClient: false,
-      neghborhoodDestiny: "SÃO CRISTOVÃO",
-      solicitation: "16/11/2020 08:26:00",
-    },
-  ]);
+  const [executionSoList, setExecutionSoList] = useState([]);
 
-  const [waitingSoList, setWaitingSoList] = useState([
-    {
-      id: 22,
-      client: "ZACARIS",
-      os: 22,
-      originClient: false,
-      destinyClient: true,
-      solicitation: "16/11/2020 14:26:00",
-    },
-    {
-      id: 23,
-      client: "ZACARIS",
-      os: 23,
-      originClient: false,
-      destinyClient: true,
-      solicitation: "16/11/2020 14:36:00",
-    },
-    {
-      id: 24,
-      client: "ZACARIS",
-      os: 24,
-      originClient: false,
-      destinyClient: true,
-      solicitation: "16/11/2020 14:46:00",
-    },
-    {
-      id: 25,
-      client: "DIVES",
-      os: 25,
-      originClient: true,
-      destinyClient: false,
-      solicitation: "16/11/2020 14:56:00",
-    },
-    {
-      id: 26,
-      client: "DIVES",
-      os: 26,
-      originClient: true,
-      destinyClient: false,
-      solicitation: "16/11/2020 15:06:00",
-    },
-    {
-      id: 27,
-      client: "DIVES",
-      os: 27,
-      originClient: true,
-      destinyClient: false,
-      solicitation: "16/11/2020 15:16:00",
-    },
-  ]);
+  const [waitingSoList, setWaitingSoList] = useState([]);
   //#endregion Definitions
 
-  // #region Verify Session
+  // #region use Effect
   useEffect(() => {
     async function virifyAuthorization() {
       const response = await isAuthenticated();
@@ -152,8 +67,22 @@ export default function Home() {
       }
     }
     virifyAuthorization();
-  }, []);
-  // #endregion
+  }, [navigation]);
+  // #endregion use Effect
+
+  // #region use Focus Effect
+  useFocusEffect(
+    useCallback(() => {
+      loadServiceOrderExecution();
+      loadServiceOrderWaiting();
+
+      return () => {
+        // Do something when the screen is unfocused
+        // Useful for cleanup functions
+      };
+    }, [])
+  );
+  // #endregion use Effect
 
   // #region Logout
   async function handleLogout() {
@@ -192,6 +121,104 @@ export default function Home() {
   }
   // #endregion Logout
 
+  // #region Load Service Orders Execution
+  async function loadServiceOrderExecution() {
+    setLoading(true);
+
+    const situations = "4,5,6";
+
+    const driver = await getIdExecutingPerson();
+
+    console.log(driver);
+
+    try {
+      const response = await api.get(
+        `/serviceOrders/index/situations/driver/?idDriver=${driver}&situations=${situations}&order=DESC`
+      );
+
+      if (response) {
+        setLoading(false);
+
+        setExecutionSoList(response.data);
+      }
+    } catch (error) {
+      setLoading(false);
+
+      if (error.response) {
+        const statusError = error.response.status;
+        const dataError = error.response.data;
+        const errorMessage = error.response.data.message;
+        console.error(error, dataError);
+        if (statusError == 400) {
+          toastfyError("Atenção", errorMessage);
+        } else if (statusError == 401) {
+          toastfyError("Atenção", errorMessage);
+        } else {
+          toastfyError("Erro", "Oops, algo deu errado. " + dataError);
+        }
+      } else if (error.request) {
+        console.log(error.request);
+        toastfyError("Erro", error.request);
+      } else {
+        console.log("Error", error.message);
+        toastfyError("Erro", error.message);
+      }
+    }
+  }
+  // #endregion Load Service Orders Execution
+
+  // #region Load Service Orders Waiting
+  async function loadServiceOrderWaiting() {
+    setLoading(true);
+
+    const situations = "3";
+
+    const driver = await getIdExecutingPerson();
+
+    console.log(driver);
+
+    try {
+      const response = await api.get(
+        `/serviceOrders/index/situations/driver/?idDriver=${driver}&situations=${situations}&order=ASC`
+      );
+
+      if (response) {
+        setLoading(false);
+
+        setWaitingSoList(response.data);
+      }
+    } catch (error) {
+      setLoading(false);
+
+      if (error.response) {
+        const statusError = error.response.status;
+        const dataError = error.response.data;
+        const errorMessage = error.response.data.message;
+        console.error(error, dataError);
+        if (statusError == 400) {
+          toastfyError("Atenção", errorMessage);
+        } else if (statusError == 401) {
+          toastfyError("Atenção", errorMessage);
+        } else {
+          toastfyError("Erro", "Oops, algo deu errado. " + dataError);
+        }
+      } else if (error.request) {
+        console.log(error.request);
+        toastfyError("Erro", error.request);
+      } else {
+        console.log("Error", error.message);
+        toastfyError("Erro", error.message);
+      }
+    }
+  }
+  // #endregion Load Service Orders Waiting
+
+  // #region Navigation To Service Orders Details
+
+  function handleNavigationToServiceOrdersDetails(idServiceOrder) {
+    navigation.navigate("ServiceOrder", { idServiceOrder });
+  }
+  // #endregion Navigation To Service Orders Details
   return (
     <SafeAreaView style={stylesGlobal.container}>
       {loading ? (
@@ -228,30 +255,35 @@ export default function Home() {
           renderItem={({ item }) => (
             <TouchableOpacity
               style={stylesExecution.listItem}
-              onPress={() => navigation.navigate("ServiceOrder")}
+              onPress={() => handleNavigationToServiceOrdersDetails(item.id)}
             >
               <View style={stylesExecution.iconTextTitleGroupList}>
                 <CustomIcon name="taxi-wifi-line" size={30} color="#EFEFEF" />
 
-                <Text style={stylesExecution.textTitleList}>{item.client}</Text>
+                <Text style={stylesExecution.textTitleList}>
+                  {item.Client.name_fantasy.substring(
+                    0,
+                    item.Client.name_fantasy.indexOf(" ")
+                  )}
+                </Text>
               </View>
               <View style={stylesExecution.iconTextGroupList}>
                 <CustomIcon name="file-list-2-line" size={30} color="#EFEFEF" />
 
-                <Text style={stylesExecution.textList}>{item.os}</Text>
+                <Text style={stylesExecution.textList}>{item.id}</Text>
               </View>
               <View style={stylesExecution.iconTextGroupList}>
                 <CustomIcon name="map-pin-line" size={30} color="#EFEFEF" />
 
                 <Text style={stylesExecution.textList}>
-                  {item.originClient ? "CLIENTE" : "PASSAGEIRO"}
+                  {item.client_origin ? "CLIENTE" : "PASSAGEIRO"}
                 </Text>
               </View>
               <View style={stylesExecution.iconTextGroupList}>
                 <CustomIcon name="map-pin-line" size={30} color="#EFEFEF" />
 
                 <Text style={stylesExecution.textList}>
-                  {item.destinyClient ? "CLIENTE" : "PASSAGEIRO"}
+                  {item.client_destiny ? "CLIENTE" : "PASSAGEIRO"}
                 </Text>
               </View>
             </TouchableOpacity>
@@ -270,12 +302,17 @@ export default function Home() {
           renderItem={({ item }) => (
             <TouchableOpacity
               style={stylesWaiting.listItem}
-              onPress={() => navigation.navigate("ServiceOrder")}
+              onPress={() => handleNavigationToServiceOrdersDetails(item.id)}
             >
               <View style={stylesWaiting.iconTextTitleGroup}>
                 <CustomIcon name="taxi-wifi-line" size={30} color="#858585" />
 
-                <Text style={stylesWaiting.textTitle}>{item.client}</Text>
+                <Text style={stylesWaiting.textTitle}>
+                  {item.Client.name_fantasy.substring(
+                    0,
+                    item.Client.name_fantasy.indexOf(" ")
+                  )}
+                </Text>
               </View>
 
               <View style={stylesWaiting.dataClient}>
@@ -286,26 +323,30 @@ export default function Home() {
                     color="#858585"
                   />
 
-                  <Text style={stylesWaiting.textList}>{item.os}</Text>
+                  <Text style={stylesWaiting.textList}>{item.id}</Text>
                 </View>
                 <View style={stylesWaiting.iconTextGroup}>
                   <CustomIcon name="map-pin-line" size={30} color="#858585" />
 
                   <Text style={stylesWaiting.textList}>
-                    {item.originClient ? "CLIENTE" : "PASSAGEIRO"}
+                    {item.client_origin ? "CLIENTE" : "PASSAGEIRO"}
                   </Text>
                 </View>
                 <View style={stylesWaiting.iconTextGroup}>
                   <CustomIcon name="map-pin-line" size={30} color="#858585" />
 
                   <Text style={stylesWaiting.textList}>
-                    {item.destinyClient ? "CLIENTE" : "PASSAGEIRO"}
+                    {item.client_destiny ? "CLIENTE" : "PASSAGEIRO"}
                   </Text>
                 </View>
               </View>
 
               <Text style={stylesWaiting.solicitation}>
-                {`Solicitado: ${item.solicitation}`}
+                {item.date_time_solicitation
+                  ? `Solicitado: ${getDateOfDatePickerValue(
+                      item.date_time_solicitation.substring(0, 10)
+                    )} ${item.date_time_solicitation.substring(10)}`
+                  : ""}
               </Text>
             </TouchableOpacity>
           )}

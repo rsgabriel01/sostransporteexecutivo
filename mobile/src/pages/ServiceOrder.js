@@ -1,27 +1,19 @@
 import React, { useState, useEffect } from "react";
 import { StatusBar } from "expo-status-bar";
 
-import { NavigationActions } from "react-navigation";
 import { useNavigation, useRoute } from "@react-navigation/native";
 
 import {
   SafeAreaView,
   View,
   ScrollView,
-  KeyboardAvoidingView,
-  Image,
   Text,
-  TextInput,
   TouchableOpacity,
   StyleSheet,
-  Platform,
-  Button,
   Alert,
   ActivityIndicator,
-  FlatList,
   Linking,
 } from "react-native";
-import { BorderlessButton } from "react-native-gesture-handler";
 
 import { createIconSet } from "react-native-vector-icons";
 import Toast from "react-native-toast-message";
@@ -32,19 +24,9 @@ const CustomIcon = createIconSet(glyphMap, "remixicon", assetId);
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 
 import api from "../services/api";
-import {
-  isAuthenticated,
-  logout,
-  getToken,
-  getNameExecutingPerson,
-} from "../services/auth";
-import {
-  getDateForDatePickerWithClassDate,
-  getDateForDatePickerWithDateString,
-  getDateOfDatePickerValue,
-} from "../helpers/dates";
-import logo from "../assets/logo/SOSTE.png";
-import { toastfySuccess, toastfyInfo, toastfyError } from "../helpers/toastify";
+import { isAuthenticated, getNameExecutingPerson } from "../services/auth";
+import { getDateOfDatePickerValue } from "../helpers/dates";
+import { toastfyError } from "../helpers/toastify";
 
 export default function ServiceOrder() {
   // #region Definitions
@@ -55,6 +37,8 @@ export default function ServiceOrder() {
   const [nameDriver, setNameDriver] = useState("");
 
   const [loading, setLoading] = useState(false);
+  const [nextSituationSuccess, setNextSituationSuccess] = useState(false);
+  const [messageSuccessView, setMessageSuccessView] = useState("");
 
   const [idSituation, setIdSituation] = useState("");
   const [situation, setSituation] = useState("");
@@ -117,7 +101,6 @@ export default function ServiceOrder() {
       if (response) {
         setLoading(false);
 
-        console.log(response.data);
         fillFields(response.data);
       }
     } catch (error) {
@@ -127,7 +110,7 @@ export default function ServiceOrder() {
         const statusError = error.response.status;
         const dataError = error.response.data;
         const errorMessage = error.response.data.message;
-        console.error(error, dataError);
+        //console.error(error, dataError);
         if (statusError == 400) {
           toastfyError("Atenção", errorMessage);
         } else if (statusError == 401) {
@@ -136,10 +119,10 @@ export default function ServiceOrder() {
           toastfyError("Erro", "Oops, algo deu errado. " + dataError);
         }
       } else if (error.request) {
-        console.log(error.request);
+        //console.log(error.request);
         toastfyError("Erro", error.request);
       } else {
-        console.log("Error", error.message);
+        //console.log("Error", error.message);
         toastfyError("Erro", error.message);
       }
     }
@@ -163,7 +146,6 @@ export default function ServiceOrder() {
         : setStreetNumberOrigin("");
 
       const complementOrigin = response.complement_origin;
-      console.log("origin: " + complementOrigin);
       complementOrigin
         ? setComplementOrigin(complementOrigin)
         : setComplementOrigin("");
@@ -179,7 +161,6 @@ export default function ServiceOrder() {
         : setStreetNumberDestiny("");
 
       const complementDestiny = response.complement_destiny;
-      console.log("destiny: " + complementDestiny);
 
       complementDestiny
         ? setComplementDestiny(complementDestiny)
@@ -219,6 +200,9 @@ export default function ServiceOrder() {
     }
 
     if (response.Client) {
+      const idClient = response.Client.id;
+      idClient ? setIdClient(idClient) : setIdClient("");
+
       const nameFantasyClient = response.Client.name_fantasy;
       nameFantasyClient
         ? setNameFantasyClient(nameFantasyClient)
@@ -274,9 +258,6 @@ export default function ServiceOrder() {
     const streetDestinyUrl = streetDestiny.replace(" ", "%20");
     const addressDestinyUrl = `${streetNumberDestiny}%20${streetDestinyUrl}`;
 
-    console.log(addressOriginUrl);
-    console.log(addressDestinyUrl);
-
     if (idSituation == 3 || idSituation == 4) {
       Linking.openURL(`https://waze.com/ul?q=${addressOriginUrl}`);
     } else if (idSituation == 5 || idSituation == 6) {
@@ -290,6 +271,96 @@ export default function ServiceOrder() {
     }
   }
   // #endregion Handle Waze
+
+  async function nextSituation() {
+    setLoading(true);
+
+    try {
+      const nextSituation = parseInt(idSituation) + 1;
+
+      const response = await api.put(
+        `/serviceOrder/execution/${idServiceOrder}`,
+        {
+          situation: nextSituation,
+        }
+      );
+
+      if (response) {
+        setLoading(false);
+        navigation.setOptions({ headerShown: false });
+
+        navigation.navigate("Success", {
+          message: "Situação alterada com sucesso",
+        });
+      }
+    } catch (error) {
+      setLoading(false);
+
+      if (error.response) {
+        const statusError = error.response.status;
+        const dataError = error.response.data;
+        const errorMessage = error.response.data.message;
+        //console.error(error, dataError);
+        if (statusError == 400 || statusError == 401) {
+          toastfyError("Atenção", errorMessage, 10);
+        } else {
+          toastfyError("Erro", "Oops, algo deu errado. " + dataError);
+        }
+      } else if (error.request) {
+        //console.log(error.request);
+        toastfyError("Erro", error.request, 10);
+      } else {
+        //console.log("Error", error.message, 10);
+        toastfyError("Erro", error.message, 10);
+      }
+    }
+  }
+
+  // #region Hadle Next Situation
+  function handleNextSituation() {
+    let messageQuestion;
+
+    if (parseInt(idSituation) < 3 || parseInt(idSituation) > 6) {
+      toastfyError(
+        "Atenção",
+        "Não foi possível executar essa ordem de serviço, ela não está em situação apta para execução, por favor verifique",
+        10
+      );
+      return;
+    }
+
+    if (parseInt(idSituation) === 3) {
+      messageQuestion = "Vamos buscar esse(s) passageiro(s)?";
+    } else if (parseInt(idSituation) === 4) {
+      messageQuestion = "O(s) passageiro(s) foram encontrado(s)?";
+    } else if (parseInt(idSituation) === 5) {
+      messageQuestion =
+        "Hora de levar esse(s) passageiro(s) para o endereço de destino?";
+    } else if (parseInt(idSituation) === 6) {
+      messageQuestion =
+        "Tudo certo com a viagem? O(s) passageiro(s) já estão no endereço de destino?";
+    }
+
+    Alert.alert(
+      "Atenção",
+      messageQuestion,
+      [
+        {
+          text: "Não",
+          onPress: () => {},
+          style: "cancel",
+        },
+        {
+          text: "Sim",
+          onPress: () => {
+            nextSituation();
+          },
+        },
+      ],
+      { cancelable: false }
+    );
+  }
+  // #endregion Handle Next Situation
 
   return (
     <SafeAreaView style={styles.safeContainer}>
@@ -489,7 +560,12 @@ export default function ServiceOrder() {
             </TouchableOpacity>
           </View>
 
-          <TouchableOpacity onPress={() => {}} style={styles.button}>
+          <TouchableOpacity
+            onPress={() => {
+              handleNextSituation();
+            }}
+            style={styles.button}
+          >
             <CustomIcon name="arrow-right-line" size={30} color="#EFEFEF" />
 
             <Text style={styles.buttonText}>Próxima situação</Text>
@@ -513,6 +589,27 @@ const styles = StyleSheet.create({
     height: "100%",
     width: "100%",
     zIndex: 9999999999999,
+  },
+
+  successView: {
+    alignItems: "center",
+    justifyContent: "center",
+    backgroundColor: "rgba(76,175,80,0.5)",
+
+    position: "absolute",
+    top: 0,
+    left: 0,
+    height: "100%",
+    width: "100%",
+    zIndex: 9999999999999,
+  },
+
+  textSuccessView: {
+    color: "#C7E6C8",
+    fontWeight: "bold",
+    fontSize: 30,
+    marginTop: -100,
+    textAlign: "center",
   },
 
   safeContainer: {

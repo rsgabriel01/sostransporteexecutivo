@@ -18,7 +18,7 @@ export const isAuthenticated = async () => {
       return true;
     }
   } catch (error) {
-    console.log("Authenticated false");
+    // console.log("Authenticated false");
     return false;
   }
 };

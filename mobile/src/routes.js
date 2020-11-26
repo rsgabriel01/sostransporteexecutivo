@@ -7,9 +7,8 @@ const { Navigator, Screen } = createStackNavigator();
 
 import Login from "./pages/Login";
 import Home from "./pages/Home";
-import Execution from "./pages/Execution";
-import ListIcons from "./pages/ListIcons";
 import ServiceOrder from "./pages/ServiceOrder";
+import Success from "./pages/Success";
 import Header from "./components/Header";
 
 export default function Routes() {
@@ -30,6 +29,14 @@ export default function Routes() {
           name="Home"
           component={Home}
           options={{ gestureEnabled: false }}
+        />
+        <Screen
+          name="Success"
+          component={Success}
+          options={{
+            headerShown: false,
+            gestureEnabled: false,
+          }}
         />
         <Screen
           name="ServiceOrder"

@@ -102,7 +102,7 @@ export default function Home() {
         const statusError = error.response.status;
         const dataError = error.response.data;
         const errorMessage = error.response.data.message;
-        console.error(error, dataError);
+        //console.error(error, dataError);
         if (statusError == 400) {
           toastfyError("Atenção", errorMessage);
         } else if (statusError == 401) {
@@ -111,10 +111,10 @@ export default function Home() {
           toastfyError("Erro", "Oops, algo deu errado. " + dataError);
         }
       } else if (error.request) {
-        console.log(error.request);
+        //console.log(error.request);
         toastfyError("Erro", error.request);
       } else {
-        console.log("Error", error.message);
+        //console.log("Error", error.message);
         toastfyError("Erro", error.message);
       }
     }
@@ -128,8 +128,6 @@ export default function Home() {
     const situations = "4,5,6";
 
     const driver = await getIdExecutingPerson();
-
-    console.log(driver);
 
     try {
       const response = await api.get(
@@ -148,7 +146,7 @@ export default function Home() {
         const statusError = error.response.status;
         const dataError = error.response.data;
         const errorMessage = error.response.data.message;
-        console.error(error, dataError);
+        //console.error(error, dataError);
         if (statusError == 400) {
           toastfyError("Atenção", errorMessage);
         } else if (statusError == 401) {
@@ -157,10 +155,10 @@ export default function Home() {
           toastfyError("Erro", "Oops, algo deu errado. " + dataError);
         }
       } else if (error.request) {
-        console.log(error.request);
+        //console.log(error.request);
         toastfyError("Erro", error.request);
       } else {
-        console.log("Error", error.message);
+        //console.log("Error", error.message);
         toastfyError("Erro", error.message);
       }
     }
@@ -174,8 +172,6 @@ export default function Home() {
     const situations = "3";
 
     const driver = await getIdExecutingPerson();
-
-    console.log(driver);
 
     try {
       const response = await api.get(
@@ -194,7 +190,7 @@ export default function Home() {
         const statusError = error.response.status;
         const dataError = error.response.data;
         const errorMessage = error.response.data.message;
-        console.error(error, dataError);
+        //console.error(error, dataError);
         if (statusError == 400) {
           toastfyError("Atenção", errorMessage);
         } else if (statusError == 401) {
@@ -203,10 +199,10 @@ export default function Home() {
           toastfyError("Erro", "Oops, algo deu errado. " + dataError);
         }
       } else if (error.request) {
-        console.log(error.request);
+        //console.log(error.request);
         toastfyError("Erro", error.request);
       } else {
-        console.log("Error", error.message);
+        //console.log("Error", error.message);
         toastfyError("Erro", error.message);
       }
     }
@@ -238,9 +234,28 @@ export default function Home() {
           <CustomIcon name="logout-box-line" size={30} color="#0F4C82" />
         </BorderlessButton>
 
-        <Image source={logo} style={stylesGlobal.logo} />
+        <Image
+          source={logo}
+          style={stylesGlobal.logo}
+          onPress={() => {
+            loadServiceOrderExecution();
+            loadServiceOrderWaiting();
+          }}
+        />
 
-        <View style={stylesGlobal.viewWhite} />
+        <BorderlessButton
+          onPress={() => {
+            loadServiceOrderExecution();
+            loadServiceOrderWaiting();
+          }}
+        >
+          <CustomIcon
+            name="refresh-line"
+            style={(stylesGlobal.animatio, stylesGlobal.spin)}
+            size={30}
+            color="#0F4C82"
+          />
+        </BorderlessButton>
       </View>
 
       <View style={stylesGlobal.execution}>

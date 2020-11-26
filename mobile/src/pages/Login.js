@@ -108,8 +108,6 @@ export default function Login() {
   };
 
   async function handleSubmit() {
-    console.log(user, password);
-
     const data = {
       user,
       password,
@@ -140,7 +138,7 @@ export default function Login() {
         const statusError = error.response.status;
         const dataError = error.response.data;
         const errorMessage = error.response.data.message;
-        console.error(error, dataError);
+        //console.error(error, dataError);
         if (statusError == 400) {
           toastfyError("Atenção", errorMessage);
         } else if (statusError == 401) {
@@ -149,10 +147,10 @@ export default function Login() {
           toastfyError("Erro", "Oops, algo deu errado. " + dataError);
         }
       } else if (error.request) {
-        console.log(error.request);
+        //console.log(error.request);
         toastfyError("Erro", error.request);
       } else {
-        console.log("Error", error.message);
+        //console.log("Error", error.message);
         toastfyError("Erro", error.message);
       }
     }

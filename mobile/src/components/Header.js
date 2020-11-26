@@ -9,18 +9,18 @@ const assetId = require("../assets/customIcons/remixicon.ttf");
 const CustomIcon = createIconSet(glyphMap, "remixicon", assetId);
 
 export default function Header({ title, showCancel = true }) {
-  const navigtion = useNavigation();
+  const navigation = useNavigation();
 
   return (
     <View style={styles.container}>
-      <BorderlessButton onPress={navigtion.goBack}>
+      <BorderlessButton onPress={navigation.goBack}>
         <CustomIcon name="arrow-left-line" size={23} color="#ffffff" />
       </BorderlessButton>
 
       <Text style={styles.title}>{title}</Text>
 
       {showCancel ? (
-        <BorderlessButton onPress={navigtion.goBack}>
+        <BorderlessButton onPress={navigation.goBack}>
           <CustomIcon name="close-line" size={23} color="#ffffff" />
         </BorderlessButton>
       ) : (

@@ -38,7 +38,9 @@ export default function ServiceOrder() {
 
   const [loading, setLoading] = useState(false);
   const [nextSituationSuccess, setNextSituationSuccess] = useState(false);
-  const [messageSuccessView, setMessageSuccessView] = useState("");
+  const [textBtnNextSituation, setTextBtnNextSituation] = useState(
+    "Próxima situação"
+  );
 
   const [idSituation, setIdSituation] = useState("");
   const [situation, setSituation] = useState("");
@@ -134,6 +136,20 @@ export default function ServiceOrder() {
     if (response) {
       const idSituation = response.id_status;
       idSituation ? setIdSituation(idSituation) : setIdSituation("");
+
+      if (response.id_status) {
+        if (response.id_status == 2) {
+          setTextBtnNextSituation("Iniciar execução");
+        } else if (response.id_status == 3) {
+          setTextBtnNextSituation("Buscar");
+        } else if (response.id_status == 4) {
+          setTextBtnNextSituation("Coletar");
+        } else if (response.id_status == 5) {
+          setTextBtnNextSituation("Levar");
+        } else if (response.id_status == 6) {
+          setTextBtnNextSituation("Finalizar execução");
+        }
+      }
 
       setClientAddressOrigin(response.client_origin);
 
@@ -258,7 +274,7 @@ export default function ServiceOrder() {
     const streetDestinyUrl = streetDestiny.replace(" ", "%20");
     const addressDestinyUrl = `${streetNumberDestiny}%20${streetDestinyUrl}`;
 
-    if (idSituation == 3 || idSituation == 4) {
+    if (idSituation >= 2 || idSituation <= 4) {
       Linking.openURL(`https://waze.com/ul?q=${addressOriginUrl}`);
     } else if (idSituation == 5 || idSituation == 6) {
       Linking.openURL(`https://waze.com/ul?q=${addressDestinyUrl}`);
@@ -320,7 +336,7 @@ export default function ServiceOrder() {
   function handleNextSituation() {
     let messageQuestion;
 
-    if (parseInt(idSituation) < 3 || parseInt(idSituation) > 6) {
+    if (parseInt(idSituation) < 2 || parseInt(idSituation) > 6) {
       toastfyError(
         "Atenção",
         "Não foi possível executar essa ordem de serviço, ela não está em situação apta para execução, por favor verifique",
@@ -329,7 +345,9 @@ export default function ServiceOrder() {
       return;
     }
 
-    if (parseInt(idSituation) === 3) {
+    if (parseInt(idSituation) === 2) {
+      messageQuestion = "Vamos iniciar a execução dessa ordem de serviço?";
+    } else if (parseInt(idSituation) === 3) {
       messageQuestion = "Vamos buscar esse(s) passageiro(s)?";
     } else if (parseInt(idSituation) === 4) {
       messageQuestion = "O(s) passageiro(s) foram encontrado(s)?";
@@ -568,7 +586,7 @@ export default function ServiceOrder() {
           >
             <CustomIcon name="arrow-right-line" size={30} color="#EFEFEF" />
 
-            <Text style={styles.buttonText}>Próxima situação</Text>
+            <Text style={styles.buttonText}>{textBtnNextSituation}</Text>
           </TouchableOpacity>
         </View>
       </ScrollView>

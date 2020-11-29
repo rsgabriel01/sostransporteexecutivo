@@ -67,6 +67,21 @@ export default function Home() {
       }
     }
     virifyAuthorization();
+
+    const timer = () => {
+      loadServiceOrderExecution();
+      loadServiceOrderWaiting();
+
+      setTimeout(() => {
+        timer();
+      }, 60000);
+    };
+
+    timer();
+
+    return () => {
+      clearTimeout(timer);
+    };
   }, [navigation]);
   // #endregion use Effect
 
@@ -125,7 +140,7 @@ export default function Home() {
   async function loadServiceOrderExecution() {
     setLoading(true);
 
-    const situations = "4,5,6";
+    const situations = "3,4,5,6";
 
     const driver = await getIdExecutingPerson();
 
@@ -169,7 +184,7 @@ export default function Home() {
   async function loadServiceOrderWaiting() {
     setLoading(true);
 
-    const situations = "3";
+    const situations = "2";
 
     const driver = await getIdExecutingPerson();
 
